@@ -16,6 +16,13 @@ export type Award = { title: string; year: string; desc: string; href?: string; 
 export type Metric = { value: string; label: string; note: string; href: string };
 // Herramienta con su prueba; la prueba puede enlazar a la página que la muestra.
 export type ProofRow = { name: string; proof: string; href?: string };
+// Botón del proyecto destacado. Vive en el diccionario y no en la página porque
+// antes los tres estaban fijos en el componente —uno de ellos apuntando a
+// /projects/trading-sim—, así que cambiar cuál es el proyecto destacado obligaba a
+// editar el layout. El destino es contenido, no estructura.
+// `tone` decide el peso visual: sólido el destino principal, contorno el
+// secundario, texto el terciario.
+export type ProjectLink = { label: string; href: string; tone: "solid" | "outline" | "text" };
 // Fila de "también en la mesa": sin href es un proyecto privado y lo dice en access.
 export type AlsoRow = {
   name: string; kind: string; status: Status; statusText: string; note: string;
@@ -127,31 +134,44 @@ export const dictionaries = {
       title: "Lo que construí, y el problema que resuelve",
       intro: "Un proyecto, contado como se cuenta un caso: el problema primero.",
       project: {
-        name: "market-data-medallion",
-        kind: "Plataforma de datos en producción",
+        name: "credit-risk-mlops",
+        kind: "Sistema de decisión con gobierno de modelos",
         problemLabel: "El problema",
-        problem: "Los equipos financieros reconstruyen la misma hoja de cálculo frágil cada mes. Nadie puede probar que las cifras están bien y, cuando el analista se va, el proceso se va con él.",
+        problem: "Un modelo de crédito que nadie puede auditar no se despliega, por bueno que sea. El validador no pregunta cuánto da el AUC: pregunta quién puede cambiar esa cifra sin que nadie se entere, qué pasa cuando cambia el régimen y cómo se sabe que el modelo sigue viendo la población para la que se entrenó.",
         builtLabel: "Lo que construí",
-        built: "Una plataforma de datos completa sobre infraestructura gratuita: ingesta diaria desde cuatro fuentes de mercado, un warehouse PostgreSQL en capas medallion con dbt, 89 pruebas de calidad automáticas, CI/CD y un modelo semántico de Power BI encima. Se actualiza sola cada mañana sin que yo intervenga.",
+        built: "Un sistema de decisión crediticia sobre 1,96 millones de préstamos SBA 7(a) y 62,4 millones de solicitudes HMDA, con validación out-of-time que cruza el shock COVID, diez gates que bloquean la promoción de un modelo que no cumpla, model card y reporte de validación generados desde la corrida, monitoreo de deriva y una capa de inferencia causal. Ninguna cifra publicada se escribe a mano: el gate las recomputa desde las predicciones guardadas antes de dejar promover nada.",
         matterLabel: "Por qué importa",
-        matter: "Es la misma arquitectura que necesita el reporting de un equipo financiero: fuentes conciliadas, calidad verificable y un tablero que nadie tiene que reconstruir a mano.",
+        matter: "Es lo que separa un modelo de un modelo desplegable. La misma estructura —umbrales derivados y escritos, documentación que se regenera sola, controles que fallan cerrado— es la que pide un examen de riesgo de modelo, y la que hace que un número sobreviva a la pregunta de dónde salió.",
         findingLabel: "Hallazgo publicado",
-        finding: "De más de 1.300 variantes de estrategia evaluadas, apenas una de cada ocho ganadoras dentro de muestra sobrevivió a la validación fuera de muestra. Publiqué todas las que no.",
-        stack: ["PostgreSQL", "dbt", "Python", "Power BI", "GitHub Actions", "Prefect"],
-        repoCta: "Ver el código",
-        liveCta: "Abrir el laboratorio",
-        pbiCta: "Ver el informe Power BI",
+        finding: "Mi primer AUC fue 0,9461 y lo borré: era una fuga. Y de los diez gates, uno bloquea mi propio modelo de acceso con una razón de impacto dispar de 0,7639 contra un umbral de 0,80 — no bajé el umbral.",
+        stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
+        links: [
+          { label: "Ver el código", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "solid" },
+          { label: "Leer la bitácora de defectos", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md", tone: "outline" },
+          { label: "Ver los registros de decisión", href: "https://github.com/DavinsonR/credit-risk-mlops/tree/main/docs/adr", tone: "text" },
+        ] as ProjectLink[],
       },
       also: {
         title: "También en la mesa",
+        // Orden: del más nuevo al más viejo, por fecha de creación del repositorio.
+        // JARVIS va último porque su repositorio es privado y no tiene fecha
+        // pública contra la cual ordenarlo; si es posterior a agosto de 2026, sube.
         rows: [
           {
-            name: "credit-risk-mlops — riesgo de crédito con gobierno de modelos",
-            kind: "Sistema de decisión · datos públicos de EE. UU.",
+            name: "Inclusión financiera y crecimiento regional en Colombia",
+            kind: "Investigación reproducible · datos abiertos",
+            status: "research",
+            statusText: "EN CONSTRUCCIÓN",
+            note: "Diecinueve fuentes públicas en un warehouse dimensional con dbt y DuckDB, resueltas a código municipal DIVIPOLA. Encima: un índice de inclusión financiera por dimensiones, dos paneles anuales, un atlas de los 1.123 municipios y una batería econométrica completa, con sus resultados publicados.",
+            href: "/research/fintech-inclusion",
+          },
+          {
+            name: "market-data-medallion — plataforma de datos",
+            kind: "Plataforma en producción · se refresca sola",
             status: "live",
-            statusText: "EN EL REPO",
-            note: "1,96 millones de préstamos SBA 7(a) y 62,4 millones de solicitudes HMDA. Diez gates de promoción, y uno de ellos bloquea mi propio modelo de acceso con una razón de impacto dispar de 0,7639 contra un umbral de 0,80 — no bajé el umbral. Mi primer AUC fue 0,9461 y lo borré: era una fuga. Producción queda en 0,7005, y rechazar el 10% más riesgoso habría evitado $276,3M en pérdidas a cambio de renunciar a $1.990M de volumen sano. En lo causal publiqué una no-identificación, no un efecto.",
-            href: "https://github.com/DavinsonR/credit-risk-mlops",
+            statusText: "EN OPERACIÓN",
+            note: "Ingesta diaria desde cuatro fuentes de mercado a un warehouse PostgreSQL en capas medallion con dbt, 89 pruebas de calidad automáticas y CI/CD, sobre infraestructura gratuita. De más de 1.300 variantes de estrategia evaluadas encima, apenas una de cada ocho ganadoras dentro de muestra sobrevivió fuera de muestra — publiqué todas las que no.",
+            href: "/projects/trading-sim",
           },
           {
             name: "Medallion Insights — informe Power BI",
@@ -160,14 +180,6 @@ export const dictionaries = {
             statusText: "EN EL REPO",
             note: "Siete tablas en TMDL sobre el warehouse, 17 medidas DAX y cuatro páginas de informe, versionado como texto en el repositorio público. El catálogo completo, con cada expresión, está en su página.",
             href: "/projects/powerbi",
-          },
-          {
-            name: "Inclusión financiera y crecimiento regional en Colombia",
-            kind: "Investigación reproducible · datos abiertos",
-            status: "research",
-            statusText: "EN CONSTRUCCIÓN",
-            note: "Diecinueve fuentes públicas en un warehouse dimensional con dbt y DuckDB, resueltas a código municipal DIVIPOLA. Encima: un índice de inclusión financiera por dimensiones, dos paneles anuales, un atlas de los 1.123 municipios y una batería econométrica completa, con sus resultados publicados.",
-            href: "/research/fintech-inclusion",
           },
           {
             name: "JARVIS — app de seguimiento personal",
@@ -1091,31 +1103,44 @@ export const dictionaries = {
       title: "What I built, and the problem it solves",
       intro: "One project, told the way a case is told: the problem first.",
       project: {
-        name: "market-data-medallion",
-        kind: "Production data platform",
+        name: "credit-risk-mlops",
+        kind: "Decision system with model governance",
         problemLabel: "The problem",
-        problem: "Finance teams rebuild the same fragile spreadsheet every month. Nobody can prove the numbers are right, and when the analyst leaves, the process leaves with them.",
+        problem: "A credit model nobody can audit does not get deployed, however good it is. The validator does not ask what the AUC is: they ask who can change that figure without anyone noticing, what happens when the regime shifts, and how you know the model still sees the population it was trained for.",
         builtLabel: "What I built",
-        built: "A complete data platform on free infrastructure: daily ingestion from four market sources, a PostgreSQL warehouse in medallion layers with dbt, 89 automated quality tests, CI/CD, and a Power BI semantic model on top. It refreshes itself every morning without me.",
+        built: "A credit decisioning system over 1.96M SBA 7(a) loans and 62.4M HMDA applications, with out-of-time validation across the COVID shock, ten gates that block promotion of a model that does not comply, a model card and validation report generated from the run, drift monitoring, and a causal inference layer. No published figure is written by hand: the gate recomputes them from the saved predictions before letting anything be promoted.",
         matterLabel: "Why it matters",
-        matter: "This is the same architecture a finance team needs for reporting: reconciled sources, verifiable quality, and a dashboard nobody has to rebuild by hand.",
+        matter: "This is what separates a model from a deployable one. The same structure — thresholds derived and written down, documentation that regenerates itself, controls that fail closed — is what a model risk examination asks for, and what makes a number survive the question of where it came from.",
         findingLabel: "Published finding",
-        finding: "Of more than 1,300 strategy variants evaluated, barely one in eight of the in-sample winners survived out-of-sample validation. I published every one that did not.",
-        stack: ["PostgreSQL", "dbt", "Python", "Power BI", "GitHub Actions", "Prefect"],
-        repoCta: "See the code",
-        liveCta: "Open the lab",
-        pbiCta: "See the Power BI report",
+        finding: "My first AUC was 0.9461 and I deleted it: it was a leak. And of the ten gates, one blocks my own access model at a disparate impact ratio of 0.7639 against a 0.80 threshold — I did not move the threshold.",
+        stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
+        links: [
+          { label: "See the code", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "solid" },
+          { label: "Read the defect log", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md", tone: "outline" },
+          { label: "See the decision records", href: "https://github.com/DavinsonR/credit-risk-mlops/tree/main/docs/adr", tone: "text" },
+        ] as ProjectLink[],
       },
       also: {
         title: "Also on the desk",
+        // Order: newest to oldest, by repository creation date. JARVIS goes last
+        // because its repository is private and has no public date to sort against;
+        // if it postdates August 2026, it moves up.
         rows: [
           {
-            name: "credit-risk-mlops — credit risk with model governance",
-            kind: "Decision system · US public data",
+            name: "Financial inclusion and regional growth in Colombia",
+            kind: "Reproducible research · open data",
+            status: "research",
+            statusText: "BUILDING",
+            note: "Nineteen public sources in a dimensional warehouse on dbt and DuckDB, every series resolved to municipal codes. On top: a financial-inclusion index by dimension, two annual panels, an atlas of all 1,123 municipalities and a full econometric battery, with its results published.",
+            href: "/research/fintech-inclusion",
+          },
+          {
+            name: "market-data-medallion — data platform",
+            kind: "Production platform · refreshes itself",
             status: "live",
-            statusText: "IN THE REPO",
-            note: "1.96M SBA 7(a) loans and 62.4M HMDA applications. Ten promotion gates, and one of them blocks my own access model at a disparate impact ratio of 0.7639 against a 0.80 threshold — I did not move the threshold. My first AUC was 0.9461 and I deleted it: it was a leak. Production sits at 0.7005, and declining the riskiest 10% would have avoided $276.3M in losses at the cost of forgoing $1.99B in good volume. On the causal side I published a non-identification, not an effect.",
-            href: "https://github.com/DavinsonR/credit-risk-mlops",
+            statusText: "IN OPERATION",
+            note: "Daily ingestion from four market sources into a PostgreSQL warehouse in medallion layers with dbt, 89 automated quality tests and CI/CD, on free infrastructure. Of more than 1,300 strategy variants evaluated on top of it, barely one in eight of the in-sample winners survived out of sample — I published every one that did not.",
+            href: "/projects/trading-sim",
           },
           {
             name: "Medallion Insights — Power BI report",
@@ -1124,14 +1149,6 @@ export const dictionaries = {
             statusText: "IN THE REPO",
             note: "Seven tables in TMDL over the warehouse, 17 DAX measures and four report pages, versioned as text in the public repository. The full catalogue, expression by expression, is on its page.",
             href: "/projects/powerbi",
-          },
-          {
-            name: "Financial inclusion and regional growth in Colombia",
-            kind: "Reproducible research · open data",
-            status: "research",
-            statusText: "BUILDING",
-            note: "Nineteen public sources in a dimensional warehouse on dbt and DuckDB, every series resolved to municipal codes. On top: a financial-inclusion index by dimension, two annual panels, an atlas of all 1,123 municipalities and a full econometric battery, with its results published.",
-            href: "/research/fintech-inclusion",
           },
           {
             name: "JARVIS — personal tracking app",

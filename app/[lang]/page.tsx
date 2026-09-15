@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
-import { TRADING_SIM_REPO } from "@/lib/trading-sim";
 import PipelineStamp from "@/components/PipelineStamp";
 import CountUp from "@/components/CountUp";
 import StatusPill from "@/components/StatusPill";
@@ -321,27 +320,30 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               </p>
             </div>
 
+            {/* Los tres botones estaban fijos aquí, y uno apuntaba a
+                /projects/trading-sim: cambiar cuál es el proyecto destacado obligaba
+                a editar el layout para mover contenido. Ahora salen del diccionario,
+                que es donde vive el resto del texto de la sección. */}
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href={`/${lang}/projects/trading-sim`}
-                className="lift inline-flex items-center rounded-[3px] bg-ink px-4 py-2.5 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90"
-              >
-                {work.project.liveCta}
-              </Link>
-              <a
-                href={TRADING_SIM_REPO}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="lift inline-flex items-center rounded-[3px] border border-rule px-4 py-2.5 text-[14px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
-              >
-                {work.project.repoCta}
-              </a>
-              <Link
-                href={`/${lang}/projects/powerbi`}
-                className="inline-flex items-center px-1 py-2.5 text-[14px] font-semibold text-cold hover:underline"
-              >
-                {work.project.pbiCta} →
-              </Link>
+              {work.project.links.map((l) => {
+                const externo = l.href.startsWith("http");
+                const clase =
+                  l.tone === "solid"
+                    ? "lift inline-flex items-center rounded-[3px] bg-ink px-4 py-2.5 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90"
+                    : l.tone === "outline"
+                      ? "lift inline-flex items-center rounded-[3px] border border-rule px-4 py-2.5 text-[14px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+                      : "inline-flex items-center px-1 py-2.5 text-[14px] font-semibold text-cold hover:underline";
+                const texto = l.tone === "text" ? `${l.label} →` : l.label;
+                return externo ? (
+                  <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className={clase}>
+                    {texto}
+                  </a>
+                ) : (
+                  <Link key={l.href} href={`/${lang}${l.href}`} className={clase}>
+                    {texto}
+                  </Link>
+                );
+              })}
             </div>
 
           </article>
