@@ -146,6 +146,14 @@ export const dictionaries = {
         title: "También en la mesa",
         rows: [
           {
+            name: "credit-risk-mlops — riesgo de crédito con gobierno de modelos",
+            kind: "Sistema de decisión · datos públicos de EE. UU.",
+            status: "live",
+            statusText: "EN EL REPO",
+            note: "1,96 millones de préstamos SBA 7(a) y 62,4 millones de solicitudes HMDA. Diez gates de promoción, y uno de ellos bloquea mi propio modelo de acceso con una razón de impacto dispar de 0,7639 contra un umbral de 0,80 — no bajé el umbral. Mi primer AUC fue 0,9461 y lo borré: era una fuga. Producción queda en 0,7005, y rechazar el 10% más riesgoso habría evitado $276,3M en pérdidas a cambio de renunciar a $1.990M de volumen sano. En lo causal publiqué una no-identificación, no un efecto.",
+            href: "https://github.com/DavinsonR/credit-risk-mlops",
+          },
+          {
             name: "Medallion Insights — informe Power BI",
             kind: "Modelo semántico y reporte",
             status: "live",
@@ -1101,6 +1109,14 @@ export const dictionaries = {
       also: {
         title: "Also on the desk",
         rows: [
+          {
+            name: "credit-risk-mlops — credit risk with model governance",
+            kind: "Decision system · US public data",
+            status: "live",
+            statusText: "IN THE REPO",
+            note: "1.96M SBA 7(a) loans and 62.4M HMDA applications. Ten promotion gates, and one of them blocks my own access model at a disparate impact ratio of 0.7639 against a 0.80 threshold — I did not move the threshold. My first AUC was 0.9461 and I deleted it: it was a leak. Production sits at 0.7005, and declining the riskiest 10% would have avoided $276.3M in losses at the cost of forgoing $1.99B in good volume. On the causal side I published a non-identification, not an effect.",
+            href: "https://github.com/DavinsonR/credit-risk-mlops",
+          },
           {
             name: "Medallion Insights — Power BI report",
             kind: "Semantic model and report",
