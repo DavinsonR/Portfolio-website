@@ -5,7 +5,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Sitio personal bilingüe de Davirson Novoa: un CV interactivo y las páginas de sus proyectos.
 Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · estático puro en Vercel, sin backend ni base de datos.
 
-**Lee `BITACORA_MAESTRA.md` antes de empezar**: hoja de ruta, decisiones y el historial de fallos con su causa raíz. `DESIGN.md` y `PRODUCT.md` no son documentación descriptiva sino el contrato del sistema visual y del posicionamiento; varias de sus reglas son vinculantes y romperlas ya ha sido un hallazgo de revisión.
+**Lee [`docs/FALLOS.md`](docs/FALLOS.md) antes de tocar nada**: los 33 fallos que este proyecto ya tuvo, en una tabla, con su causa raíz enlazada. Está ordenado por ámbito — más de la mitad son de `market-data-medallion` y no de aquí, así que si vienes al sitio, filtra y ahórrate veinte. Al lado están [`docs/DECISIONES.md`](docs/DECISIONES.md) (por qué algo que parece arbitrario no lo es) y [`docs/ROADMAP.md`](docs/ROADMAP.md) (estado y pendientes). [`BITACORA_MAESTRA.md`](BITACORA_MAESTRA.md) es hoy el índice de todo eso; la narrativa completa, sesión por sesión, vive en `docs/bitacora/`.
+
+`docs/DESIGN.md` y `docs/PRODUCT.md` no son documentación descriptiva sino el contrato del sistema visual y del posicionamiento; varias de sus reglas son vinculantes y romperlas ya ha sido un hallazgo de revisión.
 
 ## Comandos
 
@@ -40,7 +42,7 @@ Las tres saben fallar: se verificó rompiendo el diccionario y volteando una ase
 export type Dictionary = (typeof dictionaries)["es"];
 ```
 
-De ahí sale el invariante más importante del repositorio: **los objetos `es` y `en` deben tener exactamente la misma forma**. Añadir una clave a uno y no al otro no se nota hasta `tsc`, y ahí falla en el componente que la consume, no donde está el hueco. `npx tsc --noEmit` es la prueba de que la traducción está completa.
+De ahí sale el invariante más importante del repositorio: **los objetos `es` y `en` deben tener exactamente la misma forma**. Añadir una clave a uno y no al otro no se nota hasta `tsc`, y ahí falla en el componente que la consume, no donde está el hueco. **Y hay dos divergencias que `tsc` no ve: las longitudes de array y las cadenas vacías** — añadir una divulgación en español y no en inglés compila limpio. La prueba de que la traducción está completa es `npm run check:dict`, no `tsc`.
 
 Los PDF y las fuentes LaTeX del CV se generan de ese mismo archivo (`scripts/generate-cv-latex.ts`), así que tocar el bloque `cv` obliga a `npm run cv` para que el PDF descargable no contradiga la página.
 
@@ -86,7 +88,7 @@ Tres salvaguardas que no se pueden romper: el estado oculto vive dentro de `.js`
 - **Atlas** (`components/atlas/`, `public/atlas/*.json`): el contrato con el repositorio de la tesis (`financial-inclusion-colombia`) es su carpeta `atlas/data/`, copiada a `public/atlas/`. El SVG se dibuja fuera de React en `render.ts` porque la vista municipal son más de 5.000 nodos; React solo posee los controles. `lib/atlas-figure.ts` es **generado** por `npm run atlas` — no se edita a mano.
 - **Catálogo Power BI** (`lib/powerbi-model.ts`): copiado a mano de `market-data-medallion/powerbi/`, con el commit de origen en su cabecera; al actualizarlo, actualizar también ese commit.
 
-### Diseño: leer `DESIGN.md` antes de tocar estilos
+### Diseño: leer `docs/DESIGN.md` antes de tocar estilos
 
 Los tokens viven en los bloques `@theme` de `app/globals.css`, con el tema oscuro re-escalonado contra su propio fondo. Las reglas que rompen el sistema si se ignoran:
 
@@ -100,7 +102,7 @@ Los tokens viven en los bloques `@theme` de `app/globals.css`, con el tema oscur
 
 ### Contenido: verificable o no se publica
 
-`PRODUCT.md` recoge la evidencia real disponible. Ninguna cifra publicada puede inventarse ni inflarse, los indicadores de estado tienen que reflejar la realidad incluido lo que no está terminado, y `lib/structured-data.ts` no puede afirmarle al buscador nada que el lector no pueda verificar en la propia página. Cuando una capacidad no está viva —una cuenta que todavía no se puede crear, un repositorio privado— la página lo dice en vez de ofrecer un enlace roto.
+`docs/PRODUCT.md` recoge la evidencia real disponible. Ninguna cifra publicada puede inventarse ni inflarse, los indicadores de estado tienen que reflejar la realidad incluido lo que no está terminado, y `lib/structured-data.ts` no puede afirmarle al buscador nada que el lector no pueda verificar en la propia página. Cuando una capacidad no está viva —una cuenta que todavía no se puede crear, un repositorio privado— la página lo dice en vez de ofrecer un enlace roto.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

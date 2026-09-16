@@ -59,4 +59,12 @@ npm run dev      # http://localhost:3000 → redirects to /es
 
 ## Documentation
 
-`BITACORA_MAESTRA.md` — roadmap, architecture, decisions and the full log of failures with their root cause. It is written in Spanish and it is the document to read first before working on this repository.
+Written in Spanish, and the place to start before working on this repository.
+
+| | |
+| --- | --- |
+| [`docs/FALLOS.md`](docs/FALLOS.md) | The 33 defects this project has already had, in one table, each linked to its root cause. **Read this first.** More than half belong to the data pipeline, not to this repo — the table says which. |
+| [`docs/DECISIONES.md`](docs/DECISIONES.md) | The 31 decisions, and where the reasoning lives. Several look arbitrary and are not. |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Current state and what is left. |
+| [`docs/DESIGN.md`](docs/DESIGN.md) · [`docs/PRODUCT.md`](docs/PRODUCT.md) | The visual system and the positioning. Binding, not descriptive. |
+| [`BITACORA_MAESTRA.md`](BITACORA_MAESTRA.md) | The index; the full narrative, session by session, is in `docs/bitacora/`. |

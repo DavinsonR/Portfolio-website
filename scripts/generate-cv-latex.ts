@@ -157,11 +157,20 @@ function build(lang: Locale): string {
   // El PDF es el artefacto que sobrevive a la visita: se reenvía dentro de la
   // empresa sin el enlace que lo trajo. La cabecera llevaba correo, LinkedIn y
   // GitHub, y ninguna forma de volver al sitio donde está la evidencia.
+  // OJO: aquí las barras van DOBLES. En una plantilla de JavaScript `\s` es `s`,
+  // `\h` es `h` y `\,` es `,` — y `\t` es un TABULADOR. Esta línea se escribió
+  // con barras simples y salió al PDF como
+  //   `{small href{mailto:...}{...} ,<TAB>extperiodcentered, ...}`
+  // durante todo el tiempo que el CV lleva publicado: la línea de contacto
+  // —correo, LinkedIn, GitHub y el sitio, lo primero que mira quien contrata—
+  // era texto crudo con los comandos rotos, y ni `tsc` ni LaTeX se quejan,
+  // porque el resultado es LaTeX válido que sencillamente no es el que se quiso.
+  // El resto del fichero ya usaba barras dobles; esta línea era la excepción.
   w(
-    `  {\small \href{${url(`mailto:${dict.profile.email}`)}}{${tex(dict.profile.email)}} \,\textperiodcentered\, ` +
-      `\href{${url(dict.profile.linkedin)}}{${tex(dict.profile.linkedin.replace("https://", ""))}} \,\textperiodcentered\, ` +
-      `\href{${url(dict.profile.github)}}{${tex(dict.profile.github.replace("https://", ""))}} \,\textperiodcentered\, ` +
-      `\href{${url(`${SITE}/${lang}`)}}{${tex(SITE.replace("https://", ""))}}}`
+    `  {\\small \\href{${url(`mailto:${dict.profile.email}`)}}{${tex(dict.profile.email)}} \\,\\textperiodcentered\\, ` +
+      `\\href{${url(dict.profile.linkedin)}}{${tex(dict.profile.linkedin.replace("https://", ""))}} \\,\\textperiodcentered\\, ` +
+      `\\href{${url(dict.profile.github)}}{${tex(dict.profile.github.replace("https://", ""))}} \\,\\textperiodcentered\\, ` +
+      `\\href{${url(`${SITE}/${lang}`)}}{${tex(SITE.replace("https://", ""))}}}`
   );
   w("\\end{center}");
   w("\\vspace{2pt}");

@@ -59,4 +59,10 @@ npm run dev      # http://localhost:3000 → redirige a /es
 
 ## Documentación
 
-`BITACORA_MAESTRA.md` — hoja de ruta, arquitectura, decisiones y el historial de fallos con su causa raíz. Es el documento que hay que leer primero para trabajar sobre este repositorio.
+| | |
+| --- | --- |
+| [`docs/FALLOS.md`](docs/FALLOS.md) | Los 33 fallos que este proyecto ya tuvo, en una tabla, cada uno enlazado a su causa raíz. **Empieza por aquí.** Más de la mitad son del pipeline de datos, no de este repo — la tabla lo dice. |
+| [`docs/DECISIONES.md`](docs/DECISIONES.md) | Las 31 decisiones y dónde está el porqué. Varias parecen arbitrarias y no lo son. |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Estado actual y lo que queda. |
+| [`docs/DESIGN.md`](docs/DESIGN.md) · [`docs/PRODUCT.md`](docs/PRODUCT.md) | El sistema visual y el posicionamiento. Vinculantes, no descriptivos. |
+| [`BITACORA_MAESTRA.md`](BITACORA_MAESTRA.md) | El índice; la narrativa completa, sesión por sesión, en `docs/bitacora/`. |

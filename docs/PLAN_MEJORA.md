@@ -1,3 +1,7 @@
+> **Estado: fases A, B y C ejecutadas el 16 sep 2026.** Este documento es el plan
+> tal como se escribió, y se conserva como registro de por qué se hizo cada cosa.
+> Lo que queda vivo está en [`ROADMAP.md`](ROADMAP.md), que es el que hay que mirar.
+
 # PLAN DE MEJORA — proyecto-davirson
 
 *Diagnóstico y hoja de ruta. 16 sep 2026. Estado de partida verificado: `tsc --noEmit` ✓, `npm run lint` ✓, `npm run build` ✓ (19 rutas), sitio en vivo 200.*
