@@ -69,6 +69,16 @@ jobs:
           npm run latex
           git diff --exit-code -- public/*.tex
 
+      # Mismo motivo que el paso anterior, y por el mismo fallo: al mover
+      # `lib/atlas-figure.ts` a `lib/generated/` el generador siguió escribiendo
+      # en la ruta vieja. `npm run atlas` habría creado un fichero huérfano y la
+      # figura publicada se habría quedado congelada sin que nada se quejara.
+      - name: La figura del atlas está al día
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: |
+          npm run atlas
+          git diff --exit-code -- lib/generated/atlas-figure.ts
+
       - name: Build
         if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         run: npm run build

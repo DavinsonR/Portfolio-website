@@ -1,4 +1,4 @@
-# Fallos — FALLO-01 … FALLO-34
+# Fallos — FALLO-01 … FALLO-35
 
 *Este es el documento que hay que leer antes de tocar nada.* Cada fila es un fallo que ya ocurrió, con su causa raíz en la sesión enlazada.
 
@@ -25,6 +25,7 @@ Dos columnas hacen el trabajo:
 | 32 | **La línea de contacto del CV llevaba los comandos LaTeX rotos** — barras simples en una plantilla de JavaScript: `\small` → `small`, `\,` → `,`, `\t` → TAB. Salía `small hrefmailto:…` al PDF, en los dos idiomas, desde que existe el generador | ✓ `check:artifacts` | 16 sep 2026 |
 | 33 | El propio `check:artifacts` solo miraba dentro de los streams comprimidos del PDF; al recompilar con pdfLaTeX las URL pasaron a las anotaciones `/URI` y dio un falso negativo con el PDF ya correcto | ✓ mira los dos sitios | 16 sep 2026 |
 | 34 | El SVG de la figura del atlas emitía `height="auto"`, que no es una longitud: error de consola en la portada en cada carga. Va al estilo, donde `height:auto` sí es válido | ✓ `check:routes` | 16 sep 2026 |
+| 35 | **El generador del atlas escribía en la ruta vieja.** Al mover `lib/atlas-figure.ts` a `lib/generated/`, `scripts/generate-atlas-figure.mjs:41` se quedó apuntando al destino anterior: `npm run atlas` habría creado un fichero huérfano y la figura publicada se habría congelado sin que nada se quejara. Lo encontró Codex en una revisión independiente | ✓ CI regenera y diff | 16 sep 2026 |
 
 **Dos rutas que devolvían 200 debiendo ser 404** y un redirect de idioma que faltaba también salieron en la [sesión 16](bitacora/sesion-16.md); hoy los cubre `check:routes`.
 

@@ -38,7 +38,7 @@ import path from "node:path";
 
 const ROOT = process.cwd();
 const ATLAS = path.join(ROOT, "public", "atlas");
-const OUT = path.join(ROOT, "lib", "atlas-figure.ts");
+const OUT = path.join(ROOT, "lib", "generated", "atlas-figure.ts");
 
 /** Ancho de cada panel. Dos caben en la medida de 1080px con aire de sobra, y a
  *  este tamaño la tolerancia de simplificación de abajo es invisible. */
