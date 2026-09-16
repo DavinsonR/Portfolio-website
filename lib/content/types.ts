@@ -54,8 +54,8 @@ export const TABLEAU_VIZ =
 
 export const profile = {
   name: "Davirson Novoa Ramírez",
-  email: "davinsonnovoaramirez@gmail.com",
-  linkedin: "https://linkedin.com/in/davirson-novoa-ramirez-2721641b5",
+  email: "davirson@davirson.com",
+  linkedin: "https://linkedin.com/in/davirson-novoa",
   github: "https://github.com/DavinsonR",
   kaggle: "https://kaggle.com/davinsonnovoa",
 };

@@ -18,10 +18,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
   const cvHref = lang === "es" ? "/Davirson_Novoa_CV_ES.pdf" : "/Davirson_Novoa_Resume_EN.pdf";
   const mailHref = mailtoHref(dict);
 
-  /* El texto del enlace se saca de la propia URL. Estaba escrito a mano como
-     "davirson-novoa" mientras el perfil vive en "davirson-novoa-ramirez-2721641b5":
-     la etiqueta se pudría por su cuenta cada vez que cambiaba el destino, y
-     anunciaba un perfil que no existe. */
+  /* El texto del enlace se saca de la propia URL, y por eso no se pudre.
+     Estuvo escrito a mano: decía "davirson-novoa" mientras el perfil vivía en
+     "davirson-novoa-ramirez-2721641b5", y anunciaba un perfil que no existía.
+     Se derivó de la URL, y la broma llegó sola — el 16 sep 2026 el perfil pasó
+     a ser exactamente "davirson-novoa" y la etiqueta se actualizó sin que nadie
+     tocara nada. Es el argumento de la decisión, ya cobrado. */
   const handle = (url: string) => url.replace(/\/+$/, "").split("/").pop() ?? url;
   const linkedinHandle = handle(dict.profile.linkedin);
   const githubHandle = handle(dict.profile.github);

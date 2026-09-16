@@ -2,7 +2,7 @@
 # sin cookies y sin datos de usuario. El alcance es la integridad del contenido
 # publicado.
 
-Contact: mailto:davinsonnovoaramirez@gmail.com
+Contact: mailto:davirson@davirson.com
 Expires: 2027-09-01T00:00:00.000Z
 Preferred-Languages: es, en
 Canonical: https://davirson.com/.well-known/security.txt
