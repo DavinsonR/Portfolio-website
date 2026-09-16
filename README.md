@@ -4,7 +4,7 @@
 
 Bilingual personal site (EN/ES) and the entry point to three projects with open code and live data: econometric research, a market data platform and a daily tracking app.
 
-### ▶ [proyecto-davirson-git.vercel.app](https://proyecto-davirson-git.vercel.app)
+### ▶ [davirson.com](https://davirson.com)
 
 Not a portfolio of screenshots: every page on the site is fed by the repository behind it, and every figure it shows traces back to the commit that produced it.
 
@@ -12,9 +12,9 @@ Not a portfolio of screenshots: every page on the site is fed by the repository 
 
 | Project | On the site | Repository | Status |
 | --- | --- | --- | --- |
-| **Financial inclusion and regional growth** — a warehouse of 19 public sources, an index by dimension, a fixed-effects panel and an atlas of all 1,123 municipalities | [`/en/research/fintech-inclusion`](https://proyecto-davirson-git.vercel.app/en/research/fintech-inclusion) | [financial-inclusion-colombia](https://github.com/DavinsonR/financial-inclusion-colombia) | Main result published |
-| **Market data platform** — public APIs → a Postgres medallion warehouse with dbt → a backtester with no look-ahead → an automated daily refresh | [`/en/projects/trading-sim`](https://proyecto-davirson-git.vercel.app/en/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 assets, refreshed daily |
-| **Power BI report** — the model, measures and pages of the report built on the gold layer | [`/en/projects/powerbi`](https://proyecto-davirson-git.vercel.app/en/projects/powerbi) | catalogue in `lib/powerbi-model.ts` | Catalogue published |
+| **Financial inclusion and regional growth** — a warehouse of 19 public sources, an index by dimension, a fixed-effects panel and an atlas of all 1,123 municipalities | [`/en/research/fintech-inclusion`](https://davirson.com/en/research/fintech-inclusion) | [financial-inclusion-colombia](https://github.com/DavinsonR/financial-inclusion-colombia) | Main result published |
+| **Market data platform** — public APIs → a Postgres medallion warehouse with dbt → a backtester with no look-ahead → an automated daily refresh | [`/en/projects/trading-sim`](https://davirson.com/en/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 assets, refreshed daily |
+| **Power BI report** — the model, measures and pages of the report built on the gold layer | [`/en/projects/powerbi`](https://davirson.com/en/projects/powerbi) | catalogue in `lib/powerbi-model.ts` | Catalogue published |
 | **JARVIS** — habits, body, sleep and spending logged in under ninety seconds | — | private; [public demo, no account](https://jarvis-app-psi-sable.vercel.app/demo) | v1 in use |
 
 ## The CV

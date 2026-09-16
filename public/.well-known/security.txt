@@ -5,14 +5,15 @@
 Contact: mailto:davinsonnovoaramirez@gmail.com
 Expires: 2027-09-01T00:00:00.000Z
 Preferred-Languages: es, en
-Canonical: https://proyecto-davirson-git.vercel.app/.well-known/security.txt
+Canonical: https://davirson.com/.well-known/security.txt
 
 # Politica de divulgacion
 # Divulgacion coordinada. Escribe antes de publicar; respondo en 7 dias
 # naturales y pido 90 dias antes de la divulgacion publica.
 #
 # En alcance:
-#   proyecto-davirson-git.vercel.app
+#   davirson.com
+#   proyecto-davirson-git.vercel.app (el host anterior; sigue vivo y redirige)
 #   github.com/DavinsonR/proyecto-davirson
 #
 # Fuera de alcance:
