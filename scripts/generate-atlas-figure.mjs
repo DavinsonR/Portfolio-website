@@ -175,8 +175,16 @@ function main() {
 
   const width = W * 2 + GAP;
   const height = H + TOP;
+  // `height` va en el ESTILO, no en el atributo. Como atributo SVG exige una
+  // longitud —`auto` no lo es— y el navegador lo rechaza con
+  // «<svg> attribute height: Expected length, "auto"» en la consola de la
+  // portada. Se recupera solo, pero el estándar de verificación de este repo
+  // es cero errores de consola, y un error tolerado enseña a ignorar la consola.
+  // En CSS `height:auto` sí es válido y es exactamente lo que se quería: con el
+  // `viewBox` puesto, el alto sale de la proporción. El atributo `style` lo
+  // permite la CSP (`style-src-attr 'unsafe-inline'`), que existe justo para esto.
   const svg =
-    `<svg viewBox="0 0 ${width} ${height}" width="100%" height="auto" role="img" aria-labelledby="atlas-figure-title" preserveAspectRatio="xMidYMid meet">` +
+    `<svg viewBox="0 0 ${width} ${height}" width="100%" style="height:auto" role="img" aria-labelledby="atlas-figure-title" preserveAspectRatio="xMidYMid meet">` +
     `<title id="atlas-figure-title">TITLE_SLOT</title>` +
     defs +
     panels

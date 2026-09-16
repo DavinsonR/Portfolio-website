@@ -18,8 +18,9 @@
 
 ### Del sitio
 
-- [ ] **FALLO-29 sin cubrir** — que cada subpágina declare su propio `openGraph`. Existe el helper y se aplica, pero nada impide que una ruta nueva lo olvide y herede la tarjeta de la portada. Una comprobación que recorra las rutas y exija `og:url` propio lo cerraría.
-- [ ] **El SVG del atlas emite `height="auto"`**, que no es válido como atributo SVG: error de consola en la portada. Una línea en `scripts/generate-atlas-figure.mjs` más `npm run atlas`.
+- [x] ~~FALLO-29~~ — `check:routes` exige que el `og:url` de cada página coincida con su canonical; verificado quitándole el `openGraph` al CV (lo detecta en los dos idiomas).
+- [x] ~~El `height="auto"` del SVG del atlas~~ — pasa al estilo; cero errores de consola y la proporción se mantiene exacta.
+
 - [ ] **La escala divergente del atlas ya no divide.** En 2024–25 no hay prácticamente valores negativos y media rampa queda muerta. Decisión analítica del autor, señalada en la [sesión 17](bitacora/sesion-17.md) y no ejecutada.
 - [ ] **En oscuro, el panel de 2018 pierde contraste.** Coherente con la regla del tema re-escalonado; subir `--atlas-mid` afectaría también al atlas interactivo. Señalado, no ejecutado.
 - [ ] Verificación semanal de los enlaces externos (3 repos y una demo) en CI.

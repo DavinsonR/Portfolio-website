@@ -1,4 +1,4 @@
-# Fallos — FALLO-01 … FALLO-33
+# Fallos — FALLO-01 … FALLO-34
 
 *Este es el documento que hay que leer antes de tocar nada.* Cada fila es un fallo que ya ocurrió, con su causa raíz en la sesión enlazada.
 
@@ -19,11 +19,12 @@ Dos columnas hacen el trabajo:
 | 06 | 403 al crear deployment en el team con el token del conector | — histórico | [fundación §7](bitacora/00-fundacion.md) |
 | 07 | Push por SSH: `Permission denied (publickey)` | — histórico | [2](bitacora/sesion-02.md) |
 | 08 | Push por HTTPS: credenciales inválidas / 403 | — histórico | [2](bitacora/sesion-02.md) |
-| 29 | **La tarjeta de LinkedIn de cada subpágina enseñaba las cifras de la portada** — Next *reemplaza* `openGraph`, no lo fusiona | ✗ | [16](bitacora/sesion-16.md) |
+| 29 | **La tarjeta de LinkedIn de cada subpágina enseñaba las cifras de la portada** — Next *reemplaza* `openGraph`, no lo fusiona | ✓ `check:routes` | [16](bitacora/sesion-16.md) |
 | 30 | **La carga diferida del atlas no difería nada** — un segundo efecto pedía el nivel departamental al montar | ✗ | [17](bitacora/sesion-17.md) |
 | 31 | **El PDF del CV se quedó con el host anterior impreso dentro** al mudarse el dominio. Un PDF es opaco: `grep` no lo ve | ✓ `check:artifacts` | 16 sep 2026 |
-| 32 | **La línea de contacto del CV llevaba los comandos LaTeX rotos** — barras simples en una plantilla de JavaScript: `\small` → `small`, `\,` → `,`, `\t` → TAB. Salía `small hrefmailto:…` al PDF, en los dos idiomas, desde que existe el generador | ✗ | 16 sep 2026 |
+| 32 | **La línea de contacto del CV llevaba los comandos LaTeX rotos** — barras simples en una plantilla de JavaScript: `\small` → `small`, `\,` → `,`, `\t` → TAB. Salía `small hrefmailto:…` al PDF, en los dos idiomas, desde que existe el generador | ✓ `check:artifacts` | 16 sep 2026 |
 | 33 | El propio `check:artifacts` solo miraba dentro de los streams comprimidos del PDF; al recompilar con pdfLaTeX las URL pasaron a las anotaciones `/URI` y dio un falso negativo con el PDF ya correcto | ✓ mira los dos sitios | 16 sep 2026 |
+| 34 | El SVG de la figura del atlas emitía `height="auto"`, que no es una longitud: error de consola en la portada en cada carga. Va al estilo, donde `height:auto` sí es válido | ✓ `check:routes` | 16 sep 2026 |
 
 **Dos rutas que devolvían 200 debiendo ser 404** y un redirect de idioma que faltaba también salieron en la [sesión 16](bitacora/sesion-16.md); hoy los cubre `check:routes`.
 

@@ -28,7 +28,9 @@ Qué cubre cada una, y por qué existe:
 
 - **`check:dict`** — recorre `es` y `en` y exige la misma forma. Cubre los dos huecos que `tsc` deja: las **longitudes de array** (añadir una divulgación en un idioma y no en el otro compila sin una queja — medido) y las cadenas vacías. Y cuando algo falta, nombra la ruta exacta (`cv.experience[2].bullets`) en vez del componente que la consume.
 - **`check:artifacts`** — descomprime los streams de los PDF del CV y exige que mencionen el host de `SITE`. Existe por un fallo real del 16 sep 2026: el sitio se mudó de dominio, el `.tex` se actualizó y el PDF se quedó con el host anterior impreso dentro. Un PDF es opaco, `grep` no lo ve, y nada lo notó.
-- **`check:routes`** — lee las rutas del `sitemap.xml` publicado (no de una lista copiada, que se desincroniza) y comprueba 200; más los redirects de idioma y los 404 que tienen que serlo. La bitácora registra **dos rutas que devolvían 200 debiendo ser 404** y un redirect que faltaba, encontrados a mano meses después.
+- **`check:routes`** — lee las rutas del `sitemap.xml` publicado (no de una lista copiada, que se desincroniza) y comprueba 200; más los redirects de idioma y los 404 que tienen que serlo. La bitácora registra **dos rutas que devolvían 200 debiendo ser 404** y un redirect que faltaba, encontrados a mano meses después. Además, en el HTML de cada ruta:
+  - **`og:url` tiene que coincidir con el canonical de esa página** (FALLO-29). Cuando una subpágina olvida su `openGraph`, hereda el del layout y su `og:url` se queda en la portada: su tarjeta en LinkedIn enlaza a la portada, con el título de la portada. El síntoma es exacto, y esa es la diferencia que se mide.
+  - ningún `<svg>` lleva `width`/`height="auto"` **como atributo** (FALLO-34): ahí exigen una longitud, y el navegador lo grita en consola en cada carga. En CSS sí valen.
 
 Las tres saben fallar: se verificó rompiendo el diccionario y volteando una aserción, y las dos veces salieron con código 1.
 

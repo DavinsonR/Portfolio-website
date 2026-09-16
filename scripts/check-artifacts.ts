@@ -76,6 +76,34 @@ for (const name of fs.readdirSync(PUBLIC).filter((f) => /\.(tex|pdf)$/.test(f)))
   if (stale.length) {
     problems.push(`${name} — sigue conteniendo el host anterior ${stale[0]} (${stale.length} vez/veces).`);
   }
+
+  // FALLO-32: comandos de LaTeX que perdieron su barra invertida.
+  //
+  // El generador construye el `.tex` con plantillas de JavaScript, donde `\s` es
+  // `s`, `\h` es `h` y `\t` es un TABULADOR. Cuatro líneas se escribieron con
+  // barras simples y el PDF publicó `small hrefmailto:…` durante meses, en los
+  // dos idiomas. Ni `tsc` ni LaTeX se quejan: el resultado es LaTeX válido.
+  //
+  // Dos señales, las dos baratas y sin falsos positivos aquí: un nombre de
+  // comando pegado a `{` sin barra delante, y un tabulador literal — el
+  // generador indenta con espacios y nunca emite uno a propósito.
+  if (name.endsWith(".tex")) {
+    const naked = [
+      ...text.matchAll(/(^|[^\\A-Za-z])(small|large|href|textbf|textit|itshape|color|textperiodcentered)\{/g),
+    ].map((x) => x[2]);
+    if (naked.length) {
+      problems.push(
+        `${name} — \\${naked[0]} perdió su barra invertida (${naked.length} caso/s). ` +
+          `En scripts/generate-cv-latex.ts las barras van DOBLES dentro de una plantilla.`,
+      );
+    }
+    if (text.includes("\t")) {
+      problems.push(
+        `${name} — tiene un tabulador literal, que suele ser un \\, escrito con barra simple ` +
+          `en una plantilla de JavaScript (\\t). Revisa scripts/generate-cv-latex.ts.`,
+      );
+    }
+  }
 }
 
 if (problems.length === 0) {

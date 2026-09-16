@@ -64,8 +64,53 @@ for (const r of ["/robots.txt", "/sitemap.xml", "/manifest.webmanifest", "/icon.
   await expect(r, 200, "artefacto declarado");
 }
 
+// 5. FALLO-29 — cada página declara su PROPIA tarjeta social.
+//
+//    Next **reemplaza** el objeto `openGraph`, no lo fusiona. Una subpágina que
+//    no lo declara hereda el del layout entero: `og:url` apuntando a la portada
+//    y el título de la portada. Pegar `/en/cv` en LinkedIn daba la tarjeta de la
+//    portada, enlazando a la portada — justo en el canal por el que este sitio
+//    se reparte. Se arregló a mano en la sesión 16 y nada impedía que la
+//    siguiente ruta lo volviera a olvidar.
+//
+//    El síntoma es exacto y barato: cuando se hereda, `og:url` deja de coincidir
+//    con el canonical de la propia página. Eso es lo que se comprueba, más que
+//    la tarjeta lleve imagen (una tarjeta sin imagen es una tarjeta muerta).
+const pick = (html, re) => (html.match(re) ?? [])[1] ?? null;
+
+for (const r of routes) {
+  const html = await (await fetch(`${BASE}${r}`)).text();
+  const canonical = pick(html, /<link rel="canonical" href="([^"]+)"/);
+  const ogUrl = pick(html, /property="og:url" content="([^"]+)"/);
+  const ogImage = pick(html, /property="og:image" content="([^"]+)"/);
+
+  if (!canonical) failures.push(`${r} — sin <link rel="canonical">`);
+  if (!ogUrl) failures.push(`${r} — sin og:url`);
+  if (!ogImage) failures.push(`${r} — sin og:image (tarjeta sin imagen)`);
+
+  // FALLO-34: `height`/`width` como ATRIBUTO de un <svg> exigen una longitud.
+  // `auto` no lo es, el navegador lo rechaza y lo grita en consola en cada
+  // carga. En CSS sí es válido, así que va en el estilo. El estándar de este
+  // repo es cero errores de consola, y un error tolerado enseña a ignorarla.
+  const badSvg = [...html.matchAll(/<svg[^>]*?\s(?:width|height)="auto"/g)];
+  if (badSvg.length) {
+    failures.push(`${r} — un <svg> lleva width/height="auto" como atributo (${badSvg.length}): no es una longitud, va en el estilo (FALLO-34)`);
+  }
+
+  if (canonical && ogUrl) {
+    const c = new URL(canonical).pathname;
+    const o = new URL(ogUrl).pathname;
+    if (c !== o) {
+      failures.push(
+        `${r} — og:url es ${o} y el canonical es ${c}: esta página NO declara su propio openGraph ` +
+          `y hereda el del layout (FALLO-29). Añade openGraph(lang, "<ruta>", …) en su generateMetadata.`,
+      );
+    }
+  }
+}
+
 if (failures.length === 0) {
-  console.log(`✓ rutas: ${routes.length} del sitemap a 200, redirects, 404 y metadatos correctos`);
+  console.log(`✓ rutas: ${routes.length} del sitemap a 200, redirects, 404, metadatos y tarjeta social propia en cada página`);
   process.exit(0);
 }
 
