@@ -408,12 +408,23 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               <h2 className="font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
                 {track.title}
               </h2>
-              <Link
-                href={`/${lang}/cv`}
-                className="text-[14px] font-semibold text-cold transition-opacity hover:opacity-80"
-              >
-                {track.fullCv} →
-              </Link>
+              {/* Dos salidas, y el orden importa: la historia es el relato y
+                  el CV es el documento. Quien está cribando quiere el segundo;
+                  quien ya se interesó quiere el primero. */}
+              <span className="flex flex-wrap items-baseline gap-x-5 gap-y-1">
+                <Link
+                  href={`/${lang}/historia`}
+                  className="text-[14px] font-semibold text-cold transition-opacity hover:opacity-80"
+                >
+                  {track.story} →
+                </Link>
+                <Link
+                  href={`/${lang}/cv`}
+                  className="text-[14px] font-semibold text-cold transition-opacity hover:opacity-80"
+                >
+                  {track.fullCv} →
+                </Link>
+              </span>
             </div>
 
             <ol className="mt-7">

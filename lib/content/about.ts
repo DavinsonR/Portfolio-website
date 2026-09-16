@@ -17,11 +17,12 @@ export const about = {
     track: {
       title: "Trayectoria",
       fullCv: "Ver CV completo",
+      story: "Leer la historia completa",
       rows: [
         {
           period: "2026 — hoy",
           title: "Business Consultant, FP&A · Neoris EPAM",
-          desc: "Sistemas de gestión financiera para Norteamérica: cierre, forecast y variaciones de SG&A en 12 países. 100% remoto.",
+          desc: "Sistemas de gestión financiera desde HQ: cierre, forecast y variaciones de SG&A en más de 15 países de América y el hemisferio oriental. 100% remoto.",
           tag: "FP&A",
         },
         {
@@ -117,11 +118,12 @@ export const about = {
     track: {
       title: "Track record",
       fullCv: "See full CV",
+      story: "Read the full story",
       rows: [
         {
           period: "2026 — present",
           title: "Business Consultant, FP&A · Neoris EPAM",
-          desc: "Financial management systems for North America: close, forecast and SG&A variance across 12 countries. Fully remote.",
+          desc: "Financial management systems from HQ: close, forecast and SG&A variance across 15+ countries in the Americas and the Eastern Hemisphere. Fully remote.",
           tag: "FP&A",
         },
         {

@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       { source: "/projects/powerbi", destination: "/en/projects/powerbi", permanent: false },
       { source: "/projects/tracking", destination: "/en/projects/tracking", permanent: false },
       { source: "/research/fintech-inclusion", destination: "/en/research/fintech-inclusion", permanent: false },
+      { source: "/historia", destination: "/en/historia", permanent: false },
     ];
   },
   /** Cabeceras de seguridad.

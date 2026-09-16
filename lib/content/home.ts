@@ -22,7 +22,7 @@ export const home = {
     nav: {
       links: [
         { label: "Trabajo", href: "#work" },
-        { label: "Trayectoria", href: "#track" },
+        { label: "Trayectoria", href: "/historia" },
         { label: "CV", href: "/cv" },
       ],
       contact: "Contacto",
@@ -165,7 +165,7 @@ export const home = {
     nav: {
       links: [
         { label: "Work", href: "#work" },
-        { label: "Track record", href: "#track" },
+        { label: "Track record", href: "/historia" },
         { label: "CV", href: "/cv" },
       ],
       contact: "Contact",
