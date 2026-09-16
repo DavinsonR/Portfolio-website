@@ -39,6 +39,7 @@ npm run dev      # http://localhost:3000 → redirects to /es
 | `npm run lint` | ESLint with the Next configuration |
 | `npm run latex` | Regenerates `public/*.tex` from the dictionary |
 | `npm run cv` | The above, plus a PDF if tectonic/latexmk/xelatex/pdflatex is available |
+| `npm run icons` | Regenerates `favicon.ico`, `apple-icon.png` and `public/icon-*.png` from `app/icon.svg` (needs Pillow) |
 
 ### Where to edit
 
@@ -46,6 +47,13 @@ npm run dev      # http://localhost:3000 → redirects to /es
 - **Colours and typography:** `app/globals.css`, `@theme` blocks.
 - **Module status and progress:** `lib/dictionaries.ts` → `sistema.modules`.
 - **Power BI catalogue:** `lib/powerbi-model.ts`, copied from `market-data-medallion/powerbi/` with the source commit in the header.
+
+## Licences
+
+- **Code** (the application, the components, the scripts): MIT. See [`LICENSE`](LICENSE).
+- **Atlas data** (`public/atlas/`): CC BY-SA 4.0, inherited from the Colombian financial regulator. The ShareAlike clause requires the derivative to carry the same licence. See [`DATA-LICENSE.md`](DATA-LICENSE.md).
+- **Typefaces** (`public/fonts/`): Archivo and Source Serif 4, SIL OFL 1.1, self-hosted. See [`public/fonts/OFL.txt`](public/fonts/OFL.txt).
+- **CV, résumé and screenshots**: biographical content, all rights reserved. Not covered by the MIT licence.
 
 ## Documentation
 

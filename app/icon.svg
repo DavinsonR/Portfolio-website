@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Davirson Novoa">
+  <!-- La marca es la D en azul institucional. No lleva ámbar: el acento cálido
+       está reservado a contenido humano, y un logotipo no lo es (DESIGN.md).
+       La geometría es una "rounded rectangle" con los dos vértices derechos a
+       radio = altura/2, y el ojo se recorta con fill-rule evenodd sobre el mismo
+       trazo, así que la letra sigue siendo una sola forma a 16 px. -->
+  <rect width="64" height="64" rx="11" fill="#0f4c81"/>
+  <path fill="#ffffff" fill-rule="evenodd"
+        d="M16 14 H30 A18 18 0 0 1 30 50 H16 Z M25 23 H30 A9 9 0 0 1 30 41 H25 Z"/>
+</svg>

@@ -39,6 +39,7 @@ npm run dev      # http://localhost:3000 → redirige a /es
 | `npm run lint` | ESLint con la configuración de Next |
 | `npm run latex` | Regenera `public/*.tex` desde el diccionario |
 | `npm run cv` | Lo anterior y además compila a PDF si hay tectonic/latexmk/xelatex/pdflatex |
+| `npm run icons` | Regenera `favicon.ico`, `apple-icon.png` y `public/icon-*.png` desde `app/icon.svg` (necesita Pillow) |
 
 ### Dónde editar
 
@@ -49,8 +50,10 @@ npm run dev      # http://localhost:3000 → redirige a /es
 
 ## Licencias
 
+- **Código** (la aplicación, los componentes, los scripts): MIT. Ver [`LICENSE`](LICENSE).
 - **Datos del atlas** (`public/atlas/`): CC BY-SA 4.0, heredada de la Superintendencia Financiera. La cláusula ShareAlike obliga a publicar el derivado bajo la misma licencia. Ver `DATA-LICENSE.md`.
 - **Tipografías** (`public/fonts/`): Archivo y Source Serif 4, SIL OFL 1.1, autoalojadas. Ver `public/fonts/OFL.txt`.
+- **CV, currículo y capturas**: contenido biográfico, todos los derechos reservados. No entra en la MIT.
 
 ## Documentación
 

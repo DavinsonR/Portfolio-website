@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { getDictionary, locales, type Locale } from "@/lib/dictionaries";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -93,6 +94,14 @@ export default async function RootLayout({
         <Navbar nav={dict.nav} mailHref={mailtoHref(dict)} lang={lang as Locale} />
         {children}
         <Footer dict={dict} lang={lang as Locale} />
+        {/* Analítica de Vercel, y no un contador de terceros, por la CSP: el
+            script se sirve desde /_vercel/insights/script.js y los eventos van a
+            /_vercel/insights/event, los dos del MISMO origen. Así `script-src
+            'self'` y `connect-src 'self'` lo cubren tal cual están, sin abrir un
+            host externo en la política que protege el resto del sitio.
+            Sin cookies y sin huella: no hay banner de consentimiento que poner,
+            y la divulgación del pie lo dice (`disclosures`). */}
+        <Analytics />
       </body>
     </html>
   );

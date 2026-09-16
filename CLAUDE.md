@@ -17,6 +17,7 @@ npx tsc --noEmit     # comprobación de tipos: no hay script, hay que invocarlo 
 npm run latex        # regenera public/*.tex desde lib/dictionaries.ts
 npm run cv           # latex + compila el PDF si hay tectonic/latexmk/xelatex
 npm run atlas        # regenera lib/atlas-figure.ts desde public/atlas/*.json
+npm run icons        # regenera favicon.ico, apple-icon.png y public/icon-*.png (necesita Pillow)
 ```
 
 **No hay framework de pruebas.** Verificar un cambio es: `npx tsc --noEmit`, `npm run lint` y `npm run build` en cero, y mirarlo en un navegador en tema claro y oscuro, en español y en inglés. Para lo visual conviene medir en vez de opinar: desborde horizontal a 320/393/768/1280 px, contraste, y cero errores de consola.
@@ -46,6 +47,18 @@ Olvidar cualquiera deja un fallo silencioso, y varios ya ocurrieron:
 5. `next.config.ts` — el redirect de la ruta sin idioma (`/x` → `/en/x`); sin él esa URL devuelve 404.
 
 Las páginas son componentes de servidor `async` que reciben `params: Promise<{ lang: string }>` y leen su contenido con `getDictionary(lang)`.
+
+**El 404 es uno solo y vive en la raíz.** `app/not-found.tsx` atiende *toda* ruta sin match: con `dynamicParams = false` ni `/pricing` ni `/es/loquesea` entran en el segmento `[lang]`, así que **un `app/[lang]/not-found.tsx` es código muerto** — se escribió, se midió que nunca se alcanzaba, y se borró. Ahí no hay layout (el root layout vive dentro de `[lang]`, que es el patrón de i18n de App Router), así que esa página importa su propia hoja de estilo y se pinta entera sola. Tampoco hereda idioma: publica los dos y un script en línea fija `data-only` desde el primer segmento de la URL para tachar el que sobra. En `/pricing` no fija nada y se quedan los dos, porque ahí el idioma del visitante es justo el dato que no existe.
+
+### Cambiar el dominio toca tres sitios, y uno no es código
+
+`lib/site.ts` es la fuente única de la URL: de ahí salen `robots.ts`, `sitemap.ts`, `alternates.ts` y el `metadataBase` del layout. Pero cambiar esa constante **no basta**:
+
+1. `lib/site.ts` — la constante `SITE`. Después, `grep -rn "vercel.app" .` no debe devolver nada fuera de `node_modules`, `.next` y la bitácora.
+2. **`npm run cv`** — el PDF y el `.tex` descargables llevan la URL *impresa dentro*. Sin regenerarlos, el CV que el lector se lleva apunta al dominio viejo y contradice a la página. Es el fallo silencioso clásico de este cambio.
+3. `README.md` y `README.es.md` — los enlaces del encabezado y de la tabla.
+
+El dominio anterior no se apaga nunca: está en LinkedIn, en correos ya enviados y en los PDF que ya circulan. Se deja redirigiendo.
 
 ### El revelado al desplazar, y por qué importa al verificar
 

@@ -9,9 +9,11 @@
     "lint": "eslint",
     "latex": "tsx scripts/generate-cv-latex.ts",
     "cv": "npm run latex && node scripts/compile-cv.mjs",
-    "atlas": "node scripts/generate-atlas-figure.mjs"
+    "atlas": "node scripts/generate-atlas-figure.mjs",
+    "icons": "python scripts/generate-icons.py"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "d3-array": "^3.2.4",
     "d3-color": "^3.1.0",
     "d3-geo": "^3.1.1",

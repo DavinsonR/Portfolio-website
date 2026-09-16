@@ -671,6 +671,24 @@ a {
 }
 .atlas-drill:hover { opacity: 0.9; }
 
+/* ============================================================
+   EL 404
+   Hay uno solo, en la raíz, y sirve para TODA ruta sin match —incluida
+   `/es/loquesea`—: con `dynamicParams = false` nada cae dentro de `[lang]`.
+   No hay layout ahí, así que no hay idioma que heredar, y por eso la página
+   publica los dos.
+
+   `data-only` lo fija el script en línea de `app/not-found.tsx` a partir de la
+   URL, y aquí tacha la mitad que sobra. Va en un atributo propio y no en `lang`
+   porque en `/pricing` el idioma del visitante es justo lo que no se sabe: ahí
+   no se fija nada y se quedan los dos, que es la respuesta honesta. Sin
+   JavaScript pasa lo mismo — se degrada a mostrar ambos, nunca a ninguno.
+   ============================================================ */
+:root[data-only="en"] .only-es,
+:root[data-only="es"] .only-en {
+  display: none;
+}
+
 /* on paper the map prints flat: no hover surfaces, no floating cards */
 @media print {
   .atlas-tip, .atlas-card, .atlas-drill { display: none !important; }

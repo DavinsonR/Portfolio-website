@@ -873,6 +873,10 @@ export const dictionaries = {
           text: "El informe existe como proyecto PBIP en el repositorio público y se abre gratis en Power BI Desktop. No hay embebido público porque «Publicar en la web» exige una licencia Pro sobre un tenant de trabajo y hace público el conjunto de datos.",
         },
         {
+          term: "Analítica",
+          text: "El sitio cuenta páginas vistas con la analítica de Vercel: sin cookies, sin huella del navegador y sin datos personales, servida desde este mismo dominio. Por eso no hay banner de consentimiento que aceptar.",
+        },
+        {
           term: "Idiomas",
           text: "Español nativo · Inglés B2 · Portugués A2.",
         },
@@ -898,6 +902,16 @@ export const dictionaries = {
     footer: {
       left: "Davirson Novoa · construido en público",
       right: "Datos actualizados a diario por un pipeline automático",
+    },
+    /* El 404 es una página del sitio, no una pantalla de error del framework:
+       llega gente desde enlaces viejos y desde el PDF del CV, y la única
+       respuesta útil es devolverla al inicio o al CV, no informarle del código. */
+    notFound: {
+      code: "404",
+      title: "Esta página no existe",
+      body: "El enlace está roto o la ruta cambió de sitio. Todo lo publicado se alcanza desde la portada.",
+      home: "Ir al inicio",
+      cv: "Ver el CV",
     },
     cv: {
       title: "Davirson Novoa Ramírez",
@@ -1950,6 +1964,10 @@ export const dictionaries = {
           text: "The report exists as a PBIP project in the public repository and opens for free in Power BI Desktop. There is no public embed because «Publish to web» needs a Pro licence on a work tenant and makes the dataset public.",
         },
         {
+          term: "Analytics",
+          text: "The site counts page views with Vercel Analytics: no cookies, no browser fingerprint and no personal data, served from this same domain. That is why there is no consent banner to dismiss.",
+        },
+        {
           term: "Languages",
           text: "Native Spanish · English B2 · Portuguese A2.",
         },
@@ -1975,6 +1993,13 @@ export const dictionaries = {
     footer: {
       left: "Davirson Novoa · built in public",
       right: "Data refreshed daily by an automated pipeline",
+    },
+    notFound: {
+      code: "404",
+      title: "This page does not exist",
+      body: "The link is broken or the route moved. Everything published is reachable from the home page.",
+      home: "Go to the home page",
+      cv: "Read the CV",
     },
     cv: {
       title: "Davirson Novoa Ramírez",
