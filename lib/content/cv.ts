@@ -58,7 +58,7 @@ export const cv = {
               title: "Business Consultant, FP&A",
               period: "Mar 2026 — presente",
               bullets: [
-                "Diseñé y lideré 3 sistemas de gestión financiera para el cierre y forecast de gastos SG&A en Norteamérica, con impacto en 12 países/regiones.",
+                "Diseñé y lideré sistemas de gestión financiera para el cierre y el forecast de gastos SG&A en más de 15 países de América y el hemisferio oriental (India, Hungría, España, República Checa).",
                 "Gestioné el cierre mensual y la confirmación del forecast a nivel compañía, analizando variaciones contra plan y forecast anterior.",
                 "Di seguimiento a la variación cambiaria en moneda constante y a la inflación por moneda.",
                 "Construí reporting FP&A con Excel avanzado, Power Query, Power BI, MicroStrategy, JD Edwards y SAP.",
@@ -299,7 +299,7 @@ export const cv = {
               title: "Business Consultant, FP&A",
               period: "Mar 2026 — present",
               bullets: [
-                "Designed and led 3 financial management systems for SG&A close and forecast across North America, impacting 12 countries/regions.",
+                "Designed and led financial management systems for SG&A close and forecast across 15+ countries in the Americas and the Eastern Hemisphere (India, Hungary, Spain, Czech Republic).",
                 "Managed monthly close and company-wide forecast confirmation, analyzing variances against plan and prior forecast.",
                 "Tracked FX variance in constant currency and per-currency inflation.",
                 "Built FP&A reporting with advanced Excel, Power Query, Power BI, MicroStrategy, JD Edwards and SAP.",
