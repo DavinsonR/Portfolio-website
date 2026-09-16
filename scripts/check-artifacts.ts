@@ -106,6 +106,26 @@ for (const name of fs.readdirSync(PUBLIC).filter((f) => /\.(tex|pdf)$/.test(f)))
   }
 }
 
+// La versión de una página tiene que ser, literalmente, de una página.
+//
+// Existe para quien criba en 30 segundos y para los ATS que truncan. Si un día
+// el contenido crece y el recorte deja de caber, el fichero se sigue llamando
+// «1p» y ya no lo es — y nadie lo nota, porque el PDF compila igual de bien.
+// Contar las páginas es la única forma de que la promesa se sostenga sola.
+for (const name of fs.readdirSync(PUBLIC).filter((f) => f.endsWith("_1p.pdf"))) {
+  const raw = fs.readFileSync(path.join(PUBLIC, name)).toString("latin1");
+  const pages = (raw.match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+  if (pages !== 1) {
+    problems.push(
+      name +
+        " — tiene " +
+        pages +
+        " página(s) y debe tener 1. Recorta en la regla de buildOnePage()" +
+        " de scripts/generate-cv-latex.ts; no aflojes el margen.",
+    );
+  }
+}
+
 if (problems.length === 0) {
   console.log(`✓ artefactos del CV: los .tex y los .pdf apuntan a ${HOST}`);
   process.exit(0);

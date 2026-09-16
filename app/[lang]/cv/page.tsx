@@ -134,6 +134,14 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                 {cv.download}
               </a>
               <a
+                href={cv.downloadShortHref}
+                download
+                title={cv.downloadShortNote}
+                className="lift inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+              >
+                {cv.downloadShort}
+              </a>
+              <a
                 href={cv.latexHref}
                 download
                 title={cv.latexNote}

@@ -282,3 +282,144 @@ for (const lang of ["es", "en"] as const) {
   fs.writeFileSync(out, build(lang), "utf-8");
   console.log(`✓ ${out}`);
 }
+
+// ============================================================
+// LA VERSIÓN DE UNA PÁGINA
+//
+// Por qué existe. El CV completo son tres páginas: es el formato académico y
+// es el correcto para quien ya decidió leerte. Pero quien CRIBA dedica entre 30
+// y 60 segundos, y muchos ATS truncan. Aplicar con tres páginas es pedirle al
+// lector que trabaje antes de saber si le interesas.
+//
+// No es otro CV: es el MISMO `lib/content/cv.ts` con una regla de recorte fija,
+// escrita aquí y no decidida a ojo cada vez. Así las dos versiones no pueden
+// contradecirse — que es el fallo que este repositorio lleva evitando desde
+// D-07.
+//
+// La regla, explícita:
+//   · perfil entero (es el posicionamiento, no se recorta)
+//   · las DOS empresas más recientes, con 3 viñetas cada una
+//   · las demás experiencias, una línea sin viñetas
+//   · proyectos e investigación, una línea cada uno con su enlace
+//   · educación, una línea cada una
+//   · el stack, una sola línea
+//
+// Que quepa en una página no se supone: `check:artifacts` cuenta las páginas
+// del PDF y falla si son dos.
+// ============================================================
+
+function buildOnePage(lang: Locale): string {
+  const dict = dictionaries[lang];
+  const cv = dict.cv;
+  const t = strings[lang];
+  const L: string[] = [];
+  const w = (s = "") => L.push(s);
+  const dot = " \\,\\textperiodcentered\\, ";
+
+  w("% =========================================================");
+  w(`% ${tex(cv.title)} — ${tex(cv.targets.join(" / "))}`);
+  w("% VERSIÓN DE UNA PÁGINA — generada desde lib/content/cv.ts (npm run latex).");
+  w("% El CV completo, con todas las viñetas, es el otro fichero de public/.");
+  w("% =========================================================");
+  w("\\documentclass[a4paper,10pt]{article}");
+  w("\\usepackage[utf8]{inputenc}");
+  w("\\usepackage[T1]{fontenc}");
+  w(`\\usepackage[${lang === "es" ? "spanish,es-noshorthands" : t.lang}]{babel}`);
+  w("\\usepackage{lmodern}");
+  w("\\usepackage{microtype}");
+  w("\\usepackage[top=0.9cm,bottom=0.8cm,left=1.25cm,right=1.25cm]{geometry}");
+  w("\\usepackage{enumitem}");
+  w("\\usepackage{titlesec}");
+  w("\\usepackage{xcolor}");
+  w("\\usepackage[hidelinks]{hyperref}");
+  w("");
+  w("\\definecolor{cold}{HTML}{0F4C81}");
+  w("\\definecolor{ink}{HTML}{14181D}");
+  w("\\definecolor{body}{HTML}{454E57}");
+  w("\\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold}");
+  w("\\pagestyle{empty}");
+  w("\\setlength{\\parindent}{0pt}");
+  w("\\linespread{0.90}");
+  w("\\color{body}");
+  w("");
+  w("\\titleformat{\\section}");
+  w("  {\\normalfont\\scshape\\bfseries\\color{ink}\\normalsize}{}{0pt}{}[\\vspace{-5pt}\\color{cold}\\rule{\\linewidth}{0.7pt}]");
+  w("\\titlespacing*{\\section}{0pt}{5pt}{2pt}");
+  w("\\newcommand{\\row}[2]{\\textbf{\\color{ink}#1}\\hfill{\\small #2}\\par}");
+  w("");
+  w("\\begin{document}");
+  w("");
+
+  // ---------- encabezado ----------
+  w("\\begin{center}");
+  w(`  {\\Large\\bfseries\\color{ink} ${tex(cv.title)}}\\\\\[2pt]`);
+  w(`  {\\normalsize\\color{cold} ${cv.targets.map(tex).join(dot)}}\\\\\[3pt]`);
+  w(`  {\\small ${tex(cv.metaLine)}}\\\\\[2pt]`);
+  w(
+    `  {\\small \\href{${url(`mailto:${dict.profile.email}`)}}{${tex(dict.profile.email)}}${dot}` +
+      `\\href{${url(dict.profile.linkedin)}}{${tex(dict.profile.linkedin.replace("https://", ""))}}${dot}` +
+      `\\href{${url(dict.profile.github)}}{${tex(dict.profile.github.replace("https://", ""))}}${dot}` +
+      `\\href{${url(`${SITE}/${lang}`)}}{${tex(SITE.replace("https://", ""))}}}`,
+  );
+  w("\\end{center}");
+  w("");
+
+  // ---------- perfil ----------
+  w(`\\section*{${tex(t.profile)}}`);
+  w(tex(cv.profileText));
+  w("");
+
+  // ---------- experiencia ----------
+  w(`\\section*{${tex(t.experience)}}`);
+  cv.experience.forEach((company, i) => {
+    const role = company.roles[0];
+    const mode = company.mode === "remote" ? cv.remoteTag : company.mode === "hybrid" ? cv.hybridTag : "";
+    const right = `${tex(company.location)}${mode ? dot + tex(mode) : ""}`;
+    if (i < 2) {
+      w(`\\row{${tex(company.company)}}{${right}}`);
+      w(`\\textit{${tex(role.title)}}\\hfill{\\small ${tex(role.period)}}\\par`);
+      if (company.note) w(`{\\small\\itshape\\color{cold} ${tex(company.note)}}\\par`);
+      w("\\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]");
+      for (const b of role.bullets.slice(0, 3)) w(`  \\item ${tex(b)}`);
+      w("\\end{itemize}");
+    } else {
+      // Las experiencias antiguas existen, y se nombran; lo que no cabe en una
+      // página son sus viñetas, no ellas.
+      w(`\\row{${tex(company.company)} \\textnormal{---} \\textit{${tex(role.title)}}}{${tex(role.period)}}`);
+    }
+    if (i < cv.experience.length - 1) w("\\vspace{2pt}");
+  });
+  w("");
+
+  // ---------- proyectos e investigación ----------
+  w(`\\section*{${tex(t.projects)}}`);
+  for (const p of [...cv.projects, ...cv.research]) {
+    w(
+      `\\row{${tex(p.name)}}{${tex(p.period)}}` +
+        `{\\small ${tex(p.stack.slice(0, 6).join(" \u00b7 "))}${dot}\\href{${url(abs(lang, p.href))}}{${tex(p.hrefLabel)}}}\\par`,
+    );
+    w("\\vspace{1pt}");
+  }
+  w("");
+
+  // ---------- educación ----------
+  w(`\\section*{${tex(t.education)}}`);
+  for (const e of cv.education) {
+    w(`\\row{${tex(e.title)} \\textnormal{---} ${tex(e.inst)}}{${tex(e.period)}}`);
+  }
+  w("");
+
+  // ---------- stack ----------
+  w(`\\section*{${tex(t.stack)}}`);
+  w(cv.skillsTech.map((s) => tex(s.name)).join(dot));
+  w("");
+  w("\\end{document}");
+
+  return L.join("\n") + "\n";
+}
+
+for (const lang of ["es", "en"] as const) {
+  const out = path.join(outDir, strings[lang].file.replace(".tex", "_1p.tex"));
+  fs.writeFileSync(out, buildOnePage(lang), "utf-8");
+  console.log(`✓ ${out}`);
+}

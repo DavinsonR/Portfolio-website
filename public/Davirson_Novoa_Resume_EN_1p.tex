@@ -1,0 +1,82 @@
+% =========================================================
+% Davirson Novoa Ramírez — Finance Data Analyst / Financial BI Analyst / Analytics Engineer
+% VERSIÓN DE UNA PÁGINA — generada desde lib/content/cv.ts (npm run latex).
+% El CV completo, con todas las viñetas, es el otro fichero de public/.
+% =========================================================
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[top=0.9cm,bottom=0.8cm,left=1.25cm,right=1.25cm]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{cold}{HTML}{0F4C81}
+\definecolor{ink}{HTML}{14181D}
+\definecolor{body}{HTML}{454E57}
+\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\linespread{0.90}
+\color{body}
+
+\titleformat{\section}
+  {\normalfont\scshape\bfseries\color{ink}\normalsize}{}{0pt}{}[\vspace{-5pt}\color{cold}\rule{\linewidth}{0.7pt}]
+\titlespacing*{\section}{0pt}{5pt}{2pt}
+\newcommand{\row}[2]{\textbf{\color{ink}#1}\hfill{\small #2}\par}
+
+\begin{document}
+
+\begin{center}
+  {\Large\bfseries\color{ink} Davirson Novoa Ramírez}\\[2pt]
+  {\normalsize\color{cold} Finance Data Analyst \,\textperiodcentered\, Financial BI Analyst \,\textperiodcentered\, Analytics Engineer}\\[3pt]
+  {\small Bogotá, Colombia \,\textperiodcentered\, GMT-5 \,\textperiodcentered\, Fully remote \,\textperiodcentered\, English B2 \,\textperiodcentered\, Portuguese A2}\\[2pt]
+  {\small \href{mailto:davinsonnovoaramirez@gmail.com}{davinsonnovoaramirez@gmail.com} \,\textperiodcentered\, \href{https://linkedin.com/in/davirson-novoa-ramirez-2721641b5}{linkedin.com/in/davirson-novoa-ramirez-2721641b5} \,\textperiodcentered\, \href{https://github.com/DavinsonR}{github.com/DavinsonR} \,\textperiodcentered\, \href{https://davirson.com/en}{davirson.com}}
+\end{center}
+
+\section*{Profile}
+Economist with three years inside corporate finance --- treasury, billing and FP\&A --- building the data the business runs on: Python, SQL and Power BI applied to operations across 15+ countries in the Americas. I now run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.
+
+\section*{Experience}
+\row{Neoris EPAM}{Bogotá, Colombia \,\textperiodcentered\, remote}
+\textit{Business Consultant, FP\&A}\hfill{\small Mar 2026 --- present}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Designed and led 3 financial management systems for SG\&A close and forecast across North America, impacting 12 countries/regions.
+  \item Managed monthly close and company-wide forecast confirmation, analyzing variances against plan and prior forecast.
+  \item Tracked FX variance in constant currency and per-currency inflation.
+\end{itemize}
+\vspace{2pt}
+\row{SLB}{Bogotá, Colombia \,\textperiodcentered\, hybrid}
+\textit{Billing Specialist (Argentina \& Brazil)}\hfill{\small Dec 2024 --- Mar 2026}\par
+{\small\itshape\color{cold} Internal progression: intern to specialist in 26 months.}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Executed revenue recognition in SAP under Sarbanes-Oxley (SOX) requirements.
+  \item Built Power BI models and visualizations for revenue and trend analysis.
+  \item Performed internal audits on integrated technology projects, ensuring traceability and compliance.
+\end{itemize}
+\vspace{2pt}
+\row{LEE Javeriana \textnormal{---} \textit{Research Assistant}}{Jul 2023 --- Dec 2023}
+\vspace{2pt}
+\row{Solidariamente (volunteer) \textnormal{---} \textit{Social Data Analyst}}{Jan 2023 --- Jul 2023}
+
+\section*{Production projects}
+\row{JARVIS --- personal tracking app}{2026 --- open demo}{\small Next.js 16 \,\textperiodcentered\, React 19 \,\textperiodcentered\, TypeScript \,\textperiodcentered\, Postgres (Supabase) \,\textperiodcentered\, RLS \,\textperiodcentered\, Tailwind \,\textperiodcentered\, \href{https://jarvis-app-psi-sable.vercel.app/demo}{public demo, no account}}\par
+\vspace{1pt}
+\row{market-data-medallion}{2026 --- in operation}{\small PostgreSQL \,\textperiodcentered\, Medallion architecture \,\textperiodcentered\, dbt \,\textperiodcentered\, Python \,\textperiodcentered\, Prefect \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, \href{https://github.com/DavinsonR/market-data-medallion}{github.com/DavinsonR/market-data-medallion}}\par
+\vspace{1pt}
+\row{Financial inclusion and regional growth in Colombia}{2026 --- building}{\small dbt \,\textperiodcentered\, DuckDB \,\textperiodcentered\, Python \,\textperiodcentered\, Parquet \,\textperiodcentered\, Panel data \,\textperiodcentered\, Quarto \,\textperiodcentered\, \href{https://github.com/DavinsonR/financial-inclusion-colombia}{repository on GitHub}}\par
+\vspace{1pt}
+
+\section*{Education}
+\row{M.Sc. in Economics \textnormal{---} Pontificia Universidad Javeriana}{2025 --- 2026}
+\row{B.Sc. in Economics \textnormal{---} Pontificia Universidad Javeriana}{2020 --- 2024}
+\row{Systems Technician \textnormal{---} SENA}{2018}
+
+\section*{Stack}
+Excel and financial modelling \,\textperiodcentered\, Power BI \,\textperiodcentered\, Tableau \,\textperiodcentered\, SQL \,\textperiodcentered\, PostgreSQL \,\textperiodcentered\, Python \,\textperiodcentered\, dbt \,\textperiodcentered\, Git \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Machine learning
+
+\end{document}
