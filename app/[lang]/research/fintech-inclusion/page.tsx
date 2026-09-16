@@ -5,7 +5,7 @@ import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import SectionNav from "@/components/SectionNav";
 import Atlas from "@/components/atlas/Atlas";
-import { alternates, openGraph } from "@/lib/alternates";
+import { alternates, openGraph } from "@/lib/config/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;

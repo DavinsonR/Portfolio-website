@@ -1,4 +1,4 @@
-import type { Dictionary } from "./dictionaries";
+import type { Dictionary } from "../dictionaries";
 
 /** El `mailto:` del sitio, en un solo sitio.
  *

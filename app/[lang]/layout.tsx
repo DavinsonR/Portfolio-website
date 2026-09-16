@@ -4,9 +4,9 @@ import { getDictionary, locales, type Locale } from "@/lib/dictionaries";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MotionRoot from "@/components/Motion";
-import { SITE } from "@/lib/site";
-import { alternates } from "@/lib/alternates";
-import { mailtoHref } from "@/lib/contact";
+import { SITE } from "@/lib/config/site";
+import { alternates } from "@/lib/config/alternates";
+import { mailtoHref } from "@/lib/config/contact";
 import "../globals.css";
 
 export function generateStaticParams() {

@@ -7,7 +7,7 @@ import {
   FairnessGate,
   VocabularyCliff,
 } from "@/components/credit-risk/Charts";
-import { alternates, openGraph } from "@/lib/alternates";
+import { alternates, openGraph } from "@/lib/config/alternates";
 import {
   CR,
   cliff,
@@ -21,7 +21,7 @@ import {
   pp,
   regimes,
   umbralPP,
-} from "@/lib/credit-risk";
+} from "@/lib/data/credit-risk";
 import { getDictionary } from "@/lib/dictionaries";
 
 export async function generateMetadata({

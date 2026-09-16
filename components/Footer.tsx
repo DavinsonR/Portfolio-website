@@ -1,5 +1,5 @@
 import type { Dictionary, Locale } from "@/lib/dictionaries";
-import { mailtoHref } from "@/lib/contact";
+import { mailtoHref } from "@/lib/config/contact";
 
 export default function Footer({ dict, lang }: { dict: Dictionary; lang: Locale }) {
   const year = new Date().getFullYear();

@@ -11,7 +11,7 @@
 // ============================================================
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { compactMoney, money } from "@/lib/trading-sim";
+import { compactMoney, money } from "@/lib/data/trading-sim";
 
 export const CHART = {
   series: "var(--color-cold)",

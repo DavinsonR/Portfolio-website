@@ -27,10 +27,12 @@
 
 ### De organización
 
-- [ ] `lib/` mezcla configuración, contenido, datos y artefactos generados en un nivel; `components/` son 12 archivos sueltos junto a 4 carpetas.
-- [ ] `lib/dictionaries.ts` pesa 164 KB en un archivo. Si se parte, el tipo `Dictionary` debe seguir derivándose de `es` o se pierde el invariante de paridad.
-- [ ] `public/credit-risk-demo/model.onnx` son 1,88 MB versionados. Sacarlo **antes** de la primera regeneración, no después.
-- [ ] Las 4 capturas de `public/tracking/` son PNG de ~55 KB; en WebP quedarían en ~15 KB.
+- [x] ~~`lib/` mezclaba cuatro cosas en un nivel~~ — ahora `lib/config/`, `lib/content/`, `lib/data/` y `lib/generated/`, con `lib/dictionaries.ts` como puerta que re-exporta, de modo que nadie tuvo que cambiar sus imports.
+- [x] ~~`lib/dictionaries.ts` pesaba 164 KB~~ — partido en cuatro bloques de `lib/content/` por rangos contiguos, verificado comparando `JSON.stringify(dictionaries)` carácter a carácter: 159.642 = 159.642, orden de claves incluido.
+- [x] ~~Las capturas de `public/tracking/`~~ — a WebP: 201 KB → 104 KB, y como esas `<Image>` van `unoptimized`, el ahorro lo nota el visitante, no solo el repo.
+
+- [ ] **`public/credit-risk-demo/model.onnx` sigue con sus 1,88 MB versionados, y se queda.** La idea era sacarlo con Git LFS, pero **Vercel no resuelve punteros de LFS en el build**: el fichero llegaría como puntero de texto y la demo moriría con un error de ONNX en el navegador, sin avisar en el build. Servirlo desde otro origen tampoco sale gratis: habría que abrir `connect-src` en la CSP de esa ruta y añadir una dependencia de red a una demo que hoy corre contra su propio origen. **Se revisa el día que el modelo se regenere**, que es cuando el coste empieza a acumularse de verdad; hoy `.git` pesa 4 MB y no duele.
+- [ ] `components/` son 12 archivos sueltos junto a 4 carpetas. Se dejó así: a este tamaño, agruparlos es mover ficheros sin que nadie encuentre nada mejor.
 
 ### De contenido
 

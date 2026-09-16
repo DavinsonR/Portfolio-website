@@ -11,7 +11,7 @@
 // punteada, etiqueta directa. Un gráfico que sólo funciona en color no funciona.
 // ============================================================
 
-import type { CliffPoint, EventPoint } from "@/lib/credit-risk";
+import type { CliffPoint, EventPoint } from "@/lib/data/credit-risk";
 
 const INK = "var(--color-ink)";
 const BODY = "var(--color-body)";

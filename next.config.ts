@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
    *  Sobre `script-src 'unsafe-inline'`: es deliberado y es el único camino aquí.
    *  El HTML construido lleva tres scripts en línea — el del tema, el arranque de
    *  `__next_f` y el payload RSC de hidratación. El tercero es distinto en cada
-   *  página (90–133 KB) y cambia con cada edición de `lib/dictionaries.ts`, así
+   *  página (90–133 KB) y cambia con cada edición del contenido, así
    *  que una CSP por hash exigiría once hashes regenerados en cada commit, y
    *  `headers()` se evalúa antes de renderizar las páginas: no puede conocerlos.
    *  Un nonce obligaría a renderizar en servidor, que es justo lo que este sitio

@@ -20,7 +20,7 @@ import {
   type IndexAsset,
   type SymbolData,
   type AssetCombo,
-} from "@/lib/trading-sim";
+} from "@/lib/data/trading-sim";
 import { EquityChart, Funnel, HBars, CHART } from "@/components/trading/Charts";
 
 type Dict = Dictionary["tradingSim"];

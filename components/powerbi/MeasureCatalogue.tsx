@@ -1,4 +1,4 @@
-import { TABLES, measuresOf, pbiUrl, type PbiMeasureName } from "@/lib/powerbi-model";
+import { TABLES, measuresOf, pbiUrl, type PbiMeasureName } from "@/lib/data/powerbi-model";
 
 /* Seventeen rows, grouped by the table that owns them. DAX is set in the
    body face on purpose: this sheet has no mono type (DESIGN.md), and the

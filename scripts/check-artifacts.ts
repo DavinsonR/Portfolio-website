@@ -2,7 +2,7 @@
 // Artefactos generados contra su fuente — `npm run check:artifacts`
 //
 // Este script existe por un fallo concreto, del 16 sep 2026: el sitio se mudó a
-// davirson.com, `lib/site.ts` y los `.tex` se actualizaron, y los PDF se
+// davirson.com, `lib/config/site.ts` y los `.tex` se actualizaron, y los PDF se
 // quedaron con el host anterior IMPRESO DENTRO. Los `.tex` decían una cosa y el
 // PDF que el lector se descarga decía otra, y nada en el repositorio lo notaba
 // porque un PDF es opaco: `grep` no lo ve, los streams van comprimidos.
@@ -18,7 +18,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
-import { SITE } from "../lib/site";
+import { SITE } from "../lib/config/site";
 
 const PUBLIC = path.join(process.cwd(), "public");
 const HOST = new URL(SITE).host;

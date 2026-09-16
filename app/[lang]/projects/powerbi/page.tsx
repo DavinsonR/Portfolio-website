@@ -4,13 +4,13 @@ import Image from "next/image";
 import { getDictionary } from "@/lib/dictionaries";
 import {
   TABLES, RELATIONSHIPS, MEASURES, PAGES, VISUAL_COUNT, PBI_SOURCE_COMMIT, pbiUrl, measuresOf, type PbiVisual,
-} from "@/lib/powerbi-model";
-import { reportShot } from "@/lib/powerbi-shots";
+} from "@/lib/data/powerbi-model";
+import { reportShot } from "@/lib/data/powerbi-shots";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import ModelDiagram from "@/components/powerbi/ModelDiagram";
 import MeasureCatalogue from "@/components/powerbi/MeasureCatalogue";
-import { alternates, openGraph } from "@/lib/alternates";
+import { alternates, openGraph } from "@/lib/config/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;

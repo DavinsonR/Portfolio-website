@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { INDEX_URL, fetchJson } from "@/lib/trading-sim";
+import { INDEX_URL, fetchJson } from "@/lib/data/trading-sim";
 
 /** Proof, not prose.
  *

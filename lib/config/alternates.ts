@@ -1,4 +1,4 @@
-import { locales } from "./dictionaries";
+import { locales } from "../dictionaries";
 
 /** Canonical y hreflang por página.
  *

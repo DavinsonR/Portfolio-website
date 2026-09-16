@@ -1,4 +1,4 @@
-import { TABLES, RELATIONSHIPS, measuresOf, pbiUrl, type PbiTable } from "@/lib/powerbi-model";
+import { TABLES, RELATIONSHIPS, measuresOf, pbiUrl, type PbiTable } from "@/lib/data/powerbi-model";
 
 /* The semantic model as a picture: one dimension on the left, the four fact
    tables it keys on the right, the two stand-alone aggregates below a hairline.

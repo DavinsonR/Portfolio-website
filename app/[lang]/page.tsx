@@ -5,8 +5,8 @@ import CountUp from "@/components/CountUp";
 import StatusPill from "@/components/StatusPill";
 import CopyEmail from "@/components/CopyEmail";
 import AtlasFigure from "@/components/AtlasFigure";
-import { mailtoHref } from "@/lib/contact";
-import { personGraph } from "@/lib/structured-data";
+import { mailtoHref } from "@/lib/config/contact";
+import { personGraph } from "@/lib/config/structured-data";
 import type { Locale } from "@/lib/dictionaries";
 
 const WRAP = "mx-auto max-w-[1080px] px-6";

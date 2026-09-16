@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { locales } from "@/lib/dictionaries";
-import { SITE } from "@/lib/site";
+import { SITE } from "@/lib/config/site";
 
 const ROUTES = ["", "/cv", "/projects/credit-risk", "/projects/trading-sim", "/projects/powerbi", "/projects/tracking", "/research/fintech-inclusion"];
 

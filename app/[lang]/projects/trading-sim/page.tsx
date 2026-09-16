@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import TradingSimDashboard from "@/components/trading/TradingSimDashboard";
-import { TRADING_SIM_REPO } from "@/lib/trading-sim";
+import { TRADING_SIM_REPO } from "@/lib/data/trading-sim";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
-import { alternates, openGraph } from "@/lib/alternates";
+import { alternates, openGraph } from "@/lib/config/alternates";
 
 export async function generateMetadata({
   params,

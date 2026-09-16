@@ -1,6 +1,6 @@
 /** Datos de la página de credit-risk-mlops.
  *
- *  NINGÚN NÚMERO SE ESCRIBE AQUÍ. Todo sale de `lib/credit-risk-data/`, que es una
+ *  NINGÚN NÚMERO SE ESCRIBE AQUÍ. Todo sale de `lib/data/credit-risk-data/`, que es una
  *  copia literal del bundle `exports/web/` del repositorio del modelo — el mismo
  *  bundle que allá tiene un control (`run web-check`) verificando que coincide con
  *  los exports que lo generaron. La cadena es: predicciones guardadas → export →

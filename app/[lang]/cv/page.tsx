@@ -6,8 +6,8 @@ import Link from "next/link";
 import CountUp from "@/components/CountUp";
 import BackLink from "@/components/BackLink";
 import CopyEmail from "@/components/CopyEmail";
-import { mailtoHref } from "@/lib/contact";
-import { alternates, openGraph } from "@/lib/alternates";
+import { mailtoHref } from "@/lib/config/contact";
+import { alternates, openGraph } from "@/lib/config/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;

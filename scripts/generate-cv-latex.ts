@@ -1,5 +1,5 @@
 // ============================================================
-// Generador de la fuente LaTeX del CV — lee lib/dictionaries.ts
+// Generador de la fuente LaTeX del CV — lee lib/content/cv.ts
 // Uso: npm run latex  →  public/*.tex en ES y EN
 //
 // El archivo resultante es autocontenido: se sube a Overleaf,
@@ -10,7 +10,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { dictionaries, type CvProject, type Locale } from "../lib/dictionaries";
-import { SITE } from "../lib/site";
+import { SITE } from "../lib/config/site";
 
 /** Un href relativo al idioma ("/projects/powerbi") se vuelve absoluto en el PDF. */
 const abs = (lang: Locale, href: string) => (href.startsWith("http") ? href : `${SITE}/${lang}${href}`);
@@ -107,7 +107,7 @@ function build(lang: Locale): string {
   // ---------- preámbulo ----------
   w("% =========================================================");
   w(`% ${tex(cv.title)} — ${tex(cv.targets.join(" / "))}`);
-  w("% Generado desde lib/dictionaries.ts (npm run latex).");
+  w("% Generado desde lib/content/cv.ts (npm run latex).");
   w("% Compila en Overleaf con pdfLaTeX, sin paquetes externos.");
   w("% =========================================================");
   w("\\documentclass[a4paper,10pt]{article}");

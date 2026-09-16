@@ -16,9 +16,9 @@ npm run dev          # http://localhost:3000 → redirige a /en
 npm run check        # ← lo que hay que correr: lint + tipos + paridad + artefactos
 npm run build        # compilación de producción; prerenderiza las rutas de los dos idiomas
 npm run check:routes # humo de rutas contra un `next start` ya levantado
-npm run latex        # regenera public/*.tex desde lib/dictionaries.ts
+npm run latex        # regenera public/*.tex desde lib/content/cv.ts
 npm run cv           # latex + compila el PDF si hay tectonic/latexmk/xelatex
-npm run atlas        # regenera lib/atlas-figure.ts desde public/atlas/*.json
+npm run atlas        # regenera lib/generated/atlas-figure.ts desde public/atlas/*.json
 npm run icons        # regenera favicon.ico, apple-icon.png y public/icon-*.png (necesita Pillow)
 ```
 
@@ -38,7 +38,17 @@ Las tres saben fallar: se verificó rompiendo el diccionario y volteando una ase
 
 ### Todo el texto vive en un solo archivo
 
-`lib/dictionaries.ts` es la fuente única de verdad de cada cadena del sitio, en `es` y `en`. No hay texto literal en los componentes.
+Cada cadena del sitio vive una sola vez, en `es` y `en`. No hay texto literal en los componentes.
+
+`lib/dictionaries.ts` ya no guarda texto: es **la puerta**. Ensambla cuatro bloques y re-exporta sus tipos, así que todo el sitio sigue importando de `@/lib/dictionaries`. **Los textos se editan en el bloque que toque:**
+
+| | |
+|---|---|
+| `lib/content/home.ts` | portada: metadatos, navegación, la hoja, la mesa de trabajo |
+| `lib/content/projects.ts` | las cinco piezas de trabajo, una por página |
+| `lib/content/about.ts` | trayectoria, herramientas, divulgaciones, contacto, pie, 404 |
+| `lib/content/cv.ts` | el CV — de aquí salen también el `.tex` y el PDF |
+| `lib/content/types.ts` | los tipos y constantes que comparten los cuatro |
 
 ```ts
 export type Dictionary = (typeof dictionaries)["es"];
@@ -53,8 +63,8 @@ Los PDF y las fuentes LaTeX del CV se generan de ese mismo archivo (`scripts/gen
 Olvidar cualquiera deja un fallo silencioso, y varios ya ocurrieron:
 
 1. `app/[lang]/<ruta>/page.tsx` — la página.
-2. `lib/dictionaries.ts` — su bloque de contenido, **en los dos idiomas**.
-3. `generateMetadata` de esa página — `alternates(lang, "/ruta")` **y** `openGraph(lang, "/ruta", …)` de `lib/alternates.ts`. Next **reemplaza** el `openGraph`, no lo fusiona: una subpágina que no lo declara hereda el del layout y su tarjeta en LinkedIn enlaza a la portada.
+2. `lib/content/<bloque>.ts` — su bloque de contenido, **en los dos idiomas**.
+3. `generateMetadata` de esa página — `alternates(lang, "/ruta")` **y** `openGraph(lang, "/ruta", …)` de `lib/config/alternates.ts`. Next **reemplaza** el `openGraph`, no lo fusiona: una subpágina que no lo declara hereda el del layout y su tarjeta en LinkedIn enlaza a la portada.
 4. `app/sitemap.ts` — la constante `ROUTES`.
 5. `next.config.ts` — el redirect de la ruta sin idioma (`/x` → `/en/x`); sin él esa URL devuelve 404.
 
@@ -64,9 +74,9 @@ Las páginas son componentes de servidor `async` que reciben `params: Promise<{ 
 
 ### Cambiar el dominio toca tres sitios, y uno no es código
 
-`lib/site.ts` es la fuente única de la URL: de ahí salen `robots.ts`, `sitemap.ts`, `alternates.ts` y el `metadataBase` del layout. Pero cambiar esa constante **no basta**:
+`lib/config/site.ts` es la fuente única de la URL: de ahí salen `robots.ts`, `sitemap.ts`, `alternates.ts` y el `metadataBase` del layout. Pero cambiar esa constante **no basta**:
 
-1. `lib/site.ts` — la constante `SITE`. Después, `grep -rn "vercel.app" .` no debe devolver nada fuera de `node_modules`, `.next` y la bitácora.
+1. `lib/config/site.ts` — la constante `SITE`. Después, `grep -rn "vercel.app" .` no debe devolver nada fuera de `node_modules`, `.next` y la bitácora.
 2. **`npm run cv`** — el PDF y el `.tex` descargables llevan la URL *impresa dentro*. Sin regenerarlos, el CV que el lector se lleva apunta al dominio viejo y contradice a la página. Es el fallo silencioso clásico de este cambio.
 3. `README.md` y `README.es.md` — los enlaces del encabezado y de la tabla.
 
@@ -86,9 +96,9 @@ Tres salvaguardas que no se pueden romper: el estado oculto vive dentro de `.js`
 
 ### Sin backend, y tres contratos de datos externos
 
-- **Trading sim** (`lib/trading-sim.ts`): lee `exports/*.json` del repositorio público `market-data-medallion` desde `raw.githubusercontent.com`, en el navegador y con tiempo límite. Un fallo de red enseña el error y ofrece reintentar; nunca se queda en «cargando».
-- **Atlas** (`components/atlas/`, `public/atlas/*.json`): el contrato con el repositorio de la tesis (`financial-inclusion-colombia`) es su carpeta `atlas/data/`, copiada a `public/atlas/`. El SVG se dibuja fuera de React en `render.ts` porque la vista municipal son más de 5.000 nodos; React solo posee los controles. `lib/atlas-figure.ts` es **generado** por `npm run atlas` — no se edita a mano.
-- **Catálogo Power BI** (`lib/powerbi-model.ts`): copiado a mano de `market-data-medallion/powerbi/`, con el commit de origen en su cabecera; al actualizarlo, actualizar también ese commit.
+- **Trading sim** (`lib/data/trading-sim.ts`): lee `exports/*.json` del repositorio público `market-data-medallion` desde `raw.githubusercontent.com`, en el navegador y con tiempo límite. Un fallo de red enseña el error y ofrece reintentar; nunca se queda en «cargando».
+- **Atlas** (`components/atlas/`, `public/atlas/*.json`): el contrato con el repositorio de la tesis (`financial-inclusion-colombia`) es su carpeta `atlas/data/`, copiada a `public/atlas/`. El SVG se dibuja fuera de React en `render.ts` porque la vista municipal son más de 5.000 nodos; React solo posee los controles. `lib/generated/atlas-figure.ts` es **generado** por `npm run atlas` — no se edita a mano.
+- **Catálogo Power BI** (`lib/data/powerbi-model.ts`): copiado a mano de `market-data-medallion/powerbi/`, con el commit de origen en su cabecera; al actualizarlo, actualizar también ese commit.
 
 ### Diseño: leer `docs/DESIGN.md` antes de tocar estilos
 

@@ -77,5 +77,5 @@ if (problems.length === 0) {
 
 console.error(`✗ diccionario: ${problems.length} problema(s) de paridad\n`);
 for (const p of problems) console.error(`  ${p.path || "(raíz)"} — ${p.detail}`);
-console.error("\nEdita lib/dictionaries.ts y vuelve a correr `npm run check:dict`.");
+console.error("\nEdita el bloque de lib/content/ que toque y vuelve a correr `npm run check:dict`.");
 process.exit(1);

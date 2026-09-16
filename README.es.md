@@ -14,12 +14,12 @@ No es un portafolio de capturas: cada página del sitio se alimenta del reposito
 | --- | --- | --- | --- |
 | **Inclusión financiera y crecimiento regional** — warehouse de 19 fuentes públicas, índice por dimensiones, panel de efectos fijos y atlas de los 1.123 municipios | [`/es/research/fintech-inclusion`](https://davirson.com/es/research/fintech-inclusion) | [financial-inclusion-colombia](https://github.com/DavinsonR/financial-inclusion-colombia) | Resultado principal publicado |
 | **Plataforma de datos de mercado** — APIs públicas → medallion en Postgres con dbt → backtester sin look-ahead → refresh diario automatizado | [`/es/projects/trading-sim`](https://davirson.com/es/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 activos, refresh diario |
-| **Informe Power BI** — modelo, medidas y páginas del informe construido sobre la capa gold | [`/es/projects/powerbi`](https://davirson.com/es/projects/powerbi) | catálogo en `lib/powerbi-model.ts` | Catálogo publicado |
+| **Informe Power BI** — modelo, medidas y páginas del informe construido sobre la capa gold | [`/es/projects/powerbi`](https://davirson.com/es/projects/powerbi) | catálogo en `lib/data/powerbi-model.ts` | Catálogo publicado |
 | **JARVIS** — registro diario de hábitos, cuerpo, sueño y gasto en menos de noventa segundos | — | privado; [demo público sin cuenta](https://jarvis-app-psi-sable.vercel.app/demo) | v1 en uso |
 
 ## El CV
 
-`/[lang]/cv` publica el CV completo en las dos lenguas. El texto vive una sola vez en `lib/dictionaries.ts`; de ahí salen la página, la fuente LaTeX y el PDF. Editar el diccionario y correr `npm run cv` regenera los tres: no hay una versión del CV que pueda quedarse atrás de otra.
+`/[lang]/cv` publica el CV completo en las dos lenguas. El texto vive una sola vez en `lib/content/cv.ts`; de ahí salen la página, la fuente LaTeX y el PDF. Editar el diccionario y correr `npm run cv` regenera los tres: no hay una versión del CV que pueda quedarse atrás de otra.
 
 ## Cómo está hecho
 
@@ -45,10 +45,10 @@ npm run dev      # http://localhost:3000 → redirige a /es
 
 ### Dónde editar
 
-- **Todo el texto (ES/EN):** `lib/dictionaries.ts` — fuente única de verdad.
+- **Todo el texto (ES/EN):** `lib/content/` — cuatro bloques (`home`, `projects`, `about`, `cv`), cada uno con `es` y `en` uno al lado del otro. `lib/dictionaries.ts` solo los ensambla.
 - **Colores y tipografías:** `app/globals.css`, bloques `@theme`.
-- **Estado y progreso de los módulos:** `lib/dictionaries.ts` → `sistema.modules`.
-- **Catálogo de Power BI:** `lib/powerbi-model.ts`, copiado de `market-data-medallion/powerbi/` con el commit de origen en la cabecera.
+- **Estado y progreso de los módulos:** `lib/content/home.ts` → `sistema.modules`.
+- **Catálogo de Power BI:** `lib/data/powerbi-model.ts`, copiado de `market-data-medallion/powerbi/` con el commit de origen en la cabecera.
 
 ## Licencias
 

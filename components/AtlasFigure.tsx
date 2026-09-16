@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ATLAS_FIGURE } from "@/lib/atlas-figure";
+import { ATLAS_FIGURE } from "@/lib/generated/atlas-figure";
 import type { Dictionary } from "@/lib/dictionaries";
 
 /** La figura del atlas en la portada.

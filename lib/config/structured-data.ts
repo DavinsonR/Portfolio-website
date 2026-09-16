@@ -1,5 +1,5 @@
 import { SITE } from "./site";
-import type { Dictionary, Locale } from "./dictionaries";
+import type { Dictionary, Locale } from "../dictionaries";
 
 /** Datos estructurados para el buscador.
  *
