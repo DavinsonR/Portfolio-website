@@ -135,7 +135,8 @@ export const projects = {
       pipelineLine:
         "datos: pipeline propio (API → PostgreSQL → dbt → backtester) · actualización diaria automática · código abierto",
       loading: "cargando datos del pipeline…",
-      error: "No se pudieron cargar los datos (GitHub raw). Reintenta en unos segundos.",
+      error: "No se pudieron cargar los datos ni en vivo ni desde la copia local. Reintenta en unos segundos.",
+      snapshotNote: "Estás viendo una copia guardada en este mismo sitio: no se pudo alcanzar el repositorio del pipeline, que es lo que suelen bloquear las redes corporativas. Las cifras son reales y llevan su fecha arriba; las de hoy están en el repositorio.",
       retry: "reintentar",
       stats: {
         variants: "variantes evaluadas",
@@ -754,7 +755,8 @@ export const projects = {
       pipelineLine:
         "data: own pipeline (API → PostgreSQL → dbt → backtester) · automatic daily refresh · open source",
       loading: "loading pipeline data…",
-      error: "Could not load the data (GitHub raw). Retry in a few seconds.",
+      error: "Could not load the data, neither live nor from the local copy. Retry in a few seconds.",
+      snapshotNote: "You are seeing a copy stored on this site: the pipeline repository could not be reached, which is what corporate networks usually block. The figures are real and carry their date above; today's are in the repository.",
       retry: "retry",
       stats: {
         variants: "variants evaluated",

@@ -11,6 +11,34 @@ const RAW = "https://raw.githubusercontent.com/DavinsonR/market-data-medallion/m
 export const INDEX_URL = `${RAW}/index.json`;
 export const symbolUrl = (symbol: string) => `${RAW}/backtests/${encodeURIComponent(symbol)}.json`;
 
+/** Instantánea versionada del índice, servida desde este mismo origen.
+ *
+ *  Existe porque muchas redes corporativas bloquean `raw.githubusercontent.com`,
+ *  y esa es justamente la red desde la que este sitio se lee: quien abre el
+ *  portafolio desde la oficina veía un error donde está el mejor trabajo. No es
+ *  hipotético — `docs/PRODUCT.md` documenta que esos mismos filtros bloqueaban
+ *  el `*.vercel.app` anterior por «hosting personal».
+ *
+ *  Se refresca con `npm run snapshot`. Quedarse atrás no rompe nada: la página
+ *  enseña la fecha de lo que está mostrando. */
+export const SNAPSHOT_INDEX_URL = "/trading-sim-snapshot/index.json";
+
+export type IndexSource = "live" | "snapshot";
+
+/** Lee el índice en vivo y, si no se puede, cae a la instantánea del repo.
+ *
+ *  El orden importa y es este a propósito: lo primero que se intenta es el dato
+ *  del día, porque la afirmación del sitio es que el pipeline corre solo. La
+ *  instantánea es la red de seguridad, no el camino feliz — si se pidiera
+ *  primero, la página dejaría de demostrar lo que dice. */
+export async function fetchIndex<T>(): Promise<{ data: T; source: IndexSource }> {
+  try {
+    return { data: await fetchJson<T>(INDEX_URL), source: "live" };
+  } catch {
+    return { data: await fetchJson<T>(SNAPSHOT_INDEX_URL, 8000), source: "snapshot" };
+  }
+}
+
 /** Lectura con tiempo límite.
  *
  *  Sin él, una red corporativa que bloquea raw.githubusercontent.com sin cerrar

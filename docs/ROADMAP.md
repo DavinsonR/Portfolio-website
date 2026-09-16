@@ -23,6 +23,8 @@
 
 - [ ] **La escala divergente del atlas ya no divide.** En 2024–25 no hay prácticamente valores negativos y media rampa queda muerta. Decisión analítica del autor, señalada en la [sesión 17](bitacora/sesion-17.md) y no ejecutada.
 - [ ] **En oscuro, el panel de 2018 pierde contraste.** Coherente con la regla del tema re-escalonado; subir `--atlas-mid` afectaría también al atlas interactivo. Señalado, no ejecutado.
+- [x] ~~El laboratorio moría en redes que bloquean `raw.githubusercontent.com`~~ — instantánea versionada del índice en `public/trading-sim-snapshot/`, servida del mismo origen, con nota de procedencia. `npm run snapshot` la refresca. Verificado apuntando el host en vivo a un dominio inválido: la página enseña el laboratorio entero, no un error.
+- [ ] **CV de una página** para aplicar, generado del mismo `lib/content/cv.ts` que el de tres.
 - [ ] Verificación semanal de los enlaces externos (3 repos y una demo) en CI.
 
 ### De organización

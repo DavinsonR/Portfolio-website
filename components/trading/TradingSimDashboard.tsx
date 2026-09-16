@@ -10,9 +10,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Dictionary } from "@/lib/dictionaries";
 import {
-  INDEX_URL,
   TRADING_SIM_REPO,
   symbolUrl,
+  fetchIndex,
   fetchJson,
   pct,
   num,
@@ -20,6 +20,7 @@ import {
   type IndexAsset,
   type SymbolData,
   type AssetCombo,
+  type IndexSource,
 } from "@/lib/data/trading-sim";
 import { EquityChart, Funnel, HBars, CHART } from "@/components/trading/Charts";
 
@@ -30,6 +31,10 @@ const REGION_ORDER = ["global", "us", "latam", "emerging"] as const;
 export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: string }) {
   const [index, setIndex] = useState<IndexData | null>(null);
   const [indexError, setIndexError] = useState(false);
+  // De dónde salió lo que se está enseñando. Solo importa cuando NO es lo vivo:
+  // el sitio afirma que el pipeline corre solo, y si el lector está viendo una
+  // copia guardada tiene derecho a saberlo antes de creerse la cifra.
+  const [indexSource, setIndexSource] = useState<IndexSource>("live");
   const [symbol, setSymbol] = useState("BTC-USD");
   const [strategy, setStrategy] = useState("macd");
   const [fetchedSymbol, setFetchedSymbol] = useState<SymbolData | null>(null);
@@ -42,8 +47,13 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
     symbolCache.get(symbol) ?? (fetchedSymbol?.symbol === symbol ? fetchedSymbol : null);
 
   const loadIndex = useCallback(() => {
-    fetchJson<IndexData>(INDEX_URL)
-      .then((d) => setIndex(d))
+    fetchIndex<IndexData>()
+      .then(({ data, source }) => {
+        setIndex(data);
+        setIndexSource(source);
+      })
+      // Solo se llega aquí si fallan LAS DOS: la lectura en vivo y la
+      // instantánea del propio origen. Entonces sí es un error de verdad.
       .catch(() => setIndexError(true));
   }, []);
 
@@ -467,6 +477,16 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
           </div>
         </div>
       </section>
+
+      {/* Solo aparece cuando la lectura en vivo no pudo hacerse. Banda fría y
+          regla de 2px, como el resto de las superficies de estado: no es un
+          error, es una nota de procedencia, y el lector la merece antes de
+          creerse las cifras que tiene encima. */}
+      {indexSource === "snapshot" && (
+        <p className="border-t-2 border-coldline bg-coldsoft px-5 py-4 text-[14px] leading-[1.6] text-body">
+          {dict.snapshotNote}
+        </p>
+      )}
 
       <p className="text-[14px] text-muted">
         {dict.updated} {generated} ·{" "}

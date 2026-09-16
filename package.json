@@ -14,7 +14,8 @@
     "latex": "tsx scripts/generate-cv-latex.ts",
     "cv": "npm run latex && node scripts/compile-cv.mjs",
     "atlas": "node scripts/generate-atlas-figure.mjs",
-    "icons": "python scripts/generate-icons.py"
+    "icons": "python scripts/generate-icons.py",
+    "snapshot": "node scripts/refresh-snapshot.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
