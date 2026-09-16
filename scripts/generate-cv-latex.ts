@@ -327,7 +327,7 @@ function buildOnePage(lang: Locale): string {
   w(`\\usepackage[${lang === "es" ? "spanish,es-noshorthands" : t.lang}]{babel}`);
   w("\\usepackage{lmodern}");
   w("\\usepackage{microtype}");
-  w("\\usepackage[top=0.9cm,bottom=0.8cm,left=1.25cm,right=1.25cm]{geometry}");
+  w("\\usepackage[top=0.8cm,bottom=0.7cm,left=1.2cm,right=1.2cm]{geometry}");
   w("\\usepackage{enumitem}");
   w("\\usepackage{titlesec}");
   w("\\usepackage{xcolor}");
@@ -339,12 +339,12 @@ function buildOnePage(lang: Locale): string {
   w("\\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold}");
   w("\\pagestyle{empty}");
   w("\\setlength{\\parindent}{0pt}");
-  w("\\linespread{0.90}");
+  w("\\linespread{0.88}");
   w("\\color{body}");
   w("");
   w("\\titleformat{\\section}");
   w("  {\\normalfont\\scshape\\bfseries\\color{ink}\\normalsize}{}{0pt}{}[\\vspace{-5pt}\\color{cold}\\rule{\\linewidth}{0.7pt}]");
-  w("\\titlespacing*{\\section}{0pt}{5pt}{2pt}");
+  w("\\titlespacing*{\\section}{0pt}{4pt}{1pt}");
   w("\\newcommand{\\row}[2]{\\textbf{\\color{ink}#1}\\hfill{\\small #2}\\par}");
   w("");
   w("\\begin{document}");
@@ -369,24 +369,41 @@ function buildOnePage(lang: Locale): string {
   w(tex(cv.profileText));
   w("");
 
+  // ---------- el rol cruzado ----------
+  // Es el párrafo que explica por qué un economista de finanzas aplica a un
+  // puesto de datos. En una hoja que se lee en 30 segundos, esa explicación
+  // vale más que una viñeta más de una empresa antigua.
+  w(`\\section*{${tex(t.crossover)}}`);
+  w(tex(cv.pivot.body));
+  w("");
+
   // ---------- experiencia ----------
+  //
+  // La regla del recorte, en un sitio y no repartida por el código:
+  //   · las DOS empresas más recientes llevan todos sus roles; el más reciente
+  //     con todas sus viñetas y los anteriores con una, la primera, que es la
+  //     que el autor puso delante;
+  //   · las demás llevan su línea y una viñeta. Existen, se nombran, y algo
+  //     dicen — un CV de una página no es un CV amputado.
   w(`\\section*{${tex(t.experience)}}`);
   cv.experience.forEach((company, i) => {
-    const role = company.roles[0];
+    const recent = i < 2;
     const mode = company.mode === "remote" ? cv.remoteTag : company.mode === "hybrid" ? cv.hybridTag : "";
-    const right = `${tex(company.location)}${mode ? dot + tex(mode) : ""}`;
-    if (i < 2) {
-      w(`\\row{${tex(company.company)}}{${right}}`);
+    // "Remote · remote" es ruido: cuando la sede YA es la modalidad, va una sola
+    // vez. La hoja de tres páginas ya lo hacía; esta nació sin el guardia y sacó
+    // el duplicado en las dos experiencias remotas.
+    const sameAsMode = mode && company.location.toLowerCase() === mode.toLowerCase();
+    const right = sameAsMode ? tex(mode) : `${tex(company.location)}${mode ? dot + tex(mode) : ""}`;
+    w(`\\row{${tex(company.company)}}{${right}}`);
+    if (company.note) w(`{\\small\\itshape\\color{cold} ${tex(company.note)}}\\par`);
+    const roles = recent ? company.roles : company.roles.slice(0, 1);
+    roles.forEach((role, r) => {
       w(`\\textit{${tex(role.title)}}\\hfill{\\small ${tex(role.period)}}\\par`);
-      if (company.note) w(`{\\small\\itshape\\color{cold} ${tex(company.note)}}\\par`);
+      const keep = recent && r === 0 ? role.bullets : role.bullets.slice(0, 1);
       w("\\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]");
-      for (const b of role.bullets.slice(0, 3)) w(`  \\item ${tex(b)}`);
+      for (const b of keep) w(`  \\item ${tex(b)}`);
       w("\\end{itemize}");
-    } else {
-      // Las experiencias antiguas existen, y se nombran; lo que no cabe en una
-      // página son sus viñetas, no ellas.
-      w(`\\row{${tex(company.company)} \\textnormal{---} \\textit{${tex(role.title)}}}{${tex(role.period)}}`);
-    }
+    });
     if (i < cv.experience.length - 1) w("\\vspace{2pt}");
   });
   w("");
@@ -406,6 +423,14 @@ function buildOnePage(lang: Locale): string {
   w(`\\section*{${tex(t.education)}}`);
   for (const e of cv.education) {
     w(`\\row{${tex(e.title)} \\textnormal{---} ${tex(e.inst)}}{${tex(e.period)}}`);
+  }
+  w("");
+
+  // ---------- reconocimientos ----------
+  w(`\\section*{${tex(t.awards)}}`);
+  for (const a of cv.awards) {
+    const label = `${tex(a.title)} \\textnormal{(${tex(a.year)})}`;
+    w(`\\row{${a.href ? `\\href{${url(a.href)}}{${label}}` : label}}{}`);
   }
   w("");
 

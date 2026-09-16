@@ -9,7 +9,7 @@
 \usepackage[spanish,es-noshorthands]{babel}
 \usepackage{lmodern}
 \usepackage{microtype}
-\usepackage[top=0.9cm,bottom=0.8cm,left=1.25cm,right=1.25cm]{geometry}
+\usepackage[top=0.8cm,bottom=0.7cm,left=1.2cm,right=1.2cm]{geometry}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{xcolor}
@@ -21,12 +21,12 @@
 \hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold}
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
-\linespread{0.90}
+\linespread{0.88}
 \color{body}
 
 \titleformat{\section}
   {\normalfont\scshape\bfseries\color{ink}\normalsize}{}{0pt}{}[\vspace{-5pt}\color{cold}\rule{\linewidth}{0.7pt}]
-\titlespacing*{\section}{0pt}{5pt}{2pt}
+\titlespacing*{\section}{0pt}{4pt}{1pt}
 \newcommand{\row}[2]{\textbf{\color{ink}#1}\hfill{\small #2}\par}
 
 \begin{document}
@@ -41,6 +41,9 @@
 \section*{Perfil}
 Economista con tres años dentro de finanzas corporativas --- tesorería, facturación y FP\&A --- construyendo yo mismo los datos que el negocio necesita: Python, SQL y Power BI aplicados a operaciones en más de 15 países de América. Hoy opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI, actualizado a diario sin intervención manual. Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad, no como dos mitades.
 
+\section*{El rol cruzado}
+No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol financiero terminé construyendo lo mismo --- código y datos --- porque el reporte que hacía falta no existía. Un análisis de descalces cambiarios en Python siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería --- cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python: es saber qué pregunta vale la pena responder antes de escribirlo. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar --- es quien no necesita traductor entre los dos.
+
 \section*{Experiencia}
 \row{Neoris EPAM}{Bogotá, Colombia \,\textperiodcentered\, remoto}
 \textit{Business Consultant, FP\&A}\hfill{\small Mar 2026 --- presente}\par
@@ -48,20 +51,37 @@ Economista con tres años dentro de finanzas corporativas --- tesorería, factur
   \item Diseñé y lideré 3 sistemas de gestión financiera para el cierre y forecast de gastos SG\&A en Norteamérica, con impacto en 12 países/regiones.
   \item Gestioné el cierre mensual y la confirmación del forecast a nivel compañía, analizando variaciones contra plan y forecast anterior.
   \item Di seguimiento a la variación cambiaria en moneda constante y a la inflación por moneda.
+  \item Construí reporting FP\&A con Excel avanzado, Power Query, Power BI, MicroStrategy, JD Edwards y SAP.
 \end{itemize}
 \vspace{2pt}
 \row{SLB}{Bogotá, Colombia \,\textperiodcentered\, híbrido}
-\textit{Especialista en Facturación (Argentina \& Brasil)}\hfill{\small Dic 2024 --- Mar 2026}\par
 {\small\itshape\color{cold} Progresión interna: de practicante a especialista en 26 meses.}\par
+\textit{Especialista en Facturación (Argentina \& Brasil)}\hfill{\small Dic 2024 --- Mar 2026}\par
 \begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Ejecuté reconocimiento de ingresos en SAP bajo los requisitos de Sarbanes-Oxley (SOX).
   \item Desarrollé modelos y visualizaciones en Power BI para análisis de ingresos y tendencias.
   \item Realicé auditorías internas en proyectos tecnológicos integrados, asegurando trazabilidad y cumplimiento.
 \end{itemize}
+\textit{Analista de Tesorería}\hfill{\small Oct 2024 --- Dic 2024}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Automaticé la conciliación bancaria en SAP, mejorando precisión y eficiencia.
+\end{itemize}
+\textit{Practicante de Tesorería}\hfill{\small Ene 2024 --- Jun 2024}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Desarrollé en Python un análisis integral de descalces cambiarios en mercados latinoamericanos, identificando riesgos y oportunidades de cobertura.
+\end{itemize}
 \vspace{2pt}
-\row{LEE Javeriana \textnormal{---} \textit{Asistente de Investigación}}{Jul 2023 --- Dic 2023}
+\row{LEE Javeriana}{remoto}
+\textit{Asistente de Investigación}\hfill{\small Jul 2023 --- Dic 2023}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Analicé datos del sistema educativo colombiano con enfoque en educación superior.
+\end{itemize}
 \vspace{2pt}
-\row{Solidariamente (voluntariado) \textnormal{---} \textit{Analista de datos sociales}}{Ene 2023 --- Jul 2023}
+\row{Solidariamente (voluntariado)}{remoto}
+\textit{Analista de datos sociales}\hfill{\small Ene 2023 --- Jul 2023}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Entregué herramientas analíticas e insights para ONG en entornos multiculturales.
+\end{itemize}
 
 \section*{Proyectos en producción}
 \row{JARVIS --- app de seguimiento personal}{2026 --- demo abierto}{\small Next.js 16 \,\textperiodcentered\, React 19 \,\textperiodcentered\, TypeScript \,\textperiodcentered\, Postgres (Supabase) \,\textperiodcentered\, RLS \,\textperiodcentered\, Tailwind \,\textperiodcentered\, \href{https://jarvis-app-psi-sable.vercel.app/demo}{demo público, sin cuenta}}\par
@@ -75,6 +95,10 @@ Economista con tres años dentro de finanzas corporativas --- tesorería, factur
 \row{Maestría en Economía \textnormal{---} Pontificia Universidad Javeriana}{2025 --- 2026}
 \row{Pregrado en Economía \textnormal{---} Pontificia Universidad Javeriana}{2020 --- 2024}
 \row{Técnico en Sistemas \textnormal{---} SENA}{2018}
+
+\section*{Reconocimientos}
+\row{\href{https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis}{Ganador --- BodyTech Trends Hackathon \textnormal{(2024)}}}{}
+\row{Becario Ecopetrol --- Programa Mario Galán Gómez \textnormal{(2018)}}{}
 
 \section*{Stack}
 Excel y modelado financiero \,\textperiodcentered\, Power BI \,\textperiodcentered\, Tableau \,\textperiodcentered\, SQL \,\textperiodcentered\, PostgreSQL \,\textperiodcentered\, Python \,\textperiodcentered\, dbt \,\textperiodcentered\, Git \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Machine learning

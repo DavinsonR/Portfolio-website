@@ -9,7 +9,7 @@
 \usepackage[english]{babel}
 \usepackage{lmodern}
 \usepackage{microtype}
-\usepackage[top=0.9cm,bottom=0.8cm,left=1.25cm,right=1.25cm]{geometry}
+\usepackage[top=0.8cm,bottom=0.7cm,left=1.2cm,right=1.2cm]{geometry}
 \usepackage{enumitem}
 \usepackage{titlesec}
 \usepackage{xcolor}
@@ -21,12 +21,12 @@
 \hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold}
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
-\linespread{0.90}
+\linespread{0.88}
 \color{body}
 
 \titleformat{\section}
   {\normalfont\scshape\bfseries\color{ink}\normalsize}{}{0pt}{}[\vspace{-5pt}\color{cold}\rule{\linewidth}{0.7pt}]
-\titlespacing*{\section}{0pt}{5pt}{2pt}
+\titlespacing*{\section}{0pt}{4pt}{1pt}
 \newcommand{\row}[2]{\textbf{\color{ink}#1}\hfill{\small #2}\par}
 
 \begin{document}
@@ -41,6 +41,9 @@
 \section*{Profile}
 Economist with three years inside corporate finance --- treasury, billing and FP\&A --- building the data the business runs on: Python, SQL and Power BI applied to operations across 15+ countries in the Americas. I now run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.
 
+\section*{The crossover role}
+This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing --- code and data --- because the report the business needed did not exist. An FX mismatch analysis in Python as an intern. Automation that gave every treasury analyst about 10 hours a month back --- close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; it is knowing which question is worth answering before writing any. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code --- it is the one who needs no translator between them.
+
 \section*{Experience}
 \row{Neoris EPAM}{Bogotá, Colombia \,\textperiodcentered\, remote}
 \textit{Business Consultant, FP\&A}\hfill{\small Mar 2026 --- present}\par
@@ -48,20 +51,37 @@ Economist with three years inside corporate finance --- treasury, billing and FP
   \item Designed and led 3 financial management systems for SG\&A close and forecast across North America, impacting 12 countries/regions.
   \item Managed monthly close and company-wide forecast confirmation, analyzing variances against plan and prior forecast.
   \item Tracked FX variance in constant currency and per-currency inflation.
+  \item Built FP\&A reporting with advanced Excel, Power Query, Power BI, MicroStrategy, JD Edwards and SAP.
 \end{itemize}
 \vspace{2pt}
 \row{SLB}{Bogotá, Colombia \,\textperiodcentered\, hybrid}
-\textit{Billing Specialist (Argentina \& Brazil)}\hfill{\small Dec 2024 --- Mar 2026}\par
 {\small\itshape\color{cold} Internal progression: intern to specialist in 26 months.}\par
+\textit{Billing Specialist (Argentina \& Brazil)}\hfill{\small Dec 2024 --- Mar 2026}\par
 \begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Executed revenue recognition in SAP under Sarbanes-Oxley (SOX) requirements.
   \item Built Power BI models and visualizations for revenue and trend analysis.
   \item Performed internal audits on integrated technology projects, ensuring traceability and compliance.
 \end{itemize}
+\textit{Treasury Analyst}\hfill{\small Oct 2024 --- Dec 2024}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Automated bank reconciliation in SAP, improving accuracy and efficiency.
+\end{itemize}
+\textit{Treasury Intern}\hfill{\small Jan 2024 --- Jun 2024}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Built a comprehensive FX mismatch analysis for Latin American markets in Python, identifying financial risks and hedging opportunities.
+\end{itemize}
 \vspace{2pt}
-\row{LEE Javeriana \textnormal{---} \textit{Research Assistant}}{Jul 2023 --- Dec 2023}
+\row{LEE Javeriana}{remote}
+\textit{Research Assistant}\hfill{\small Jul 2023 --- Dec 2023}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Analyzed Colombian education-system data with a focus on higher education.
+\end{itemize}
 \vspace{2pt}
-\row{Solidariamente (volunteer) \textnormal{---} \textit{Social Data Analyst}}{Jan 2023 --- Jul 2023}
+\row{Solidariamente (volunteer)}{remote}
+\textit{Social Data Analyst}\hfill{\small Jan 2023 --- Jul 2023}\par
+\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Delivered analytical tools and insights for NGOs in multicultural environments.
+\end{itemize}
 
 \section*{Production projects}
 \row{JARVIS --- personal tracking app}{2026 --- open demo}{\small Next.js 16 \,\textperiodcentered\, React 19 \,\textperiodcentered\, TypeScript \,\textperiodcentered\, Postgres (Supabase) \,\textperiodcentered\, RLS \,\textperiodcentered\, Tailwind \,\textperiodcentered\, \href{https://jarvis-app-psi-sable.vercel.app/demo}{public demo, no account}}\par
@@ -75,6 +95,10 @@ Economist with three years inside corporate finance --- treasury, billing and FP
 \row{M.Sc. in Economics \textnormal{---} Pontificia Universidad Javeriana}{2025 --- 2026}
 \row{B.Sc. in Economics \textnormal{---} Pontificia Universidad Javeriana}{2020 --- 2024}
 \row{Systems Technician \textnormal{---} SENA}{2018}
+
+\section*{Recognition}
+\row{\href{https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis}{Winner --- BodyTech Trends Hackathon \textnormal{(2024)}}}{}
+\row{Ecopetrol Scholar --- Mario Galán Gómez Program \textnormal{(2018)}}{}
 
 \section*{Stack}
 Excel and financial modelling \,\textperiodcentered\, Power BI \,\textperiodcentered\, Tableau \,\textperiodcentered\, SQL \,\textperiodcentered\, PostgreSQL \,\textperiodcentered\, Python \,\textperiodcentered\, dbt \,\textperiodcentered\, Git \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Machine learning
