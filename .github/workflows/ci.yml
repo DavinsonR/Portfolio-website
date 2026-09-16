@@ -2,12 +2,16 @@
 # La red que faltaba.
 #
 # 58 commits y 30 fallos documentados sin una sola verificación automática: las
-# tres comprobaciones existían, pero dependían de que alguien se acordara de
+# comprobaciones existían, pero dependían de que alguien se acordara de
 # correrlas. Esto las convierte en una garantía.
 #
-# El orden no es casual: primero lo barato (lint, tipos, paridad, artefactos),
-# que falla en segundos; el build y el humo de rutas, que son lo caro, solo si
-# lo anterior pasó.
+# Cada paso va por separado y con `!cancelled()` en lugar de encadenados: con
+# `npm run check` en un solo paso —que es como empezó— el primer fallo tapaba a
+# los demás, y el primer run rojo dejó el build y el humo de rutas SIN EJECUTAR.
+# Un run tiene que contar el estado entero, no el primer síntoma. Cuesta un
+# minuto de más y ahorra la ronda de ida y vuelta.
+#
+# `npm run check` sigue existiendo para correrlo en local de un tirón.
 # ============================================================
 name: CI
 
@@ -26,30 +30,51 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: npm
 
-      - run: npm ci
+      - name: Dependencias
+        id: deps
+        run: npm ci
 
-      # lint + tsc + paridad del diccionario + artefactos del CV
-      - name: Comprobaciones estáticas
-        run: npm run check
+      - name: Lint
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run lint
 
-      # Más fuerte que comprobar el contenido: si alguien editó el bloque `cv`
-      # del diccionario y no corrió `npm run latex`, el .tex regenerado difiere
-      # del versionado y esto lo dice. El PDF lo cubre `check:artifacts`.
+      - name: Tipos
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npx tsc --noEmit
+
+      # Los dos huecos que `tsc` no ve: longitudes de array y cadenas vacías.
+      - name: Paridad del diccionario
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run check:dict
+
+      # El PDF del CV tiene que mencionar el host de SITE. Un PDF es opaco y
+      # `grep` no lo ve: este paso descomprime sus streams.
+      - name: Artefactos del CV
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run check:artifacts
+
+      # Más fuerte que mirar el contenido: si alguien editó el bloque `cv` del
+      # diccionario y no corrió `npm run latex`, el .tex regenerado difiere del
+      # versionado y esto lo dice.
       - name: Los .tex versionados están al día
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         run: |
           npm run latex
           git diff --exit-code -- public/*.tex
 
-      - run: npm run build
+      - name: Build
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run build
 
       - name: Humo de rutas
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         run: |
           npx next start -p 3000 &
           npm run check:routes
