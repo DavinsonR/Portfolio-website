@@ -146,9 +146,9 @@ export const dictionaries = {
         finding: "Mi primer AUC fue 0,9461 y lo borré: era una fuga. Y de los diez gates, uno bloquea mi propio modelo de acceso con una razón de impacto dispar de 0,7639 contra un umbral de 0,80 — no bajé el umbral.",
         stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
         links: [
-          { label: "Ver el código", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "solid" },
-          { label: "Leer la bitácora de defectos", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md", tone: "outline" },
-          { label: "Ver los registros de decisión", href: "https://github.com/DavinsonR/credit-risk-mlops/tree/main/docs/adr", tone: "text" },
+          { label: "Ver el proyecto", href: "/projects/credit-risk", tone: "solid" },
+          { label: "Ver el código", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "outline" },
+          { label: "Leer la bitácora de defectos", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md", tone: "text" },
         ] as ProjectLink[],
       },
       also: {
@@ -196,6 +196,115 @@ export const dictionaries = {
       // repetían una por una las ocho filas de `toolkit`, con la misma forma
       // tipográfica y a 300 px de distancia, y ninguna llevaba prueba. La que
       // sobrevive es la que nombra el artefacto y enlaza a él.
+    },
+    creditRisk: {
+      metaTitle: "credit-risk-mlops — diez gates, y uno bloquea mi propio modelo",
+      metaDesc:
+        "Sistema de decisión crediticia sobre 1,96M de préstamos SBA y 93,4M de solicitudes HMDA, con gobierno de modelos: gates que bloquean, monitoreo que encontró una variable rota y un estudio de evento que corrigió una cifra propia.",
+      kicker: "Sistema de decisión · credit-risk-mlops",
+      title: "El modelo no es el punto. El punto es que sobrevive una auditoría.",
+      intro:
+        "Un modelo de crédito que nadie puede auditar no se despliega, por bueno que sea. Esta página muestra las cuatro cosas que un validador pregunta —y que casi ningún portafolio enseña— con la medición al lado: qué pasa cuando la fuente cambia de idioma, qué cuesta la decisión en dólares, qué hace el control cuando el modelo no cumple, y qué se puede afirmar de verdad sobre una brecha que se mueve.",
+      pipelineLine:
+        "datos: SBA 7(a) FOIA + HMDA (FFIEC/CFPB) · métricas recomputadas desde las predicciones guardadas · código abierto",
+      sourceNote:
+        "Ningún número de esta página está escrito a mano. Todos salen del bundle que el repositorio publica y verifica contra sus propios exports.",
+      demo: {
+        title: "El modelo, corriendo en tu navegador",
+        body: "No es un vídeo ni una captura: es el artefacto ONNX de producción puntuando en local, sin servidor y sin que ningún dato salga de la página. Prueba a poner la antigüedad en «Change of Ownership» — el modelo responde con el mismo aplomo, y la sección siguiente explica por qué eso es el problema.",
+        cta: "Abrir la demo",
+        note: "1,9 MB · paridad numérica verificada contra el modelo original",
+      },
+      cliff: {
+        title: "La fuente cambió de vocabulario y nadie se enteró",
+        lede: "El SBA rehizo el esquema de categorías de la antigüedad del negocio entre FY2018 y FY2021. No las renombró: cambió la clasificación. Hoy la mayoría de los valores cae en categorías sobre las que el modelo no tiene ninguna evidencia, y el serving las manda a «desconocido».",
+        y: "masa sin soporte de business_age",
+        caption:
+          "Proporción de cada cosecha cuyo valor de business_age cae en categorías con menos del 0,5% de la masa de entrenamiento. Las barras huecas son cosechas sanas.",
+        punch:
+          "El modelo no se degrada: pierde la variable entera y sigue devolviendo HTTP 200. Ninguna métrica de desempeño lo habría mostrado, porque el desempeño no se puede medir en cosechas jóvenes — un charge-off tarda una mediana de 51 meses en aparecer.",
+        fixTitle: "Y cuánto costó arreglarlo",
+        fixBody:
+          "Armonizar el vocabulario pierde resolución: cuatro tramos de antigüedad colapsan en uno. Argumentar eso es fácil; medirlo es entrenar el modelo dos veces con el mismo split y la misma semilla.",
+        fixCost: "costo en AUC",
+        fixCoverage: "cobertura recuperada",
+        fixResidual: "irreducible",
+        fixNote:
+          "El argumento cualitativo era correcto en dirección y despreciable en magnitud. Lo que no se mueve es el residuo: «Change of Ownership» no es una antigüedad sino una forma de adquisición, y mapearla sería inventar el dato.",
+      },
+      money: {
+        title: "La decisión, en dólares y con su contrapeso",
+        lede: "Rechazar el 10% más riesgoso de la cartera de prueba habría evitado pérdidas reales. Una presentación de ventas se detendría ahí.",
+        avoided: "Pérdida evitada",
+        forgone: "Volumen sano que se renuncia",
+        caption:
+          "Ambas cifras viajan en el mismo payload del repositorio. Un titular que muestra solo el numerador no es un titular.",
+      },
+      gate: {
+        title: "El control bloquea mi propio modelo",
+        lede: "De los diez gates de promoción, el de equidad no lo pasa el modelo de acceso: la razón de impacto dispar queda por debajo del umbral de cuatro quintos. El umbral no se movió.",
+        scale: "razón de impacto dispar (regla de cuatro quintos)",
+        threshold: "umbral 0,80",
+        observed: "observado",
+        caption:
+          "El veredicto distingue dos cosas que suelen confundirse: que el build no se rompa y que el modelo cumpla. Aquí no coinciden, y el reporte lo dice con esas palabras.",
+      },
+      event: {
+        title: "La brecha no se amplió: volvió",
+        lede: "Entre 2021 y 2023 la brecha racial de denegación creció, y yo mismo publiqué esa cifra. Con tres años más de datos —FY2018 y FY2019 son años de tasas corrientes— resulta que la línea base estaba mal elegida: 2020-21 fue el auge de refinanciación, un régimen anómalo.",
+        regimes: {
+          pre: "FY2018-2019 · tasas corrientes",
+          boom: "FY2020-2021 · auge de refinanciación",
+          post: "FY2023-2025 · post-shock",
+        },
+        punch:
+          "La brecha post-shock está a tres centésimas de punto de la pre-pandemia. El número que circulaba mide el auge acabándose, no el shock de tasas.",
+        chartTitle: "Y aun así, no se publica un efecto causal",
+        chartLede:
+          "El estimador compara la brecha dentro de condado, propósito, gravamen y ocupación, sobre un panel balanceado y con errores agrupados por condado. Los coeficientes previos al shock deberían ser cero. No lo son.",
+        y: "brecha intra-celda vs. 2021 (pp)",
+        band: "umbral económico declarado antes de estimar",
+        pre: "antes del shock",
+        post: "después",
+        caption:
+          "Punto hueco: período previo. Barra: intervalo de confianza del 95%, agrupado por condado. La banda es la magnitud que se declaró relevante antes de ver ningún resultado.",
+        reasonsTitle: "Tres razones medidas, no tres excusas",
+        reasons: [
+          {
+            title: "Las tendencias previas no son planas",
+            body: "El coeficiente de 2018 supera el umbral, y la violación es monótona: es una tendencia, no ruido.",
+          },
+          {
+            title: "El arreglo de manual fabrica el efecto",
+            body: "Extrapolar la tendencia previa da un efecto grande y significativo — porque lo que extrapola es el auge que el shock termina.",
+          },
+          {
+            title: "Los dos pools no se vaciaron igual",
+            body: "Las solicitudes de un grupo cayeron mucho menos que las del otro. El pool de 2023 no es el de 2021 con menos gente: es otro pool.",
+          },
+        ],
+        closing:
+          "La conclusión se parece a la del diagnóstico causal sobre SBA —no se publica un efecto— pero el contenido es el contrario. Allá no había con qué falsificar. Aquí sí, el test corrió, y la falsificación es la que cierra el caso.",
+      },
+      close: {
+        title: "Lo que hay detrás de esta página",
+        body: "El repositorio publica el registro completo de lo que se rompió, incluidos los defectos que encontré en mi propio tooling mientras construía esto. Es la parte que no se puede falsificar.",
+        links: [
+          { label: "Ver el código", href: "https://github.com/DavinsonR/credit-risk-mlops" },
+          {
+            label: "La bitácora de defectos",
+            href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md",
+          },
+          {
+            label: "Los registros de decisión",
+            href: "https://github.com/DavinsonR/credit-risk-mlops/tree/main/docs/adr",
+          },
+          {
+            label: "Lo que falta, priorizado",
+            href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/docs/ROADMAP.md",
+          },
+        ],
+      },
     },
     tradingSim: {
       metaTitle: "Trading Sim — más de 1.300 estrategias contra la realidad",
@@ -1115,9 +1224,9 @@ export const dictionaries = {
         finding: "My first AUC was 0.9461 and I deleted it: it was a leak. And of the ten gates, one blocks my own access model at a disparate impact ratio of 0.7639 against a 0.80 threshold — I did not move the threshold.",
         stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
         links: [
-          { label: "See the code", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "solid" },
-          { label: "Read the defect log", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md", tone: "outline" },
-          { label: "See the decision records", href: "https://github.com/DavinsonR/credit-risk-mlops/tree/main/docs/adr", tone: "text" },
+          { label: "See the project", href: "/projects/credit-risk", tone: "solid" },
+          { label: "See the code", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "outline" },
+          { label: "Read the defect log", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md", tone: "text" },
         ] as ProjectLink[],
       },
       also: {
@@ -1165,6 +1274,115 @@ export const dictionaries = {
       // repeated the eight `toolkit` rows one for one, in the same typographic
       // form and 300px apart, and none of them carried proof. The list that
       // survives is the one that names the artifact and links to it.
+    },
+    creditRisk: {
+      metaTitle: "credit-risk-mlops — ten gates, and one blocks my own model",
+      metaDesc:
+        "A credit decisioning system over 1.96M SBA loans and 93.4M HMDA applications, with model governance: gates that block, monitoring that found a broken variable, and an event study that corrected a figure of my own.",
+      kicker: "Decision system · credit-risk-mlops",
+      title: "The model is not the point. The point is that it survives an audit.",
+      intro:
+        "A credit model nobody can audit does not get deployed, however good it is. This page shows the four things a validator asks — and almost no portfolio shows — with the measurement beside each one: what happens when the source changes its language, what the decision costs in dollars, what the control does when the model does not comply, and what can honestly be claimed about a gap that moves.",
+      pipelineLine:
+        "data: SBA 7(a) FOIA + HMDA (FFIEC/CFPB) · metrics recomputed from saved predictions · open source",
+      sourceNote:
+        "No number on this page is written by hand. Every one comes from the bundle the repository publishes and verifies against its own exports.",
+      demo: {
+        title: "The model, running in your browser",
+        body: "Not a video and not a screenshot: the production ONNX artifact scoring locally, with no server and no data leaving the page. Try setting business age to “Change of Ownership” — the model answers with the same confidence, and the next section explains why that is the problem.",
+        cta: "Open the demo",
+        note: "1.9 MB · numerical parity verified against the original model",
+      },
+      cliff: {
+        title: "The source changed its vocabulary and nobody noticed",
+        lede: "The SBA rebuilt the business-age category scheme between FY2018 and FY2021. It did not rename them: it changed the classification. Today most values fall into categories the model has no evidence about, and serving maps them to “unknown”.",
+        y: "unsupported mass of business_age",
+        caption:
+          "Share of each cohort whose business_age value falls into categories holding less than 0.5% of the training mass. Hollow bars are healthy cohorts.",
+        punch:
+          "The model does not degrade: it loses the variable entirely and keeps returning HTTP 200. No performance metric would have shown it, because performance cannot be measured on young cohorts — a charge-off takes a median of 51 months to appear.",
+        fixTitle: "And what it cost to fix",
+        fixBody:
+          "Harmonising the vocabulary loses resolution: four age bands collapse into one. Arguing that is easy; measuring it means training the model twice on the same split with the same seed.",
+        fixCost: "cost in AUC",
+        fixCoverage: "coverage recovered",
+        fixResidual: "irreducible",
+        fixNote:
+          "The qualitative argument was right in direction and negligible in magnitude. What does not move is the residual: “Change of Ownership” is not an age but a form of acquisition, and mapping it would be inventing the data.",
+      },
+      money: {
+        title: "The decision, in dollars and with its counterweight",
+        lede: "Declining the riskiest 10% of the test portfolio would have avoided real losses. A sales deck would stop there.",
+        avoided: "Loss avoided",
+        forgone: "Good lending volume forgone",
+        caption:
+          "Both figures travel in the same payload in the repository. A headline that shows only the numerator is not a headline.",
+      },
+      gate: {
+        title: "The control blocks my own model",
+        lede: "Of the ten promotion gates, the access model fails the fairness one: the disparate impact ratio sits below the four-fifths threshold. The threshold did not move.",
+        scale: "disparate impact ratio (four-fifths rule)",
+        threshold: "threshold 0.80",
+        observed: "observed",
+        caption:
+          "The verdict separates two things that are usually conflated: the build not breaking, and the model complying. Here they differ, and the report says so in those words.",
+      },
+      event: {
+        title: "The gap did not widen — it came back",
+        lede: "Between 2021 and 2023 the racial denial gap grew, and I published that figure myself. With three more years of data — FY2018 and FY2019 are ordinary-rate years — the baseline turns out to have been the wrong one: 2020–21 was the refi boom, an anomalous regime.",
+        regimes: {
+          pre: "FY2018–2019 · ordinary rates",
+          boom: "FY2020–2021 · refi boom",
+          post: "FY2023–2025 · post-shock",
+        },
+        punch:
+          "The post-shock gap sits three hundredths of a point from the pre-pandemic one. The number in circulation measures the boom ending, not the rate shock.",
+        chartTitle: "And still, no causal effect is published",
+        chartLede:
+          "The estimator compares the gap within county, purpose, lien and occupancy, on a balanced panel with errors clustered by county. The pre-shock coefficients should be zero. They are not.",
+        y: "within-cell gap vs. 2021 (pp)",
+        band: "economic threshold declared before estimating",
+        pre: "before the shock",
+        post: "after",
+        caption:
+          "Hollow point: pre-period. Bar: 95% confidence interval, clustered by county. The band is the magnitude declared meaningful before any result was seen.",
+        reasonsTitle: "Three measured reasons, not three excuses",
+        reasons: [
+          {
+            title: "Pre-trends are not flat",
+            body: "The 2018 coefficient exceeds the threshold, and the violation is monotone: a trend, not noise.",
+          },
+          {
+            title: "The textbook fix manufactures the effect",
+            body: "Extrapolating the pre-trend yields a large, significant effect — because what it extrapolates is the boom the shock ends.",
+          },
+          {
+            title: "The two pools did not empty alike",
+            body: "One group had far fewer applications drop away than the other. The 2023 pool is not the 2021 pool with fewer people: it is a different pool.",
+          },
+        ],
+        closing:
+          "The conclusion resembles the SBA causal diagnostic — no effect published — but the content is the opposite. There, there was nothing to falsify with. Here there was, the test ran, and the falsification is what closes the case.",
+      },
+      close: {
+        title: "What sits behind this page",
+        body: "The repository ships the full ledger of what broke, including the defects I found in my own tooling while building this. It is the part you cannot fake.",
+        links: [
+          { label: "See the code", href: "https://github.com/DavinsonR/credit-risk-mlops" },
+          {
+            label: "The defect ledger",
+            href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md",
+          },
+          {
+            label: "The decision records",
+            href: "https://github.com/DavinsonR/credit-risk-mlops/tree/main/docs/adr",
+          },
+          {
+            label: "What is missing, prioritised",
+            href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/docs/ROADMAP.md",
+          },
+        ],
+      },
     },
     tradingSim: {
       metaTitle: "Trading Sim — 1,300+ strategies vs. reality",

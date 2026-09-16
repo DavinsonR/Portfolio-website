@@ -80,3 +80,13 @@ Los tokens viven en los bloques `@theme` de `app/globals.css`, con el tema oscur
 ### Contenido: verificable o no se publica
 
 `PRODUCT.md` recoge la evidencia real disponible. Ninguna cifra publicada puede inventarse ni inflarse, los indicadores de estado tienen que reflejar la realidad incluido lo que no está terminado, y `lib/structured-data.ts` no puede afirmarle al buscador nada que el lector no pueda verificar en la propia página. Cuando una capacidad no está viva —una cuenta que todavía no se puede crear, un repositorio privado— la página lo dice en vez de ofrecer un enlace roto.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

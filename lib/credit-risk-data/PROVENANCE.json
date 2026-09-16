@@ -1,0 +1,18 @@
+{
+  "_": "Copia del bundle `exports/web/` de credit-risk-mlops. Los numeros de la pagina salen de aqui y ninguno se teclea en el JSX: en el repo de origen hay un control que verifica que este bundle coincide con los exports que lo generaron. Para refrescar: copiar exports/web/*.json y regenerar este archivo.",
+  "source_repo": "https://github.com/DavinsonR/credit-risk-mlops",
+  "source_path": "exports/web/",
+  "source_commit": "9a4c69b98adaa29265c5149826568604d6ecadab",
+  "sha256_16": {
+    "causal.json": "6b3e6cfe8c22583a",
+    "economia.json": "1ff85a77ac4d8ee2",
+    "equidad.json": "fffa239dac27ffc5",
+    "evento.json": "f49b037467298304",
+    "manifest.json": "c51db949d4e0cada",
+    "modelos.json": "a1c731cd376689bb",
+    "monitoreo.json": "d028df0901c58304",
+    "resumen.json": "c2150e48996940cc",
+    "umbrales.json": "7b43a439705e5096",
+    "vocabulario.json": "3e980d61ebfc726f"
+  }
+}

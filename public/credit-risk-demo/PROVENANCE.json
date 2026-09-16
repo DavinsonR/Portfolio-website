@@ -1,0 +1,11 @@
+{
+  "_": "Copia vendida de serving/web/ de credit-risk-mlops. Se copia y no se enlaza porque el sitio y el repo del modelo se despliegan por separado; el riesgo de que esta copia envejezca es real y por eso queda el commit de origen y los hashes. Para refrescar: copiar index.html, model.onnx y contract.json desde `serving/web/` del repo de origen y regenerar este archivo.",
+  "source_repo": "https://github.com/DavinsonR/credit-risk-mlops",
+  "source_path": "serving/web/",
+  "source_commit": "9a4c69b98adaa29265c5149826568604d6ecadab",
+  "sha256": {
+    "contract.json": "ca7d5ba2fa433ab9b6ff5c8346c787524a8ccfe91db93ea536c1981961316947",
+    "index.html": "1ad09f386b411ebef3d81b3d0f8ceb23ce0b7cc05d4e74608d4678234c44e7b0",
+    "model.onnx": "6780ff59fa7f8bd389db47641914fc241ee1e7050b2f4076229e629b66823095"
+  }
+}
