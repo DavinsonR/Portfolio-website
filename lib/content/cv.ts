@@ -39,7 +39,7 @@ export const cv = {
       ],
       profileLabel: "Perfil",
       profileText:
-        "Economista con tres años dentro de finanzas corporativas — tesorería, facturación y FP&A — construyendo yo mismo los datos que el negocio necesita: Python, SQL y Power BI aplicados a operaciones en más de 15 países de América. Hoy opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI, actualizado a diario sin intervención manual. Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad, no como dos mitades.",
+        "Economista con tres años dentro de finanzas corporativas — tesorería, facturación y FP&A — construyendo yo mismo los datos que el negocio necesita: Python, SQL y Power BI aplicados a operaciones en más de 15 países de América y el hemisferio oriental. Hoy opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI, actualizado a diario sin intervención manual. Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad, no como dos mitades.",
       pivot: {
         label: "El rol cruzado",
         body: "No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol financiero terminé construyendo lo mismo — código y datos — porque el reporte que hacía falta no existía. Un análisis de descalces cambiarios en Python siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería — cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python: es saber qué pregunta vale la pena responder antes de escribirlo. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar — es quien no necesita traductor entre los dos.",
@@ -136,6 +136,24 @@ export const cv = {
       projectsLabel: "Proyectos en producción",
       projectsNote: "Código abierto y verificable. Nada de esto es un ejercicio de curso.",
       projects: [
+        {
+          name: "credit-risk-mlops",
+          role: "Sistema de decisión crediticia con gobierno de modelos — diseño y construcción",
+          period: "2026 — en producción",
+          href: "https://github.com/DavinsonR/credit-risk-mlops",
+          hrefLabel: "github.com/DavinsonR/credit-risk-mlops",
+          stack: [
+            "Python", "LightGBM", "scikit-learn", "optbinning (WoE)", "MLflow",
+            "ONNX", "DuckDB", "pandera", "Docker", "Power BI",
+          ],
+          bullets: [
+            "Modelo en producción con AUC 0,7005 sobre 1,96 M de préstamos SBA 7(a) y 93,4 M de solicitudes HMDA: +0,0311 frente a una scorecard WoE interpretable, con error de calibración 0,0107.",
+            "La primera medición dio 0,9461 y no era un modelo, era una fuga: «TermInMonths» se sobrescribe cuando el préstamo se liquida, así que el campo llevaba dentro el resultado. Quitarlo derrumba la ablación a 0,6621, y esa es la cifra que se publica.",
+            "Diez gates de promoción juzgados por código de salida, y uno está diseñado para bloquear mi propio modelo cuando no cumple el umbral.",
+            "El monitoreo detectó que la fuente cambió de vocabulario sin avisar: una variable dejó de significar lo mismo entre cortes y nadie se habría enterado sin el control.",
+            "El artefacto ONNX de producción puntúa en el navegador del lector, sin servidor y sin que ningún dato salga de la página.",
+          ],
+        },
         {
           name: "JARVIS — app de seguimiento personal",
           role: "Producto propio — diseño, construcción y operación",
@@ -280,7 +298,7 @@ export const cv = {
       ],
       profileLabel: "Profile",
       profileText:
-        "Economist with three years inside corporate finance — treasury, billing and FP&A — building the data the business runs on: Python, SQL and Power BI applied to operations across 15+ countries in the Americas. I now run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.",
+        "Economist with three years inside corporate finance — treasury, billing and FP&A — building the data the business runs on: Python, SQL and Power BI applied to operations across 15+ countries in the Americas and the Eastern Hemisphere. I now run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.",
       pivot: {
         label: "The crossover role",
         body: "This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing — code and data — because the report the business needed did not exist. An FX mismatch analysis in Python as an intern. Automation that gave every treasury analyst about 10 hours a month back — close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; it is knowing which question is worth answering before writing any. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code — it is the one who needs no translator between them.",
@@ -377,6 +395,24 @@ export const cv = {
       projectsLabel: "Production projects",
       projectsNote: "Open source and checkable. None of this is a course exercise.",
       projects: [
+        {
+          name: "credit-risk-mlops",
+          role: "Credit decisioning system with model governance — design and build",
+          period: "2026 — in production",
+          href: "https://github.com/DavinsonR/credit-risk-mlops",
+          hrefLabel: "github.com/DavinsonR/credit-risk-mlops",
+          stack: [
+            "Python", "LightGBM", "scikit-learn", "optbinning (WoE)", "MLflow",
+            "ONNX", "DuckDB", "pandera", "Docker", "Power BI",
+          ],
+          bullets: [
+            "Production model at AUC 0.7005 over 1.96M SBA 7(a) loans and 93.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107.",
+            "The first reading was 0.9461, and it was not a model but a leak: TermInMonths is overwritten when a loan is liquidated, so the field carried the outcome. Removing it drops the ablation to 0.6621 — and that is the number published.",
+            "Ten promotion gates judged by exit code, one of them designed to block my own model when it misses the threshold.",
+            "Monitoring caught the source changing its vocabulary without notice: a field stopped meaning the same thing between vintages, and nobody would have known without the control.",
+            "The production ONNX artifact scores in the reader's own browser — no server, and no data leaves the page.",
+          ],
+        },
         {
           name: "JARVIS — personal tracking app",
           role: "Own product — designed, built and operated",

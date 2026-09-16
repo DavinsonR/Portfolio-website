@@ -48,7 +48,7 @@
 \vspace{2pt}
 
 \section*{Perfil}
-Economista con tres años dentro de finanzas corporativas --- tesorería, facturación y FP\&A --- construyendo yo mismo los datos que el negocio necesita: Python, SQL y Power BI aplicados a operaciones en más de 15 países de América. Hoy opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI, actualizado a diario sin intervención manual. Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad, no como dos mitades.
+Economista con tres años dentro de finanzas corporativas --- tesorería, facturación y FP\&A --- construyendo yo mismo los datos que el negocio necesita: Python, SQL y Power BI aplicados a operaciones en más de 15 países de América y el hemisferio oriental. Hoy opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI, actualizado a diario sin intervención manual. Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad, no como dos mitades.
 
 \section*{El rol cruzado}
 No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol financiero terminé construyendo lo mismo --- código y datos --- porque el reporte que hacía falta no existía. Un análisis de descalces cambiarios en Python siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería --- cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python: es saber qué pregunta vale la pena responder antes de escribirlo. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar --- es quien no necesita traductor entre los dos.
@@ -106,6 +106,17 @@ No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol fi
 
 \section*{Proyectos en producción}
 {\small\itshape Código abierto y verificable. Nada de esto es un ejercicio de curso.}\par\vspace{3pt}
+\headline{credit-risk-mlops}{2026 --- en producción}
+\subline{Sistema de decisión crediticia con gobierno de modelos --- diseño y construcción}{\href{https://github.com/DavinsonR/credit-risk-mlops}{github.com/DavinsonR/credit-risk-mlops}}
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Modelo en producción con AUC 0,7005 sobre 1,96 M de préstamos SBA 7(a) y 93,4 M de solicitudes HMDA: +0,0311 frente a una scorecard WoE interpretable, con error de calibración 0,0107.
+  \item La primera medición dio 0,9461 y no era un modelo, era una fuga: «TermInMonths» se sobrescribe cuando el préstamo se liquida, así que el campo llevaba dentro el resultado. Quitarlo derrumba la ablación a 0,6621, y esa es la cifra que se publica.
+  \item Diez gates de promoción juzgados por código de salida, y uno está diseñado para bloquear mi propio modelo cuando no cumple el umbral.
+  \item El monitoreo detectó que la fuente cambió de vocabulario sin avisar: una variable dejó de significar lo mismo entre cortes y nadie se habría enterado sin el control.
+  \item El artefacto ONNX de producción puntúa en el navegador del lector, sin servidor y sin que ningún dato salga de la página.
+\end{itemize}
+{\small\textbf{Stack:} Python \,\textperiodcentered\, LightGBM \,\textperiodcentered\, scikit-learn \,\textperiodcentered\, optbinning (WoE) \,\textperiodcentered\, MLflow \,\textperiodcentered\, ONNX \,\textperiodcentered\, DuckDB \,\textperiodcentered\, pandera \,\textperiodcentered\, Docker \,\textperiodcentered\, Power BI}\par
+\vspace{4pt}
 \headline{JARVIS --- app de seguimiento personal}{2026 --- demo abierto}
 \subline{Producto propio --- diseño, construcción y operación}{\href{https://jarvis-app-psi-sable.vercel.app/demo}{demo público, sin cuenta}}
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]

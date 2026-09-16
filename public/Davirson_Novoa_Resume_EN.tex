@@ -48,7 +48,7 @@
 \vspace{2pt}
 
 \section*{Profile}
-Economist with three years inside corporate finance --- treasury, billing and FP\&A --- building the data the business runs on: Python, SQL and Power BI applied to operations across 15+ countries in the Americas. I now run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.
+Economist with three years inside corporate finance --- treasury, billing and FP\&A --- building the data the business runs on: Python, SQL and Power BI applied to operations across 15+ countries in the Americas and the Eastern Hemisphere. I now run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.
 
 \section*{The crossover role}
 This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing --- code and data --- because the report the business needed did not exist. An FX mismatch analysis in Python as an intern. Automation that gave every treasury analyst about 10 hours a month back --- close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; it is knowing which question is worth answering before writing any. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code --- it is the one who needs no translator between them.
@@ -106,6 +106,17 @@ This is not a career change; it is pricing what I already do. In every finance r
 
 \section*{Production projects}
 {\small\itshape Open source and checkable. None of this is a course exercise.}\par\vspace{3pt}
+\headline{credit-risk-mlops}{2026 --- in production}
+\subline{Credit decisioning system with model governance --- design and build}{\href{https://github.com/DavinsonR/credit-risk-mlops}{github.com/DavinsonR/credit-risk-mlops}}
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Production model at AUC 0.7005 over 1.96M SBA 7(a) loans and 93.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107.
+  \item The first reading was 0.9461, and it was not a model but a leak: TermInMonths is overwritten when a loan is liquidated, so the field carried the outcome. Removing it drops the ablation to 0.6621 --- and that is the number published.
+  \item Ten promotion gates judged by exit code, one of them designed to block my own model when it misses the threshold.
+  \item Monitoring caught the source changing its vocabulary without notice: a field stopped meaning the same thing between vintages, and nobody would have known without the control.
+  \item The production ONNX artifact scores in the reader's own browser --- no server, and no data leaves the page.
+\end{itemize}
+{\small\textbf{Stack:} Python \,\textperiodcentered\, LightGBM \,\textperiodcentered\, scikit-learn \,\textperiodcentered\, optbinning (WoE) \,\textperiodcentered\, MLflow \,\textperiodcentered\, ONNX \,\textperiodcentered\, DuckDB \,\textperiodcentered\, pandera \,\textperiodcentered\, Docker \,\textperiodcentered\, Power BI}\par
+\vspace{4pt}
 \headline{JARVIS --- personal tracking app}{2026 --- open demo}
 \subline{Own product --- designed, built and operated}{\href{https://jarvis-app-psi-sable.vercel.app/demo}{public demo, no account}}
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
