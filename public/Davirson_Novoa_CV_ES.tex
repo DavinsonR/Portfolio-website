@@ -43,7 +43,7 @@
   {\large\color{cold} Finance Data Analyst \,\textperiodcentered\, Financial BI Analyst \,\textperiodcentered\, Analytics Engineer}\\[4pt]
   {\small Economista y consultor FP\&A que construye la infraestructura de datos que usa.}\\[3pt]
   {\small Bogotá, Colombia \,\textperiodcentered\, GMT-5 \,\textperiodcentered\, 100\% remoto \,\textperiodcentered\, Inglés B2 \,\textperiodcentered\, Portugués A2}\\[2pt]
-  {\small \href{mailto:davinsonnovoaramirez@gmail.com}{davinsonnovoaramirez@gmail.com} \,\textperiodcentered\, \href{https://linkedin.com/in/davirson-novoa-ramirez-2721641b5}{linkedin.com/in/davirson-novoa-ramirez-2721641b5} \,\textperiodcentered\, \href{https://github.com/DavinsonR}{github.com/DavinsonR} \,\textperiodcentered\, \href{https://proyecto-davirson-git.vercel.app/es}{proyecto-davirson-git.vercel.app}}
+  {small href{mailto:davinsonnovoaramirez@gmail.com}{davinsonnovoaramirez@gmail.com} ,	extperiodcentered, href{https://linkedin.com/in/davirson-novoa-ramirez-2721641b5}{linkedin.com/in/davirson-novoa-ramirez-2721641b5} ,	extperiodcentered, href{https://github.com/DavinsonR}{github.com/DavinsonR} ,	extperiodcentered, href{https://proyecto-davirson-git.vercel.app/es}{proyecto-davirson-git.vercel.app}}
 \end{center}
 \vspace{2pt}
 
@@ -106,6 +106,17 @@ No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol fi
 
 \section*{Proyectos en producción}
 {\small\itshape Código abierto y verificable. Nada de esto es un ejercicio de curso.}\par\vspace{3pt}
+\headline{JARVIS --- app de seguimiento personal}{2026 --- demo abierto}
+\subline{Producto propio --- diseño, construcción y operación}{\href{https://jarvis-app-psi-sable.vercel.app/demo}{demo público, sin cuenta}}
+\begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
+  \item Modelo multiusuario en Postgres con política de fila en 34 tablas: la conversión exigió reconstruir 22 claves primarias que identificaban filas sin el usuario, y meter el usuario dentro de las claves foráneas para que el aislamiento no dependiera solo de la política.
+  \item Ocho puertas en CI juzgadas por código de salida: tipos, formato, lint, 526 pruebas, build, auditoría de dependencias, un guardia que busca datos personales en el artefacto ya construido, y una prueba de humo que exige que el rol anónimo sea denegado en las 55 tablas y vistas.
+  \item Demo público que corre las cinco pantallas reales sobre 120 días generados con semilla y no consulta la base ni una vez; una prueba recorre el grafo de importaciones en ejecución y falla si algún módulo alcanzable llega al cliente de datos.
+  \item Registro del día en un formulario y un botón, con ocho escrituras independientes, borrador y cola de envío en el teléfono para sobrevivir a la pérdida de señal, y un lector de números propio porque un campo numérico del navegador guardaba los gastos divididos por mil.
+  \item Gráficas en SVG escrito a mano, sin librería, con contraste validado en tema claro y oscuro y estados diferenciados por forma además de por color.
+\end{itemize}
+{\small\textbf{Stack:} Next.js 16 \,\textperiodcentered\, React 19 \,\textperiodcentered\, TypeScript \,\textperiodcentered\, Postgres (Supabase) \,\textperiodcentered\, RLS \,\textperiodcentered\, Tailwind \,\textperiodcentered\, PWA \,\textperiodcentered\, Vitest}\par
+\vspace{4pt}
 \headline{market-data-medallion}{2026 --- en operación}
 \subline{Plataforma de datos de mercado --- diseño, construcción y operación}{\href{https://github.com/DavinsonR/market-data-medallion}{github.com/DavinsonR/market-data-medallion}}
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]

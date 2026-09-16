@@ -154,8 +154,9 @@ export const dictionaries = {
       also: {
         title: "También en la mesa",
         // Orden: del más nuevo al más viejo, por fecha de creación del repositorio.
-        // JARVIS va último porque su repositorio es privado y no tiene fecha
-        // pública contra la cual ordenarlo; si es posterior a agosto de 2026, sube.
+        // JARVIS nació el 1 de septiembre de 2026 -- su repositorio es privado, así que
+        // la fecha la puso su autor y no la API de GitHub -- y por eso queda entre la
+        // tesis (5 de septiembre) y market-data-medallion (17 de agosto).
         rows: [
           {
             name: "Inclusión financiera y crecimiento regional en Colombia",
@@ -164,6 +165,15 @@ export const dictionaries = {
             statusText: "EN CONSTRUCCIÓN",
             note: "Diecinueve fuentes públicas en un warehouse dimensional con dbt y DuckDB, resueltas a código municipal DIVIPOLA. Encima: un índice de inclusión financiera por dimensiones, dos paneles anuales, un atlas de los 1.123 municipios y una batería econométrica completa, con sus resultados publicados.",
             href: "/research/fintech-inclusion",
+          },
+          {
+            name: "JARVIS — app de seguimiento personal",
+            kind: "Producto propio · Next.js + Supabase",
+            status: "live",
+            statusText: "DEMO ABIERTO",
+            note: "Registro diario de hábitos, cuerpo, sueño, comida y gastos sobre Postgres con política de fila en 34 tablas, 526 pruebas y ocho puertas en CI. Hay un demo abierto con las cinco pantallas reales y los datos de una persona que no existe: no consulta la base ni una vez, y eso lo obliga una prueba.",
+            href: "/projects/tracking",
+            access: "Repositorio privado · el demo es la superficie pública",
           },
           {
             name: "market-data-medallion — plataforma de datos",
@@ -180,15 +190,6 @@ export const dictionaries = {
             statusText: "EN EL REPO",
             note: "Siete tablas en TMDL sobre el warehouse, 17 medidas DAX y cuatro páginas de informe, versionado como texto en el repositorio público. El catálogo completo, con cada expresión, está en su página.",
             href: "/projects/powerbi",
-          },
-          {
-            name: "JARVIS — app de seguimiento personal",
-            kind: "Producto propio · Next.js + Supabase",
-            status: "live",
-            statusText: "DEMO ABIERTO",
-            note: "Registro diario de hábitos, cuerpo, sueño, comida y gastos sobre Postgres con política de fila en 34 tablas, 526 pruebas y ocho puertas en CI. Hay un demo abierto con las cinco pantallas reales y los datos de una persona que no existe: no consulta la base ni una vez, y eso lo obliga una prueba.",
-            href: "/projects/tracking",
-            access: "Repositorio privado · el demo es la superficie pública",
           },
         ] as AlsoRow[],
       },
@@ -1018,6 +1019,21 @@ export const dictionaries = {
       projectsNote: "Código abierto y verificable. Nada de esto es un ejercicio de curso.",
       projects: [
         {
+          name: "JARVIS — app de seguimiento personal",
+          role: "Producto propio — diseño, construcción y operación",
+          period: "2026 — demo abierto",
+          href: "https://jarvis-app-psi-sable.vercel.app/demo",
+          hrefLabel: "demo público, sin cuenta",
+          stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
+          bullets: [
+            "Modelo multiusuario en Postgres con política de fila en 34 tablas: la conversión exigió reconstruir 22 claves primarias que identificaban filas sin el usuario, y meter el usuario dentro de las claves foráneas para que el aislamiento no dependiera solo de la política.",
+            "Ocho puertas en CI juzgadas por código de salida: tipos, formato, lint, 526 pruebas, build, auditoría de dependencias, un guardia que busca datos personales en el artefacto ya construido, y una prueba de humo que exige que el rol anónimo sea denegado en las 55 tablas y vistas.",
+            "Demo público que corre las cinco pantallas reales sobre 120 días generados con semilla y no consulta la base ni una vez; una prueba recorre el grafo de importaciones en ejecución y falla si algún módulo alcanzable llega al cliente de datos.",
+            "Registro del día en un formulario y un botón, con ocho escrituras independientes, borrador y cola de envío en el teléfono para sobrevivir a la pérdida de señal, y un lector de números propio porque un campo numérico del navegador guardaba los gastos divididos por mil.",
+            "Gráficas en SVG escrito a mano, sin librería, con contraste validado en tema claro y oscuro y estados diferenciados por forma además de por color.",
+          ],
+        },
+        {
           name: "market-data-medallion",
           role: "Plataforma de datos de mercado — diseño, construcción y operación",
           period: "2026 — en operación",
@@ -1033,21 +1049,6 @@ export const dictionaries = {
             "Motor de backtesting sin look-ahead con validación out-of-sample 70/30 sobre 1.392 variantes de estrategia: solo el 13% de las ganadoras in-sample sobrevivió a la ventana ciega.",
             "Descomposición cambiaria de ADRs latinoamericanos, separando el retorno de la empresa del movimiento de la divisa mediante la identidad (1+r_USD) × (1+r_FX) = (1+r_local).",
             "Orquestación diaria en GitHub Actions con circuit breaker de rate limit, sobre infraestructura de costo cero.",
-          ],
-        },
-        {
-          name: "JARVIS — app de seguimiento personal",
-          role: "Producto propio — diseño, construcción y operación",
-          period: "2026 — demo abierto",
-          href: "https://jarvis-app-psi-sable.vercel.app/demo",
-          hrefLabel: "demo público, sin cuenta",
-          stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
-          bullets: [
-            "Modelo multiusuario en Postgres con política de fila en 34 tablas: la conversión exigió reconstruir 22 claves primarias que identificaban filas sin el usuario, y meter el usuario dentro de las claves foráneas para que el aislamiento no dependiera solo de la política.",
-            "Ocho puertas en CI juzgadas por código de salida: tipos, formato, lint, 526 pruebas, build, auditoría de dependencias, un guardia que busca datos personales en el artefacto ya construido, y una prueba de humo que exige que el rol anónimo sea denegado en las 55 tablas y vistas.",
-            "Demo público que corre las cinco pantallas reales sobre 120 días generados con semilla y no consulta la base ni una vez; una prueba recorre el grafo de importaciones en ejecución y falla si algún módulo alcanzable llega al cliente de datos.",
-            "Registro del día en un formulario y un botón, con ocho escrituras independientes, borrador y cola de envío en el teléfono para sobrevivir a la pérdida de señal, y un lector de números propio porque un campo numérico del navegador guardaba los gastos divididos por mil.",
-            "Gráficas en SVG escrito a mano, sin librería, con contraste validado en tema claro y oscuro y estados diferenciados por forma además de por color.",
           ],
         },
       ] as CvProject[],
@@ -1231,9 +1232,10 @@ export const dictionaries = {
       },
       also: {
         title: "Also on the desk",
-        // Order: newest to oldest, by repository creation date. JARVIS goes last
-        // because its repository is private and has no public date to sort against;
-        // if it postdates August 2026, it moves up.
+        // Order: newest to oldest, by repository creation date. JARVIS was born on
+        // 1 September 2026 -- its repository is private, so the date comes from its
+        // author rather than the GitHub API -- which puts it between the thesis
+        // (5 September) and market-data-medallion (17 August).
         rows: [
           {
             name: "Financial inclusion and regional growth in Colombia",
@@ -1242,6 +1244,15 @@ export const dictionaries = {
             statusText: "BUILDING",
             note: "Nineteen public sources in a dimensional warehouse on dbt and DuckDB, every series resolved to municipal codes. On top: a financial-inclusion index by dimension, two annual panels, an atlas of all 1,123 municipalities and a full econometric battery, with its results published.",
             href: "/research/fintech-inclusion",
+          },
+          {
+            name: "JARVIS — personal tracking app",
+            kind: "Own product · Next.js + Supabase",
+            status: "live",
+            statusText: "OPEN DEMO",
+            note: "Daily logging of habits, body, sleep, food and spending on Postgres with a row policy on 34 tables, 526 tests and eight CI gates. There is an open demo running the five real screens on data from someone who does not exist: it never queries the database, and a test enforces that.",
+            href: "/projects/tracking",
+            access: "Private repository · the demo is the public surface",
           },
           {
             name: "market-data-medallion — data platform",
@@ -1258,15 +1269,6 @@ export const dictionaries = {
             statusText: "IN THE REPO",
             note: "Seven tables in TMDL over the warehouse, 17 DAX measures and four report pages, versioned as text in the public repository. The full catalogue, expression by expression, is on its page.",
             href: "/projects/powerbi",
-          },
-          {
-            name: "JARVIS — personal tracking app",
-            kind: "Own product · Next.js + Supabase",
-            status: "live",
-            statusText: "OPEN DEMO",
-            note: "Daily logging of habits, body, sleep, food and spending on Postgres with a row policy on 34 tables, 526 tests and eight CI gates. There is an open demo running the five real screens on data from someone who does not exist: it never queries the database, and a test enforces that.",
-            href: "/projects/tracking",
-            access: "Private repository · the demo is the public surface",
           },
         ] as AlsoRow[],
       },
@@ -2094,6 +2096,21 @@ export const dictionaries = {
       projectsNote: "Open source and checkable. None of this is a course exercise.",
       projects: [
         {
+          name: "JARVIS — personal tracking app",
+          role: "Own product — designed, built and operated",
+          period: "2026 — open demo",
+          href: "https://jarvis-app-psi-sable.vercel.app/demo",
+          hrefLabel: "public demo, no account",
+          stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
+          bullets: [
+            "Multi-user model on Postgres with a row policy on 34 tables: the conversion required rebuilding 22 primary keys that identified rows without the user, and pushing the user inside the foreign keys so isolation did not rest on the policy alone.",
+            "Eight CI gates judged by exit code: types, format, lint, 526 tests, build, dependency audit, a guard that hunts personal data inside the built artifact, and a smoke test requiring the anonymous role to be denied across all 55 tables and views.",
+            "A public demo running the five real screens over 120 seed-generated days that never queries the database; a test walks the runtime import graph and fails if any reachable module gets to the data client.",
+            "Day logging in one form and one button, with eight independent writes, an on-device draft and send queue to survive losing signal, and a purpose-built number reader because a browser number field was storing expenses divided by a thousand.",
+            "Hand-written SVG charts, no library, with contrast validated in light and dark and states separated by shape as well as color.",
+          ],
+        },
+        {
           name: "market-data-medallion",
           role: "Market data platform — designed, built and operated",
           period: "2026 — in operation",
@@ -2109,21 +2126,6 @@ export const dictionaries = {
             "No-look-ahead backtesting engine with 70/30 out-of-sample validation over 1,392 strategy variants: only 13% of the in-sample winners survived the blind window.",
             "FX decomposition for Latin American ADRs, separating company performance from the currency move through the identity (1+r_USD) × (1+r_FX) = (1+r_local).",
             "Daily orchestration on GitHub Actions with a rate-limit circuit breaker, running on zero-cost infrastructure.",
-          ],
-        },
-        {
-          name: "JARVIS — personal tracking app",
-          role: "Own product — designed, built and operated",
-          period: "2026 — open demo",
-          href: "https://jarvis-app-psi-sable.vercel.app/demo",
-          hrefLabel: "public demo, no account",
-          stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
-          bullets: [
-            "Multi-user model on Postgres with a row policy on 34 tables: the conversion required rebuilding 22 primary keys that identified rows without the user, and pushing the user inside the foreign keys so isolation did not rest on the policy alone.",
-            "Eight CI gates judged by exit code: types, format, lint, 526 tests, build, dependency audit, a guard that hunts personal data inside the built artifact, and a smoke test requiring the anonymous role to be denied across all 55 tables and views.",
-            "A public demo running the five real screens over 120 seed-generated days that never queries the database; a test walks the runtime import graph and fails if any reachable module gets to the data client.",
-            "Day logging in one form and one button, with eight independent writes, an on-device draft and send queue to survive losing signal, and a purpose-built number reader because a browser number field was storing expenses divided by a thousand.",
-            "Hand-written SVG charts, no library, with contrast validated in light and dark and states separated by shape as well as color.",
           ],
         },
       ] as CvProject[],
