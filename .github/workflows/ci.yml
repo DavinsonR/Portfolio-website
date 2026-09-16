@@ -1,0 +1,55 @@
+# ============================================================
+# La red que faltaba.
+#
+# 58 commits y 30 fallos documentados sin una sola verificación automática: las
+# tres comprobaciones existían, pero dependían de que alguien se acordara de
+# correrlas. Esto las convierte en una garantía.
+#
+# El orden no es casual: primero lo barato (lint, tipos, paridad, artefactos),
+# que falla en segundos; el build y el humo de rutas, que son lo caro, solo si
+# lo anterior pasó.
+# ============================================================
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Un push nuevo sobre la misma rama cancela el run anterior: no tiene sentido
+# pagar por verificar un commit que ya quedó atrás.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # lint + tsc + paridad del diccionario + artefactos del CV
+      - name: Comprobaciones estáticas
+        run: npm run check
+
+      # Más fuerte que comprobar el contenido: si alguien editó el bloque `cv`
+      # del diccionario y no corrió `npm run latex`, el .tex regenerado difiere
+      # del versionado y esto lo dice. El PDF lo cubre `check:artifacts`.
+      - name: Los .tex versionados están al día
+        run: |
+          npm run latex
+          git diff --exit-code -- public/*.tex
+
+      - run: npm run build
+
+      - name: Humo de rutas
+        run: |
+          npx next start -p 3000 &
+          npm run check:routes

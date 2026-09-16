@@ -36,6 +36,8 @@ npm run dev      # http://localhost:3000 → redirige a /es
 | --- | --- |
 | `npm run dev` | Servidor de desarrollo |
 | `npm run build` | Build de producción |
+| `npm run check` | Lint, tipos, paridad del diccionario y artefactos del CV — lo que corre CI |
+| `npm run check:routes` | Humo de rutas contra un `next start` levantado |
 | `npm run lint` | ESLint con la configuración de Next |
 | `npm run latex` | Regenera `public/*.tex` desde el diccionario |
 | `npm run cv` | Lo anterior y además compila a PDF si hay tectonic/latexmk/xelatex/pdflatex |

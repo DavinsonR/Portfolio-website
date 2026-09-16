@@ -36,6 +36,8 @@ npm run dev      # http://localhost:3000 → redirects to /es
 | --- | --- |
 | `npm run dev` | Development server |
 | `npm run build` | Production build |
+| `npm run check` | Lint, types, dictionary parity and CV artefacts — what CI runs |
+| `npm run check:routes` | Route smoke test against a running `next start` |
 | `npm run lint` | ESLint with the Next configuration |
 | `npm run latex` | Regenerates `public/*.tex` from the dictionary |
 | `npm run cv` | The above, plus a PDF if tectonic/latexmk/xelatex/pdflatex is available |

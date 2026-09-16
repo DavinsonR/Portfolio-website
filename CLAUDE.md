@@ -11,16 +11,24 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · estático pu
 
 ```bash
 npm run dev          # http://localhost:3000 → redirige a /en
+npm run check        # ← lo que hay que correr: lint + tipos + paridad + artefactos
 npm run build        # compilación de producción; prerenderiza las rutas de los dos idiomas
-npm run lint         # eslint (config de Next)
-npx tsc --noEmit     # comprobación de tipos: no hay script, hay que invocarlo así
+npm run check:routes # humo de rutas contra un `next start` ya levantado
 npm run latex        # regenera public/*.tex desde lib/dictionaries.ts
 npm run cv           # latex + compila el PDF si hay tectonic/latexmk/xelatex
 npm run atlas        # regenera lib/atlas-figure.ts desde public/atlas/*.json
 npm run icons        # regenera favicon.ico, apple-icon.png y public/icon-*.png (necesita Pillow)
 ```
 
-**No hay framework de pruebas.** Verificar un cambio es: `npx tsc --noEmit`, `npm run lint` y `npm run build` en cero, y mirarlo en un navegador en tema claro y oscuro, en español y en inglés. Para lo visual conviene medir en vez de opinar: desborde horizontal a 320/393/768/1280 px, contraste, y cero errores de consola.
+**No hay framework de pruebas, pero sí tres comprobaciones**, y `.github/workflows/ci.yml` las corre en cada PR y en cada push a `main`. Verificar un cambio es `npm run check` y `npm run build` en cero, y después mirarlo en un navegador en tema claro y oscuro, en español y en inglés. Para lo visual conviene medir en vez de opinar: desborde horizontal a 320/393/768/1280 px, contraste, y cero errores de consola.
+
+Qué cubre cada una, y por qué existe:
+
+- **`check:dict`** — recorre `es` y `en` y exige la misma forma. Cubre los dos huecos que `tsc` deja: las **longitudes de array** (añadir una divulgación en un idioma y no en el otro compila sin una queja — medido) y las cadenas vacías. Y cuando algo falta, nombra la ruta exacta (`cv.experience[2].bullets`) en vez del componente que la consume.
+- **`check:artifacts`** — descomprime los streams de los PDF del CV y exige que mencionen el host de `SITE`. Existe por un fallo real del 16 sep 2026: el sitio se mudó de dominio, el `.tex` se actualizó y el PDF se quedó con el host anterior impreso dentro. Un PDF es opaco, `grep` no lo ve, y nada lo notó.
+- **`check:routes`** — lee las rutas del `sitemap.xml` publicado (no de una lista copiada, que se desincroniza) y comprueba 200; más los redirects de idioma y los 404 que tienen que serlo. La bitácora registra **dos rutas que devolvían 200 debiendo ser 404** y un redirect que faltaba, encontrados a mano meses después.
+
+Las tres saben fallar: se verificó rompiendo el diccionario y volteando una aserción, y las dos veces salieron con código 1.
 
 ## Arquitectura
 
