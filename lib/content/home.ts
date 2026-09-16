@@ -58,11 +58,17 @@ export const home = {
       pipelineLive: "Pipeline en vivo · datos hasta",
       pipelineStalled: "Pipeline detenido · datos hasta",
       pipelineLiveFallback: "Pipeline en vivo · se actualiza a diario",
+      // Cinco cifras, cinco AFIRMACIONES DISTINTAS, una por cuerpo de trabajo.
+      // Antes eran cuatro y dos hablaban del mismo pipeline (48 activos y 89
+      // pruebas), así que dos de los cuatro huecos más valiosos de la portada
+      // decían lo mismo. El orden es deliberado: alcance de negocio, escala de
+      // datos, honestidad intelectual, investigación propia, rigor de producción.
       metrics: [
-        { value: "15+", label: "países en alcance", note: "en tres roles de finanzas", href: "/cv#experiencia" },
-        { value: "26", label: "meses de practicante a especialista", note: "SLB", href: "/cv#experiencia" },
-        { value: "48", label: "activos en producción", note: "pipeline diario", href: "/projects/trading-sim" },
-        { value: "89", label: "pruebas de datos automáticas", note: "en cada corrida", href: "/projects/trading-sim#calidad" },
+        { value: "15+", label: "países en alcance", note: "HQ · América y hemisferio oriental", href: "/cv#experiencia" },
+        { value: "95 M", label: "registros de crédito modelados", note: "1,96 M SBA + 93,4 M HMDA", href: "/projects/credit-risk#cr-cliff" },
+        { value: "1.392", label: "variantes de estrategia evaluadas", note: "sobrevivieron menos de 50", href: "/projects/trading-sim" },
+        { value: "1.123", label: "municipios en el atlas", note: "19 fuentes públicas", href: "/research/fintech-inclusion#atlas" },
+        { value: "89", label: "pruebas de datos automáticas", note: "en cada corrida diaria", href: "/projects/trading-sim#calidad" },
       ] as Metric[],
       ctaPrimary: "Descargar CV (PDF)",
       ctaSecondary: "Ver la evidencia",
@@ -196,10 +202,11 @@ export const home = {
       pipelineStalled: "Pipeline stalled · data through",
       pipelineLiveFallback: "Live pipeline · refreshes daily",
       metrics: [
-        { value: "15+", label: "countries in scope", note: "across three finance roles", href: "/cv#experiencia" },
-        { value: "26", label: "months intern to specialist", note: "SLB", href: "/cv#experiencia" },
-        { value: "48", label: "assets in production", note: "daily pipeline", href: "/projects/trading-sim" },
-        { value: "89", label: "automated data tests", note: "every run", href: "/projects/trading-sim#calidad" },
+        { value: "15+", label: "countries in scope", note: "HQ · Americas and Eastern Hemisphere", href: "/cv#experiencia" },
+        { value: "95 M", label: "credit records modelled", note: "1.96 M SBA + 93.4 M HMDA", href: "/projects/credit-risk#cr-cliff" },
+        { value: "1,392", label: "strategy variants tested", note: "fewer than 50 survived", href: "/projects/trading-sim" },
+        { value: "1,123", label: "municipalities in the atlas", note: "19 public sources", href: "/research/fintech-inclusion#atlas" },
+        { value: "89", label: "automated data tests", note: "on every daily run", href: "/projects/trading-sim#calidad" },
       ] as Metric[],
       ctaPrimary: "Download CV (PDF)",
       ctaSecondary: "See the evidence",
