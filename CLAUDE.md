@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Sitio personal bilingüe de Davirson Novoa: un CV interactivo y las páginas de sus proyectos.
 Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · estático puro en Vercel, sin backend ni base de datos.
 
-**Lee [`docs/FALLOS.md`](docs/FALLOS.md) antes de tocar nada**: los 33 fallos que este proyecto ya tuvo, en una tabla, con su causa raíz enlazada. Está ordenado por ámbito — más de la mitad son de `market-data-medallion` y no de aquí, así que si vienes al sitio, filtra y ahórrate veinte. Al lado están [`docs/DECISIONES.md`](docs/DECISIONES.md) (por qué algo que parece arbitrario no lo es) y [`docs/ROADMAP.md`](docs/ROADMAP.md) (estado y pendientes). [`BITACORA_MAESTRA.md`](BITACORA_MAESTRA.md) es hoy el índice de todo eso; la narrativa completa, sesión por sesión, vive en `docs/bitacora/`.
+**Lee [`docs/FALLOS.md`](docs/FALLOS.md) antes de tocar nada**: los 35 fallos que este proyecto ya tuvo, en una tabla, con su causa raíz enlazada. Está ordenado por ámbito — más de la mitad son de `market-data-medallion` y no de aquí, así que si vienes al sitio, filtra y ahórrate veinte. Al lado están [`docs/DECISIONES.md`](docs/DECISIONES.md) (por qué algo que parece arbitrario no lo es) y [`docs/ROADMAP.md`](docs/ROADMAP.md) (estado y pendientes). [`BITACORA_MAESTRA.md`](BITACORA_MAESTRA.md) es hoy el índice de todo eso; la narrativa completa, sesión por sesión, vive en `docs/bitacora/`.
 
 `docs/DESIGN.md` y `docs/PRODUCT.md` no son documentación descriptiva sino el contrato del sistema visual y del posicionamiento; varias de sus reglas son vinculantes y romperlas ya ha sido un hallazgo de revisión.
 

@@ -22,13 +22,13 @@ export const about = {
         {
           period: "2026 — hoy",
           title: "Business Consultant, FP&A · Neoris EPAM",
-          desc: "Sistemas de gestión financiera desde HQ: cierre, forecast y variaciones de SG&A en más de 15 países de América y el hemisferio oriental. 100% remoto.",
+          desc: "Desde HQ, el cierre y el forecast de SG&A de más de 15 países a la vez — América y el hemisferio oriental. Variaciones contra plan, contra forecast previo y en moneda constante. 100% remoto, desde el primer día.",
           tag: "FP&A",
         },
         {
           period: "2024 — 2026",
           title: "SLB · de practicante a especialista en 26 meses",
-          desc: "Tesorería y facturación LATAM: análisis cambiario en Python, automatización que liberó ~10 horas al mes por analista — unas 60 en el equipo —, revenue recognition bajo SOX.",
+          desc: "Tesorería y facturación LATAM. Análisis cambiario en Python que nadie me pidió, y una automatización que le devolvió ~10 horas al mes a cada analista — unas 60 al mes al equipo entero. Revenue recognition bajo SOX y auditorías internas sobre proyectos de tecnología.",
           tag: "Finanzas + datos",
         },
         {
@@ -40,10 +40,10 @@ export const about = {
       ],
     },
     toolkit: {
-      title: "Herramientas, con la prueba al lado",
-      note: "Cada herramienta con el trabajo que la respalda. Todo lo que aparece aquí está corriendo hoy, no en un certificado.",
+      title: "Ocho herramientas. Ocho pruebas. Ninguna lista de logos.",
+      note: "Cualquiera puede escribir «Python» en un CV. Aquí cada herramienta va con el trabajo que la respalda, y casi todo está corriendo hoy mismo — no reposando en un certificado.",
       rows: [
-        { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para 12 países en Neoris EPAM" },
+        { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para más de 15 países en Neoris EPAM" },
         { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase", href: "/projects/powerbi" },
         { name: "Tableau", proof: "Dashboard ganador del BodyTech Trends Hackathon, público", href: TABLEAU_VIZ },
         { name: "SQL · PostgreSQL", proof: "Warehouse medallion de tres capas, más de 58.000 velas en producción" },
@@ -58,7 +58,7 @@ export const about = {
       items: [
         {
           term: "Construido en público",
-          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, incluidos los errores. La bitácora de ingeniería registra 30 fallos encontrados y corregidos, numerados uno a uno.",
+          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, y los errores también. La bitácora de ingeniería lleva 35 fallos encontrados y corregidos, numerados uno a uno, con su causa raíz. Pocos portafolios publican esa lista. Es justo la que hace verificable todo lo demás.",
         },
         {
           term: "Rendimientos pasados",
@@ -83,8 +83,8 @@ export const about = {
       ],
     },
     contact: {
-      title: "¿Buscas a alguien que entienda el negocio y construya los datos?",
-      body: "Abierto a roles remotos de Finance Data Analyst, Analytics Engineer y FP&A con automatización. Respondo en español e inglés.",
+      title: "Deja de elegir entre el que entiende el negocio y el que construye los datos.",
+      body: "Abierto a roles remotos de Finance Data Analyst, Analytics Engineer y FP&A con automatización. Bogotá, GMT-5, traslape completo con Estados Unidos. Respondo en español e inglés, y respondo rápido.",
       email: "Escribir un correo",
       linkedin: "LinkedIn",
       github: "GitHub",
@@ -123,13 +123,13 @@ export const about = {
         {
           period: "2026 — present",
           title: "Business Consultant, FP&A · Neoris EPAM",
-          desc: "Financial management systems from HQ: close, forecast and SG&A variance across 15+ countries in the Americas and the Eastern Hemisphere. Fully remote.",
+          desc: "From HQ, the SG&A close and forecast for 15+ countries at once — the Americas and the Eastern Hemisphere. Variance against plan, against prior forecast, and in constant currency. Fully remote, from day one.",
           tag: "FP&A",
         },
         {
           period: "2024 — 2026",
           title: "SLB · intern to specialist in 26 months",
-          desc: "LATAM treasury and billing: FX analysis in Python, automation that freed ~10 hours a month per analyst — about 60 across the team —, revenue recognition under SOX.",
+          desc: "LATAM treasury and billing. FX analysis in Python nobody asked me for, and automation that handed every analyst ~10 hours a month back — around 60 a month across the team. Revenue recognition under SOX, and internal audits on technology projects.",
           tag: "Finance + data",
         },
         {
@@ -141,10 +141,10 @@ export const about = {
       ],
     },
     toolkit: {
-      title: "Tools, with the proof next to them",
-      note: "Each tool with the work that backs it. Everything here is running today, not sitting on a certificate.",
+      title: "Eight tools. Eight proofs. No logo wall.",
+      note: "Anyone can type «Python» on a CV. Here every tool comes with the work that backs it, and nearly all of it is running today — not sitting on a certificate.",
       rows: [
-        { name: "Excel and financial modelling", proof: "SG&A close and forecast across 12 countries at Neoris EPAM" },
+        { name: "Excel and financial modelling", proof: "SG&A close and forecast across 15+ countries at Neoris EPAM" },
         { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase", href: "/projects/powerbi" },
         { name: "Tableau", proof: "Dashboard that won the BodyTech Trends Hackathon, public", href: TABLEAU_VIZ },
         { name: "SQL · PostgreSQL", proof: "Three-layer medallion warehouse, more than 58,000 candles in production" },
@@ -159,7 +159,7 @@ export const about = {
       items: [
         {
           term: "Built in public",
-          text: "This site and the projects behind it are documented as they are made, failures included. The engineering log records 30 defects found and fixed, numbered one by one.",
+          text: "This site and the projects behind it are documented as they are made, and so are the mistakes. The engineering log carries 35 defects found and fixed, numbered one by one, with their root cause. Few portfolios publish that list. It is precisely what makes everything else verifiable.",
         },
         {
           term: "Past results",
@@ -184,8 +184,8 @@ export const about = {
       ],
     },
     contact: {
-      title: "Hiring someone who reads the business and builds the data?",
-      body: "Open to remote Finance Data Analyst, Analytics Engineer and FP&A automation roles. I answer in English and Spanish.",
+      title: "Stop choosing between the one who reads the business and the one who builds the data.",
+      body: "Open to remote Finance Data Analyst, Analytics Engineer and FP&A automation roles. Bogotá, GMT-5, full overlap with the US. I answer in English and Spanish, and I answer fast.",
       email: "Send an email",
       linkedin: "LinkedIn",
       github: "GitHub",

@@ -16,7 +16,7 @@ export const home = {
     meta: {
       title: "Davirson Novoa — Finance Data Analyst",
       description:
-        "Economista y consultor FP&A que construye la infraestructura de datos él mismo. Leo un P&L y construyo el pipeline que lo alimenta.",
+        "El analista que no le pide el dato a nadie. 95 M de registros de crédito modelados, 15+ países en el cierre, una plataforma que corre sola. Leo el P&L y construyo el pipeline que lo alimenta.",
     },
     nav: {
       links: [
@@ -38,22 +38,22 @@ export const home = {
       asOf: "Corte a septiembre 2026",
       name: "Davirson Novoa Ramírez",
       verdict: "Finance Data Analyst",
-      thesis: "Leo un P&L y construyo el pipeline que lo alimenta.",
-      sub: "Economista y consultor FP&A para operaciones en más de 15 países. Opero una plataforma de datos en producción —ingesta diaria, pruebas de calidad automáticas y modelo en Power BI— que construí yo mismo.",
+      thesis: "Leo el P&L. Construyo el pipeline que lo alimenta. Casi nadie hace las dos.",
+      sub: "Tres años cerrando los libros de operaciones en más de 15 países, desde HQ. Y en paralelo, una plataforma de datos en producción —ingesta diaria, 89 pruebas de calidad, modelo semántico en Power BI— que diseñé, construí y opero solo. Sin equipo detrás. Sin proveedor.",
       availability: "Bogotá · GMT-5 · Traslape completo con horario de EE.UU. · Abierto a roles remotos",
       // Las tres preguntas que un reclutador resuelve antes de abrir el CV, y que
       // la página no respondía en ninguna parte: a qué nivel, desde cuándo y por
       // qué vía. Sin la primera, el lector clasifica por defecto en el nivel más
       // bajo compatible con "tres años". Ámbar es su jurisdicción: contratación
       // y disponibilidad son contenido humano, no una cifra.
-      hireLabel: "Cómo contratarme",
+      hireLabel: "Contratarme es simple",
       hire: [
         { term: "Nivel", detail: "Senior Analyst" },
         { term: "Inicio", detail: "Preaviso de 15 días" },
         { term: "Vía", detail: "Contrato directo (B2B) o mediante EOR. Sin patrocinio de visa." },
       ],
-      metricsLabel: "Cifras verificables",
-      metricsNote: "Cada cifra enlaza a lo que la prueba.",
+      metricsLabel: "Cinco cifras que puedes auditar ahora mismo",
+      metricsNote: "Ninguna está redondeada y ninguna es de adorno. Haz clic en la que menos te creas.",
       pipelineLive: "Pipeline en vivo · datos hasta",
       pipelineStalled: "Pipeline detenido · datos hasta",
       pipelineLiveFallback: "Pipeline en vivo · se actualiza a diario",
@@ -63,14 +63,14 @@ export const home = {
       // decían lo mismo. El orden es deliberado: alcance de negocio, escala de
       // datos, honestidad intelectual, investigación propia, rigor de producción.
       metrics: [
-        { value: "15+", label: "países en alcance", note: "HQ · América y hemisferio oriental", href: "/cv#experiencia" },
-        { value: "95 M", label: "registros de crédito modelados", note: "1,96 M SBA + 93,4 M HMDA", href: "/projects/credit-risk#cr-cliff" },
-        { value: "1.392", label: "variantes de estrategia evaluadas", note: "sobrevivieron menos de 50", href: "/projects/trading-sim" },
-        { value: "1.123", label: "municipios en el atlas", note: "19 fuentes públicas", href: "/research/fintech-inclusion#atlas" },
-        { value: "89", label: "pruebas de datos automáticas", note: "en cada corrida diaria", href: "/projects/trading-sim#calidad" },
+        { value: "15+", label: "países bajo mi alcance", note: "desde HQ · América y hemisferio oriental", href: "/cv#experiencia" },
+        { value: "95 M", label: "registros de crédito modelados", note: "1,96 M SBA + 93,4 M HMDA, en un portátil", href: "/projects/credit-risk#cr-cliff" },
+        { value: "1.392", label: "estrategias puestas a prueba", note: "sobrevivieron menos de 50 · publiqué las 1.342 que no", href: "/projects/trading-sim" },
+        { value: "1.123", label: "municipios levantados uno a uno", note: "19 fuentes públicas que nadie había cruzado", href: "/research/fintech-inclusion#atlas" },
+        { value: "89", label: "pruebas que corren antes que tú", note: "cada día, antes de que un dato se publique", href: "/projects/trading-sim#calidad" },
       ] as Metric[],
       ctaPrimary: "Descargar CV (PDF)",
-      ctaSecondary: "Ver la evidencia",
+      ctaSecondary: "Ver la evidencia completa",
       // La figura del atlas. No es adorno: el par de mapas ES el argumento del
       // resultado nulo de la tesis, y era lo único visual del sitio que vivía
       // cinco pantallas dentro de una ruta a dos clics.
@@ -87,19 +87,19 @@ export const home = {
       portraitPending: "DNR",
     },
     work: {
-      title: "Lo que construí, y el problema que resuelve",
-      intro: "Un proyecto, contado como se cuenta un caso: el problema primero.",
+      title: "Construí un sistema de crédito que se audita solo. Y que bloquea a su propio autor.",
+      intro: "El proyecto que mejor explica cómo trabajo. Contado como se cuenta un caso: el problema primero.",
       project: {
         name: "credit-risk-mlops",
         kind: "Sistema de decisión con gobierno de modelos",
         problemLabel: "El problema",
-        problem: "Un modelo de crédito que nadie puede auditar no se despliega, por bueno que sea. El validador no pregunta cuánto da el AUC: pregunta quién puede cambiar esa cifra sin que nadie se entere, qué pasa cuando cambia el régimen y cómo se sabe que el modelo sigue viendo la población para la que se entrenó.",
+        problem: "Un modelo de crédito que nadie puede auditar no se despliega jamás, por espectacular que sea su AUC. El validador no pregunta cuánto da: pregunta quién puede cambiar esa cifra sin que nadie se entere, qué pasa cuando cambia el régimen y cómo sabes que el modelo sigue viendo la población para la que se entrenó. La mayoría de los portafolios de datos no sobrevive la primera de esas tres preguntas.",
         builtLabel: "Lo que construí",
         built: "Un sistema de decisión crediticia sobre 1,96 millones de préstamos SBA 7(a) y 62,4 millones de solicitudes HMDA, con validación out-of-time que cruza el shock COVID, diez gates que bloquean la promoción de un modelo que no cumpla, model card y reporte de validación generados desde la corrida, monitoreo de deriva y una capa de inferencia causal. Ninguna cifra publicada se escribe a mano: el gate las recomputa desde las predicciones guardadas antes de dejar promover nada.",
         matterLabel: "Por qué importa",
-        matter: "Es lo que separa un modelo de un modelo desplegable. La misma estructura —umbrales derivados y escritos, documentación que se regenera sola, controles que fallan cerrado— es la que pide un examen de riesgo de modelo, y la que hace que un número sobreviva a la pregunta de dónde salió.",
+        matter: "Es exactamente lo que separa un modelo de uno que se puede desplegar. La misma estructura —umbrales derivados y escritos, documentación que se regenera sola, controles que fallan cerrado— es la que pide un examen de riesgo de modelo en un banco, y la que hace que un número sobreviva a la única pregunta que importa: de dónde salió. Eso no se aprende en un curso. Se aprende auditando, y yo estuve del otro lado de esa mesa.",
         findingLabel: "Hallazgo publicado",
-        finding: "Mi primer AUC fue 0,9461 y lo borré: era una fuga. Y de los diez gates, uno bloquea mi propio modelo de acceso con una razón de impacto dispar de 0,7639 contra un umbral de 0,80 — no bajé el umbral.",
+        finding: "Mi primer AUC fue 0,9461: espectacular, publicable y falso — era una fuga de datos. Lo dejé publicado con nombre y apellido en lugar de esconderlo, porque ese es el resultado. Y de los diez gates del sistema, uno bloquea mi propio modelo con una razón de impacto dispar de 0,7639 contra un umbral de 0,80. No bajé el umbral. Cualquiera lo habría bajado.",
         stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
         links: [
           { label: "Ver el proyecto", href: "/projects/credit-risk", tone: "solid" },
@@ -108,7 +108,7 @@ export const home = {
         ] as ProjectLink[],
       },
       also: {
-        title: "También en la mesa",
+        title: "Y esto es solo lo que cabe en la portada",
         // Orden: del más nuevo al más viejo, por fecha de creación del repositorio.
         // JARVIS nació el 1 de septiembre de 2026 -- su repositorio es privado, así que
         // la fecha la puso su autor y no la API de GitHub -- y por eso queda entre la
@@ -159,7 +159,7 @@ export const home = {
     meta: {
       title: "Davirson Novoa — Finance Data Analyst",
       description:
-        "Economist and FP&A consultant who builds the data infrastructure himself. I read a P&L and I build the pipeline that feeds it.",
+        "The analyst who doesn't have to ask anyone for the data. 95M credit records modelled, 15+ countries in the close, a platform that runs itself. I read the P&L and I build the pipeline that feeds it.",
     },
     nav: {
       links: [
@@ -181,34 +181,34 @@ export const home = {
       asOf: "As of September 2026",
       name: "Davirson Novoa Ramírez",
       verdict: "Finance Data Analyst",
-      thesis: "I read a P&L, and I build the pipeline that feeds it.",
-      sub: "Economist and FP&A consultant supporting operations across 15+ countries. I run a production data platform — daily ingestion, automated quality tests, a Power BI model — that I built and operate myself.",
+      thesis: "I read the P&L. I build the pipeline that feeds it. Almost nobody does both.",
+      sub: "Three years closing the books for operations across 15+ countries, from HQ. And alongside it, a production data platform — daily ingestion, 89 quality tests, a Power BI semantic model — that I designed, built and run alone. No team behind me. No vendor.",
       availability: "Bogotá · GMT-5 · Full overlap with US hours · Open to remote roles",
       // The three questions a recruiter settles before opening the CV, and that
       // the page answered nowhere: at what level, from when, and through what
       // arrangement. Without the first, the reader defaults to the lowest level
       // consistent with "three years". Amber is their jurisdiction: hiring and
       // availability are human content, not a figure.
-      hireLabel: "How to hire me",
+      hireLabel: "Hiring me is simple",
       hire: [
         { term: "Level", detail: "Senior Analyst" },
         { term: "Start", detail: "15 days' notice" },
         { term: "Route", detail: "Direct contract (B2B) or through an EOR. No visa sponsorship needed." },
       ],
-      metricsLabel: "Verifiable figures",
-      metricsNote: "Every figure links to what proves it.",
+      metricsLabel: "Five figures you can audit right now",
+      metricsNote: "Not one is rounded and not one is decoration. Click the one you believe least.",
       pipelineLive: "Live pipeline · data through",
       pipelineStalled: "Pipeline stalled · data through",
       pipelineLiveFallback: "Live pipeline · refreshes daily",
       metrics: [
-        { value: "15+", label: "countries in scope", note: "HQ · Americas and Eastern Hemisphere", href: "/cv#experiencia" },
-        { value: "95 M", label: "credit records modelled", note: "1.96 M SBA + 93.4 M HMDA", href: "/projects/credit-risk#cr-cliff" },
-        { value: "1,392", label: "strategy variants tested", note: "fewer than 50 survived", href: "/projects/trading-sim" },
-        { value: "1,123", label: "municipalities in the atlas", note: "19 public sources", href: "/research/fintech-inclusion#atlas" },
-        { value: "89", label: "automated data tests", note: "on every daily run", href: "/projects/trading-sim#calidad" },
+        { value: "15+", label: "countries under my scope", note: "from HQ · Americas and Eastern Hemisphere", href: "/cv#experiencia" },
+        { value: "95 M", label: "credit records modelled", note: "1.96 M SBA + 93.4 M HMDA, on a laptop", href: "/projects/credit-risk#cr-cliff" },
+        { value: "1,392", label: "strategies put to the test", note: "fewer than 50 survived · I published the 1,342 that didn't", href: "/projects/trading-sim" },
+        { value: "1,123", label: "municipalities built one by one", note: "19 public sources nobody had joined", href: "/research/fintech-inclusion#atlas" },
+        { value: "89", label: "tests that run before you do", note: "every day, before a single figure ships", href: "/projects/trading-sim#calidad" },
       ] as Metric[],
       ctaPrimary: "Download CV (PDF)",
-      ctaSecondary: "See the evidence",
+      ctaSecondary: "See the full evidence",
       // The atlas figure. Not ornament: the pair of maps IS the argument for the
       // thesis's null result, and it was the only visual on the site — five
       // screens inside a route two clicks away.
@@ -225,19 +225,19 @@ export const home = {
       portraitPending: "DNR",
     },
     work: {
-      title: "What I built, and the problem it solves",
-      intro: "One project, told the way a case is told: the problem first.",
+      title: "I built a credit system that audits itself. And blocks its own author.",
+      intro: "The project that best explains how I work. Told the way a case is told: the problem first.",
       project: {
         name: "credit-risk-mlops",
         kind: "Decision system with model governance",
         problemLabel: "The problem",
-        problem: "A credit model nobody can audit does not get deployed, however good it is. The validator does not ask what the AUC is: they ask who can change that figure without anyone noticing, what happens when the regime shifts, and how you know the model still sees the population it was trained for.",
+        problem: "A credit model nobody can audit never gets deployed, however spectacular its AUC. The validator doesn't ask what the number is: they ask who can change it without anyone noticing, what happens when the regime shifts, and how you know the model still sees the population it was trained for. Most data portfolios don't survive the first of those three questions.",
         builtLabel: "What I built",
         built: "A credit decisioning system over 1.96M SBA 7(a) loans and 62.4M HMDA applications, with out-of-time validation across the COVID shock, ten gates that block promotion of a model that does not comply, a model card and validation report generated from the run, drift monitoring, and a causal inference layer. No published figure is written by hand: the gate recomputes them from the saved predictions before letting anything be promoted.",
         matterLabel: "Why it matters",
-        matter: "This is what separates a model from a deployable one. The same structure — thresholds derived and written down, documentation that regenerates itself, controls that fail closed — is what a model risk examination asks for, and what makes a number survive the question of where it came from.",
+        matter: "This is exactly what separates a model from a deployable one. The same structure — thresholds derived and written down, documentation that regenerates itself, controls that fail closed — is what a model risk examination at a bank asks for, and what makes a number survive the only question that matters: where it came from. You don't learn that on a course. You learn it auditing, and I sat on the other side of that table.",
         findingLabel: "Published finding",
-        finding: "My first AUC was 0.9461 and I deleted it: it was a leak. And of the ten gates, one blocks my own access model at a disparate impact ratio of 0.7639 against a 0.80 threshold — I did not move the threshold.",
+        finding: "My first AUC was 0.9461: spectacular, publishable and false — it was a data leak. I left it published by name instead of burying it, because that is the result. And of the system's ten gates, one blocks my own model at a disparate impact ratio of 0.7639 against a 0.80 threshold. I didn't move the threshold. Anyone would have moved it.",
         stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
         links: [
           { label: "See the project", href: "/projects/credit-risk", tone: "solid" },
@@ -246,7 +246,7 @@ export const home = {
         ] as ProjectLink[],
       },
       also: {
-        title: "Also on the desk",
+        title: "And this is only what fits on the home page",
         // Order: newest to oldest, by repository creation date. JARVIS was born on
         // 1 September 2026 -- its repository is private, so the date comes from its
         // author rather than the GitHub API -- which puts it between the thesis

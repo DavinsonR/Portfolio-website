@@ -20,7 +20,7 @@ export const cv = {
       // mismo rol cruzado. Es el encabezado, no un subtítulo.
       targetsLabel: "Roles objetivo",
       targets: ["Finance Data Analyst", "Financial BI Analyst", "Analytics Engineer"],
-      subtitle: "Economista y consultor FP&A que construye la infraestructura de datos que usa.",
+      subtitle: "Economista y consultor FP&A que construye él mismo la infraestructura de datos que usa. Entre el negocio y el dato no necesito traductor.",
       metaLine: "Bogotá, Colombia · GMT-5 · 100% remoto · Inglés B2 · Portugués A2",
       download: "Descargar CV (PDF)",
       downloadHref: "/Davirson_Novoa_CV_ES.pdf",
@@ -32,17 +32,24 @@ export const cv = {
       latexNote: "Compilable en Overleaf sin instalar nada.",
       contactBtn: "Contacto",
       facts: [
-        { value: "15+", label: "países en las operaciones que reporto" },
+        { value: "15+", label: "países en las operaciones que reporto, desde HQ" },
         { value: "60 h/mes", label: "de reporting devueltas al equipo (10 por analista)" },
         { value: "26 meses", label: "de practicante a especialista" },
-        { value: "48", label: "activos en un pipeline diario propio" },
+        { value: "95 M", label: "registros de crédito modelados en un portátil" },
       ],
       profileLabel: "Perfil",
       profileText:
-        "Economista con tres años dentro de finanzas corporativas — tesorería, facturación y FP&A — construyendo yo mismo los datos que el negocio necesita: Python, SQL y Power BI aplicados a operaciones en más de 15 países de América y el hemisferio oriental. Hoy opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI, actualizado a diario sin intervención manual. Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad, no como dos mitades.",
+        "Economista con tres años dentro de finanzas corporativas — tesorería, facturación y FP&A — construyendo yo mismo los datos que el negocio necesita, no esperando a que alguien me los pase: Python, SQL y Power BI aplicados a operaciones en más de 15 países de América y el hemisferio oriental. En paralelo opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI, actualizado a diario sin que yo toque nada, y un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno de modelos. Todo verificable: cada cifra de mi sitio enlaza al repositorio que la produce. Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad, no como dos mitades.",
+      // Solo para la hoja de UNA pagina: ahi el lector escanea en treinta
+      // segundos y el perfil largo se come el espacio de la experiencia — y
+      // ademas empuja el documento a dos paginas, que es lo unico que esa
+      // version no puede hacer. `check:artifacts` lo exige en 1.
+      profileShortText:
+        "Economista con tres años dentro de finanzas corporativas — tesorería, facturación y FP&A — construyendo yo mismo los datos que el negocio necesita: Python, SQL y Power BI sobre operaciones en más de 15 países de América y el hemisferio oriental. En paralelo opero un warehouse PostgreSQL con dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI que se refresca solo a diario, y un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno. Cada cifra de mi sitio enlaza al repositorio que la produce.",
       pivot: {
         label: "El rol cruzado",
-        body: "No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol financiero terminé construyendo lo mismo — código y datos — porque el reporte que hacía falta no existía. Un análisis de descalces cambiarios en Python siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería — cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python: es saber qué pregunta vale la pena responder antes de escribirlo. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar — es quien no necesita traductor entre los dos.",
+        shortBody: "No cambio de carrera: cobro por lo que ya hago. En cada rol financiero terminé construyendo código y datos porque el reporte que hacía falta no existía y nadie más lo iba a hacer. La ventaja no es saber Python — eso lo sabe muchísima gente. Es saber qué pregunta vale la pena responder antes de escribir la primera línea.",
+        body: "No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol financiero terminé construyendo lo mismo — código y datos — porque el reporte que hacía falta no existía y nadie más lo iba a hacer. Un análisis de descalces cambiarios en Python siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería — cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python; eso lo sabe muchísima gente. Es saber qué pregunta vale la pena responder antes de escribir la primera línea. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar — es quien no necesita traductor entre los dos. Contratar a esa persona es contratar dos perfiles en uno, sin la reunión de traducción entre ellos.",
       },
       expLabel: "Experiencia",
       expTitle: "Experiencia",
@@ -223,7 +230,7 @@ export const cv = {
       skillsTechTitle: "Stack técnico",
       skillsTechDesc: "Cada herramienta con el trabajo que la respalda.",
       skillsTech: [
-        { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para 12 países en Neoris EPAM" },
+        { name: "Excel y modelado financiero", proof: "Cierre y forecast de SG&A para más de 15 países en Neoris EPAM" },
         { name: "Power BI", proof: "Modelo semántico de 7 tablas en TMDL, cargado contra Supabase", href: "/projects/powerbi" },
         { name: "Tableau", proof: "Dashboard ganador del BodyTech Trends Hackathon, público", href: TABLEAU_VIZ },
         { name: "SQL · PostgreSQL", proof: "Warehouse medallion de tres capas, más de 58.000 velas en producción" },
@@ -279,7 +286,7 @@ export const cv = {
       // role. It is the heading, not a subtitle.
       targetsLabel: "Target roles",
       targets: ["Finance Data Analyst", "Financial BI Analyst", "Analytics Engineer"],
-      subtitle: "Economist and FP&A consultant who builds the data infrastructure he works from.",
+      subtitle: "Economist and FP&A consultant who builds the data infrastructure he works from. Between the business and the data, I need no translator.",
       metaLine: "Bogotá, Colombia · GMT-5 · Fully remote · English B2 · Portuguese A2",
       download: "Download resume (PDF)",
       downloadHref: "/Davirson_Novoa_Resume_EN.pdf",
@@ -291,17 +298,21 @@ export const cv = {
       latexNote: "Compiles in Overleaf with nothing to install.",
       contactBtn: "Contact",
       facts: [
-        { value: "15+", label: "countries in the operations I report on" },
+        { value: "15+", label: "countries in the operations I report on, from HQ" },
         { value: "60 hrs/mo", label: "of reporting given back to the team (10 per analyst)" },
         { value: "26 months", label: "from intern to specialist" },
-        { value: "48", label: "assets in a daily pipeline I run" },
+        { value: "95 M", label: "credit records modelled on a laptop" },
       ],
       profileLabel: "Profile",
       profileText:
-        "Economist with three years inside corporate finance — treasury, billing and FP&A — building the data the business runs on: Python, SQL and Power BI applied to operations across 15+ countries in the Americas and the Eastern Hemisphere. I now run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.",
+        "Economist with three years inside corporate finance — treasury, billing and FP&A — building the data the business runs on rather than waiting for someone to hand it over: Python, SQL and Power BI applied to operations across 15+ countries in the Americas and the Eastern Hemisphere. Alongside that I run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step, plus a credit decisioning system over 95 million records with ten model-governance gates. All of it verifiable: every figure on my site links to the repository that produces it. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.",
+      // One-page sheet only: see the Spanish note above.
+      profileShortText:
+        "Economist with three years inside corporate finance — treasury, billing and FP&A — building the data the business runs on myself: Python, SQL and Power BI over operations across 15+ countries in the Americas and the Eastern Hemisphere. Alongside it I run a PostgreSQL warehouse with dbt, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, plus a credit decisioning system over 95 million records with ten governance gates. Every figure on my site links to the repository that produces it.",
       pivot: {
         label: "The crossover role",
-        body: "This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing — code and data — because the report the business needed did not exist. An FX mismatch analysis in Python as an intern. Automation that gave every treasury analyst about 10 hours a month back — close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; it is knowing which question is worth answering before writing any. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code — it is the one who needs no translator between them.",
+        shortBody: "Not a career change: I am pricing what I already do. In every finance role I ended up building code and data because the report the business needed did not exist and nobody else was going to build it. The edge is not knowing Python — plenty of people do. It is knowing which question is worth answering before writing the first line.",
+        body: "This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing — code and data — because the report the business needed did not exist and nobody else was going to build it. An FX mismatch analysis in Python as an intern. Automation that gave every treasury analyst about 10 hours a month back — close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; plenty of people know Python. It is knowing which question is worth answering before writing the first line. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code — it is the one who needs no translator between them. Hiring that person is hiring two profiles in one, without the handoff meeting between them.",
       },
       expLabel: "Experience",
       expTitle: "Experience",
@@ -482,7 +493,7 @@ export const cv = {
       skillsTechTitle: "Technical stack",
       skillsTechDesc: "Each tool with the work that backs it.",
       skillsTech: [
-        { name: "Excel and financial modelling", proof: "SG&A close and forecast across 12 countries at Neoris EPAM" },
+        { name: "Excel and financial modelling", proof: "SG&A close and forecast across 15+ countries at Neoris EPAM" },
         { name: "Power BI", proof: "Seven-table semantic model in TMDL, loaded against Supabase", href: "/projects/powerbi" },
         { name: "Tableau", proof: "Dashboard that won the BodyTech Trends Hackathon, public", href: TABLEAU_VIZ },
         { name: "SQL · PostgreSQL", proof: "Three-layer medallion warehouse, more than 58,000 candles in production" },

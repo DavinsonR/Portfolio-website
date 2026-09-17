@@ -365,16 +365,20 @@ function buildOnePage(lang: Locale): string {
   w("");
 
   // ---------- perfil ----------
+  // Texto propio de la hoja corta, no el de tres páginas: el largo empuja el
+  // documento a dos páginas y `check:artifacts` lo rechaza — que es como se
+  // descubrió. Recortar aquí, nunca aflojar el margen.
   w(`\\section*{${tex(t.profile)}}`);
-  w(tex(cv.profileText));
+  w(tex(cv.profileShortText));
   w("");
 
   // ---------- el rol cruzado ----------
   // Es el párrafo que explica por qué un economista de finanzas aplica a un
   // puesto de datos. En una hoja que se lee en 30 segundos, esa explicación
-  // vale más que una viñeta más de una empresa antigua.
+  // vale más que una viñeta más de una empresa antigua — pero se dice en
+  // cuatro frases, no en nueve.
   w(`\\section*{${tex(t.crossover)}}`);
-  w(tex(cv.pivot.body));
+  w(tex(cv.pivot.shortBody));
   w("");
 
   // ---------- experiencia ----------

@@ -28,15 +28,15 @@
 export const historia = {
   es: {
     historia: {
-      metaTitle: "La historia — no cambié de carrera, apenas le puse nombre",
+      metaTitle: "La historia — no cambié de carrera, ya la estaba haciendo",
       metaDesc:
-        "De un análisis que escribí de practicante a una plataforma que corre sola. La línea que conecta tres años de finanzas corporativas con una tesis, un warehouse y un modelo de crédito que se audita a sí mismo — incluida la cifra que borré.",
+        "De un análisis que escribí de practicante a una plataforma que corre sola mientras duermo. La línea recta que conecta tres años de finanzas corporativas con una tesis, un warehouse y un modelo de crédito que se audita a sí mismo — incluido el AUC de 0,9461 que resultó ser mentira, y que publiqué igual.",
       kicker: "Trayectoria · en primera persona",
       title: "No cambié de carrera. Apenas le puse nombre a lo que ya venía haciendo.",
       intro:
-        "Llevo tres años en finanzas corporativas y en cada puesto terminé haciendo lo mismo sin que nadie me lo pidiera: construir el dato que hacía falta y que no existía. Nunca lo planeé así. Esta es la línea que conecta un análisis que escribí de practicante, un martes cualquiera, con una plataforma que hoy corre sola mientras yo duermo.",
+        "Llevo tres años en finanzas corporativas y en cada puesto terminé haciendo lo mismo sin que nadie me lo pidiera: construir el dato que hacía falta y que no existía. Nunca lo planeé así. Esta es la línea —y es una línea recta— que conecta un análisis que escribí de practicante, un martes cualquiera, con una plataforma que hoy corre sola mientras yo duermo.",
       navLabel: "En esta página",
-      readTime: "7 minutos de lectura · cada cifra enlaza a su prueba",
+      readTime: "7 minutos · cada cifra de esta página enlaza al artefacto que la prueba",
       sections: [
         {
           id: "origen",
@@ -123,7 +123,7 @@ export const historia = {
             "Pero eso no es un modelo de crédito. Es una fuga. «TermInMonths» se sobrescribe cuando el préstamo se liquida, así que ese campo llevaba adentro exactamente el resultado que yo decía estar prediciendo. Quitarlo derrumba la ablación a 0,6621.",
             "El modelo que quedó en producción está en 0,7005 — +0,0311 sobre una scorecard WoE interpretable, con error de calibración de 0,0107. Mucho menos vistoso que 0,9461. Y es lo único que se sostiene.",
           ],
-          verdict: "Mi primera cifra honesta fue una que borré.",
+          verdict: "El número que me hizo quedar bien duró dos días. El que publiqué lleva meses aguantando.",
           bodyAfter: [
             "El sistema tiene diez gates de promoción y uno está diseñado para bloquear mi propio modelo cuando no cumple. Eso era lo que quería construir: no un modelo que gane, sino uno que aguante una auditoría. Que es, mirándolo bien, la misma idea que me encontré en las auditorías internas de SLB cuatro años antes — solo que entonces yo estaba del otro lado de la mesa.",
           ],
@@ -156,23 +156,23 @@ export const historia = {
           ],
         },
       ],
-      ctaTitle: "¿Buscas a alguien que entienda el negocio y construya los datos?",
-      ctaBody: "Escríbeme y hablamos. Respondo en español e inglés.",
+      ctaTitle: "Deja de elegir entre el que entiende el negocio y el que construye los datos.",
+      ctaBody: "Si lo de arriba se parece a lo que necesitas, escríbeme y hablamos esta semana. Respondo en español e inglés.",
       ctaEmail: "Escribir un correo",
       ctaCv: "Descargar el CV",
     },
   },
   en: {
     historia: {
-      metaTitle: "The story — I didn't switch careers, I just named what I was doing",
+      metaTitle: "The story — I didn't switch careers, I was already doing this one",
       metaDesc:
-        "From an analysis I wrote as an intern to a platform that runs itself. The line connecting three years of corporate finance with a thesis, a warehouse and a credit model that audits itself — including the number I deleted.",
+        "From an analysis I wrote as an intern to a platform that runs itself while I sleep. The straight line connecting three years of corporate finance with a thesis, a warehouse and a credit model that audits itself — including the 0.9461 AUC that turned out to be a lie, and that I published anyway.",
       kicker: "Track record · first person",
       title: "I didn't switch careers. I just put a name to what I was already doing.",
       intro:
-        "Three years in corporate finance, and in every role I ended up doing the same thing without anyone asking me to: building the data that was missing. I never planned it that way. This is the line connecting an analysis I wrote as an intern, on some ordinary Tuesday, with a platform that now runs itself while I sleep.",
+        "Three years in corporate finance, and in every role I ended up doing the same thing without anyone asking me to: building the data that was missing. I never planned it that way. This is the line — and it is a straight one — connecting an analysis I wrote as an intern, on some ordinary Tuesday, with a platform that now runs itself while I sleep.",
       navLabel: "On this page",
-      readTime: "7 minute read · every figure links to its proof",
+      readTime: "7 minutes · every figure on this page links to the artifact that proves it",
       sections: [
         {
           id: "origen",
@@ -259,7 +259,7 @@ export const historia = {
             "But that isn't a credit model. It's a leak. TermInMonths is overwritten when a loan is liquidated, so that field carried inside it exactly the outcome I claimed to be predicting. Removing it drops the ablation to 0.6621.",
             "The model that ended up in production sits at 0.7005 — +0.0311 over an interpretable WoE scorecard, with a calibration error of 0.0107. Far less impressive than 0.9461. And it's the only thing that holds.",
           ],
-          verdict: "My first honest number was one I deleted.",
+          verdict: "The number that made me look good lasted two days. The one I published has held for months.",
           bodyAfter: [
             "The system has ten promotion gates and one of them is designed to block my own model when it doesn't comply. That's what I wanted to build: not a model that wins, but one that survives an audit. Which is, when you look at it, the same idea I met in SLB's internal audits four years earlier — except back then I was on the other side of the table.",
           ],
@@ -292,8 +292,8 @@ export const historia = {
           ],
         },
       ],
-      ctaTitle: "Hiring someone who reads the business and builds the data?",
-      ctaBody: "Write to me and let's talk. I answer in English and Spanish.",
+      ctaTitle: "Stop choosing between the one who reads the business and the one who builds the data.",
+      ctaBody: "If what you just read looks like what you need, write to me and let's talk this week. I answer in English and Spanish.",
       ctaEmail: "Write an email",
       ctaCv: "Download the CV",
     },
