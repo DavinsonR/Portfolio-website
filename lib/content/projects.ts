@@ -9,8 +9,7 @@
 // ============================================================
 // Las cinco piezas de trabajo, una por página
 
-import { THESIS_REPO, TABLEAU_VIZ, profile } from "./types";
-import type { Status, Award, Metric, ProofRow, ProjectLink, AlsoRow, Education, CvProject } from "./types";
+import type { Metric } from "./types";
 import type { PbiTableName, PbiMeasureName, PbiPageId } from "../data/powerbi-model";
 
 export const projects = {

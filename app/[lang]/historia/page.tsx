@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDictionary, type Locale } from "@/lib/dictionaries";
+import { getDictionary } from "@/lib/dictionaries";
 import { alternates, openGraph } from "@/lib/config/alternates";
 import { mailtoHref } from "@/lib/config/contact";
 import BackLink from "@/components/BackLink";
@@ -127,6 +127,14 @@ export default async function HistoriaPage({
                   </figure>
                 )}
 
+                {/* La línea de veredicto: serif, y con regla fría de 2px. Es la
+                    frase que se recuerda de la sección, no un adorno. */}
+                {"verdict" in s && s.verdict && (
+                  <p className="mt-7 max-w-[54ch] border-l-2 border-coldline pl-5 font-figure text-[clamp(18px,2.1vw,22px)] leading-[1.45] text-ink">
+                    {s.verdict}
+                  </p>
+                )}
+
                 {"bodyAfter" in s && s.bodyAfter && (
                   <div className={`mt-6 flex flex-col gap-4 ${prose}`}>
                     {s.bodyAfter.map((p) => (
@@ -135,14 +143,6 @@ export default async function HistoriaPage({
                       </p>
                     ))}
                   </div>
-                )}
-
-                {/* La línea de veredicto: serif, y con regla fría de 2px. Es la
-                    frase que se recuerda de la sección, no un adorno. */}
-                {"verdict" in s && s.verdict && (
-                  <p className="mt-7 max-w-[54ch] border-l-2 border-coldline pl-5 font-figure text-[clamp(18px,2.1vw,22px)] leading-[1.45] text-ink">
-                    {s.verdict}
-                  </p>
                 )}
 
                 {"proofHref" in s && s.proofHref && (

@@ -9,8 +9,8 @@
 // ============================================================
 // Trayectoria, herramientas, divulgaciones, contacto, pie y 404
 
-import { THESIS_REPO, TABLEAU_VIZ, profile } from "./types";
-import type { Status, Award, Metric, ProofRow, ProjectLink, AlsoRow, Education, CvProject } from "./types";
+import { TABLEAU_VIZ } from "./types";
+import type { ProofRow } from "./types";
 
 export const about = {
   es: {

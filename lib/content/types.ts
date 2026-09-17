@@ -9,7 +9,6 @@
 export const locales = ["es", "en"] as const;
 export type Locale = (typeof locales)[number];
 
-import type { PbiMeasureName, PbiPageId, PbiTableName } from "../data/powerbi-model";
 
 export type Status = "live" | "building" | "research" | "idea";
 

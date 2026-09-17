@@ -9,8 +9,7 @@
 // ============================================================
 // La portada: metadatos, navegación, la hoja y la mesa de trabajo
 
-import { THESIS_REPO, TABLEAU_VIZ, profile } from "./types";
-import type { Status, Award, Metric, ProofRow, ProjectLink, AlsoRow, Education, CvProject } from "./types";
+import type { Metric, ProjectLink, AlsoRow } from "./types";
 
 export const home = {
   es: {

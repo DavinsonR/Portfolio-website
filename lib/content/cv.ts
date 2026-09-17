@@ -9,8 +9,8 @@
 // ============================================================
 // El CV — de aquí salen también el .tex y el PDF
 
-import { THESIS_REPO, TABLEAU_VIZ, profile } from "./types";
-import type { Status, Award, Metric, ProofRow, ProjectLink, AlsoRow, Education, CvProject } from "./types";
+import { THESIS_REPO, TABLEAU_VIZ } from "./types";
+import type { Award, ProofRow, Education, CvProject } from "./types";
 
 export const cv = {
   es: {
