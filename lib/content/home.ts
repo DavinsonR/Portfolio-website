@@ -16,7 +16,7 @@ export const home = {
     meta: {
       title: "Davirson Novoa — Finance Data Analyst",
       description:
-        "El analista que no le pide el dato a nadie. 95 M de registros de crédito modelados, 15+ países en el cierre, una plataforma que corre sola. Leo el P&L y construyo el pipeline que lo alimenta.",
+        "Encuentro la variación, llego a la causa raíz, dejo el control corriendo solo y lo explico donde se decide. 95 M de registros de crédito modelados, 15+ países en el cierre, una plataforma que se refresca sola.",
     },
     nav: {
       links: [
@@ -38,8 +38,8 @@ export const home = {
       asOf: "Corte a septiembre 2026",
       name: "Davirson Novoa Ramírez",
       verdict: "Finance Data Analyst",
-      thesis: "Leo el P&L. Construyo el pipeline que lo alimenta. Casi nadie hace las dos.",
-      sub: "Tres años cerrando los libros de operaciones en más de 15 países, desde HQ. Y en paralelo, una plataforma de datos en producción —ingesta diaria, 89 pruebas de calidad, modelo semántico en Power BI— que diseñé, construí y opero solo. Sin equipo detrás. Sin proveedor.",
+      thesis: "Encuentro la variación, llego a su causa raíz, dejo el control corriendo solo y lo explico donde se decide. Las cuatro cosas, la misma persona.",
+      sub: "Casi nadie hace las cuatro. El analista encuentra la variación y la pasa; el ingeniero automatiza lo que le pidan; y a la dirección le llega un número que nadie sabe defender. Tres años cerrando los libros de más de 15 países desde HQ, y en paralelo una plataforma de datos en producción —ingesta diaria, 89 pruebas de calidad, modelo semántico en Power BI— que diseñé, construí y opero solo. Sin equipo detrás. Sin proveedor.",
       availability: "Bogotá · GMT-5 · Traslape completo con horario de EE.UU. · Abierto a roles remotos",
       // Las tres preguntas que un reclutador resuelve antes de abrir el CV, y que
       // la página no respondía en ninguna parte: a qué nivel, desde cuándo y por
@@ -159,7 +159,7 @@ export const home = {
     meta: {
       title: "Davirson Novoa — Finance Data Analyst",
       description:
-        "The analyst who doesn't have to ask anyone for the data. 95M credit records modelled, 15+ countries in the close, a platform that runs itself. I read the P&L and I build the pipeline that feeds it.",
+        "I find the variance, I trace it to root cause, I leave the control running itself, and I explain it where the decision gets made. 95M credit records modelled, 15+ countries in the close, a platform that refreshes itself.",
     },
     nav: {
       links: [
@@ -181,8 +181,8 @@ export const home = {
       asOf: "As of September 2026",
       name: "Davirson Novoa Ramírez",
       verdict: "Finance Data Analyst",
-      thesis: "I read the P&L. I build the pipeline that feeds it. Almost nobody does both.",
-      sub: "Three years closing the books for operations across 15+ countries, from HQ. And alongside it, a production data platform — daily ingestion, 89 quality tests, a Power BI semantic model — that I designed, built and run alone. No team behind me. No vendor.",
+      thesis: "I find the variance, I trace it to root cause, I leave the control running itself, and I explain it where the decision gets made. All four, one person.",
+      sub: "Almost nobody does all four. The analyst finds the variance and passes it on; the engineer automates whatever they are handed; and the board gets a number nobody can defend. Three years closing the books for 15+ countries from HQ, and alongside it a production data platform — daily ingestion, 89 quality tests, a Power BI semantic model — that I designed, built and run alone. No team behind me. No vendor.",
       availability: "Bogotá · GMT-5 · Full overlap with US hours · Open to remote roles",
       // The three questions a recruiter settles before opening the CV, and that
       // the page answered nowhere: at what level, from when, and through what
