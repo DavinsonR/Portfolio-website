@@ -5,6 +5,7 @@ import CountUp from "@/components/CountUp";
 import StatusPill from "@/components/StatusPill";
 import CopyEmail from "@/components/CopyEmail";
 import AtlasFigure from "@/components/AtlasFigure";
+import ConstellationField from "@/components/ConstellationField";
 import { mailtoHref } from "@/lib/config/contact";
 import { personGraph } from "@/lib/config/structured-data";
 import type { Locale } from "@/lib/dictionaries";
@@ -38,8 +39,12 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personGraph(dict, lang as Locale)) }}
       />
       {/* ===================== DOCUMENT HEADER ===================== */}
-      <header className="border-b border-rule">
-        <div className={WRAP}>
+      {/* La reticula va DETRAS de esta cabecera, no encima ni en su lugar.
+          relative es lo que le da el marco; isolate mantiene el apilado
+          dentro del header para que nada de mas abajo se cuele entre medias. */}
+      <header className="relative isolate border-b border-rule">
+        <ConstellationField />
+        <div className={`relative z-10 ${WRAP}`}>
           {/* classification line — the masthead of a research sheet */}
           <div className="settle flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-rulesoft py-3 text-[12.5px] tracking-[0.08em] text-muted uppercase">
             <span className="font-semibold text-cold">{sheet.classification}</span>
