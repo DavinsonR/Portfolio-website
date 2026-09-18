@@ -154,7 +154,7 @@ export const cv = {
             "ONNX", "DuckDB", "pandera", "Docker", "Power BI",
           ],
           bullets: [
-            "Modelo en producción con AUC 0,7005 sobre 1,96 M de préstamos SBA 7(a) y 93,4 M de solicitudes HMDA: +0,0311 frente a una scorecard WoE interpretable, con error de calibración 0,0107.",
+            "Modelo en producción con AUC 0,7005 sobre 1,96 M de préstamos SBA 7(a) y 62,4 M de solicitudes HMDA: +0,0311 frente a una scorecard WoE interpretable, con error de calibración 0,0107. El estudio de evento corre aparte, sobre 93,4 M de solicitudes.",
             "La primera medición dio 0,9461 y no era un modelo, era una fuga: «TermInMonths» se sobrescribe cuando el préstamo se liquida, así que el campo llevaba dentro el resultado. Quitarlo derrumba la ablación a 0,6621, y esa es la cifra que se publica.",
             "Diez gates de promoción juzgados por código de salida, y uno está diseñado para bloquear mi propio modelo cuando no cumple el umbral.",
             "El monitoreo detectó que la fuente cambió de vocabulario sin avisar: una variable dejó de significar lo mismo entre cortes y nadie se habría enterado sin el control.",
@@ -426,7 +426,7 @@ export const cv = {
             "ONNX", "DuckDB", "pandera", "Docker", "Power BI",
           ],
           bullets: [
-            "Production model at AUC 0.7005 over 1.96M SBA 7(a) loans and 93.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107.",
+            "Production model at AUC 0.7005 over 1.96M SBA 7(a) loans and 62.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107. The event study runs separately, over 93.4M applications.",
             "The first reading was 0.9461, and it was not a model but a leak: TermInMonths is overwritten when a loan is liquidated, so the field carried the outcome. Removing it drops the ablation to 0.6621 — and that is the number published.",
             "Ten promotion gates judged by exit code, one of them designed to block my own model when it misses the threshold.",
             "Monitoring caught the source changing its vocabulary without notice: a field stopped meaning the same thing between vintages, and nobody would have known without the control.",

@@ -109,7 +109,7 @@ This is not a career change; it is pricing what I already do. In every finance r
 \headline{credit-risk-mlops}{2026 --- in production}
 \subline{Credit decisioning system with model governance --- design and build}{\href{https://github.com/DavinsonR/credit-risk-mlops}{github.com/DavinsonR/credit-risk-mlops}}
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
-  \item Production model at AUC 0.7005 over 1.96M SBA 7(a) loans and 93.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107.
+  \item Production model at AUC 0.7005 over 1.96M SBA 7(a) loans and 62.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107. The event study runs separately, over 93.4M applications.
   \item The first reading was 0.9461, and it was not a model but a leak: TermInMonths is overwritten when a loan is liquidated, so the field carried the outcome. Removing it drops the ablation to 0.6621 --- and that is the number published.
   \item Ten promotion gates judged by exit code, one of them designed to block my own model when it misses the threshold.
   \item Monitoring caught the source changing its vocabulary without notice: a field stopped meaning the same thing between vintages, and nobody would have known without the control.

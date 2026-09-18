@@ -64,7 +64,7 @@ export const home = {
       // datos, honestidad intelectual, investigación propia, rigor de producción.
       metrics: [
         { value: "15+", label: "países bajo mi alcance", note: "desde HQ · América y hemisferio oriental", href: "/cv#experiencia" },
-        { value: "95 M", label: "registros de crédito modelados", note: "1,96 M SBA + 93,4 M HMDA, en un portátil", href: "/projects/credit-risk#cr-cliff" },
+        { value: "95 M", label: "registros de crédito procesados", note: "93,4 M HMDA + 1,96 M SBA · el modelo entrena sobre 62,4 M", href: "/projects/credit-risk#cr-cliff" },
         { value: "1.392", label: "estrategias puestas a prueba", note: "sobrevivieron menos de 50 · publiqué las 1.342 que no", href: "/projects/trading-sim" },
         { value: "1.123", label: "municipios levantados uno a uno", note: "19 fuentes públicas que nadie había cruzado", href: "/research/fintech-inclusion#atlas" },
         { value: "89", label: "pruebas que corren antes que tú", note: "cada día, antes de que un dato se publique", href: "/projects/trading-sim#calidad" },
@@ -202,7 +202,7 @@ export const home = {
       pipelineLiveFallback: "Live pipeline · refreshes daily",
       metrics: [
         { value: "15+", label: "countries under my scope", note: "from HQ · Americas and Eastern Hemisphere", href: "/cv#experiencia" },
-        { value: "95 M", label: "credit records modelled", note: "1.96 M SBA + 93.4 M HMDA, on a laptop", href: "/projects/credit-risk#cr-cliff" },
+        { value: "95 M", label: "credit records processed", note: "93.4 M HMDA + 1.96 M SBA · the model trains on 62.4 M", href: "/projects/credit-risk#cr-cliff" },
         { value: "1,392", label: "strategies put to the test", note: "fewer than 50 survived · I published the 1,342 that didn't", href: "/projects/trading-sim" },
         { value: "1,123", label: "municipalities built one by one", note: "19 public sources nobody had joined", href: "/research/fintech-inclusion#atlas" },
         { value: "89", label: "tests that run before you do", note: "every day, before a single figure ships", href: "/projects/trading-sim#calidad" },

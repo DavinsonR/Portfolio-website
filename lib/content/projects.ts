@@ -17,7 +17,7 @@ export const projects = {
     creditRisk: {
       metaTitle: "credit-risk-mlops — diez gates, y uno bloquea mi propio modelo",
       metaDesc:
-        "Sistema de decisión crediticia sobre 1,96M de préstamos SBA y 93,4M de solicitudes HMDA, con gobierno de modelos: gates que bloquean, monitoreo que encontró una variable rota y un estudio de evento que corrigió una cifra propia.",
+        "Sistema de decisión crediticia sobre 1,96M de préstamos SBA y 62,4M de solicitudes HMDA, con gobierno de modelos: gates que bloquean, monitoreo que encontró una variable rota y un estudio de evento que corrigió una cifra propia.",
       kicker: "Sistema de decisión · credit-risk-mlops",
       title: "El modelo no es el punto. El punto es que sobrevive una auditoría.",
       intro:
@@ -637,7 +637,7 @@ export const projects = {
     creditRisk: {
       metaTitle: "credit-risk-mlops — ten gates, and one blocks my own model",
       metaDesc:
-        "A credit decisioning system over 1.96M SBA loans and 93.4M HMDA applications, with model governance: gates that block, monitoring that found a broken variable, and an event study that corrected a figure of my own.",
+        "A credit decisioning system over 1.96M SBA loans and 62.4M HMDA applications, with model governance: gates that block, monitoring that found a broken variable, and an event study that corrected a figure of my own.",
       kicker: "Decision system · credit-risk-mlops",
       title: "The model is not the point. The point is that it survives an audit.",
       intro:

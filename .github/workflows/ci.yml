@@ -63,6 +63,14 @@ jobs:
       # Más fuerte que mirar el contenido: si alguien editó el bloque `cv` del
       # diccionario y no corrió `npm run latex`, el .tex regenerado difiere del
       # versionado y esto lo dice.
+      # Las cifras no pueden contradecirse entre paginas ni entre idiomas.
+      # `check:dict` compara la FORMA de es/en, nunca los valores: la portada
+      # afirmo 93,4 M en su tarjeta y 62,4 M cuatro parrafos mas abajo, y las
+      # tres comprobaciones pasaron en verde.
+      - name: Cifras consistentes
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run check:figures
+
       - name: Los .tex versionados están al día
         if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         run: |
