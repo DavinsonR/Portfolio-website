@@ -16,3 +16,9 @@ next-env.d.ts
 
 # cache incremental de TypeScript: salida de build, versionada por descuido
 *.tsbuildinfo
+
+# Material de las publicaciones: fotogramas del atlas y los GIF que salen de
+# ellos (scripts/capture-atlas-frames.mjs y scripts/generate-atlas-gif.py).
+# Se regeneran a mano cuando hacen falta; no son parte del sitio.
+/scripts/.atlas-frames/
+/scripts/.atlas-gif/
