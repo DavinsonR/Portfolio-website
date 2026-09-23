@@ -1,4 +1,4 @@
-# Decisiones — D-01 … D-32
+# Decisiones — D-01 … D-35
 
 *Índice. Cada fila enlaza a la sesión donde la decisión se tomó, con su justificación completa; aquí va solo lo suficiente para saber si hace falta ir a leerla.*
 
@@ -52,6 +52,9 @@ Estas decisiones **no rigen este repositorio**. Están aquí porque el sitio con
 | # | Decisión | Sesión |
 |---|---|---|
 | D-32 | **Siete redirects sin idioma en 308 y `/` en 307.** Los de ruta concreta (`/cv` → `/en/cv`…) son decisiones permanentes de arquitectura: consolidan señal y se cachean. `/` se queda temporal a propósito: es el único sitio donde una detección de idioma por `Accept-Language` tendría sentido algún día, y un 308 queda cacheado en el navegador del visitante sin caducidad — lo congelaría. `check:routes` lee la lista de `next.config.ts` y exige exactamente esos códigos | [18](bitacora/sesion-18.md) |
+| D-33 | **Las imágenes van en `<img>`, no en `next/image`.** Con `unoptimized` el componente no convertía, ni redimensionaba, ni generaba `srcset`: solo enviaba su runtime (4,8 KB br) por cada ruta con una imagen, y en Power BI por una imagen que no existía. Son WebP con medidas declaradas y `loading="lazy"`. La regla `@next/next/no-img-element` está apagada con este motivo; si algún día se quiere optimización real, vuelve `next/image` SIN `unoptimized` y la regla se enciende | [22](bitacora/sesion-22.md) |
+| D-34 | **El sitemap no lleva `lastmod` y el pie no lleva año.** Eran `new Date()` en el build: las 16 URL «modificadas hoy» en cada despliegue, que es exactamente la señal que Google aprende a ignorar, y un año que caducaba cada 1 de enero hasta el siguiente despliegue. Derivarlos de Git exigía un fichero generado más que regenerar en cada commit; omitirlos es más honesto que inventarlos | [22](bitacora/sesion-22.md) |
+| D-35 | **El serif es una instancia parcial de la variable** (peso 400–600, tamaño óptico 18–48): el rango exacto en que el sitio la usa. 122 → 69 KB con la misma tipografía en todo lo que se ve. Pinar el tamaño óptico en un solo valor la dejaba en 33 KB, pero cambia el dibujo entre 18 y 48 px; no se hizo. Va con caché inmutable: si cambia, se renombra | [22](bitacora/sesion-22.md) |
 
 ---
 

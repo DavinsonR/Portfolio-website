@@ -16,7 +16,7 @@ export const home = {
     meta: {
       title: "Davirson Novoa — Finance Data Analyst",
       description:
-        "Encuentro la variación, llego a la causa raíz, dejo el control corriendo solo y lo explico donde se decide. 95 M de registros de crédito modelados, 15+ países en el cierre, una plataforma que se refresca sola.",
+        "Encuentro la variación, llego a su causa raíz, dejo el control corriendo solo y lo explico donde se decide. Finance Data Analyst, remoto desde Bogotá.",
     },
     nav: {
       links: [
@@ -160,7 +160,7 @@ export const home = {
     meta: {
       title: "Davirson Novoa — Finance Data Analyst",
       description:
-        "I find the variance, I trace it to root cause, I leave the control running itself, and I explain it where the decision gets made. 95M credit records modelled, 15+ countries in the close, a platform that refreshes itself.",
+        "I find the variance, trace it to root cause, leave the control running itself and explain it where the decision gets made. Finance Data Analyst, remote.",
     },
     nav: {
       links: [

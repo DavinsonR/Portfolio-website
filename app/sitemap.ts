@@ -10,7 +10,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return locales.flatMap((lang) =>
     ROUTES.map((route) => ({
       url: `${SITE}/${lang}${route}`,
-      lastModified: new Date(),
+      // Sin `lastModified`: era `new Date()` en cada build, idéntico en las 16
+      // URL, y una fecha que siempre dice «hoy» es exactamente la señal que el
+      // buscador aprende a ignorar. Omitirla es más honesto que inventarla.
       changeFrequency: "weekly" as const,
       priority: route === "" ? 1 : 0.8,
       alternates: {

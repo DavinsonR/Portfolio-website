@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 /** English is the default: most decision-makers for these roles read English,
  *  and the Spanish routes stay one click away from every page. */
 const nextConfig: NextConfig = {
+  // Un sitio que se toma la molestia de `default-src 'none'` no anuncia su
+  // framework en cada respuesta.
+  poweredByHeader: false,
   async redirects() {
     return [
       // `/` se queda en 307 A PROPÓSITO (D-32): es el único sitio donde una
@@ -62,21 +65,52 @@ const nextConfig: NextConfig = {
      *  El <script> del runtime va con `integrity`, de modo que el unico permiso de
      *  origen externo que se concede esta atado a un hash concreto. */
     const demo = "credit-risk-demo";
+    // En `next dev` la CSP estricta bloquea los <style> que inyecta HMR y el
+    // script de depuración de Vercel Analytics (va.vercel-scripts.com): la
+    // consola se llenaba de violaciones que tapaban los errores reales. Solo en
+    // desarrollo se abren esas dos puertas; la política publicada no cambia.
+    const dev = process.env.NODE_ENV !== "production";
+    /** Caché para `public/`. Next sirve todo lo que hay ahí con
+     *  `max-age=0, must-revalidate`: las dos fuentes precargadas, el modelo de
+     *  1,9 MB y los 1,8 MB del atlas se revalidaban en cada visita (un RTT por
+     *  activo, en la ruta crítica del render en el caso de las fuentes). Las
+     *  fuentes no cambian nunca —si cambian, se renombra el fichero—; el resto
+     *  cambia con un commit y una hora de caché con revalidación en segundo
+     *  plano no deja a nadie viendo algo viejo más de eso. `check:routes` exige
+     *  que una fuente lleve `max-age` mayor que cero. */
+    const cache = (source: string, value: string) => ({ source, headers: [{ key: "Cache-Control", value }] });
+    const immutable = "public, max-age=31536000, immutable";
+    const hourly = "public, max-age=3600, stale-while-revalidate=604800";
+    const weekly = "public, max-age=604800, stale-while-revalidate=2592000";
     return [
+      cache("/fonts/:path*", immutable),
+      cache(`/${demo}/model.onnx`, immutable),
+      cache("/atlas/:path*", hourly),
+      cache("/trading-sim-snapshot/:path*", hourly),
+      cache("/og-:lang.png", weekly),
+      cache("/icon-:size.png", weekly),
+      cache("/tableau/:path*", weekly),
+      cache("/tracking/:path*", weekly),
+      cache("/:name*.pdf", "public, max-age=86400, stale-while-revalidate=604800"),
       {
         source: `/:path((?!${demo}).*)`,
         headers: [
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+          // `browsing-topics` es lo que sustituyó a FLoC (`interest-cohort`); se
+          // dejan los dos porque los navegadores ignoran la directiva que no conocen.
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=(), browsing-topics=()" },
+          // Cierra la referencia `window.opener` entre orígenes. Coste cero: nada
+          // aquí depende de una ventana abierta desde otro sitio.
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
           {
             key: "Content-Security-Policy",
             value: [
               "default-src 'none'",
-              "script-src 'self' 'unsafe-inline'",
-              "style-src 'self'",
+              dev ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com" : "script-src 'self' 'unsafe-inline'",
+              dev ? "style-src 'self' 'unsafe-inline'" : "style-src 'self'",
               "style-src-attr 'unsafe-inline'",
               "font-src 'self'",
               "img-src 'self' data:",
@@ -98,7 +132,7 @@ const nextConfig: NextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=(), browsing-topics=()" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
           {
             key: "Content-Security-Policy",

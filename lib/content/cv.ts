@@ -28,7 +28,7 @@ export const cv = {
       metaLine: "Bogotá, Colombia · GMT-5 · 100% remoto · Inglés de trabajo a diario, con equipos en 15+ países · Español nativo",
       // La <meta name="description"> de /cv. Antes se derivaba recortando
       // `profileText` a 155 caracteres, y el corte caía a mitad de palabra.
-      metaDesc: "CV de Davirson Novoa: economista y consultor FP&A que también construye plataformas de datos en producción. Finance Data Analyst, remoto desde Bogotá, GMT-5.",
+      metaDesc: "CV de Davirson Novoa: economista y consultor FP&A que también construye plataformas de datos en producción. Finance Data Analyst, remoto desde Bogotá.",
       download: "Descargar CV (PDF)",
       downloadHref: "/Davirson_Novoa_CV_ES.pdf",
       downloadShort: "Versión de 1 página",

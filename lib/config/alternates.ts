@@ -42,6 +42,9 @@ export function openGraph(
     title: meta.title,
     description: meta.description,
     locale: lang === "es" ? "es_CO" : "en_US",
+    // Facebook y LinkedIn usan esto para saber que existe la otra versión sin
+    // descubrirla por su cuenta; sin él cada idioma era una entidad aislada.
+    alternateLocale: lang === "es" ? "en_US" : "es_CO",
     images: [{ url: `/og-${lang}.png`, width: 1200, height: 630, alt: meta.title }],
   };
 }

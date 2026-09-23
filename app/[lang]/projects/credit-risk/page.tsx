@@ -9,6 +9,7 @@ import {
   VocabularyCliff,
 } from "@/components/credit-risk/Charts";
 import { alternates, social } from "@/lib/config/alternates";
+import { pageGraph } from "@/lib/config/structured-data";
 import {
   CR,
   cliff,
@@ -22,6 +23,7 @@ import {
   pp,
   regimes,
   umbralPP,
+  REPO,
 } from "@/lib/data/credit-risk";
 import { getDictionary } from "@/lib/dictionaries";
 
@@ -67,6 +69,10 @@ export default async function CreditRiskPage({
 
   return (
     <main id="main" tabIndex={-1}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/projects/credit-risk", { title: t.metaTitle, description: t.metaDesc }, { type: "SoftwareSourceCode", codeRepository: REPO, programmingLanguage: "Python" })) }}
+      />
       {/* ================= HERO ================= */}
       <header className="pt-20 pb-12">
         <div className={wrap}>

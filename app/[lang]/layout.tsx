@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
 import { getDictionary, locales, type Locale } from "@/lib/dictionaries";
 import Navbar from "@/components/Navbar";
@@ -20,6 +20,15 @@ export function generateStaticParams() {
  *  Ahora todo lo que no sea `es` o `en` es 404. */
 export const dynamicParams = false;
 
+/** La barra del navegador móvil sigue al tema: el manifest solo puede declarar
+ *  un color, y era el azul del tema claro también en oscuro. */
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#0f4c81" },
+    { media: "(prefers-color-scheme: dark)", color: "#0e1216" },
+  ],
+};
+
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const dict = getDictionary(lang);
@@ -40,6 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       title: dict.meta.title,
       description: dict.meta.description,
       locale: lang === "es" ? "es_CO" : "en_US",
+      alternateLocale: lang === "es" ? "en_US" : "es_CO",
       images: [{ url: `/og-${lang}.png`, width: 1200, height: 630, alt: `${dict.profile.name} — ${dict.sheet.verdict}` }],
     },
     twitter: {
@@ -79,7 +89,10 @@ export default async function RootLayout({
             metía una hoja mutable —sin SRI posible— en la ruta crítica. Versionadas
             en el repo, el build tampoco necesita red: FALLO-01 resuelto, no esquivado. */}
         <link rel="preload" href="/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preload" href="/fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        {/* El serif solo aparece sobre el pliegue en la portada y en el CV (las
+            cifras grandes y la línea de veredicto); las otras ocho rutas lo
+            precargaban igual. Esas dos páginas lo declaran ellas mismas y React
+            lo iza a <head>. */}
       </head>
       <body className="font-sans antialiased">
         {/* El primer tabulador de un lector de teclado caía en el conmutador de

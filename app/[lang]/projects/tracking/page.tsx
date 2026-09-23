@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { getDictionary } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
 import { alternates, social } from "@/lib/config/alternates";
+import { pageGraph } from "@/lib/config/structured-data";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -45,6 +45,10 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
 
   return (
     <main id="main" tabIndex={-1}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/projects/tracking", { title: t.metaTitle, description: t.metaDesc }, { type: "SoftwareApplication", url: t.demoUrl, applicationCategory: "LifestyleApplication" })) }}
+      />
       {/* ================= HERO ================= */}
       <header className="border-b border-rule">
         <div className={wrap}>
@@ -129,13 +133,17 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
           <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-9 sm:grid-cols-2 lg:grid-cols-4">
             {t.demo.shots.map((s, i) => (
               <figure key={s.file} data-reveal className="reveal" style={delay(i)}>
-                <Image
+                {/* <img> y no next/image: con `unoptimized` el componente no
+                    convertía, ni redimensionaba, ni generaba srcset — solo enviaba
+                    su runtime (4,8 KB br) por cada ruta con una imagen. Ya son WebP
+                    con sus medidas. El <figcaption> nombra y describe la pantalla;
+                    un alt que lo repite se oye dos veces: alt vacío. */}
+                <img
                   src={`/tracking/${s.file}.webp`}
                   width={393}
                   height={800}
-                  unoptimized
-                  // El <figcaption> ya nombra y describe la pantalla; un alt que lo
-                  // repite se oye dos veces. Imagen descrita por su pie: alt vacío.
+                  loading="lazy"
+                  decoding="async"
                   alt=""
                   className="w-full border border-rule"
                 />

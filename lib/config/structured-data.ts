@@ -15,13 +15,24 @@ import type { Dictionary, Locale } from "../dictionaries";
  *
  *  El correo ya está en texto plano en la cabecera y en cada `mailto:`, así que
  *  repetirlo aquí no abre una superficie nueva. */
+export const PERSON_ID = `${SITE}/#person`;
+export const SITE_ID = `${SITE}/#website`;
+
 export function personGraph(dict: Dictionary, lang: Locale) {
   const home = `${SITE}/${lang}`;
-  const personId = `${SITE}/#person`;
+  const personId = PERSON_ID;
 
   return {
     "@context": "https://schema.org",
     "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": SITE_ID,
+        url: SITE,
+        name: dict.profile.name,
+        inLanguage: ["es", "en"],
+        author: { "@id": personId },
+      },
       {
         "@type": "Person",
         "@id": personId,
@@ -67,7 +78,74 @@ export function personGraph(dict: Dictionary, lang: Locale) {
         inLanguage: lang,
         mainEntity: { "@id": personId },
         about: { "@id": personId },
+        isPartOf: { "@id": SITE_ID },
       },
+    ],
+  };
+}
+
+/** Lo que una subpágina afirma de sí misma. Solo existía en la portada:
+ *  las siete subpáginas —incluidos tres repositorios públicos, una tesis y un
+ *  warehouse de datos abiertos— no decían al buscador qué eran. Cada nodo se
+ *  construye con el título y la descripción de la propia página y con enlaces
+ *  que la página ya enseña: nada aquí que el lector no pueda verificar arriba. */
+export type PageWork =
+  | { type: "SoftwareSourceCode"; codeRepository: string; programmingLanguage?: string }
+  | { type: "SoftwareApplication"; url: string; applicationCategory: string }
+  | { type: "ScholarlyArticle"; codeRepository: string }
+  | { type: "Article" };
+
+export function pageGraph(
+  dict: Dictionary,
+  lang: string,
+  route: string,
+  meta: { title: string; description: string },
+  work?: PageWork,
+) {
+  const home = `${SITE}/${lang}`;
+  const url = `${home}${route}`;
+  const pageId = `${url}#page`;
+  const base = {
+    name: meta.title,
+    description: meta.description,
+    url,
+    inLanguage: lang,
+    author: { "@id": PERSON_ID },
+    isPartOf: { "@id": pageId },
+  };
+  const workNode =
+    work?.type === "SoftwareSourceCode"
+      ? { "@type": "SoftwareSourceCode", ...base, codeRepository: work.codeRepository, programmingLanguage: work.programmingLanguage }
+      : work?.type === "SoftwareApplication"
+        ? { "@type": "SoftwareApplication", ...base, url: work.url, applicationCategory: work.applicationCategory, operatingSystem: "Web" }
+        : work?.type === "ScholarlyArticle"
+          ? { "@type": "ScholarlyArticle", ...base, isBasedOn: work.codeRepository }
+          : work?.type === "Article"
+            ? { "@type": "Article", ...base }
+            : null;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": pageId,
+        url,
+        name: meta.title,
+        description: meta.description,
+        inLanguage: lang,
+        isPartOf: { "@id": SITE_ID },
+        about: { "@id": PERSON_ID },
+        ...(workNode ? { mainEntity: { "@id": `${url}#work` } } : {}),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: dict.profile.name, item: home },
+          { "@type": "ListItem", position: 2, name: meta.title, item: url },
+        ],
+      },
+      ...(workNode ? [{ "@id": `${url}#work`, ...workNode }] : []),
     ],
   };
 }

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { getDictionary } from "@/lib/dictionaries";
 import {
   TABLES, RELATIONSHIPS, MEASURES, PAGES, VISUAL_COUNT, PBI_SOURCE_COMMIT, pbiUrl, measuresOf, type PbiVisual,
@@ -12,6 +11,8 @@ import ContactBand from "@/components/ContactBand";
 import ModelDiagram from "@/components/powerbi/ModelDiagram";
 import MeasureCatalogue from "@/components/powerbi/MeasureCatalogue";
 import { alternates, social } from "@/lib/config/alternates";
+import { pageGraph } from "@/lib/config/structured-data";
+import { TRADING_SIM_REPO } from "@/lib/data/trading-sim";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -47,6 +48,10 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
 
   return (
     <main id="main" tabIndex={-1}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/projects/powerbi", { title: t.metaTitle, description: t.metaDesc }, { type: "SoftwareSourceCode", codeRepository: TRADING_SIM_REPO })) }}
+      />
       {/* ================= HERO ================= */}
       <header className="border-b border-rule">
         <div className={wrap}>
@@ -196,7 +201,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
 
                 {shot ? (
                   <figure className="mt-5">
-                    <Image src={shot.src} width={shot.width} height={shot.height} unoptimized alt={`${t.pages.shotAlt} ${p.displayName}`} className="w-full border border-rule" />
+                    <img src={shot.src} width={shot.width} height={shot.height} loading="lazy" decoding="async" alt={`${t.pages.shotAlt} ${p.displayName}`} className="w-full border border-rule" />
                     <figcaption className="mt-2 text-[14px] text-muted">{p.displayName} · {t.pages.shotCaption}</figcaption>
                   </figure>
                 ) : (

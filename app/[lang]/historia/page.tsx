@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import { alternates, social } from "@/lib/config/alternates";
+import { pageGraph } from "@/lib/config/structured-data";
 import BackLink from "@/components/BackLink";
 import SectionNav from "@/components/SectionNav";
 import ContactBand from "@/components/ContactBand";
@@ -44,6 +45,10 @@ export default async function HistoriaPage({
 
   return (
     <main id="main" tabIndex={-1}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/historia", { title: t.metaTitle, description: t.metaDesc }, { type: "Article" })) }}
+      />
       {/* ================= HERO ================= */}
       <header className="pt-20 pb-12">
         <div className={wrap}>
