@@ -7,7 +7,15 @@
    that size. */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { buildProjection, renderAtlas, type Projection } from "./render";
+import type { Projection } from "./render";
+
+/* El renderizador (d3-geo, d3-scale, topojson y sus ~1.000 líneas: 66 KB
+   crudos, 22,5 KB br) bajaba con la página aunque sus datos sí esperaban a
+   la puerta de 600 px — la mitad de FALLO-30 que quedó abierta. Ahora el
+   módulo se pide en el mismo lugar que los JSON. Una sola promesa por sesión. */
+type Renderer = typeof import("./render");
+let rendererPromise: Promise<Renderer> | null = null;
+const loadRenderer = () => (rendererPromise ??= import("./render"));
 import type { AtlasCopy, AtlasMeta, Indicator, Level, Series, Topology, View } from "./types";
 
 const BASE = "/atlas";
@@ -50,13 +58,16 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
 
   /* Departmental data comes with the section; the municipal geometry is 1.2 MB and only
      loads when someone actually asks for municipalities. */
+  const renderer = useRef<Renderer | null>(null);
   const ensure = useCallback(async (want: Level) => {
     const file = want === "departamento" ? "departamentos" : "municipios";
-    const [series, topology] = await Promise.all([
+    const [series, topology, r] = await Promise.all([
       loadJSON<Series>(`series_${want}.json`),
       loadJSON<Topology>(`geo_${file}.json`),
+      loadRenderer(),
     ]);
-    return { series, topology, projection: buildProjection(topology) };
+    renderer.current = r;
+    return { series, topology, projection: r.buildProjection(topology) };
   }, []);
 
   useEffect(() => {
@@ -156,7 +167,10 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
     if (!meta || !bundle || !indicator || activeYear === null) return;
     if (!left.current || !map.current || !right.current) return;
     if (!bundle.series.series[indicator.id]) return;
-    const stop = renderAtlas(
+    // `ensure` esperó al módulo antes de dejar un bundle en estado: aquí ya está.
+    const r = renderer.current;
+    if (!r) return;
+    const stop = r.renderAtlas(
       { left: left.current, map: map.current, right: right.current },
       {
         meta,

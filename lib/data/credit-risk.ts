@@ -60,9 +60,6 @@ export const cliff: CliffPoint[] = monitoreo.deriva.cohortes.map((c) => ({
   n: c.n,
 }));
 
-export const cliffLatest = cliff[cliff.length - 1];
-export const cliffFirstBreak = cliff.find((p) => p.sinSoporte > 0)!;
-
 // ---------------------------------------------------------------- estudio de evento
 
 export type EventPoint = {
@@ -91,15 +88,8 @@ export const eventPoints: EventPoint[] = evento.coeficientes.map((c) => ({
           : "post",
 }));
 
-export const gapByYear = evento.brecha_por_anio;
 export const regimes = evento.regimenes;
 export const umbralPP = evento.umbral_economico_pp;
-
-/** El peor coeficiente previo: es el que hace fallar el test de tendencias
- *  paralelas, y por tanto el que decide que no se publique un efecto. */
-export const worstPre = eventPoints
-  .filter((p) => p.fase === "previo")
-  .reduce((a, b) => (Math.abs(b.gamma) > Math.abs(a.gamma) ? b : a));
 
 // ---------------------------------------------------------------- dinero
 

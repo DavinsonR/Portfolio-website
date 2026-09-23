@@ -9,6 +9,7 @@ import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import ContactBand from "@/components/ContactBand";
 import { alternates, social } from "@/lib/config/alternates";
+import { pageGraph } from "@/lib/config/structured-data";
 
 export async function generateMetadata({
   params,
@@ -41,6 +42,10 @@ export default async function TradingSimPage({
 
   return (
     <main id="main" tabIndex={-1}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/projects/trading-sim", { title: t.metaTitle, description: t.metaDesc }, { type: "SoftwareSourceCode", codeRepository: TRADING_SIM_REPO, programmingLanguage: "Python" })) }}
+      />
       {/* ================= HERO ================= */}
       <header className="pt-20 pb-14">
         <div className={wrap}>

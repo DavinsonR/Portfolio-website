@@ -322,12 +322,30 @@ function applyLanguage() {
     .join("");
 }
 
+// Con limite de tiempo, como lib/data/trading-sim.ts en el sitio: sin el, una
+// red que bloquea sin cerrar la conexion deja "cargando" para siempre, que es el
+// peor estado posible porque parece que la pagina esta rota sin decirlo. El
+// runtime viene de dos CDN y el modelo son 1,9 MB: es la carga mas expuesta.
+const withTimeout = (p, ms, what) =>
+  Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(what + " (" + ms / 1000 + " s)")), ms))]);
+
 async function init() {
   try {
-    contract = await (await fetch("contract.json")).json();
-    session = await ort.InferenceSession.create("model.onnx", {
-      executionProviders: ["wasm"],
-    });
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 12000);
+    let res;
+    try {
+      res = await fetch("contract.json", { signal: ctrl.signal });
+    } finally {
+      clearTimeout(timer);
+    }
+    if (!res.ok) throw new Error("contract.json HTTP " + res.status);
+    contract = await res.json();
+    session = await withTimeout(
+      ort.InferenceSession.create("model.onnx", { executionProviders: ["wasm"] }),
+      30000,
+      "model.onnx",
+    );
     $("status").textContent = T.loaded(
       contract.feature_order.length,
       contract.parity.max_abs_diff.toExponential(2),
@@ -368,18 +386,29 @@ $("form").addEventListener("submit", async (e) => {
     has_franchise: 0,
   };
 
-  const input = new ort.Tensor("float32", encode(payload),
-                               [1, contract.feature_order.length]);
-  const out = await session.run({ [session.inputNames[0]]: input });
+  // Un session.run que falla, o un tensor sin la forma esperada, lanzaban sin
+  // que nadie lo recogiera: la pagina se quedaba muda con el boton pulsado.
+  let pd, letter;
+  try {
+    const input = new ort.Tensor("float32", encode(payload),
+                                 [1, contract.feature_order.length]);
+    const out = await session.run({ [session.inputNames[0]]: input });
 
-  // El grafo devuelve [label, probabilidades]; se busca el tensor 2D.
-  let raw = null;
-  for (const name of session.outputNames) {
-    const t = out[name];
-    if (t.dims.length === 2 && t.dims[1] >= 2) { raw = t.data[1]; break; }
+    // El grafo devuelve [label, probabilidades]; se busca el tensor 2D.
+    let raw = null;
+    for (const name of session.outputNames) {
+      const t = out[name];
+      if (t.dims.length === 2 && t.dims[1] >= 2) { raw = t.data[1]; break; }
+    }
+    if (raw === null || raw === undefined) throw new Error("no probability tensor in the model output");
+    pd = calibrate(raw);
+    const band = BANDS.find(([t]) => pd < t) ?? BANDS[BANDS.length - 1];
+    letter = band[1];
+  } catch (err) {
+    $("status").textContent = T.loadError + err.message;
+    $("result").hidden = true;
+    return;
   }
-  const pd = calibrate(raw);
-  const [, letter] = BANDS.find(([t]) => pd < t);
   const label = T.bands[letter];
 
   const lgd = 0.735;  // severidad media observada en los charge-off del panel

@@ -30,9 +30,9 @@ import { FALLOS_LOG } from "./types";
 export const historia = {
   es: {
     historia: {
-      metaTitle: "La historia — no cambié de carrera, ya la estaba haciendo",
+      metaTitle: "La historia: no cambié de carrera",
       metaDesc:
-        "De un análisis que escribí de practicante a una plataforma que corre sola mientras duermo. La línea recta que conecta tres años de finanzas corporativas con una tesis, un warehouse y un modelo de crédito que se audita a sí mismo — incluido el AUC de 0,9461 que resultó ser mentira, y que publiqué igual.",
+        "De un análisis de practicante a una plataforma que corre sola: tres años de finanzas, una tesis, un warehouse y un modelo de crédito que se audita solo.",
       kicker: "Trayectoria · en primera persona",
       title: "No cambié de carrera. Apenas le puse nombre a lo que ya venía haciendo.",
       intro:
@@ -166,9 +166,9 @@ export const historia = {
   },
   en: {
     historia: {
-      metaTitle: "The story — I didn't switch careers, I was already doing this one",
+      metaTitle: "The story: I didn't switch careers",
       metaDesc:
-        "From an analysis I wrote as an intern to a platform that runs itself while I sleep. The straight line connecting three years of corporate finance with a thesis, a warehouse and a credit model that audits itself — including the 0.9461 AUC that turned out to be a lie, and that I published anyway.",
+        "From an intern's analysis to a platform that runs itself: three years of finance, a thesis, a warehouse and a credit model that audits itself.",
       kicker: "Track record · first person",
       title: "I didn't switch careers. I just put a name to what I was already doing.",
       intro:

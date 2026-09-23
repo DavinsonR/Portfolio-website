@@ -15,9 +15,9 @@ import type { PbiTableName, PbiMeasureName, PbiPageId } from "../data/powerbi-mo
 export const projects = {
   es: {
     creditRisk: {
-      metaTitle: "credit-risk-mlops — diez gates, y uno bloquea mi propio modelo",
+      metaTitle: "Riesgo de crédito con diez gates",
       metaDesc:
-        "Sistema de decisión crediticia sobre 1,96 M de préstamos SBA y 62,4 M de solicitudes HMDA, con gobierno de modelos: gates que bloquean, monitoreo que encontró una variable rota y un estudio de evento que corrigió una cifra propia.",
+        "Sistema de decisión crediticia sobre 1,96 M de préstamos SBA y 62,4 M de solicitudes HMDA: gates que bloquean, monitoreo de deriva y un estudio de evento.",
       kicker: "Sistema de decisión · credit-risk-mlops",
       title: "El modelo no es el punto. El punto es que sobrevive una auditoría.",
       intro:
@@ -124,9 +124,9 @@ export const projects = {
       },
     },
     tradingSim: {
-      metaTitle: "Trading Sim — más de 1.300 estrategias contra la realidad",
+      metaTitle: "Más de 1.300 estrategias a prueba",
       metaDesc:
-        "1.392 variantes de estrategia evaluadas sobre 48 activos con comisiones, slippage y validación fuera de muestra. La gran mayoría de las ganadoras eran ilusiones del backtest.",
+        "1.392 variantes de estrategia sobre 48 activos, con comisiones, slippage y validación fuera de muestra. La mayoría de las ganadoras eran ilusiones.",
       kicker: "Laboratorio · trading_sim",
       // Las cifras van como plantilla: el número cambia cada noche y sale de
       // la instantánea (build) y del índice vivo (navegador). Ver lib/data/lab-stats.ts.
@@ -265,7 +265,7 @@ export const projects = {
       note: "Encima de estas corren 171 pruebas unitarias en Python sobre el motor de backtesting, las estrategias y el cliente de cada API.",
     },
     powerbi: {
-      metaTitle: "Medallion Insights — informe Power BI sobre el warehouse",
+      metaTitle: "Medallion Insights: Power BI",
       metaDesc: "Modelo semántico de siete tablas en TMDL, 17 medidas DAX y cuatro páginas de informe, versionados como texto. Cada medida enlaza al archivo que la define.",
       kicker: "Informe · Medallion Insights",
       pill: "EN EL REPO",
@@ -349,8 +349,8 @@ export const projects = {
       backCta: "Volver al inicio",
     },
     thesis: {
-      metaTitle: "Inclusión financiera y crecimiento regional en Colombia — investigación reproducible",
-      metaDesc: "Diecinueve fuentes públicas colombianas en un warehouse dimensional con dbt y DuckDB, un índice de inclusión financiera por dimensiones, dos paneles anuales, un atlas interactivo de los 1.123 municipios y una batería econométrica completa contra la correlación espuria.",
+      metaTitle: "Inclusión financiera en Colombia",
+      metaDesc: "Diecinueve fuentes públicas en un warehouse con dbt y DuckDB, un índice de inclusión financiera, dos paneles anuales y un atlas de los 1.123 municipios.",
       kicker: "Investigación · datos abiertos",
       pill: "INVESTIGACIÓN",
       title: "Podía haber publicado el coeficiente bonito. Publiqué el cero.",
@@ -505,9 +505,9 @@ export const projects = {
       },
     },
     tracking: {
-      metaTitle: "JARVIS — app de seguimiento personal, con demo abierto",
+      metaTitle: "JARVIS: app de seguimiento personal",
       metaDesc:
-        "Registro diario de hábitos, cuerpo, sueño, comida y gastos sobre Postgres con seguridad por fila. Demo público con las cinco pantallas reales y datos generados, 526 pruebas en ocho puertas de CI y un modelo multiusuario con política de fila en 34 tablas.",
+        "Registro diario de hábitos, cuerpo, sueño, comida y gastos sobre Postgres con seguridad por fila: demo público, 526 pruebas y ocho puertas en CI.",
       kicker: "Producto propio · Next.js y Supabase",
       pill: "DEMO ABIERTO",
       title: "Una app de seguimiento personal, y el porqué de cada decisión",
@@ -637,9 +637,9 @@ export const projects = {
   },
   en: {
     creditRisk: {
-      metaTitle: "credit-risk-mlops — ten gates, and one blocks my own model",
+      metaTitle: "Credit risk with ten gates",
       metaDesc:
-        "A credit decisioning system over 1.96M SBA loans and 62.4M HMDA applications, with model governance: gates that block, monitoring that found a broken variable, and an event study that corrected a figure of my own.",
+        "A credit decisioning system over 1.96M SBA loans and 62.4M HMDA applications: gates that block, drift monitoring and an event study.",
       kicker: "Decision system · credit-risk-mlops",
       title: "The model is not the point. The point is that it survives an audit.",
       intro:
@@ -746,9 +746,9 @@ export const projects = {
       },
     },
     tradingSim: {
-      metaTitle: "Trading Sim — 1,300+ strategies vs. reality",
+      metaTitle: "1,300+ strategies put to the test",
       metaDesc:
-        "1,392 strategy variants evaluated across 48 assets with fees, slippage and out-of-sample validation. The vast majority of the winners were backtest illusions.",
+        "1,392 strategy variants across 48 assets, with fees, slippage and out-of-sample validation. Most of the winners were backtest illusions.",
       kicker: "Lab · trading_sim",
       title: "{variants} strategies entered the lab. {survivors} survived.",
       intro:
@@ -885,7 +885,7 @@ export const projects = {
       note: "On top of these, 171 Python unit tests cover the backtesting engine, the strategies and each API client.",
     },
     powerbi: {
-      metaTitle: "Medallion Insights — the Power BI report over the warehouse",
+      metaTitle: "Medallion Insights: Power BI report",
       metaDesc: "A seven-table semantic model in TMDL, 17 DAX measures and four report pages, versioned as text. Every measure links to the file that defines it.",
       kicker: "Report · Medallion Insights",
       pill: "IN THE REPO",
@@ -969,8 +969,8 @@ export const projects = {
       backCta: "Back to home",
     },
     thesis: {
-      metaTitle: "Financial inclusion and regional growth in Colombia — reproducible research",
-      metaDesc: "Nineteen Colombian public sources in a dimensional warehouse on dbt and DuckDB, a financial-inclusion index by dimension, two annual panels, an interactive atlas of all 1,123 municipalities and a full econometric battery against spurious correlation.",
+      metaTitle: "Financial inclusion in Colombia",
+      metaDesc: "Nineteen public sources in a dbt and DuckDB warehouse, a financial-inclusion index, two annual panels and an atlas of all 1,123 municipalities.",
       kicker: "Research · open data",
       pill: "RESEARCH",
       title: "I could have published the pretty coefficient. I published the zero.",
@@ -1123,9 +1123,9 @@ export const projects = {
       },
     },
     tracking: {
-      metaTitle: "JARVIS — a personal tracking app, with an open demo",
+      metaTitle: "JARVIS: a personal tracking app",
       metaDesc:
-        "Daily logging of habits, body, sleep, food and spending on Postgres with row-level security. A public demo running the five real screens on generated data, 526 tests across eight CI gates, and a multi-user model with a row policy on 34 tables.",
+        "Daily logging of habits, body, sleep, food and spending on Postgres with row-level security: public demo, 526 tests and eight CI gates.",
       kicker: "Own product · Next.js and Supabase",
       pill: "OPEN DEMO",
       title: "A personal tracking app, and the reason behind every decision",

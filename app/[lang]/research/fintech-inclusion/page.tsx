@@ -7,6 +7,7 @@ import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
 import Atlas from "@/components/atlas/Atlas";
 import { alternates, social } from "@/lib/config/alternates";
+import { pageGraph } from "@/lib/config/structured-data";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -43,6 +44,10 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
 
   return (
     <main id="main" tabIndex={-1}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/research/fintech-inclusion", { title: t.metaTitle, description: t.metaDesc }, { type: "ScholarlyArticle", codeRepository: THESIS_REPO })) }}
+      />
       {/* ================= HERO ================= */}
       <header className="border-b border-rule">
         <div className={wrap}>

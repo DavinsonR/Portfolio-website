@@ -3,12 +3,12 @@ import type { CSSProperties } from "react";
 import { getDictionary, type CvProject } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
 import Link from "next/link";
-import Image from "next/image";
 import CountUp from "@/components/CountUp";
 import BackLink from "@/components/BackLink";
 import CopyEmail from "@/components/CopyEmail";
 import { mailtoHref } from "@/lib/config/contact";
 import { alternates, social } from "@/lib/config/alternates";
+import { pageGraph } from "@/lib/config/structured-data";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -93,6 +93,11 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
 
   return (
     <main id="main" tabIndex={-1}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/cv", { title: `${cv.title} — ${cv.targets[0]}`, description: cv.metaDesc })) }}
+      />
+      <link rel="preload" href="/fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       {/* ===== HEADER — the title mapping is the headline, not a subtitle ===== */}
       <header className="border-b border-rule">
         <div className={wrap}>
@@ -449,13 +454,13 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                     <p className="mt-1 text-[14px] leading-[1.6] text-body">{a.desc}</p>
                     {a.image && (
                       <figure className="mt-3">
-                        <Image
+                        <img
                           src={a.image.src}
                           width={a.image.width}
                           height={a.image.height}
                           alt={a.imageAlt ?? ""}
-                          unoptimized
                           loading="lazy"
+                          decoding="async"
                           className="h-auto w-full border border-rulesoft"
                         />
                       </figure>

@@ -33,6 +33,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
   return (
     <main id="main" tabIndex={-1}>
+      <link rel="preload" href="/fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       {/* Quien recibe el enlace en una aplicación teclea el nombre en Google
           antes de abrirlo. Sin esto el buscador ve un documento; con esto ve a
           una persona, sus dos grafías y sus perfiles reales. */}
@@ -156,7 +157,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     <a
                       href={dict.profile.linkedin}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer me"
                       className="text-ink underline decoration-warm underline-offset-2">
                       {linkedinHandle}
                     </a>
@@ -168,7 +169,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     <a
                       href={dict.profile.github}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer me"
                       className="text-ink underline decoration-warm underline-offset-2">
                       {githubHandle}
                     </a>
@@ -557,7 +558,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   key={l.label}
                   href={l.href}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  // rel="me": la señal estándar de que el perfil externo es de la
+                  // misma persona (microformats; es la que verifica Mastodon).
+                  rel="noopener noreferrer me"
                   className="text-[14.5px] font-medium text-cold hover:underline"
                 >
                   {l.label}

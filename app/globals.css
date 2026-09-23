@@ -22,6 +22,12 @@
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Instancia parcial de la variable: peso 400–600 y tamaño óptico 18–48, que es
+   exactamente el rango en que este sitio la usa (cifras grandes, línea de
+   veredicto, el «404»). El fichero completo traía peso 200–900 y óptico 8–60:
+   122 KB precargados en todas las rutas para usar 69. Se regenera con
+   fontTools (instancer wght=400:600 opsz=18:48, luego subset al unicode-range
+   de abajo). Si alguna vez cambia, se RENOMBRA: va con caché inmutable. */
 @font-face {
   font-family: "Source Serif 4";
   font-style: normal;
@@ -295,6 +301,11 @@ a {
   .js .reveal {
     opacity: 0;
     transform: translateY(14px);
+  }
+  /* Solo mientras la animación está pendiente: un will-change permanente
+     retiene una capa de composición por elemento (26 en la tesis) después de
+     que la animación terminó. */
+  .js .reveal:not(.is-in) {
     will-change: opacity, transform;
   }
   .js .reveal.is-in {

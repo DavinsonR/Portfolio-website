@@ -67,6 +67,15 @@ for (const r of ["/pricing", "/es/no-existe", "/en/no-existe", "/es-CO"]) {
   await expect(r, 404, "debe ser 404");
 }
 
+// 3b. Las fuentes precargadas llevan caché de verdad: Next sirve public/ con
+//     max-age=0 y cada visita revalidaba las dos en la ruta crítica del render.
+{
+  const res = await fetch(`${BASE}/fonts/archivo-latin.woff2`);
+  const cc = res.headers.get("cache-control") ?? "";
+  const age = Number((cc.match(/max-age=(\d+)/) ?? [])[1] ?? 0);
+  if (res.status !== 200 || age < 86400) failures.push(`/fonts/archivo-latin.woff2 — Cache-Control «${cc}» (se espera max-age ≥ 86400)`);
+}
+
 // 4. Los artefactos de metadatos que el sitio declara.
 for (const r of ["/robots.txt", "/sitemap.xml", "/manifest.webmanifest", "/icon.svg", "/apple-icon.png", "/.well-known/security.txt"]) {
   await expect(r, 200, "artefacto declarado");
@@ -104,6 +113,19 @@ for (const r of routes) {
         `(FALLO-36). Esparce social(lang, "<ruta>", …) en su generateMetadata.`,
     );
   }
+
+  // SE-03/SE-04 — 7 de 8 títulos superaban los 60 caracteres que enseña Google
+  // (el de la tesis llegaba a 109) y el sufijo con el nombre, que va al final,
+  // era justo lo primero que se cortaba. Con 25 caracteres de sufijo, el título
+  // propio cabe en 35.
+  // Las entidades (&#x27;, &amp;) cuentan como un carácter: es lo que ve la persona.
+  const plain = (s) => (s ?? "").replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+  const title = plain(pick(html, /<title>([^<]*)<\/title>/));
+  const description = plain(pick(html, /<meta name="description" content="([^"]*)"/));
+  if (!title) failures.push(`${r} — sin <title>`);
+  else if (title.length > 60) failures.push(`${r} — <title> de ${title.length} caracteres (máximo 60): «${title}»`);
+  if (!description) failures.push(`${r} — sin meta description`);
+  else if (description.length > 155) failures.push(`${r} — description de ${description.length} caracteres (máximo 155)`);
 
   if (!canonical) failures.push(`${r} — sin <link rel="canonical">`);
   if (!ogUrl) failures.push(`${r} — sin og:url`);
