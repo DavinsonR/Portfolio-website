@@ -28,11 +28,14 @@ export default function NotFound() {
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: PICK_LANG }} />
-      <div className="font-sans antialiased bg-paper min-h-screen flex items-center py-20">
+      {/* <main> y <h1>: era la única página del sitio sin un landmark ni un
+          encabezado de nivel 1; sin `main` no hay a dónde saltar y la navegación
+          por encabezados arrancaba en nivel 2 (1.3.1 / 2.4.1). */}
+      <main className="font-sans antialiased bg-paper min-h-screen flex items-center py-20">
         <div className="max-w-[980px] w-full mx-auto px-6">
-          <p className="font-figure text-[64px] leading-none font-semibold text-ink tabular-nums">
+          <h1 className="font-figure text-[64px] leading-none font-semibold text-ink tabular-nums">
             404
-          </p>
+          </h1>
 
           <div className="mt-6 grid gap-10 border-t-2 border-rule pt-8 sm:grid-cols-2 sm:gap-12">
             {(["es", "en"] as const).map((lang) => {
@@ -65,7 +68,7 @@ export default function NotFound() {
             })}
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

@@ -12,6 +12,7 @@
 // ============================================================
 
 import type { CliffPoint, EventPoint } from "@/lib/data/credit-risk";
+import ScaleAware from "@/components/ScaleAware";
 
 const INK = "var(--color-ink)";
 const BODY = "var(--color-body)";
@@ -24,7 +25,7 @@ const COLD = "var(--color-cold)";
 const NEG = "var(--color-neg)";
 const POS = "var(--color-pos)";
 
-const mono =
+const serif =
   '"Source Serif 4", ui-serif, Georgia, serif';
 
 // ------------------------------------------------------------ 1. el acantilado
@@ -51,11 +52,12 @@ export function VocabularyCliff({
 
   return (
     <figure className="my-8">
+      <ScaleAware base={W}>
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full h-auto"
+        className="w-full h-auto overflow-visible"
         role="img"
-        aria-label={labels.caption}
+        aria-labelledby="cr-cliff-cap"
       >
         {[0, 0.25, 0.5, 0.75, 1].map((t) => (
           <g key={t}>
@@ -64,9 +66,9 @@ export function VocabularyCliff({
               x={P.l - 8}
               y={y(t) + 4}
               textAnchor="end"
-              fontSize={11}
+              style={{ fontSize: "calc(11px * var(--k, 1))" }}
               fill={MUTED}
-              fontFamily={mono}
+              fontFamily={serif}
             >
               {fmt(t)}
             </text>
@@ -92,9 +94,9 @@ export function VocabularyCliff({
                 x={x(i)}
                 y={H - P.b + 15}
                 textAnchor="middle"
-                fontSize={10.5}
+                style={{ fontSize: "calc(10.5px * var(--k, 1))" }}
                 fill={MUTED}
-                fontFamily={mono}
+                fontFamily={serif}
               >
                 {String(p.fy).slice(2)}
               </text>
@@ -110,20 +112,21 @@ export function VocabularyCliff({
             x={x(i)}
             y={y(points[i].sinSoporte) - 7}
             textAnchor={i === points.length - 1 ? "end" : "middle"}
-            fontSize={12}
+            style={{ fontSize: "calc(12px * var(--k, 1))" }}
             fill={INK}
             fontWeight={600}
-            fontFamily={mono}
+            fontFamily={serif}
           >
             {fmt(points[i].sinSoporte)}
           </text>
         ))}
 
-        <text x={P.l} y={12} fontSize={11} fill={MUTED}>
+        <text x={P.l} y={12} style={{ fontSize: "calc(11px * var(--k, 1))" }} fill={MUTED}>
           {labels.y}
         </text>
       </svg>
-      <figcaption className="text-[14px] leading-[1.65] text-muted mt-2">
+      </ScaleAware>
+      <figcaption id="cr-cliff-cap" className="text-[14px] leading-[1.65] text-muted mt-2">
         {labels.caption}
       </figcaption>
     </figure>
@@ -162,11 +165,12 @@ export function EventStudy({
 
   return (
     <figure className="my-8">
+      <ScaleAware base={W}>
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full h-auto"
+        className="w-full h-auto overflow-visible"
         role="img"
-        aria-label={labels.caption}
+        aria-labelledby="cr-event-cap"
       >
         {/* Banda del umbral económico, declarado antes de estimar. */}
         <rect
@@ -177,7 +181,7 @@ export function EventStudy({
           fill={COLD}
           opacity={0.07}
         />
-        <text x={W - P.r - 2} y={y(threshold) - 5} textAnchor="end" fontSize={10.5} fill={MUTED}>
+        <text x={W - P.r - 2} y={y(threshold) - 5} textAnchor="end" style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill={MUTED}>
           {labels.band}
         </text>
 
@@ -195,9 +199,9 @@ export function EventStudy({
               x={P.l - 8}
               y={y(t) + 4}
               textAnchor="end"
-              fontSize={11}
+              style={{ fontSize: "calc(11px * var(--k, 1))" }}
               fill={MUTED}
-              fontFamily={mono}
+              fontFamily={serif}
             >
               {fmt(t)}
             </text>
@@ -214,10 +218,10 @@ export function EventStudy({
           strokeWidth={1}
           strokeDasharray="3 3"
         />
-        <text x={shockX - 6} y={P.t - 10} textAnchor="end" fontSize={10.5} fill={MUTED}>
+        <text x={shockX - 6} y={P.t - 10} textAnchor="end" style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill={MUTED}>
           {labels.pre}
         </text>
-        <text x={shockX + 6} y={P.t - 10} fontSize={10.5} fill={MUTED}>
+        <text x={shockX + 6} y={P.t - 10} style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill={MUTED}>
           {labels.post}
         </text>
 
@@ -247,9 +251,9 @@ export function EventStudy({
                 x={x(i)}
                 y={H - P.b + 16}
                 textAnchor="middle"
-                fontSize={10.5}
+                style={{ fontSize: "calc(10.5px * var(--k, 1))" }}
                 fill={p.fase === "base" ? INK : MUTED}
-                fontFamily={mono}
+                fontFamily={serif}
                 fontWeight={p.fase === "base" ? 600 : 400}
               >
                 {String(p.anio).slice(2)}
@@ -258,11 +262,12 @@ export function EventStudy({
           );
         })}
 
-        <text x={P.l} y={12} fontSize={11} fill={MUTED}>
+        <text x={P.l} y={12} style={{ fontSize: "calc(11px * var(--k, 1))" }} fill={MUTED}>
           {labels.y}
         </text>
       </svg>
-      <figcaption className="text-[14px] leading-[1.65] text-muted mt-2">
+      </ScaleAware>
+      <figcaption id="cr-event-cap" className="text-[14px] leading-[1.65] text-muted mt-2">
         {labels.caption}
       </figcaption>
     </figure>
@@ -300,15 +305,16 @@ export function DecisionBalance({
 
   return (
     <figure className="my-8">
+      <ScaleAware base={W}>
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full h-auto"
+        className="w-full h-auto overflow-visible"
         role="img"
-        aria-label={labels.caption}
+        aria-labelledby="cr-balance-cap"
       >
         {rows.map((r) => (
           <g key={r.label}>
-            <text x={P.l} y={r.y - 7} fontSize={12} fill={BODY}>
+            <text x={P.l} y={r.y - 7} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill={BODY}>
               {r.label}
             </text>
             <rect
@@ -323,9 +329,9 @@ export function DecisionBalance({
               x={P.l + (iw * r.v) / max - 10}
               y={r.y + bh / 2 + 6}
               textAnchor="end"
-              fontSize={17}
+              style={{ fontSize: "calc(17px * var(--k, 1))" }}
               fill="var(--color-paper)"
-              fontFamily={mono}
+              fontFamily={serif}
               fontWeight={600}
             >
               {r.value}
@@ -333,7 +339,8 @@ export function DecisionBalance({
           </g>
         ))}
       </svg>
-      <figcaption className="text-[14px] leading-[1.65] text-muted mt-2">
+      </ScaleAware>
+      <figcaption id="cr-balance-cap" className="text-[14px] leading-[1.65] text-muted mt-2">
         {labels.caption}
       </figcaption>
     </figure>
@@ -364,11 +371,12 @@ export function FairnessGate({
 
   return (
     <figure className="my-8">
+      <ScaleAware base={W}>
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full h-auto"
+        className="w-full h-auto overflow-visible"
         role="img"
-        aria-label={labels.caption}
+        aria-labelledby="cr-fairness-cap"
       >
         {/* Zona que no cumple: a la izquierda del umbral de cuatro quintos. */}
         <rect x={P.l} y={P.t} width={x(threshold) - P.l} height={16} fill={NEG} opacity={0.14} />
@@ -388,9 +396,9 @@ export function FairnessGate({
             x={x(t)}
             y={P.t + 34}
             textAnchor="middle"
-            fontSize={10.5}
+            style={{ fontSize: "calc(10.5px * var(--k, 1))" }}
             fill={MUTED}
-            fontFamily={mono}
+            fontFamily={serif}
           >
             {fmt(t)}
           </text>
@@ -405,7 +413,7 @@ export function FairnessGate({
           strokeWidth={1.5}
           strokeDasharray="4 3"
         />
-        <text x={x(threshold) + 7} y={P.t - 18} fontSize={11.5} fill={INK} fontWeight={600}>
+        <text x={x(threshold) + 7} y={P.t - 18} style={{ fontSize: "calc(11.5px * var(--k, 1))" }} fill={INK} fontWeight={600}>
           {labels.threshold}
         </text>
 
@@ -414,18 +422,19 @@ export function FairnessGate({
           x={x(ratio)}
           y={P.t - 18}
           textAnchor="end"
-          fontSize={11.5}
+          style={{ fontSize: "calc(11.5px * var(--k, 1))" }}
           fill={NEG}
           fontWeight={600}
         >
           {labels.observed}
         </text>
 
-        <text x={P.l} y={14} fontSize={11} fill={MUTED}>
+        <text x={P.l} y={14} style={{ fontSize: "calc(11px * var(--k, 1))" }} fill={MUTED}>
           {labels.scale}
         </text>
       </svg>
-      <figcaption className="text-[14px] leading-[1.65] text-muted mt-2">
+      </ScaleAware>
+      <figcaption id="cr-fairness-cap" className="text-[14px] leading-[1.65] text-muted mt-2">
         {labels.caption}
       </figcaption>
     </figure>

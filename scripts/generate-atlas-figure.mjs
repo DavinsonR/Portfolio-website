@@ -191,7 +191,7 @@ function main() {
       .map(
         (p, k) =>
           `<text x="${k * (W + GAP)}" y="14" font-size="12.5" font-weight="600" letter-spacing="0.09em" fill="var(--color-muted)">${p.year}</text>` +
-          `<g transform="translate(${k * (W + GAP)},${TOP})" stroke="var(--color-coldline)" stroke-width="0.5" stroke-linejoin="round">${p.paths}</g>`,
+          `<g transform="translate(${k * (W + GAP)},${TOP})" stroke="var(--color-control)" stroke-width="0.5" stroke-linejoin="round">${p.paths}</g>`,
       )
       .join("") +
     `</svg>`;

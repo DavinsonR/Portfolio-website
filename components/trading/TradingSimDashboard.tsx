@@ -167,7 +167,7 @@ export default function TradingSimDashboard({
   // error, si llega, ocupa su sitio sin borrar lo que ya se ve.
   const pending = indexError ? (
     <div className="border-t-2 border-ink bg-band px-5 py-8 text-center">
-      <p className="text-[14px] text-body">{dict.error}</p>
+      <p className="text-[14px] text-body" role="alert">{dict.error}</p>
       <button
         onClick={retryIndex}
         className="mt-4 rounded-[3px] border border-control px-4 py-2 text-[14px] transition-colors hover:border-cold hover:text-cold"
@@ -177,7 +177,7 @@ export default function TradingSimDashboard({
     </div>
   ) : (
     <div className="border-t-2 border-ink bg-band px-5 py-8">
-      <p className="text-[14px] text-muted">{dict.loading}</p>
+      <p className="text-[14px] text-muted" role="status">{dict.loading}</p>
       <div className="mt-4 space-y-2.5">
         {[80, 60, 72].map((w, i) => (
           <div key={i} className="h-[14px] bg-rule" style={{ width: `${w}%` }} />
@@ -202,7 +202,9 @@ export default function TradingSimDashboard({
           ].map((s) => (
             <div key={s.label} className="border-t border-rule pt-5">
               <p className="text-[12.5px] tracking-[0.1em] uppercase text-muted">{s.label}</p>
-              <p className={`font-display font-medium text-ink mt-2 ${s.hero ? "text-[34px]" : "text-[26px]"}`}>
+              {/* Serif tabular, como toda cifra grande del sitio (DESIGN.md): la
+                  página con más cifras era la única que las vestía distinto. */}
+              <p className={`font-figure tabular-nums text-ink mt-2 ${s.hero ? "text-[clamp(28px,3.8vw,40px)]" : "text-[26px]"}`}>
                 {s.value}
               </p>
             </div>
@@ -309,7 +311,7 @@ export default function TradingSimDashboard({
             ))}
           </div>
 
-          {symbolLoading && <p className="py-16 text-center text-[14px] text-muted">{dict.loading}</p>}
+          {symbolLoading && <p className="py-16 text-center text-[14px] text-muted" role="status">{dict.loading}</p>}
 
           {!symbolLoading && currentBacktest && (
             <>
@@ -361,7 +363,12 @@ export default function TradingSimDashboard({
                     {dict.combos.title.replace("{n}", String(combos.length))}
                   </h4>
                   <p className="text-[14px] leading-[1.6] mb-4 max-w-[640px]">{dict.combos.desc}</p>
-                  <div className="max-h-[340px] overflow-y-auto border-t border-rule">
+                  <div
+                    tabIndex={0}
+                    role="region"
+                    aria-label={dict.combos.title.replace("{n}", String(combos.length))}
+                    className="max-h-[340px] overflow-y-auto border-t border-rule"
+                  >
                     <table className="w-full text-[14px]">
                       <thead className="sticky top-0 bg-band2 text-muted text-left">
                         <tr>
@@ -375,9 +382,12 @@ export default function TradingSimDashboard({
                       <tbody className="text-body">
                         {combos.map((c) => {
                           const dead = (c.n_trades ?? 0) === 0;
+                          // Sin opacidad: body al 45 % sobre band daba 2,16:1 y el texto sigue
+                          // siendo información (qué combinación no operó nunca). `muted` sigue
+                          // siendo AA y la cursiva lo marca sin color.
                           return (
-                            <tr key={c.strategy} className={`border-t border-rulesoft ${dead ? "opacity-45" : ""}`}>
-                              <td className="px-3 py-1.5 text-ink">{c.strategy}</td>
+                            <tr key={c.strategy} className={`border-t border-rulesoft ${dead ? "italic text-muted" : ""}`}>
+                              <td className={`px-3 py-1.5 ${dead ? "" : "text-ink"}`}>{c.strategy}</td>
                               <td className="px-3 py-1.5 text-right">{pct(lang, c.exposure, 1)}</td>
                               <td className="px-3 py-1.5 text-right">{pct(lang, c.excess_return, 1, true)}</td>
                               <td className="px-3 py-1.5 text-right">{pct(lang, c.oos_excess_return, 1, true)}</td>
@@ -396,7 +406,7 @@ export default function TradingSimDashboard({
           )}
 
           {!symbolLoading && !currentBacktest && (
-            <p className="text-[14px] text-muted py-12 text-center">{dict.explorer.noData}</p>
+            <p className="text-[14px] text-muted py-12 text-center" role="status">{dict.explorer.noData}</p>
           )}
         </div>
       </section>
@@ -405,7 +415,7 @@ export default function TradingSimDashboard({
       <section className="border-t border-rule pt-7">
         <h3 className="font-display text-[18px] font-medium text-ink mb-1.5">{dict.leaderboard.title}</h3>
         <p className="text-[14px] leading-[1.7] max-w-[620px] mb-5">{dict.leaderboard.desc}</p>
-        <div className="overflow-x-auto">
+        <div tabIndex={0} role="region" aria-label={dict.leaderboard.title} className="overflow-x-auto">
           <table className="w-full min-w-[560px] text-[14px]">
             <thead className="text-muted text-left">
               <tr className="border-b border-rule">
@@ -441,7 +451,7 @@ export default function TradingSimDashboard({
           <h3 className="font-display text-[18px] font-medium text-ink mb-1.5">{dict.fx.title}</h3>
           <p className="text-[14px] leading-[1.7] max-w-[660px] mb-2">{dict.fx.desc}</p>
           <p className="text-[14px] text-muted mb-5">{dict.fx.formula}</p>
-          <div className="overflow-x-auto">
+          <div tabIndex={0} role="region" aria-label={dict.fx.title} className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-[14px]">
               <thead className="text-muted text-left">
                 <tr className="border-b border-rule">

@@ -76,7 +76,7 @@ export default function ThemeToggle({ labels }: { labels: { light: string; dark:
       aria-label={mode ? (next === "dark" ? labels.dark : labels.light) : labels.dark}
       aria-pressed={mode ? mode === "dark" : undefined}
       title={mode ? (next === "dark" ? labels.dark : labels.light) : undefined}
-      className="no-print inline-flex h-9 w-9 items-center justify-center rounded-[3px] border border-rule text-body transition-colors hover:border-cold hover:text-cold"
+      className="no-print inline-flex h-9 w-9 items-center justify-center rounded-[3px] border border-control text-body transition-colors hover:border-cold hover:text-cold"
     >
       {mode ? <Glyph mode={next} /> : <span className="h-[15px] w-[15px]" />}
     </button>

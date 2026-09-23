@@ -108,7 +108,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 </a>
                 <a
                   href="#work"
-                  className="lift inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+                  className="lift inline-flex items-center rounded-[3px] border border-control px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
                 >
                   {sheet.ctaSecondary}
                 </a>
@@ -254,7 +254,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       <AtlasFigure copy={sheet.atlasFigure} lang={lang} />
 
       {/* ===================== WORK ===================== */}
-      <section id="work" className="scroll-mt-16 border-b border-rule pt-16">
+      <section id="work" className="scroll-mt-[72px] border-b border-rule pt-16">
         <div className={WRAP}>
           <h2
             data-reveal
@@ -273,7 +273,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
               <h3 className="font-display text-[21px] font-bold tracking-[-0.015em] text-ink">
                 {work.project.name}
               </h3>
-              <p className="text-[13px] tracking-[0.07em] text-muted uppercase">
+              <p className="text-[12.5px] tracking-[0.07em] text-muted uppercase">
                 {work.project.kind}
               </p>
             </div>
@@ -342,7 +342,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   l.tone === "solid"
                     ? "lift inline-flex items-center rounded-[3px] bg-ink px-4 py-2.5 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90"
                     : l.tone === "outline"
-                      ? "lift inline-flex items-center rounded-[3px] border border-rule px-4 py-2.5 text-[14px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+                      ? "lift inline-flex items-center rounded-[3px] border border-control px-4 py-2.5 text-[14px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
                       : "inline-flex items-center px-1 py-2.5 text-[14px] font-semibold text-cold hover:underline";
                 const texto = l.tone === "text" ? `${l.label} →` : l.label;
                 return externo ? (
@@ -412,7 +412,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </section>
 
       {/* ===================== TRACK RECORD + PROFILE ===================== */}
-      <section id="track" className="scroll-mt-16 border-b border-rule py-16">
+      <section id="track" className="scroll-mt-[72px] border-b border-rule py-16">
         <div className={WRAP}>
           <div>
             <div className="flex flex-wrap items-baseline justify-between gap-4">
@@ -505,7 +505,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           24ch headline wrapping to three lines in the left third and a row of
           links underneath. The CTA cluster moves beside the headline, which is
           what a band opened by a 2px rule is supposed to look like. */}
-      <section id="contact" className="scroll-mt-16 border-t-2 border-warm py-16">
+      <section id="contact" className="scroll-mt-[72px] border-t-2 border-warm py-16">
         <div className={`${WRAP} grid items-start gap-x-14 gap-y-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]`}>
           <div>
             <h2
@@ -576,7 +576,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           (la lista de la mesa se quedó con `band`). */}
       <section className="border-t border-rule bg-band2 py-14">
         <div className={WRAP}>
-          <h2 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
+          {/* A 12,5px apagado sobre filas de 14px el titular pesaba menos que su
+              contenido: mismo paso que la caja de herramientas de arriba. */}
+          <h2 className="font-display text-[clamp(20px,2.4vw,25px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
             {disclosures.title}
           </h2>
           <dl className="mt-5 grid gap-x-12 gap-y-5 sm:grid-cols-2">

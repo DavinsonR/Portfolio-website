@@ -8,7 +8,18 @@ import { useEffect, useState } from "react";
 
 export type NavItem = { id: string; label: string };
 
-export default function SectionNav({ items, label }: { items: NavItem[]; label: string }) {
+export default function SectionNav({
+  items,
+  label,
+  wrap = "mx-auto max-w-[980px] px-6",
+}: {
+  items: NavItem[];
+  label: string;
+  /** La medida de la página que la monta. Iba fija a 1180px y se usaba en
+   *  páginas de 980: la fila de pestañas sobresalía 100px por cada lado de su
+   *  propio contenido (DA-09). */
+  wrap?: string;
+}) {
   const [active, setActive] = useState(items[0]?.id ?? "");
 
   useEffect(() => {
@@ -33,13 +44,13 @@ export default function SectionNav({ items, label }: { items: NavItem[]; label: 
 
   return (
     <nav aria-label={label} className="no-print sticky top-[65px] z-40 border-b border-rule bg-paper/95 backdrop-blur-sm">
-      <div className="mx-auto max-w-[1180px] px-6">
+      <div className={wrap}>
         <ul className="-mb-px flex gap-1 overflow-x-auto py-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map((i) => (
             <li key={i.id}>
               <a
                 href={`#${i.id}`}
-                aria-current={active === i.id ? "true" : undefined}
+                aria-current={active === i.id ? "location" : undefined}
                 className={`block whitespace-nowrap border-b-2 px-3 py-2.5 text-[14px] transition-colors ${
                   active === i.id
                     ? "border-cold font-semibold text-cold"

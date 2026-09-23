@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
    section and a link in two places. Cold accent throughout — amber stays reserved for
    human content. The screenshots are the app's own, carrying the demo banner they were
    captured with, so nobody can mistake generated figures for someone's real finances. */
-const wrap = "mx-auto max-w-[1180px] px-6";
+const wrap = "mx-auto max-w-[980px] px-6";
 const prose = "max-w-[74ch]";
 const label = "text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase";
 const heading =
@@ -54,7 +54,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
               <StatusPill status="live" text={t.pill} />
             </div>
             <p className={label}>{t.kicker}</p>
-            <h1 className="mt-3 max-w-[30ch] text-balance font-display text-[clamp(26px,3.8vw,42px)] leading-[1.16] font-medium tracking-[-0.02em] text-ink">
+            <h1 className="mt-3 max-w-[30ch] text-balance font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
               {t.title}
             </h1>
             <p className="mt-4 max-w-[70ch] text-[15.5px] leading-[1.7] text-ink">{t.subtitle}</p>
@@ -103,7 +103,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
         </div>
       </header>
 
-      <SectionNav items={t.nav} label={t.metaTitle} />
+      <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
 
       {/* ================= DEMO ================= */}
       <section id="demo" className={section}>
@@ -122,7 +122,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
             <p className="mt-5 max-w-[74ch] text-[15px] leading-[1.7] text-ink">{t.demo.ruleBody}</p>
           </div>
 
-          <h3 className="mt-12 text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
+          <h3 className="mt-12 font-display text-[clamp(20px,2.4vw,25px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
             {t.demo.shotsTitle}
           </h3>
           <p className="mt-1 text-[14px] text-muted">{t.demo.shotsNote}</p>
@@ -134,7 +134,9 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
                   width={393}
                   height={800}
                   unoptimized
-                  alt={`${t.title} — ${s.name}`}
+                  // El <figcaption> ya nombra y describe la pantalla; un alt que lo
+                  // repite se oye dos veces. Imagen descrita por su pie: alt vacío.
+                  alt=""
                   className="w-full border border-rule"
                 />
                 <figcaption className="mt-3">
@@ -145,7 +147,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
             ))}
           </div>
 
-          <h3 className="mt-12 text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
+          <h3 className="mt-12 font-display text-[clamp(20px,2.4vw,25px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
             {t.demo.personTitle}
           </h3>
           <ul className="mt-4 max-w-[92ch]">
@@ -225,7 +227,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
             ))}
           </ol>
 
-          <h3 className="mt-12 text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
+          <h3 className="mt-12 font-display text-[clamp(20px,2.4vw,25px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
             {t.process.guardsTitle}
           </h3>
           <div className="mt-4 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2">
@@ -268,7 +270,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
 
           <div className="mt-8 grid grid-cols-1 gap-x-12 gap-y-10 lg:grid-cols-2">
             <div>
-              <h3 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
+              <h3 className="font-display text-[19px] font-bold tracking-[-0.015em] text-ink">
                 {t.status.liveTitle}
               </h3>
               <ul className="mt-4">
@@ -284,7 +286,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
               </ul>
             </div>
             <div>
-              <h3 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
+              <h3 className="font-display text-[19px] font-bold tracking-[-0.015em] text-ink">
                 {t.status.pendingTitle}
               </h3>
               <ul className="mt-4">
@@ -313,7 +315,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
             </a>
             <Link
               href={`/${lang}`}
-              className="rounded-[3px] border border-rule px-5 py-3 text-[14px] text-ink transition-colors hover:border-cold"
+              className="rounded-[3px] border border-control px-5 py-3 text-[14px] text-ink transition-colors hover:border-cold"
             >
               {t.backCta}
             </Link>

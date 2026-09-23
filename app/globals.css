@@ -540,6 +540,10 @@ a {
   color: var(--color-paper);
   font-weight: 600;
 }
+/* El botón presionado es azul macizo y el anillo de foco iba en azul, metido
+   2px hacia dentro: 1,00:1 — el foco no existía justo en el control más usado
+   del mapa (auditoría del 23 sep 2026, DA-01). Sobre `cold`, papel da 8,86:1. */
+.atlas-views button[aria-pressed="true"]:focus-visible { outline-color: var(--color-paper); }
 
 .atlas-range { display: flex; align-items: center; gap: 10px; }
 .atlas-range input[type="range"] { width: 170px; accent-color: var(--color-cold); }
@@ -575,7 +579,7 @@ a {
   margin-top: 14px;
   padding-top: 10px;
   border-top: 1px solid var(--color-rule);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--color-muted);
 }
@@ -670,6 +674,19 @@ a {
   cursor: pointer;
 }
 .atlas-drill:hover { opacity: 0.9; }
+/* El anillo a +2px caía sobre el coropleto, y el escalón más oscuro del mapa es
+   exactamente `--color-cold`: 1,00:1 en el peor caso. Hacia dentro y en papel. */
+.atlas-drill:focus-visible { outline-color: var(--color-paper); outline-offset: -3px; }
+/* La fila de la tabla ya no es el control: lo es el botón del nombre (DA-16). */
+.atlas-table .atlas-rowbtn {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
 
 /* ============================================================
    EL 404

@@ -1,4 +1,4 @@
-import { TABLES, RELATIONSHIPS, measuresOf, pbiUrl, type PbiTable } from "@/lib/data/powerbi-model";
+import { TABLES, RELATIONSHIPS, measuresOf, type PbiTable } from "@/lib/data/powerbi-model";
 
 /* The semantic model as a picture: one dimension on the left, the four fact
    tables it keys on the right, the two stand-alone aggregates below a hairline.
@@ -25,7 +25,11 @@ function Node({ t, x, y, labels }: { t: PbiTable; x: number; y: number; labels: 
   const detail = n > 0 ? `${role} · ${n} ${labels.headers.measures}` : `${role} · ${t.columns.length} ${labels.headers.columns}`;
   const isDim = t.role === "dim";
   return (
-    <a href={pbiUrl.table(t.name as (typeof TABLES)[number]["name"])} target="_blank" rel="noopener noreferrer">
+    // Iban dentro de un <a>: seis paradas de tabulador sin nombre dentro de un
+    // role="img", que convierte el subárbol en presentacional (DA-06). La lista
+    // de tablas enlazada vive justo debajo del diagrama, con todo lo que la
+    // imagen dice — que es la regla de este fichero.
+    <>
       <g>
         <rect
           x={x}
@@ -44,7 +48,7 @@ function Node({ t, x, y, labels }: { t: PbiTable; x: number; y: number; labels: 
           {detail}
         </text>
       </g>
-    </a>
+    </>
   );
 }
 

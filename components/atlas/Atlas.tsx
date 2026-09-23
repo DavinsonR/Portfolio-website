@@ -181,7 +181,9 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
       <div className="atlas-bar">
         <fieldset className="atlas-field">
           <legend>{copy.viewLabel}</legend>
-          <div className="atlas-views" role="group" aria-label={copy.viewLabel}>
+          {/* El <fieldset>/<legend> ya agrupa y nombra: un role="group" con el
+              mismo nombre encima lo anunciaba dos veces. */}
+          <div className="atlas-views">
             {(["plano", "relieve", "municipios"] as View[]).map((v) => (
               <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>
                 {copy.views[v]}
@@ -238,9 +240,9 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
       </div>
 
       {failed ? (
-        <p className="atlas-state">{copy.failed}</p>
+        <p className="atlas-state" role="alert">{copy.failed}</p>
       ) : !ready ? (
-        <p className="atlas-state">{copy.loading}</p>
+        <p className="atlas-state" role="status">{copy.loading}</p>
       ) : null}
 
       <div className="atlas-canvas" data-hidden={failed ? "yes" : undefined}>

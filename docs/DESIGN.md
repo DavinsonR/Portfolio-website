@@ -143,7 +143,7 @@ components:
     textColor: "{colors.body}"
     rounded: "0"
     padding: "14px 24px"
-    height: "61px"
+    height: "65px"
 ---
 
 # Design System: Davirson Novoa — Research Tear Sheet
@@ -259,7 +259,7 @@ The only surface effect anywhere is the navbar's translucent ground with `backdr
 
 The form language is rectangular. Bands, rows, blocks, and the availability aside all have square corners (0 radius) — a tear sheet does not round its columns. Radius exists only on interactive controls at **3px**, just enough to read as pressable, plus 2px on the focus ring and full-round on two elements whose meaning is roundness: the status pill and the live-pipeline dot. The skill-scale segments carry a 1px radius so ten adjacent bars don't read as one solid rail.
 
-Borders are 1px by default and 2px when opening a band. Underlines are structural too: figure labels carry a 1.5px blue underline at 4px offset that thickens to 2.5px on hover, and links in the availability block underline in amber at 50% opacity.
+Borders are 1px by default and 2px when opening a band. Underlines are structural too: figure labels carry a 1.5px blue underline at 4px offset that thickens to 2.5px on hover, and links in the availability block underline in amber at full strength (`decoration-warm`): at 50% opacity over `warmsoft` the underline measured 2.07:1, so the build never did that.
 
 Icons are inline SVG drawn at a single 1.3px stroke weight on a 16px box. No icon font, no emoji, no third-party icon package.
 

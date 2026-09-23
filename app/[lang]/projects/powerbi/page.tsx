@@ -56,7 +56,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
               <StatusPill status="live" text={t.pill} />
             </div>
             <p className={label}>{t.kicker}</p>
-            <h1 className="mt-3 max-w-[820px] font-display text-[clamp(30px,4.8vw,50px)] leading-[1.14] font-medium tracking-[-0.02em] text-ink">
+            <h1 className="mt-3 max-w-[820px] font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
               {t.title}
             </h1>
             <p className="mt-5 max-w-[680px] text-[15.5px] leading-[1.75]">{t.intro}</p>
@@ -100,7 +100,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       </header>
 
       {/* ================= MODEL ================= */}
-      <section id="modelo" className="scroll-mt-16 border-b border-rule py-16">
+      <section id="modelo" className="scroll-mt-[72px] border-b border-rule py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.model.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -114,7 +114,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
             <ModelDiagram labels={{ diagramTitle: t.model.diagramTitle, legend: t.model.legend, headers: t.model.headers }} />
           </div>
 
-          <h3 className="mt-8 text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">{t.model.headers.relationships}</h3>
+          <h3 className="mt-8 font-display text-[19px] font-bold tracking-[-0.015em] text-ink">{t.model.headers.relationships}</h3>
           <ul id="pbi-relationships" className="mt-3">
             {RELATIONSHIPS.map((r) => (
               <li key={r.name} className="flex flex-wrap items-baseline gap-x-3 border-t border-rulesoft py-2.5 text-[14.5px]">
@@ -125,7 +125,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
             ))}
           </ul>
 
-          <h3 className="mt-8 text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">{t.model.headers.table}s</h3>
+          <h3 className="mt-8 font-display text-[19px] font-bold tracking-[-0.015em] text-ink">{t.model.headers.table}s</h3>
           <dl className="mt-3">
             {TABLES.map((tb, i) => (
               <div
@@ -155,7 +155,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       </section>
 
       {/* ================= MEASURES ================= */}
-      <section id="medidas" className="scroll-mt-16 border-b border-rule py-16">
+      <section id="medidas" className="scroll-mt-[72px] border-b border-rule py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.measures.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -171,7 +171,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       </section>
 
       {/* ================= PAGES ================= */}
-      <section id="paginas" className="scroll-mt-16 border-b border-rule py-16">
+      <section id="paginas" className="scroll-mt-[72px] border-b border-rule py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.pages.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -223,7 +223,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       </section>
 
       {/* ================= LICENSING ================= */}
-      <section id="licencia" className="scroll-mt-16 py-16">
+      <section id="licencia" className="scroll-mt-[72px] py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.licensing.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -244,7 +244,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
             <a href={pbiUrl.pbip} {...ext} className="lift rounded-[3px] bg-cold px-5 py-3 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90">
               {t.licensing.ctaPbip}
             </a>
-            <a href={pbiUrl.folder} {...ext} className="rounded-[3px] border border-rule px-5 py-3 text-[14px] text-ink transition-colors hover:border-cold">
+            <a href={pbiUrl.folder} {...ext} className="rounded-[3px] border border-control px-5 py-3 text-[14px] text-ink transition-colors hover:border-cold">
               {t.licensing.ctaFolder}
             </a>
             <a href={pbiUrl.readme} {...ext} className="px-1 py-3 text-[14px] font-medium text-cold hover:underline">

@@ -64,6 +64,7 @@ export default async function HistoriaPage({
       </header>
 
       <SectionNav
+        wrap={wrap}
         label={t.navLabel}
         items={t.sections.map((s) => ({ id: s.id, label: s.nav }))}
       />
