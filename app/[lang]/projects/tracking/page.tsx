@@ -5,7 +5,7 @@ import { getDictionary } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import SectionNav from "@/components/SectionNav";
-import { alternates, openGraph } from "@/lib/config/alternates";
+import { alternates, social } from "@/lib/config/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     alternates: alternates(lang, "/projects/tracking"),
     // Sin esto la página hereda el `openGraph` del layout entero y su tarjeta en
     // LinkedIn es la de la portada, enlazando a la portada.
-    openGraph: openGraph(lang, "/projects/tracking", {
+    ...social(lang, "/projects/tracking", {
       title: dict.tracking.metaTitle,
       description: dict.tracking.metaDesc,
       siteName: dict.profile.name,

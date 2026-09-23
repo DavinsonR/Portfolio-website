@@ -5,7 +5,7 @@ import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import SectionNav from "@/components/SectionNav";
 import Atlas from "@/components/atlas/Atlas";
-import { alternates, openGraph } from "@/lib/config/alternates";
+import { alternates, social } from "@/lib/config/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     title: dict.thesis.metaTitle,
     description: dict.thesis.metaDesc,
     alternates: alternates(lang, "/research/fintech-inclusion"),
-    openGraph: openGraph(lang, "/research/fintech-inclusion", {
+    ...social(lang, "/research/fintech-inclusion", {
       title: dict.thesis.metaTitle,
       description: dict.thesis.metaDesc,
       siteName: dict.profile.name,

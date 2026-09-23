@@ -11,6 +11,7 @@
 //   lib/content/about.ts     trayectoria, herramientas, divulgaciones, contacto, pie, 404
 //   lib/content/cv.ts        el CV — de aquí salen también el .tex y el PDF
 //   lib/content/historia.ts  la trayectoria en primera persona
+//   lib/content/error.ts     la frontera de error de cliente (cuatro cadenas)
 //
 // Eran 2.253 líneas en un solo archivo. El corte se hizo por rangos contiguos
 // (`scripts/split-dictionaries.mjs`), y por eso el ORDEN DE LAS CLAVES que
@@ -24,6 +25,7 @@ import { projects } from "./content/projects";
 import { about } from "./content/about";
 import { cv } from "./content/cv";
 import { historia } from "./content/historia";
+import { errorPage } from "./content/error";
 
 export { locales, profile, THESIS_REPO, TABLEAU_VIZ } from "./content/types";
 export type {
@@ -42,11 +44,11 @@ export const dictionaries = {
   // ==========================================================
   // ESPAÑOL
   // ==========================================================
-  es: { profile, ...home.es, ...projects.es, ...about.es, ...cv.es, ...historia.es },
+  es: { profile, ...home.es, ...projects.es, ...about.es, ...cv.es, ...historia.es, ...errorPage.es },
   // ==========================================================
   // ENGLISH
   // ==========================================================
-  en: { profile, ...home.en, ...projects.en, ...about.en, ...cv.en, ...historia.en },
+  en: { profile, ...home.en, ...projects.en, ...about.en, ...cv.en, ...historia.en, ...errorPage.en },
 };
 
 /** El invariante más importante del repositorio: `es` y `en` tienen exactamente

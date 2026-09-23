@@ -5,7 +5,7 @@ import TradingSimDashboard from "@/components/trading/TradingSimDashboard";
 import { TRADING_SIM_REPO } from "@/lib/data/trading-sim";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
-import { alternates, openGraph } from "@/lib/config/alternates";
+import { alternates, social } from "@/lib/config/alternates";
 
 export async function generateMetadata({
   params,
@@ -18,7 +18,7 @@ export async function generateMetadata({
     title: dict.tradingSim.metaTitle,
     description: dict.tradingSim.metaDesc,
     alternates: alternates(lang, "/projects/trading-sim"),
-    openGraph: openGraph(lang, "/projects/trading-sim", {
+    ...social(lang, "/projects/trading-sim", {
       title: dict.tradingSim.metaTitle,
       description: dict.tradingSim.metaDesc,
       siteName: dict.profile.name,

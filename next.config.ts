@@ -5,14 +5,20 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
+      // `/` se queda en 307 A PROPÓSITO (D-32): es el único sitio donde una
+      // detección de idioma por Accept-Language tendría sentido algún día, y un
+      // 308 queda cacheado en el navegador del visitante sin fecha de caducidad —
+      // lo congelaría. Los siete de ruta concreta son decisiones permanentes de
+      // arquitectura y van en 308: consolidan señal y se cachean. `check:routes`
+      // lee esta lista y exige exactamente esos códigos.
       { source: "/", destination: "/en", permanent: false },
-      { source: "/cv", destination: "/en/cv", permanent: false },
-      { source: "/projects/credit-risk", destination: "/en/projects/credit-risk", permanent: false },
-      { source: "/projects/trading-sim", destination: "/en/projects/trading-sim", permanent: false },
-      { source: "/projects/powerbi", destination: "/en/projects/powerbi", permanent: false },
-      { source: "/projects/tracking", destination: "/en/projects/tracking", permanent: false },
-      { source: "/research/fintech-inclusion", destination: "/en/research/fintech-inclusion", permanent: false },
-      { source: "/historia", destination: "/en/historia", permanent: false },
+      { source: "/cv", destination: "/en/cv", permanent: true },
+      { source: "/projects/credit-risk", destination: "/en/projects/credit-risk", permanent: true },
+      { source: "/projects/trading-sim", destination: "/en/projects/trading-sim", permanent: true },
+      { source: "/projects/powerbi", destination: "/en/projects/powerbi", permanent: true },
+      { source: "/projects/tracking", destination: "/en/projects/tracking", permanent: true },
+      { source: "/research/fintech-inclusion", destination: "/en/research/fintech-inclusion", permanent: true },
+      { source: "/historia", destination: "/en/historia", permanent: true },
     ];
   },
   /** Cabeceras de seguridad.

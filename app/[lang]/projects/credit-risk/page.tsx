@@ -7,7 +7,7 @@ import {
   FairnessGate,
   VocabularyCliff,
 } from "@/components/credit-risk/Charts";
-import { alternates, openGraph } from "@/lib/config/alternates";
+import { alternates, social } from "@/lib/config/alternates";
 import {
   CR,
   cliff,
@@ -35,7 +35,7 @@ export async function generateMetadata({
     title: dict.creditRisk.metaTitle,
     description: dict.creditRisk.metaDesc,
     alternates: alternates(lang, "/projects/credit-risk"),
-    openGraph: openGraph(lang, "/projects/credit-risk", {
+    ...social(lang, "/projects/credit-risk", {
       title: dict.creditRisk.metaTitle,
       description: dict.creditRisk.metaDesc,
       siteName: dict.profile.name,

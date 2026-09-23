@@ -26,6 +26,11 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+# Explícito, para que el fichero no dependa del ajuste de plataforma (que hoy
+# también dice «read», pero no se ve en ningún diff).
+permissions:
+  contents: read
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -40,6 +45,14 @@ jobs:
       - name: Dependencias
         id: deps
         run: npm ci
+
+      # Un CVE crítico en `next` vivió en el lockfile sin que nada lo dijera:
+      # Dependabot estaba apagado y nadie corre `npm audit` a mano. Solo
+      # dependencias de producción y solo alto/crítico: un aviso «moderate» en
+      # una herramienta de desarrollo no puede poner el CI en rojo.
+      - name: Vulnerabilidades conocidas
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Lint
         if: ${{ !cancelled() && steps.deps.outcome == 'success' }}

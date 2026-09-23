@@ -12,6 +12,8 @@
 //
 //   node scripts/check-routes.mjs [baseUrl]     (por defecto http://127.0.0.1:3000)
 // ============================================================
+import { readFileSync } from "node:fs";
+
 const BASE = (process.argv[2] ?? "http://127.0.0.1:3000").replace(/\/$/, "");
 
 /** `next start` tarda en aceptar conexiones y el paso de CI que lo arranca no
@@ -48,9 +50,15 @@ if (routes.length === 0) failures.push("sitemap.xml no publicó ninguna <loc>");
 for (const r of routes) await expect(r, 200, "anunciada en el sitemap");
 
 // 2. Los redirects sin idioma. Sin ellos esas URL dan 404, y ya pasó una vez.
-for (const r of ["/", "/cv", "/projects/tracking", "/research/fintech-inclusion"]) {
-  await expect(r, [307, 308], "redirect al idioma por defecto");
-}
+//    La lista se lee de `next.config.ts`: antes eran cuatro copiadas a mano de
+//    las ocho declaradas, y una ruta nueva sin redirect pasaba en verde. Y el
+//    código importa: los de ruta concreta son 308 (permanentes, cacheables) y
+//    `/` se queda en 307 a propósito (D-32) — cambiarlo aquí sin cambiarlo allí,
+//    o al revés, es un fallo.
+const config = readFileSync(new URL("../next.config.ts", import.meta.url), "utf8");
+const redirects = [...config.matchAll(/source:\s*"([^"]+)"[^}]*?permanent:\s*(true|false)/g)].map((m) => [m[1], m[2] === "true" ? 308 : 307]);
+if (redirects.length === 0) failures.push("next.config.ts no declara ningún redirect, o cambió el formato y esta lectura ya no lo ve");
+for (const [r, code] of redirects) await expect(r, code, `redirect al idioma por defecto, ${code === 308 ? "permanente" : "temporal a propósito (D-32)"}`);
 
 // 3. Lo que NO debe existir. `dynamicParams = false` es lo que lo garantiza:
 //    sin él, `/pricing` devolvía 200 con la portada dentro de `<html lang="pricing">`
@@ -83,6 +91,19 @@ for (const r of routes) {
   const canonical = pick(html, /<link rel="canonical" href="([^"]+)"/);
   const ogUrl = pick(html, /property="og:url" content="([^"]+)"/);
   const ogImage = pick(html, /property="og:image" content="([^"]+)"/);
+  const ogTitle = pick(html, /property="og:title" content="([^"]+)"/);
+  const twTitle = pick(html, /name="twitter:title" content="([^"]+)"/);
+
+  // FALLO-36 — la misma mecánica que FALLO-29, en el bloque `twitter`: el layout
+  // lo declaraba una vez con los textos de la portada y las catorce subpáginas
+  // publicaban la tarjeta de Twitter de la portada con el openGraph ya correcto.
+  if (!twTitle) failures.push(`${r} — sin twitter:title`);
+  if (ogTitle && twTitle && ogTitle !== twTitle) {
+    failures.push(
+      `${r} — twitter:title es «${twTitle}» y og:title es «${ogTitle}»: esta página hereda el bloque \`twitter\` del layout ` +
+        `(FALLO-36). Esparce social(lang, "<ruta>", …) en su generateMetadata.`,
+    );
+  }
 
   if (!canonical) failures.push(`${r} — sin <link rel="canonical">`);
   if (!ogUrl) failures.push(`${r} — sin og:url`);
@@ -110,7 +131,7 @@ for (const r of routes) {
 }
 
 if (failures.length === 0) {
-  console.log(`✓ rutas: ${routes.length} del sitemap a 200, redirects, 404, metadatos y tarjeta social propia en cada página`);
+  console.log(`✓ rutas: ${routes.length} del sitemap a 200, ${redirects.length} redirects con su código, 404, metadatos y tarjetas OG y Twitter propias en cada página`);
   process.exit(0);
 }
 

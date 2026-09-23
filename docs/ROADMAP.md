@@ -1,7 +1,7 @@
 # Estado y pendientes
 
 *Solo lo que está vivo. La historia está en [`bitacora/`](bitacora/).*
-*Última actualización: 16 septiembre 2026.*
+*Última actualización: 23 septiembre 2026.*
 
 ## Dónde está el proyecto
 
@@ -10,7 +10,8 @@
 | Sitio | **[davirson.com](https://davirson.com)** · Next.js 16 · estático en Vercel · $0 de hosting + ~$10/año de dominio |
 | Dominio | `davirson.com`, Cloudflare Registrar, precio plano. `proyecto-davirson-git.vercel.app` sigue vivo y redirige — **no se apaga**: está en LinkedIn, en correos enviados y en PDF que ya circulan |
 | Analítica | Vercel Web Analytics, sin cookies, mismo origen (por eso no hace falta tocar la CSP) |
-| CI | `.github/workflows/ci.yml` — lint, tipos, paridad del diccionario, artefactos del CV, `.tex` al día, build y humo de rutas |
+| CI | `.github/workflows/ci.yml` — lint, tipos, paridad del diccionario, artefactos del CV, cifras, `npm audit`, `.tex` y figura del atlas al día, build y humo de rutas (con tarjetas OG y Twitter y los ocho redirects con su código) |
+| Repositorio | `main` protegida: exige el check `verify` en verde y no admite force-push (el trabajo va en rama y se fusiona, o se empuja con `git push origin rama:main` cuando CI ya pasó). Dependabot activo (alertas y parches). `davirson.com` enviado a la lista de precarga HSTS el 23 sep 2026: estado `pending` hasta que Chromium lo incorpore |
 | Idiomas | ES y EN completos, 7 rutas por idioma |
 | Proyectos en la mesa | tesis de inclusión financiera · plataforma de datos de mercado · informe Power BI · demo de riesgo de crédito en el navegador · JARVIS (privado) |
 
@@ -21,6 +22,7 @@
 - [x] ~~FALLO-29~~ — `check:routes` exige que el `og:url` de cada página coincida con su canonical; verificado quitándole el `openGraph` al CV (lo detecta en los dos idiomas).
 - [x] ~~El `height="auto"` del SVG del atlas~~ — pasa al estilo; cero errores de consola y la proporción se mantiene exacta.
 
+- [ ] **[Auditoría del 23 sep 2026](AUDITORIA-2026-09-23.md)** — cinco expertos, 46 hallazgos consolidados, seis sesiones. La **sesión 1 (P0) está ejecutada** el mismo día: [sesión 18](bitacora/sesion-18.md). Quedan las sesiones 2–6 y las seis decisiones del §7 (pieza FP&A, foto, orden de JARVIS, `/` en 307 o 308, el serif de `historia`, plataformas cloud).
 - [ ] **La escala divergente del atlas ya no divide.** En 2024–25 no hay prácticamente valores negativos y media rampa queda muerta. Decisión analítica del autor, señalada en la [sesión 17](bitacora/sesion-17.md) y no ejecutada.
 - [ ] **En oscuro, el panel de 2018 pierde contraste.** Coherente con la regla del tema re-escalonado; subir `--atlas-mid` afectaría también al atlas interactivo. Señalado, no ejecutado.
 - [x] ~~El laboratorio moría en redes que bloquean `raw.githubusercontent.com`~~ — instantánea versionada del índice en `public/trading-sim-snapshot/`, servida del mismo origen, con nota de procedencia. `npm run snapshot` la refresca. Verificado apuntando el host en vivo a un dominio inválido: la página enseña el laboratorio entero, no un error.
@@ -38,8 +40,8 @@
 
 ### De contenido
 
-- [ ] **`/[lang]/historia`** — la Fase 5 del plan original, nunca escrita. Es lo que convierte una lista de proyectos en una trayectoria.
-- [ ] Una nota escrita por proyecto: el hallazgo del nulo en la tesis, el sesgo de look-ahead del backtester, y por qué la demo de crédito corre en el navegador.
+- [x] ~~**`/[lang]/historia`**~~ — escrita y publicada; esta línea siguió diciendo «nunca escrita» hasta que la auditoría del 23 sep la leyó.
+- [ ] Una nota escrita por proyecto: el hallazgo del nulo en la tesis (está: `/historia` §03), el sesgo de look-ahead del backtester (está: `tradingSim.method`), y **por qué la demo de crédito corre en el navegador** (falta: hoy se dice qué hace, no por qué se decidió así).
 
 ## Reservado
 

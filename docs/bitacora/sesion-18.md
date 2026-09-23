@@ -1,0 +1,40 @@
+## Sesión 18 — 23 sep 2026 · Cinco expertos auditan el sitio, y la sesión 1 del plan: un CVE que nadie vio, las tarjetas de Twitter de la portada en catorce rutas, el nombre dos veces en el título del CV
+
+Encargo del usuario: «haz una auditoría completa de mi página […] ejecuta 5 agentes en paralelo, quiero opiniones de distintos expertos […] arma todo el plan necesario». Y después: «ejecuta la sesión 1 completa».
+
+### La medida antes de opinar
+
+Cinco agentes en paralelo, solo lectura, sin verse entre sí: diseño y accesibilidad, ingeniería y rendimiento, SEO e i18n, contenido leído como un hiring manager, y seguridad y CI (tres con Opus, dos con Sonnet). En paralelo, el orquestador midió el sitio publicado: `npm run check` en verde, Lighthouse 95 móvil / 99 escritorio en rendimiento y 100 en accesibilidad, buenas prácticas y SEO, cero errores de consola y cero desborde horizontal en las 16 rutas a 320/393/768/1280 px, trece enlaces externos verificados cifra por cifra.
+
+El resultado consolidado está en [`AUDITORIA-2026-09-23.md`](../AUDITORIA-2026-09-23.md) (nota global 7,2/10; 46 hallazgos en cuatro prioridades; seis sesiones) y los cinco informes íntegros en [`auditoria-2026-09-23/`](../auditoria-2026-09-23/). Tres cosas que los expertos dijeron y este documento corrige: la cifra del laboratorio no «contradice al artefacto», es que está escrita a mano sobre un dato que cambia cada noche (45 supervivientes hoy, 51 la semana pasada); el `Access-Control-Allow-Origin: *` es de la capa estática de Vercel, no del repositorio; y `/` en 307 frente a 308 es una decisión, no un descuido (D-32).
+
+### Lo que se hizo — la sesión 1, P0 entero
+
+| # | Qué | Dónde |
+|---|---|---|
+| **FALLO-39** | `next@16.3.1` llevaba un CVE crítico (dos RCE) y `sharp` uno alto, y **Dependabot estaba apagado a nivel de repositorio**. Subido a `16.3.6`; `npm audit --omit=dev` → 0. Un paso `npm audit --audit-level=high` en CI, `permissions: contents: read` explícito, y `.github/dependabot.yml`. Alertas y parches de seguridad activados en GitHub por API | `package.json`, `ci.yml`, `.github/dependabot.yml` |
+| Protección | **`main` protegida**: exige el check `verify` en verde y no admite force-push ni borrado, también para el administrador. Nada puede llegar a producción en rojo. **Cambia el flujo**: el trabajo va en una rama y se fusiona, o se empuja con `git push origin rama:main` cuando CI ya pasó | GitHub, por API |
+| **FALLO-36** | Las catorce subpáginas publicaban `twitter:title` y `twitter:description` **de la portada**: la misma mecánica que FALLO-29 (`twitter` se reemplaza, no se fusiona) en el bloque que nadie volvió a declarar. Ahora `social(lang, ruta, meta)` esparce `openGraph` y `twitter` a la vez, y `check:routes` exige `twitter:title == og:title` en cada ruta | `lib/config/alternates.ts`, las siete páginas, `check-routes.mjs` |
+| **FALLO-37** | El `<title>` de `/cv` decía «Davirson Novoa Ramírez — Finance Data Analyst — Davirson Novoa Ramírez»: la página ponía el nombre y la plantilla del layout lo repetía. `title: { absolute }`. Y su `description` se cortaba a mitad de palabra (`profileText.slice(0,155)`): ahora `cv.metaDesc`, escrita | `app/[lang]/cv/page.tsx`, `lib/content/cv.ts` |
+| **FALLO-38** | `Motion.tsx` desarmaba el salvavidas de 3 s en la primera línea, antes de construir el observador: si algo lanzaba entre medias, todo `[data-reveal]` se quedaba en `opacity: 0` para siempre. Se arma al final, dentro de un `try/catch` que revela todo si falla. Y un `app/[lang]/error.tsx` bilingüe que antes no existía en ningún nivel, con `lib/content/error.ts` aparte para que las cuatro cadenas no arrastren el diccionario entero al bundle de todas las rutas. `ThemeToggle` envuelve `localStorage` | `components/Motion.tsx`, `app/[lang]/error.tsx`, `lib/content/error.ts`, `components/ThemeToggle.tsx` |
+| Contenido | Nueve inconsistencias en un commit: «LightGBM sobre 95 M» → «sobre 1,96 M de préstamos SBA y 62,4 M de solicitudes HMDA» (toolkit y CV); la cifra del CV «modelados» → «procesados»; el estado de la tesis unificado a «TESIS RADICADA / THESIS FILED» en la portada y «2026 — tesis radicada» en el CV; «3 roles remotos» → «4 empleadores, todos remotos o híbridos»; el «35 fallos» escrito a mano sale del texto y entra un enlace a `FALLOS.md` (constante `FALLOS_LOG`), en divulgaciones y en `historia`; dos «nosotros» → «yo»; «la razón nº1» → el mecanismo del coste por ejecución; la cifra de terceros sin fuente de `tracking.decisions` se va y el argumento se queda; comillas «» dentro del inglés → “ ”, incluido el titular de Power BI; «1,96M» → «1,96 M» en español. La afirmación «fallos de la bitácora» sale de `check:figures` con su motivo escrito | `lib/content/*.ts`, `scripts/check-figures.ts` |
+| **D-32** | Los siete redirects de ruta concreta pasan a 308; `/` se queda en 307 a propósito. `check:routes` deja de comprobar cuatro redirects copiados a mano y lee los ocho de `next.config.ts`, exigiendo el código exacto | `next.config.ts`, `check-routes.mjs`, `DECISIONES.md` |
+| HSTS | `davirson.com` enviado a la lista de precarga: `status: pending` (cumplía todos los requisitos y nunca se había enviado) | hstspreload.org |
+| Docs | Los dos README decían que `/` redirige a `/es`, contaban «33 fallos», describían `npm run check` sin las cifras y **no incluían credit-risk en la tabla de proyectos**. `CLAUDE.md` gana `npm run snapshot`, los bloques `historia` y `error`, y el paso 3 de «añadir una ruta» ahora dice `social()`. `ROADMAP.md` cierra `/historia` (existía desde hace semanas marcada como «nunca escrita») y registra la auditoría | `README*.md`, `CLAUDE.md`, `ROADMAP.md`, `FALLOS.md`, `DECISIONES.md` |
+
+### Lo que se verificó
+
+`npm run check` en verde (10 afirmaciones de cifras, 107 menciones). `npm run cv` regeneró los cuatro `.tex` y los cuatro PDF con latexmk; `check:artifacts` en verde después. `npm run build` en verde con Next 16.3.6 (16 rutas SSG). Contra `next start`: `check:routes` en verde con las comprobaciones nuevas —16 rutas, 8 redirects con su código, tarjetas OG y Twitter propias en cada página—; `/en/cv` publica `<title>Davirson Novoa Ramírez — Finance Data Analyst</title>` y `twitter:title` propio; `/es/projects/powerbi` idem; `/` → 307, `/cv` y `/historia` → 308. En `next dev`, una ruta temporal que lanzaba enseñó la frontera de error en español y en inglés con la barra y el pie intactos, y se borró. El conmutador de tema sigue guardando en `localStorage`. La bitácora de fallos enlaza desde las divulgaciones con `rel="noopener noreferrer"`.
+
+Un límite de la verificación, dicho: el panel del navegador estaba oculto (`document.visibilityState === "hidden"`), y un `IntersectionObserver` no dispara en un documento oculto, así que el revelado al desplazar no se pudo ver disparar ni en local ni en producción —los dos se comportan igual, `data-motion="on"` y cero elementos revelados—. La lógica no cambió de orden salvo en el punto que se quería cambiar; conviene mirar la portada en un navegador visible antes de fusionar.
+
+### Lo que no se hizo, y por qué
+
+- **No se ha hecho commit.** El árbol queda con 28 ficheros modificados y 5 nuevos, listos, y con `main` ya protegida el camino es una rama y CI: `git checkout -b sesion-18 && git add -A && git commit && git push -u origin sesion-18`, y fusionar cuando `verify` esté en verde.
+- **33 frente a 34 tablas en JARVIS** (CO-09) no se tocó: la banda dice 34 y la prosa «treinta y tres y veintidós vistas… cincuenta y cinco», y el repositorio es privado, así que solo el autor sabe cuál es la cifra correcta.
+- **La cifra viva del laboratorio** (#3 del plan: derivarla de `overfitting.overall` en vez de escribirla) es la sesión 2, no esta.
+- El `X-Powered-By: Next.js` sigue ahí (P3, una línea) y la CSP de desarrollo sigue llenando la consola de violaciones de `style-src` por los `<style>` de HMR (P4).
+
+### Lo que queda
+
+Sesiones 2–6 del plan y las seis decisiones del §7 de la auditoría: la pieza de FP&A sobre datos sintéticos, la foto, el orden de JARVIS, `/` en 307 o 308, el serif de `historia`, y qué decir de las plataformas cloud.

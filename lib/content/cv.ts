@@ -22,6 +22,9 @@ export const cv = {
       targets: ["Finance Data Analyst", "Financial BI Analyst", "Analytics Engineer"],
       subtitle: "Encuentro la variación, llego a su causa raíz, dejo el control corriendo solo y lo explico donde se decide. Las cuatro cosas, sin traductor entre el negocio y el dato.",
       metaLine: "Bogotá, Colombia · GMT-5 · 100% remoto · Inglés B2 · Portugués A2",
+      // La <meta name="description"> de /cv. Antes se derivaba recortando
+      // `profileText` a 155 caracteres, y el corte caía a mitad de palabra.
+      metaDesc: "CV de Davirson Novoa: economista y consultor FP&A que también construye plataformas de datos en producción. Finance Data Analyst, remoto desde Bogotá, GMT-5.",
       download: "Descargar CV (PDF)",
       downloadHref: "/Davirson_Novoa_CV_ES.pdf",
       downloadShort: "Versión de 1 página",
@@ -35,7 +38,9 @@ export const cv = {
         { value: "15+", label: "países en las operaciones que reporto, desde HQ" },
         { value: "60 h/mes", label: "de reporting devueltas al equipo (10 por analista)" },
         { value: "26 meses", label: "de practicante a especialista" },
-        { value: "95 M", label: "registros de crédito modelados en un portátil" },
+        // «procesados», no «modelados»: 93,4 M son la ventana del estudio de
+        // evento y 1,96 M los préstamos SBA; el modelo entrena sobre 62,4 M.
+        { value: "95 M", label: "registros de crédito procesados en un portátil" },
       ],
       profileLabel: "Perfil",
       profileText:
@@ -201,7 +206,7 @@ export const cv = {
         {
           name: "Inclusión financiera y crecimiento regional en Colombia",
           role: "Tesis de Maestría en Economía, Javeriana — investigación reproducible de punta a punta",
-          period: "2026 — en construcción",
+          period: "2026 — tesis radicada",
           href: THESIS_REPO,
           hrefLabel: "repositorio en GitHub",
           stack: ["dbt", "DuckDB", "Python", "Parquet", "Datos de panel", "Quarto"],
@@ -244,7 +249,7 @@ export const cv = {
         { name: "Git · GitHub Actions", proof: "Cron diario en operación, con circuit breaker de rate limit" },
         { name: "Econometría de panel", proof: "Efectos fijos de dos vías sobre 228 observaciones, bootstrap salvaje por clúster y placebo por permutación" },
         { name: "Diagnóstico y robustez", proof: "Driscoll-Kraay por dependencia transversal medida, CCE, SLX y cuatro diseños contra la exogeneidad" },
-        { name: "Machine learning", proof: "LightGBM sobre 95 M de registros: AUC 0,7005, +0,0311 sobre la scorecard interpretable" },
+        { name: "Machine learning", proof: "LightGBM sobre 1,96 M de préstamos SBA y 62,4 M de solicitudes HMDA: AUC 0,7005, +0,0311 sobre la scorecard interpretable" },
         { name: "Riesgo de crédito y scorecards", proof: "Binning WoE con optbinning, validación out-of-time sobre el shock COVID, error de calibración 0,0107" },
         { name: "Gobierno de modelos (MLOps)", proof: "Diez gates de promoción juzgados por código de salida; uno bloquea mi propio modelo" },
       ] as ProofRow[],
@@ -280,7 +285,7 @@ export const cv = {
       remote: {
         label: "Preparado para remoto",
         points: [
-          "3 roles remotos o híbridos con equipos distribuidos en 15+ países.",
+          "4 empleadores, todos remotos o híbridos, con equipos distribuidos en 15+ países.",
           "GMT-5 (Bogotá): solapamiento completo con horarios de EE. UU. y Canadá.",
           "Experiencia trabajando con equipos de Norteamérica, Argentina y Brasil.",
           "Español nativo · Inglés B2 · Portugués A2.",
@@ -297,6 +302,7 @@ export const cv = {
       targets: ["Finance Data Analyst", "Financial BI Analyst", "Analytics Engineer"],
       subtitle: "I find the variance, I trace it to root cause, I leave the control running itself, and I explain it where the decision gets made. All four, with no translator between the business and the data.",
       metaLine: "Bogotá, Colombia · GMT-5 · Fully remote · English B2 · Portuguese A2",
+      metaDesc: "CV of Davirson Novoa: economist and FP&A consultant who also builds production data platforms. Finance Data Analyst, remote from Bogotá, GMT-5.",
       download: "Download resume (PDF)",
       downloadHref: "/Davirson_Novoa_Resume_EN.pdf",
       downloadShort: "One-page version",
@@ -310,7 +316,7 @@ export const cv = {
         { value: "15+", label: "countries in the operations I report on, from HQ" },
         { value: "60 hrs/mo", label: "of reporting given back to the team (10 per analyst)" },
         { value: "26 months", label: "from intern to specialist" },
-        { value: "95 M", label: "credit records modelled on a laptop" },
+        { value: "95 M", label: "credit records processed on a laptop" },
       ],
       profileLabel: "Profile",
       profileText:
@@ -473,7 +479,7 @@ export const cv = {
         {
           name: "Financial inclusion and regional growth in Colombia",
           role: "M.Sc. in Economics thesis, Javeriana — reproducible research end to end",
-          period: "2026 — building",
+          period: "2026 — thesis filed",
           href: THESIS_REPO,
           hrefLabel: "repository on GitHub",
           stack: ["dbt", "DuckDB", "Python", "Parquet", "Panel data", "Quarto"],
@@ -516,7 +522,7 @@ export const cv = {
         { name: "Git · GitHub Actions", proof: "Daily cron in operation, with a rate-limit circuit breaker" },
         { name: "Panel econometrics", proof: "Two-way fixed effects over 228 observations, wild cluster bootstrap and permutation placebo" },
         { name: "Diagnostics and robustness", proof: "Driscoll-Kraay for measured cross-sectional dependence, CCE, SLX and four designs against exogeneity" },
-        { name: "Machine learning", proof: "LightGBM over 95M records: AUC 0.7005, +0.0311 over the interpretable scorecard" },
+        { name: "Machine learning", proof: "LightGBM over 1.96M SBA loans and 62.4M HMDA applications: AUC 0.7005, +0.0311 over the interpretable scorecard" },
         { name: "Credit risk and scorecards", proof: "WoE binning with optbinning, out-of-time validation across the COVID shock, calibration error 0.0107" },
         { name: "Model governance (MLOps)", proof: "Ten promotion gates judged by exit code; one blocks my own model" },
       ] as ProofRow[],
@@ -550,7 +556,7 @@ export const cv = {
       remote: {
         label: "Remote-ready",
         points: [
-          "3 remote or hybrid roles with teams distributed across 15+ countries.",
+          "4 employers, all remote or hybrid, with teams distributed across 15+ countries.",
           "GMT-5 (Bogotá): full overlap with US and Canadian hours.",
           "Experience working with teams in North America, Argentina and Brazil.",
           "Native Spanish · English B2 · Portuguese A2.",

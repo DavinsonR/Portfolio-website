@@ -100,10 +100,10 @@ const CLAIMS: Claim[] = [
     name: "fuentes públicas",
     pattern: /([\d.,]+|[Dd]iecinueve|[Nn]ineteen)\s*(?:fuentes públicas|public sources)/gi,
   },
-  {
-    name: "fallos de la bitácora",
-    pattern: /([\d.,]+|treinta y cinco|thirty-five)\s*(?:fallos|defects)/gi,
-  },
+  // «fallos de la bitácora» dejó de ser una afirmación con cifra en la sesión
+  // 18: el «35» se escribía a mano y caducaba solo cada vez que se arreglaba
+  // algo — el día que llegó el 36 el sitio mentía sin que nadie lo tocara. El
+  // texto ahora enlaza a docs/FALLOS.md y no cuenta.
   {
     name: "países en alcance",
     pattern: /(?:más de\s*|15\+|)([\d.,]+)\+?\s*(?:países|countries)/gi,
@@ -113,8 +113,6 @@ const CLAIMS: Claim[] = [
 const PALABRAS: Record<string, number> = {
   diecinueve: 19,
   nineteen: 19,
-  "treinta y cinco": 35,
-  "thirty-five": 35,
 };
 
 /** «1,96» en español y «1.96» en inglés son el mismo número. */

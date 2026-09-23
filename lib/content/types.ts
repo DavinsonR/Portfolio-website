@@ -43,6 +43,10 @@ export type CvProject = {
    portafolio. Lo unico externo es el repositorio, que es donde esta el codigo. */
 export const THESIS_REPO = "https://github.com/DavinsonR/financial-inclusion-colombia";
 
+/* La bitácora de fallos, enlazada desde las divulgaciones y desde la historia.
+   El texto que la cita ya no dice cuántos son: ese número caducaba solo. */
+export const FALLOS_LOG = "https://github.com/DavinsonR/proyecto-davirson/blob/main/docs/FALLOS.md";
+
 /* El tablero del hackathon es el unico artefacto visual, publico y de dominio
    financiero-adyacente que existe hoy: la fila de Tableau del toolkit lo
    afirmaba sin enlazarlo mientras la URL viva ya estaba dos secciones mas abajo,
