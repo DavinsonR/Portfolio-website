@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import BackLink from "@/components/BackLink";
+import ContactBand from "@/components/ContactBand";
 import StatusPill from "@/components/StatusPill";
 import {
   DecisionBalance,
@@ -305,6 +306,10 @@ export default async function CreditRiskPage({
           </p>
         </div>
       </section>
+
+      {/* Cerraba en «volver al inicio» o en GitHub: justo donde el lector está
+          más convencido. La banda es la misma de /historia. */}
+      <ContactBand dict={dict} lang={lang} wrap={wrap} />
     </main>
   );
 }

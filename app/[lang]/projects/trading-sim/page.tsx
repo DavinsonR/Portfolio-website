@@ -7,6 +7,7 @@ import { labSnapshot, labSnapshotOverfitting } from "@/lib/data/lab-snapshot";
 import { TRADING_SIM_REPO } from "@/lib/data/trading-sim";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
+import ContactBand from "@/components/ContactBand";
 import { alternates, social } from "@/lib/config/alternates";
 
 export async function generateMetadata({
@@ -154,6 +155,10 @@ export default async function TradingSimPage({
           </p>
         </div>
       </section>
+
+      {/* Cerraba en «volver al inicio» o en GitHub: justo donde el lector está
+          más convencido. La banda es la misma de /historia. */}
+      <ContactBand dict={dict} lang={lang} wrap={wrap} />
     </main>
   );
 }

@@ -512,7 +512,7 @@ export const projects = {
       pill: "DEMO ABIERTO",
       title: "Una app de seguimiento personal, y el porqué de cada decisión",
       subtitle:
-        "Cierra el día —hábitos, cuerpo, sueño, comida, gastos— en un formulario y un botón, y lo devuelve leído en vez de en crudo. Hay un demo abierto con las cinco pantallas de verdad y los datos de una persona que no existe.",
+        "JARVIS cierra el día —hábitos, cuerpo, sueño, comida, gastos— en un formulario y un botón, y lo devuelve leído, no en crudo. Hay un demo abierto con las cinco pantallas de verdad y los datos de una persona que no existe.",
       access: "Repositorio privado · el demo es la superficie pública",
       timeline: "Demo público y app en producción · el alta de cuentas está escrita y todavía cerrada",
       demoUrl: "https://jarvis-app-psi-sable.vercel.app/demo",
@@ -643,7 +643,7 @@ export const projects = {
       kicker: "Decision system · credit-risk-mlops",
       title: "The model is not the point. The point is that it survives an audit.",
       intro:
-        "A credit model nobody can audit does not get deployed, however good it is. This page shows the four things a validator asks — and almost no portfolio shows — with the measurement beside each one: what happens when the source changes its language, what the decision costs in dollars, what the control does when the model does not comply, and what can honestly be claimed about a gap that moves.",
+        "A credit model nobody can audit does not get deployed, however good it is. This page shows the four things a validator asks — and almost no portfolio shows — with the measurement beside each one: what happens when the source changes its vocabulary, what the decision costs in dollars, what the control does when the model does not comply, and what can honestly be claimed about a gap that moves.",
       pipelineLine:
         "data: SBA 7(a) FOIA + HMDA (FFIEC/CFPB) · metrics recomputed from saved predictions · open source",
       sourceNote:
@@ -1130,7 +1130,7 @@ export const projects = {
       pill: "OPEN DEMO",
       title: "A personal tracking app, and the reason behind every decision",
       subtitle:
-        "It closes the day —habits, body, sleep, food, spending— in one form and one button, then hands it back read instead of raw. There is an open demo with the five real screens and the data of someone who does not exist.",
+        "JARVIS closes the day — habits, body, sleep, food, spending — in one form and one button, and gives it back as a reading, not as rows. There is an open demo with the five real screens and the data of someone who does not exist.",
       access: "Private repository · the demo is the public surface",
       timeline: "Public demo and app in production · account sign-up is written and still closed",
       demoUrl: "https://jarvis-app-psi-sable.vercel.app/demo",

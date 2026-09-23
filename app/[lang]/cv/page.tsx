@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { getDictionary, type CvProject } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
 import Link from "next/link";
+import Image from "next/image";
 import CountUp from "@/components/CountUp";
 import BackLink from "@/components/BackLink";
 import CopyEmail from "@/components/CopyEmail";
@@ -206,7 +207,9 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
             className="reveal mt-5 max-w-[74ch] text-[16px] leading-[1.8] text-body"
             style={d(70)}
           >
-            {cv.profileText}
+            {/* El texto largo sigue en el PDF de tres páginas. En la web, la queja
+                real de cuatro revisores fue «demasiado largo, deja el PDF». */}
+            {cv.profileShortText}
           </p>
         </div>
       </section>
@@ -218,7 +221,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
             <span aria-hidden="true" className="rule-in absolute inset-x-0 top-0 h-[2px] bg-warm" />
             <p className={`${label} text-warm`}>{cv.pivot.label}</p>
             <p className="mt-4 max-w-[76ch] text-[15.5px] leading-[1.85] text-ink">
-              {cv.pivot.body}
+              {cv.pivot.shortBody}
             </p>
           </div>
         </div>
@@ -444,6 +447,19 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                       <span className="text-[14px] text-muted">{a.year}</span>
                     </div>
                     <p className="mt-1 text-[14px] leading-[1.6] text-body">{a.desc}</p>
+                    {a.image && (
+                      <figure className="mt-3">
+                        <Image
+                          src={a.image.src}
+                          width={a.image.width}
+                          height={a.image.height}
+                          alt={a.imageAlt ?? ""}
+                          unoptimized
+                          loading="lazy"
+                          className="h-auto w-full border border-rulesoft"
+                        />
+                      </figure>
+                    )}
                     {a.href && (
                       <a
                         href={a.href}

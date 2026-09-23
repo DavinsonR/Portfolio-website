@@ -13,7 +13,11 @@ export type Locale = (typeof locales)[number];
 export type Status = "live" | "building" | "research" | "idea";
 
 // Un reconocimiento puede tener evidencia pública; la mayoría no la tiene.
-export type Award = { title: string; year: string; desc: string; href?: string; hrefLabel?: string };
+export type Award = {
+  title: string; year: string; desc: string; href?: string; hrefLabel?: string;
+  // Una captura del artefacto, si es visual. El alt va por idioma.
+  image?: { src: string; width: number; height: number }; imageAlt?: string;
+};
 // Una cifra lleva su prueba: href relativo al idioma ("/cv#experiencia") o absoluto.
 export type Metric = { value: string; label: string; note: string; href: string };
 // Herramienta con su prueba; la prueba puede enlazar a la página que la muestra.
@@ -54,6 +58,12 @@ export const FALLOS_LOG = "https://github.com/DavinsonR/proyecto-davirson/blob/m
    cambia, y por eso vive en una sola constante. */
 export const TABLEAU_VIZ =
   "https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis";
+
+/* Su captura, servida desde este origen (la CSP no admite imágenes de terceros):
+   el PNG que Tableau Public publica para la vista, sin sus barras de pestañas y
+   de pie, a WebP. Era el único artefacto visual financiero-adyacente del sitio y
+   se ofrecía solo como enlace de texto. */
+export const TABLEAU_SHOT = { src: "/tableau/bodytrends-trends-analysis.webp", width: 800, height: 548 };
 
 export const profile = {
   name: "Davirson Novoa Ramírez",

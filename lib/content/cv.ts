@@ -9,7 +9,7 @@
 // ============================================================
 // El CV — de aquí salen también el .tex y el PDF
 
-import { THESIS_REPO, TABLEAU_VIZ } from "./types";
+import { THESIS_REPO, TABLEAU_VIZ, TABLEAU_SHOT } from "./types";
 import type { Award, ProofRow, Education, CvProject } from "./types";
 
 export const cv = {
@@ -21,7 +21,11 @@ export const cv = {
       targetsLabel: "Roles objetivo",
       targets: ["Finance Data Analyst", "Financial BI Analyst", "Analytics Engineer"],
       subtitle: "Encuentro la variación, llego a su causa raíz, dejo el control corriendo solo y lo explico donde se decide. Las cuatro cosas, sin traductor entre el negocio y el dato.",
-      metaLine: "Bogotá, Colombia · GMT-5 · 100% remoto · Inglés B2 · Portugués A2",
+      // «Inglés B2» estaba tres centímetros debajo del nombre, antes de toda la
+      // evidencia de uso: un screener no técnico lo lee como «no fluido». El nivel
+      // sigue publicado en «Preparado para remoto» y en Divulgaciones, junto a lo
+      // que lo respalda.
+      metaLine: "Bogotá, Colombia · GMT-5 · 100% remoto · Inglés de trabajo a diario, con equipos en 15+ países · Español nativo",
       // La <meta name="description"> de /cv. Antes se derivaba recortando
       // `profileText` a 155 caracteres, y el corte caía a mitad de palabra.
       metaDesc: "CV de Davirson Novoa: economista y consultor FP&A que también construye plataformas de datos en producción. Finance Data Analyst, remoto desde Bogotá, GMT-5.",
@@ -145,13 +149,13 @@ export const cv = {
           ],
         },
       ],
-      projectsLabel: "Proyectos en producción",
+      projectsLabel: "Proyectos en operación",
       projectsNote: "Código abierto y verificable. Nada de esto es un ejercicio de curso.",
       projects: [
         {
           name: "credit-risk-mlops",
           role: "Sistema de decisión crediticia con gobierno de modelos — diseño y construcción",
-          period: "2026 — en producción",
+          period: "2026 — desplegado",
           href: "https://github.com/DavinsonR/credit-risk-mlops",
           hrefLabel: "github.com/DavinsonR/credit-risk-mlops",
           stack: [
@@ -224,6 +228,9 @@ export const cv = {
       skillsFin: [
         "FP&A", "Cierre y forecast", "SG&A", "Revenue recognition (SOX)", "Tesorería",
         "Análisis cambiario", "Presupuestos", "Moneda constante", "SAP", "JD Edwards", "MicroStrategy",
+        // Los términos por los que filtra un ATS de FP&A. Las viñetas de arriba
+        // describen exactamente esto con otras palabras.
+        "Análisis de variaciones", "Cierre mensual", "Proyección de flujo de caja", "Reporting gerencial", "Conciliación de cuentas",
       ],
       skillsDataTitle: "Datos e ingeniería",
       skillsDataDesc: "Herramientas que corren hoy en un repositorio público, no en un certificado.",
@@ -233,6 +240,7 @@ export const cv = {
         "Power Query", "Tableau", "Git", "Next.js · Vercel",
         "Econometría de panel", "Efectos fijos", "Inferencia causal", "Series de tiempo",
         "Scorecards de crédito (WoE)", "LightGBM", "MLflow", "ONNX", "MLOps", "Pruebas de datos",
+        "Data warehousing", "Modelado dimensional (esquema estrella)", "ELT", "CI/CD", "Dashboards",
       ],
       skillsTechTitle: "Stack técnico",
       skillsTechDesc: "Cada herramienta enlaza al trabajo exacto donde la usé.",
@@ -263,6 +271,8 @@ export const cv = {
           desc: "Analítica de demanda de búsqueda para una cadena de gimnasios: 19.560 registros de keywords limpiados en Python y un tablero de tendencias por sede en Tableau. Sigue publicado y es consultable por cualquiera.",
           href: TABLEAU_VIZ,
           hrefLabel: "ver el tablero en Tableau Public",
+          image: TABLEAU_SHOT,
+          imageAlt: "Tablero de Tableau con la estimación del ingreso promedio por cliente entre 2022 y 2025, la ocurrencia de búsquedas por mes y seis tendencias de keywords.",
         },
         { title: "Becario Ecopetrol — Programa Mario Galán Gómez", year: "2018", desc: "Beca por mérito académico y potencial de liderazgo." },
       ] as Award[]),
@@ -301,7 +311,7 @@ export const cv = {
       targetsLabel: "Target roles",
       targets: ["Finance Data Analyst", "Financial BI Analyst", "Analytics Engineer"],
       subtitle: "I find the variance, I trace it to root cause, I leave the control running itself, and I explain it where the decision gets made. All four, with no translator between the business and the data.",
-      metaLine: "Bogotá, Colombia · GMT-5 · Fully remote · English B2 · Portuguese A2",
+      metaLine: "Bogotá, Colombia · GMT-5 · Fully remote · Working language English, daily, with teams across 15+ countries · Native Spanish",
       metaDesc: "CV of Davirson Novoa: economist and FP&A consultant who also builds production data platforms. Finance Data Analyst, remote from Bogotá, GMT-5.",
       download: "Download resume (PDF)",
       downloadHref: "/Davirson_Novoa_Resume_EN.pdf",
@@ -327,7 +337,7 @@ export const cv = {
       pivot: {
         label: "The crossover role",
         shortBody: "Not a career change: I am pricing what I already do. In every finance role I ended up building code and data because the report the business needed did not exist and nobody else was going to build it. The edge is not knowing Python — plenty of people do. It is knowing which question is worth answering before writing the first line.",
-        body: "This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing — code and data — because the report the business needed did not exist and nobody else was going to build it. An FX mismatch analysis in Python as an intern. Automation that gave every treasury analyst about 10 hours a month back — close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; plenty of people know Python. It is knowing which question is worth answering before writing the first line. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code — it is the one who needs no translator between them. Hiring that person is hiring two profiles in one, without the handoff meeting between them.",
+        body: "This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing — code and data — because the report the business needed did not exist and nobody else was going to build it. An FX mismatch analysis in Python as an intern. Automation that gave every treasury analyst about 10 hours a month back — close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; plenty of people know Python. It is knowing which question is worth answering before writing the first line. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code — it is the one who needs no translator between them. Hiring that person is two hires in one, without the handoff meeting between them.",
       },
       expLabel: "Experience",
       expTitle: "Experience",
@@ -418,13 +428,13 @@ export const cv = {
           ],
         },
       ],
-      projectsLabel: "Production projects",
+      projectsLabel: "Projects in operation",
       projectsNote: "Open source and checkable. None of this is a course exercise.",
       projects: [
         {
           name: "credit-risk-mlops",
           role: "Credit decisioning system with model governance — design and build",
-          period: "2026 — in production",
+          period: "2026 — deployed",
           href: "https://github.com/DavinsonR/credit-risk-mlops",
           hrefLabel: "github.com/DavinsonR/credit-risk-mlops",
           stack: [
@@ -497,6 +507,7 @@ export const cv = {
       skillsFin: [
         "FP&A", "Close & forecast", "SG&A", "Revenue recognition (SOX)", "Treasury",
         "FX analysis", "Budgeting", "Constant currency", "SAP", "JD Edwards", "MicroStrategy",
+        "Variance analysis", "Month-end close", "Cash-flow forecasting", "Management reporting", "Account reconciliation",
       ],
       skillsDataTitle: "Data & engineering",
       skillsDataDesc: "Tools running today in a public repository, not on a certificate.",
@@ -506,6 +517,7 @@ export const cv = {
         "Power Query", "Tableau", "Git", "Next.js · Vercel",
         "Panel econometrics", "Fixed effects", "Causal inference", "Time series",
         "Credit scorecards (WoE)", "LightGBM", "MLflow", "ONNX", "MLOps", "Data testing",
+        "Data warehousing", "Dimensional modelling (star schema)", "ELT", "CI/CD", "Dashboarding",
       ],
       skillsTechTitle: "Technical stack",
       skillsTechDesc: "Every tool links to the exact work where I used it.",
@@ -534,6 +546,8 @@ export const cv = {
           desc: "Search-demand analytics for a gym chain: 19,560 keyword records cleaned in Python and a branch-by-branch trend dashboard in Tableau. Still published and open to anyone.",
           href: TABLEAU_VIZ,
           hrefLabel: "see the dashboard on Tableau Public",
+          image: TABLEAU_SHOT,
+          imageAlt: "Tableau dashboard with the estimated average revenue per customer from 2022 to 2025, search occurrence by month and six keyword trends.",
         },
         { title: "Ecopetrol Scholar — Mario Galán Gómez Program", year: "2018", desc: "Scholarship for academic merit and leadership potential." },
       ] as Award[]),

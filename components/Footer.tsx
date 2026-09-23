@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Dictionary, Locale } from "@/lib/dictionaries";
 import { mailtoHref } from "@/lib/config/contact";
 
@@ -19,6 +20,22 @@ export default function Footer({ dict, lang }: { dict: Dictionary; lang: Locale 
           {dict.profile.email}
         </a>
         <span lang={lang}>{dict.footer.right}</span>
+        {/* Por debajo de 768 px la barra pierde sus tres enlaces, incluido el CV:
+            desde una página de proyecto en un teléfono no había ruta al PDF salvo
+            volver a la portada y desplazarse. PRODUCT.md dice que el PDF es el
+            artefacto que sobrevive a la visita. El pie está en las ocho rutas y en
+            los dos anchos, y ya era contenido del diccionario. */}
+        <nav aria-label={dict.nav.links[1].label} className="flex w-full flex-wrap gap-x-6 gap-y-2 border-t border-rulesoft pt-4">
+          <a href={dict.cv.downloadHref} download className="font-medium text-cold hover:underline">
+            {dict.cv.download}
+          </a>
+          <Link href={`/${lang}/historia`} className="hover:text-cold hover:underline">
+            {dict.nav.links[1].label}
+          </Link>
+          <Link href={`/${lang}`} className="hover:text-cold hover:underline">
+            {dict.nav.backHome}
+          </Link>
+        </nav>
       </div>
     </footer>
   );
