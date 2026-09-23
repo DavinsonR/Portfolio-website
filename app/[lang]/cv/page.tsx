@@ -7,18 +7,24 @@ import CountUp from "@/components/CountUp";
 import BackLink from "@/components/BackLink";
 import CopyEmail from "@/components/CopyEmail";
 import { mailtoHref } from "@/lib/config/contact";
-import { alternates, openGraph } from "@/lib/config/alternates";
+import { alternates, social } from "@/lib/config/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
   const dict = getDictionary(lang);
+  // `title` ya lleva el nombre, y la plantilla del layout (`%s — nombre`) lo
+  // volvía a añadir: «Davirson Novoa Ramírez — Finance Data Analyst — Davirson
+  // Novoa Ramírez», en producción y en los dos idiomas (FALLO-37). `absolute`
+  // se salta la plantilla solo aquí; la tarjeta social recibe el mismo texto.
   const title = `${dict.cv.title} — ${dict.cv.targets[0]}`;
-  const description = dict.cv.profileText.slice(0, 155);
+  // Antes era `profileText.slice(0, 155)` y el corte caía a mitad de palabra
+  // («…waiting for someone t»). Una descripción es una frase, no un recorte.
+  const description = dict.cv.metaDesc;
   return {
-    title,
+    title: { absolute: title },
     description,
     alternates: alternates(lang, "/cv"),
-    openGraph: openGraph(lang, "/cv", { title, description, siteName: dict.profile.name }),
+    ...social(lang, "/cv", { title, description, siteName: dict.profile.name }),
   };
 }
 

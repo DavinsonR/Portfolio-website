@@ -2,7 +2,7 @@
 
 *[Leer en español](README.es.md)*
 
-Bilingual personal site (EN/ES) and the entry point to three projects with open code and live data: econometric research, a market data platform and a daily tracking app.
+Bilingual personal site (EN/ES) and the entry point to four projects with open code and live data: a credit-decisioning system with model governance, econometric research, a market data platform and a daily tracking app.
 
 ### ▶ [davirson.com](https://davirson.com)
 
@@ -12,6 +12,7 @@ Not a portfolio of screenshots: every page on the site is fed by the repository 
 
 | Project | On the site | Repository | Status |
 | --- | --- | --- | --- |
+| **Credit decisioning with model governance** — LightGBM over 1.96M SBA loans and 62.4M HMDA applications, ten gates that block (one blocks the author's own model), and a demo scoring in the browser | [`/en/projects/credit-risk`](https://davirson.com/en/projects/credit-risk) | [credit-risk-mlops](https://github.com/DavinsonR/credit-risk-mlops) | Deployed, scoring in the browser |
 | **Financial inclusion and regional growth** — a warehouse of 19 public sources, an index by dimension, a fixed-effects panel and an atlas of all 1,123 municipalities | [`/en/research/fintech-inclusion`](https://davirson.com/en/research/fintech-inclusion) | [financial-inclusion-colombia](https://github.com/DavinsonR/financial-inclusion-colombia) | Main result published |
 | **Market data platform** — public APIs → a Postgres medallion warehouse with dbt → a backtester with no look-ahead → an automated daily refresh | [`/en/projects/trading-sim`](https://davirson.com/en/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 assets, refreshed daily |
 | **Power BI report** — the model, measures and pages of the report built on the gold layer | [`/en/projects/powerbi`](https://davirson.com/en/projects/powerbi) | catalogue in `lib/data/powerbi-model.ts` | Catalogue published |
@@ -29,14 +30,14 @@ Next.js 16 (App Router) · React · TypeScript · Tailwind v4 · Vercel. Fully s
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000 → redirects to /es
+npm run dev      # http://localhost:3000 → redirects to /en
 ```
 
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Development server |
 | `npm run build` | Production build |
-| `npm run check` | Lint, types, dictionary parity and CV artefacts — what CI runs |
+| `npm run check` | Lint, types, dictionary parity, CV artefacts and figure consistency — what CI runs (CI also runs `npm audit`, the build and the route smoke test) |
 | `npm run check:routes` | Route smoke test against a running `next start` |
 | `npm run lint` | ESLint with the Next configuration |
 | `npm run latex` | Regenerates `public/*.tex` from the dictionary |
@@ -45,7 +46,7 @@ npm run dev      # http://localhost:3000 → redirects to /es
 
 ### Where to edit
 
-- **All copy (ES/EN):** `lib/content/` — four blocks (`home`, `projects`, `about`, `cv`), each with `es` and `en` side by side. `lib/dictionaries.ts` only assembles them.
+- **All copy (ES/EN):** `lib/content/` — six blocks (`home`, `projects`, `about`, `cv`, `historia`, `error`), each with `es` and `en` side by side. `lib/dictionaries.ts` only assembles them.
 - **Colours and typography:** `app/globals.css`, `@theme` blocks.
 - **Module status and progress:** `lib/content/home.ts` → `sistema.modules`.
 - **Power BI catalogue:** `lib/data/powerbi-model.ts`, copied from `market-data-medallion/powerbi/` with the source commit in the header.
@@ -63,8 +64,8 @@ Written in Spanish, and the place to start before working on this repository.
 
 | | |
 | --- | --- |
-| [`docs/FALLOS.md`](docs/FALLOS.md) | The 33 defects this project has already had, in one table, each linked to its root cause. **Read this first.** More than half belong to the data pipeline, not to this repo — the table says which. |
-| [`docs/DECISIONES.md`](docs/DECISIONES.md) | The 31 decisions, and where the reasoning lives. Several look arbitrary and are not. |
+| [`docs/FALLOS.md`](docs/FALLOS.md) | Every defect this project has already had, numbered from FALLO-01, in one table, each linked to its root cause. **Read this first.** More than half belong to the data pipeline, not to this repo — the table says which. |
+| [`docs/DECISIONES.md`](docs/DECISIONES.md) | The decisions, numbered from D-01, and where the reasoning lives. Several look arbitrary and are not. |
 | [`docs/ROADMAP.md`](docs/ROADMAP.md) | Current state and what is left. |
 | [`docs/DESIGN.md`](docs/DESIGN.md) · [`docs/PRODUCT.md`](docs/PRODUCT.md) | The visual system and the positioning. Binding, not descriptive. |
 | [`BITACORA_MAESTRA.md`](BITACORA_MAESTRA.md) | The index; the full narrative, session by session, is in `docs/bitacora/`. |

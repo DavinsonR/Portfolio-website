@@ -20,6 +20,7 @@ npm run latex        # regenera public/*.tex desde lib/content/cv.ts
 npm run cv           # latex + compila el PDF si hay tectonic/latexmk/xelatex
 npm run atlas        # regenera lib/generated/atlas-figure.ts desde public/atlas/*.json
 npm run icons        # regenera favicon.ico, apple-icon.png y public/icon-*.png (necesita Pillow)
+npm run snapshot     # refresca public/trading-sim-snapshot/ (la instantánea del índice del pipeline)
 ```
 
 **No hay framework de pruebas, pero sí cuatro comprobaciones**, y `.github/workflows/ci.yml` las corre en cada PR y en cada push a `main`. Verificar un cambio es `npm run check` y `npm run build` en cero, y después mirarlo en un navegador en tema claro y oscuro, en español y en inglés. Para lo visual conviene medir en vez de opinar: desborde horizontal a 320/393/768/1280 px, contraste, y cero errores de consola.
@@ -50,6 +51,8 @@ Cada cadena del sitio vive una sola vez, en `es` y `en`. No hay texto literal en
 | `lib/content/projects.ts` | las cinco piezas de trabajo, una por página |
 | `lib/content/about.ts` | trayectoria, herramientas, divulgaciones, contacto, pie, 404 |
 | `lib/content/cv.ts` | el CV — de aquí salen también el `.tex` y el PDF |
+| `lib/content/historia.ts` | la trayectoria en primera persona |
+| `lib/content/error.ts` | la frontera de error de cliente: cuatro cadenas, en un fichero aparte porque `error.tsx` es cliente y lo que importa viaja en el bundle de todas las rutas |
 | `lib/content/types.ts` | los tipos y constantes que comparten los cuatro |
 
 ```ts
@@ -66,7 +69,7 @@ Olvidar cualquiera deja un fallo silencioso, y varios ya ocurrieron:
 
 1. `app/[lang]/<ruta>/page.tsx` — la página.
 2. `lib/content/<bloque>.ts` — su bloque de contenido, **en los dos idiomas**.
-3. `generateMetadata` de esa página — `alternates(lang, "/ruta")` **y** `openGraph(lang, "/ruta", …)` de `lib/config/alternates.ts`. Next **reemplaza** el `openGraph`, no lo fusiona: una subpágina que no lo declara hereda el del layout y su tarjeta en LinkedIn enlaza a la portada.
+3. `generateMetadata` de esa página — `alternates(lang, "/ruta")` **y** `...social(lang, "/ruta", …)` de `lib/config/alternates.ts`, que esparce `openGraph` **y** `twitter`. Next **reemplaza** esos dos objetos, no los fusiona: una subpágina que no los declara hereda los del layout y su tarjeta en LinkedIn o en X enlaza a la portada con el título de la portada (FALLO-29 y FALLO-36; `check:routes` exige los dos).
 4. `app/sitemap.ts` — la constante `ROUTES`.
 5. `next.config.ts` — el redirect de la ruta sin idioma (`/x` → `/en/x`); sin él esa URL devuelve 404.
 

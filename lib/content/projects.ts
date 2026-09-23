@@ -17,7 +17,7 @@ export const projects = {
     creditRisk: {
       metaTitle: "credit-risk-mlops — diez gates, y uno bloquea mi propio modelo",
       metaDesc:
-        "Sistema de decisión crediticia sobre 1,96M de préstamos SBA y 62,4M de solicitudes HMDA, con gobierno de modelos: gates que bloquean, monitoreo que encontró una variable rota y un estudio de evento que corrigió una cifra propia.",
+        "Sistema de decisión crediticia sobre 1,96 M de préstamos SBA y 62,4 M de solicitudes HMDA, con gobierno de modelos: gates que bloquean, monitoreo que encontró una variable rota y un estudio de evento que corrigió una cifra propia.",
       kicker: "Sistema de decisión · credit-risk-mlops",
       title: "El modelo no es el punto. El punto es que sobrevive una auditoría.",
       intro:
@@ -216,7 +216,7 @@ export const projects = {
       method: {
         label: "Metodología",
         title: "Las reglas que hacen creíbles los números",
-        desc: "Un backtest sin estas reglas es marketing. Cada una existe porque su ausencia infla resultados — y varias las aprendimos encontrando bugs reales, documentados en el repositorio.",
+        desc: "Un backtest sin estas reglas es marketing. Cada una existe porque su ausencia infla resultados — y varias las aprendí encontrando bugs reales, documentados en el repositorio.",
         items: [
           {
             title: "sin mirar el futuro",
@@ -224,7 +224,7 @@ export const projects = {
           },
           {
             title: "costos reales",
-            body: "10 pb de comisión por lado + 5 pb de slippage adverso en cada ejecución. La razón nº1 por la que estrategias \"perfectas\" en papel pierden dinero real.",
+            body: "10 pb de comisión por lado + 5 pb de slippage adverso en cada ejecución. El coste se cobra en cada ejecución: una estrategia con cien operaciones lo paga cien veces, y ahí es donde la mayoría de las que parecen perfectas en papel pierden dinero real.",
           },
           {
             title: "validación 70/30",
@@ -394,7 +394,7 @@ export const projects = {
           { title: "El PCA se descartó midiéndolo", body: "La medida de adecuación muestral da 0,314 en acceso y 0,404 en uso, por debajo del umbral de 0,5 que hace falta para factorizar. Forzarlo produce pesos implícitos negativos en microcrédito, que es un índice que dice que más crédito es menos inclusión." },
           { title: "Pesos iguales, congelados y publicados", body: "Dentro de cada dimensión los pesos son iguales, se fijan en la ventana 2018–2019 y no se vuelven a tocar. Los pesos implícitos por variable se publican siempre, y ninguno puede ser negativo." },
           { title: "Sensibilidad a la vista", body: "El PCA y el índice de distancia de Sarma se calculan igual y se publican como alternativas, con la correlación de rangos entre las tres versiones. Ninguna se esconde." },
-          { title: "Cero es un promedio, no una ausencia", body: "El índice está estandarizado contra el promedio de los departamentos en la ventana de calibración. Un valor de 2 son dos desviaciones por encima de aquel promedio, no “el doble de inclusión”." },
+          { title: "Cero es un promedio, no una ausencia", body: "El índice está estandarizado contra el promedio de los departamentos en la ventana de calibración. Un valor de 2 son dos desviaciones por encima de aquel promedio, no «el doble de inclusión»." },
         ],
       },
       atlas: {
@@ -559,7 +559,7 @@ export const projects = {
         label: "Decisiones",
         title: "Seis decisiones, cada una contra un modo concreto de abandonar",
         body:
-          "La mitad de la gente deja una app de seguimiento en el primer mes, y uno de cada ocho abandonos es de alguien que ya aprendió lo que necesitaba. Esas dos cifras son el punto de partida: cada decisión responde a una forma documentada de fallar, no a una preferencia estética.",
+          "Ninguna de estas decisiones responde a una preferencia estética: cada una responde a una forma concreta y documentada de abandonar una app de seguimiento.",
         items: [
           { title: "Un hueco y un fallo no son lo mismo", body: "Un día sin marcar sale del denominador; uno marcado en no cuenta como cero; y un día declarado en pausa —un viaje, una gripe— no cuenta ni a favor ni en contra. Sin esa distinción, dos semanas de vida normal se leen como catorce fracasos." },
           { title: "Graduarse es un final feliz", body: "Un hábito se puede graduar con una nota: deja de pedirse a diario, se queda en la historia y no hunde la adherencia del resto. Sale del denominador solo desde la fecha en que se gradúa, porque los días anteriores ya contaron y reescribirlos cambiaría un historial que fue verdad." },
@@ -817,7 +817,7 @@ export const projects = {
       },
       fx: {
         title: "The company or the currency? — Latin American ADRs",
-        desc: "Ecopetrol, Bancolombia, Petrobras and the other ADRs trade in New York in dollars: their return mixes company performance with the currency move. With the FX pairs in the same warehouse, we separate them (window: 365 days).",
+        desc: "Ecopetrol, Bancolombia, Petrobras and the other ADRs trade in New York in dollars: their return mixes company performance with the currency move. With the FX pairs in the same warehouse, I separate them (window: 365 days).",
         formula: "(1 + r_USD) × (1 + r_FX) = (1 + r_local)  ·  drag = r_USD − r_local",
         asset: "asset",
         pair: "pair",
@@ -844,7 +844,7 @@ export const projects = {
           },
           {
             title: "real costs",
-            body: "10 bps commission per side + 5 bps adverse slippage on every fill. The #1 reason strategies that look \"perfect\" on paper lose real money.",
+            body: "10 bps commission per side + 5 bps adverse slippage on every fill. The cost is charged on every fill: a strategy with a hundred trades pays it a hundred times, and that is where most paper-perfect strategies lose real money.",
           },
           {
             title: "70/30 validation",
@@ -887,8 +887,8 @@ export const projects = {
       metaDesc: "A seven-table semantic model in TMDL, 17 DAX measures and four report pages, versioned as text. Every measure links to the file that defines it.",
       kicker: "Report · Medallion Insights",
       pill: "IN THE REPO",
-      title: "«Power BI» on a CV means nothing. Here are all 17 measures, one by one.",
-      intro: "The pipeline's warehouse feeds an interactive Power BI report, Medallion Insights. It is versioned as a Power BI Project (PBIP): the semantic model in TMDL, the pages in PBIR, all plain text reviewed in a pull request. This page is the catalogue of that model, copied from the source files, so nobody has to take the words «Power BI» on trust without seeing what is behind them.",
+      title: "“Power BI” on a CV means nothing. Here are all 17 measures, one by one.",
+      intro: "The pipeline's warehouse feeds an interactive Power BI report, Medallion Insights. It is versioned as a Power BI Project (PBIP): the semantic model in TMDL, the pages in PBIR, all plain text reviewed in a pull request. This page is the catalogue of that model, copied from the source files, so nobody has to take the words “Power BI” on trust without seeing what is behind them.",
       sourceLine: "Catalogue copied from commit",
       sourceTail: "· the model loads against the Supabase warehouse from Power BI Desktop",
       facts: { tables: "tables", relationships: "relationships, all to dim_assets.symbol", measures: "DAX measures", visuals: "visuals across four pages" },
@@ -954,7 +954,7 @@ export const projects = {
       licensing: {
         label: "Licensing",
         title: "Why there is no embedded report",
-        body: "«Publish to web» needs a Power BI Pro licence on a work tenant whose administrator allows public embedding, and it makes the dataset itself public. This project runs on a zero budget, so the report ships as source: the PBIP project opens for free in Power BI Desktop and refreshes against the warehouse. Saying so openly is evidence too: knowing what it costs to publish a report is part of the job.",
+        body: "“Publish to web” needs a Power BI Pro licence on a work tenant whose administrator allows public embedding, and it makes the dataset itself public. This project runs on a zero budget, so the report ships as source: the PBIP project opens for free in Power BI Desktop and refreshes against the warehouse. Saying so openly is evidence too: knowing what it costs to publish a report is part of the job.",
         steps: [
           "Install Power BI Desktop, free and with no account needed to author.",
           "Open MedallionInsights.pbip from the repository's powerbi folder.",
@@ -1177,7 +1177,7 @@ export const projects = {
         label: "Decisions",
         title: "Six decisions, each against a specific way of quitting",
         body:
-          "Half of people abandon a tracking app within the first month, and one in eight who quit do so because they already learned what they needed. Those two figures are the starting point: every decision answers a documented way of failing, not an aesthetic preference.",
+          "None of these decisions answers an aesthetic preference: each one answers a concrete, documented way people abandon a tracking app.",
         items: [
           { title: "A gap and a failure are not the same thing", body: "An unmarked day leaves the denominator; one marked “no” counts as zero; and a day declared paused —travel, illness— counts neither for nor against. Without that distinction, two weeks of ordinary life read as fourteen failures." },
           { title: "Graduating is a happy ending", body: "A habit can be graduated with a note: it stops being asked daily, stays in the history, and no longer drags down everyone else's adherence. It leaves the denominator only from the graduation date onward, because the earlier days already counted and rewriting them would change a history that was true." },

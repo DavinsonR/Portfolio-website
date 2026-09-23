@@ -1,4 +1,4 @@
-# Fallos — FALLO-01 … FALLO-35
+# Fallos — FALLO-01 … FALLO-39
 
 *Este es el documento que hay que leer antes de tocar nada.* Cada fila es un fallo que ya ocurrió, con su causa raíz en la sesión enlazada.
 
@@ -26,6 +26,10 @@ Dos columnas hacen el trabajo:
 | 33 | El propio `check:artifacts` solo miraba dentro de los streams comprimidos del PDF; al recompilar con pdfLaTeX las URL pasaron a las anotaciones `/URI` y dio un falso negativo con el PDF ya correcto | ✓ mira los dos sitios | 16 sep 2026 |
 | 34 | El SVG de la figura del atlas emitía `height="auto"`, que no es una longitud: error de consola en la portada en cada carga. Va al estilo, donde `height:auto` sí es válido | ✓ `check:routes` | 16 sep 2026 |
 | 35 | **El generador del atlas escribía en la ruta vieja.** Al mover `lib/atlas-figure.ts` a `lib/generated/`, `scripts/generate-atlas-figure.mjs:41` se quedó apuntando al destino anterior: `npm run atlas` habría creado un fichero huérfano y la figura publicada se habría congelado sin que nada se quejara. Lo encontró Codex en una revisión independiente | ✓ CI regenera y diff | 16 sep 2026 |
+| 36 | **Las catorce subpáginas publicaban la tarjeta de Twitter de la portada.** La misma mecánica que FALLO-29 —`twitter` se reemplaza, no se fusiona— en el bloque que nadie volvió a declarar; el `openGraph` de cada una ya era correcto y `check:routes` solo miraba `og:url`. Lo encontró la auditoría de cinco expertos | ✓ `check:routes` | [18](bitacora/sesion-18.md) |
+| 37 | **El `<title>` de `/cv` llevaba el nombre dos veces**: la página lo ponía en su título y la plantilla del layout (`%s — nombre`) lo volvía a añadir. En producción, en los dos idiomas, 71 caracteres | ✗ | [18](bitacora/sesion-18.md) |
+| 38 | **`Motion.tsx` desarmaba el salvavidas de 3 s antes de montar el observador**: si algo lanzaba entre medias, todo `[data-reveal]` se quedaba invisible para siempre, y no existía ningún `error.tsx` que contuviera el fallo. Latente, nunca observado; lo encontró la auditoría | ✗ | [18](bitacora/sesion-18.md) |
+| 39 | **`next@16.3.1` llevaba un CVE crítico en el lockfile y nadie lo vio**: las alertas de Dependabot estaban apagadas a nivel de repositorio y ningún paso de CI corría `npm audit` | ✓ `npm audit` en CI + Dependabot | [18](bitacora/sesion-18.md) |
 
 **Dos rutas que devolvían 200 debiendo ser 404** y un redirect de idioma que faltaba también salieron en la [sesión 16](bitacora/sesion-16.md); hoy los cubre `check:routes`.
 

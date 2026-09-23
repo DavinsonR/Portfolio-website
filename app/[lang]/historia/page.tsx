@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
-import { alternates, openGraph } from "@/lib/config/alternates";
+import { alternates, social } from "@/lib/config/alternates";
 import { mailtoHref } from "@/lib/config/contact";
 import BackLink from "@/components/BackLink";
 import SectionNav from "@/components/SectionNav";
@@ -19,7 +19,7 @@ export async function generateMetadata({
     alternates: alternates(lang, "/historia"),
     // Next REEMPLAZA el openGraph, no lo fusiona: sin esto la tarjeta de esta
     // página en LinkedIn sería la de la portada. `check:routes` lo exige.
-    openGraph: openGraph(lang, "/historia", {
+    ...social(lang, "/historia", {
       title: dict.historia.metaTitle,
       description: dict.historia.metaDesc,
       siteName: dict.profile.name,

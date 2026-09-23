@@ -20,47 +20,63 @@ export default function MotionRoot() {
   useEffect(() => {
     const root = document.documentElement;
     root.classList.add("js");
-    root.setAttribute("data-motion", "on"); // stands down the boot failsafe
+    const revealAll = () => document.querySelectorAll(SEL).forEach((el) => el.classList.add("is-in"));
 
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (still.matches) {
-      document.querySelectorAll(SEL).forEach((el) => el.classList.add("is-in"));
+    // El salvavidas del layout (3 s) solo actúa si `data-motion` NO está puesto.
+    // Antes se ponía en la primera línea, ANTES de construir el observador: si
+    // algo lanzaba entre medias (un navegador sin IntersectionObserver, una
+    // extensión que lo parchea) el salvavidas ya estaba desarmado y todo
+    // `[data-reveal]` se quedaba en opacity: 0 para siempre (FALLO-38). Ahora se
+    // arma al final, cuando el observador ya vigila, y un fallo revela todo.
+    try {
+      const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if (still.matches) {
+        revealAll();
+        root.setAttribute("data-motion", "on");
+        return;
+      }
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            e.target.classList.add("is-in");
+            io.unobserve(e.target); // a printed line is not un-printed
+          }
+        },
+        { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+      );
+
+      const watch = (scope: ParentNode) =>
+        scope.querySelectorAll?.(SEL).forEach((el) => {
+          if (!el.classList.contains("is-in")) io.observe(el);
+        });
+
+      watch(document);
+
+      const mo = new MutationObserver((records) => {
+        for (const r of records) {
+          for (const n of r.addedNodes) {
+            if (!(n instanceof Element)) continue;
+            if (n.matches(SEL)) io.observe(n);
+            watch(n);
+          }
+        }
+      });
+      mo.observe(document.body, { childList: true, subtree: true });
+
+      root.setAttribute("data-motion", "on"); // stands down the boot failsafe — only now
+
+      return () => {
+        io.disconnect();
+        mo.disconnect();
+      };
+    } catch {
+      // Sin observador no hay revelado: se enseña todo y el salvavidas del
+      // layout sigue armado para lo que se pinte después.
+      revealAll();
       return;
     }
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (!e.isIntersecting) continue;
-          e.target.classList.add("is-in");
-          io.unobserve(e.target); // a printed line is not un-printed
-        }
-      },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
-    );
-
-    const watch = (scope: ParentNode) =>
-      scope.querySelectorAll?.(SEL).forEach((el) => {
-        if (!el.classList.contains("is-in")) io.observe(el);
-      });
-
-    watch(document);
-
-    const mo = new MutationObserver((records) => {
-      for (const r of records) {
-        for (const n of r.addedNodes) {
-          if (!(n instanceof Element)) continue;
-          if (n.matches(SEL)) io.observe(n);
-          watch(n);
-        }
-      }
-    });
-    mo.observe(document.body, { childList: true, subtree: true });
-
-    return () => {
-      io.disconnect();
-      mo.disconnect();
-    };
   }, []);
 
   return null;

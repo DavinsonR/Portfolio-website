@@ -582,7 +582,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 style={{ "--d": `${i * 70}ms` } as React.CSSProperties}
               >
                 <dt className="text-[14px] font-semibold text-ink">{d.term}</dt>
-                <dd className="mt-1 max-w-[58ch] text-[14px] leading-[1.65] text-body">{d.text}</dd>
+                <dd className="mt-1 max-w-[58ch] text-[14px] leading-[1.65] text-body">
+                  {d.text}
+                  {"href" in d && (
+                    <>
+                      {" "}
+                      <a href={d.href} target="_blank" rel="noopener noreferrer" className="font-medium text-cold hover:underline">
+                        {d.hrefLabel} →
+                      </a>
+                    </>
+                  )}
+                </dd>
               </div>
             ))}
           </dl>

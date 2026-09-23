@@ -1,0 +1,24 @@
+# Las alertas de vulnerabilidad del repositorio estaban apagadas y `next@16.3.1`
+# se quedó con un CVE crítico en el lockfile sin que nada lo dijera (sesión 18).
+# Esto abre un PR por cada parche de seguridad en cuanto sale, y agrupa el resto
+# en uno semanal, para que revisar dependencias sea leer un diff y no acordarse
+# de correr `npm outdated`. `next` y `eslint-config-next` van fijados en exacto
+# a propósito (CLAUDE.md: «esta no es la Next.js que conoces»); Dependabot los
+# propone igual, y el CI decide.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      menores-y-parches:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday

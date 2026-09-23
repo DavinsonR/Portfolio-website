@@ -1,4 +1,4 @@
-# Decisiones — D-01 … D-31
+# Decisiones — D-01 … D-32
 
 *Índice. Cada fila enlaza a la sesión donde la decisión se tomó, con su justificación completa; aquí va solo lo suficiente para saber si hace falta ir a leerla.*
 
@@ -47,6 +47,12 @@ Estas decisiones **no rigen este repositorio**. Están aquí porque el sitio con
 | D-26 | Descomposición cambiaria | [8](bitacora/sesion-08.md) |
 | D-27 | Cómo verificar Power BI sin tener Power BI | [9](bitacora/sesion-09.md) |
 
+## Después de la sesión 17
+
+| # | Decisión | Sesión |
+|---|---|---|
+| D-32 | **Siete redirects sin idioma en 308 y `/` en 307.** Los de ruta concreta (`/cv` → `/en/cv`…) son decisiones permanentes de arquitectura: consolidan señal y se cachean. `/` se queda temporal a propósito: es el único sitio donde una detección de idioma por `Accept-Language` tendría sentido algún día, y un 308 queda cacheado en el navegador del visitante sin caducidad — lo congelaría. `check:routes` lee la lista de `next.config.ts` y exige exactamente esos códigos | [18](bitacora/sesion-18.md) |
+
 ---
 
-*Las decisiones posteriores a la sesión 17 (dominio propio, CI, comprobaciones) están en el historial de Git y en [`ROADMAP.md`](ROADMAP.md).*
+*Las decisiones del 16 sep 2026 (dominio propio, CI, comprobaciones) están en el historial de Git y en [`ROADMAP.md`](ROADMAP.md).*

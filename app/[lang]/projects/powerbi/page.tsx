@@ -10,7 +10,7 @@ import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import ModelDiagram from "@/components/powerbi/ModelDiagram";
 import MeasureCatalogue from "@/components/powerbi/MeasureCatalogue";
-import { alternates, openGraph } from "@/lib/config/alternates";
+import { alternates, social } from "@/lib/config/alternates";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     title: dict.powerbi.metaTitle,
     description: dict.powerbi.metaDesc,
     alternates: alternates(lang, "/projects/powerbi"),
-    openGraph: openGraph(lang, "/projects/powerbi", {
+    ...social(lang, "/projects/powerbi", {
       title: dict.powerbi.metaTitle,
       description: dict.powerbi.metaDesc,
       siteName: dict.profile.name,

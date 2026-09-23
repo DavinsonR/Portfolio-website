@@ -25,6 +25,8 @@
 // anteriores.
 // ============================================================
 
+import { FALLOS_LOG } from "./types";
+
 export const historia = {
   es: {
     historia: {
@@ -137,12 +139,12 @@ export const historia = {
           title: "Lo que sostiene todo",
           body: [
             "Hay un hilo que atraviesa las tres cosas y me importa más que cualquiera de ellas: publico lo que falla.",
-            "El nulo de la tesis está publicado. La fuga del 0,9461 está en el README con el número exacto, sin maquillar. De 1.392 estrategias, el titular es cuántas se murieron. Y este mismo sitio carga una bitácora con treinta y cinco fallos numerados, cada uno con su causa raíz y su corrección — incluidos los que rompí esta semana.",
+            "El nulo de la tesis está publicado. La fuga del 0,9461 está en el README con el número exacto, sin maquillar. De 1.392 estrategias, el titular es cuántas se murieron. Y este mismo sitio carga una bitácora de fallos numerados, cada uno con su causa raíz y su corrección — incluidos los que rompí esta semana.",
             "No es humildad de vitrina, y quiero ser claro en eso. Es algo más aburrido y más útil: un portafolio donde todo salió bien no se puede verificar. Uno donde los errores están fechados, sí. Cada cifra de este sitio enlaza al artefacto que la produce — el repositorio, el commit, el pipeline. Si algo no se puede comprobar, no lo publico.",
           ],
           verdict: "Publico lo que falla.",
           proofLabel: "Ver la bitácora de fallos",
-          proofHref: "https://github.com/DavinsonR/proyecto-davirson/blob/main/docs/FALLOS.md",
+          proofHref: FALLOS_LOG,
         },
         {
           id: "donde",
@@ -273,12 +275,12 @@ export const historia = {
           title: "What holds it together",
           body: [
             "There's a thread running through all three and it matters to me more than any of them: I publish what fails.",
-            "The thesis null is published. The 0.9461 leak is in the README with the exact number, unretouched. Of 1,392 strategies, the headline is how many died. And this very site carries a log of thirty-five numbered defects, each with its root cause and its fix — including the ones I broke this week.",
+            "The thesis null is published. The 0.9461 leak is in the README with the exact number, unretouched. Of 1,392 strategies, the headline is how many died. And this very site carries a log of numbered defects, each with its root cause and its fix — including the ones I broke this week.",
             "This isn't shop-window humility, and I want to be clear about that. It's something duller and more useful: a portfolio where everything went well can't be verified. One where the mistakes are dated can. Every figure on this site links to the artifact that produces it — the repository, the commit, the pipeline. If it can't be checked, I don't publish it.",
           ],
           verdict: "I publish what fails.",
           proofLabel: "See the defect log",
-          proofHref: "https://github.com/DavinsonR/proyecto-davirson/blob/main/docs/FALLOS.md",
+          proofHref: FALLOS_LOG,
         },
         {
           id: "donde",

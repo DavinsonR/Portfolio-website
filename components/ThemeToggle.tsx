@@ -35,7 +35,14 @@ export default function ThemeToggle({ labels }: { labels: { light: string; dark:
     // El script de arranque ya estampó `data-theme` antes del primer pintado
     // cuando había preferencia guardada; se lee de ahí antes que de nada.
     const stamped = document.documentElement.getAttribute("data-theme");
-    const stored = stamped === "light" || stamped === "dark" ? stamped : localStorage.getItem("theme");
+    // `localStorage` LANZA en modo privado estricto y bajo políticas de empresa
+    // que apagan el almacenamiento; el script de arranque ya lo envuelve, y un
+    // efecto de React que lanza se lleva la página entera, no solo el botón.
+    let saved: string | null = null;
+    try {
+      saved = localStorage.getItem("theme");
+    } catch {}
+    const stored = stamped === "light" || stamped === "dark" ? stamped : saved;
     const resolved: Mode =
       stored === "light" || stored === "dark"
         ? stored
@@ -50,7 +57,11 @@ export default function ThemeToggle({ labels }: { labels: { light: string; dark:
     const next: Mode = mode === "dark" ? "light" : "dark";
     setMode(next);
     document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      // Sin almacenamiento el tema dura lo que dura la pestaña. Es lo correcto.
+    }
   };
 
   // Renders inert until the real mode is known, so the icon never flips on load.

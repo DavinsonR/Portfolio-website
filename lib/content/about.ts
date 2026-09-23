@@ -12,6 +12,8 @@
 import { TABLEAU_VIZ } from "./types";
 import type { ProofRow } from "./types";
 
+import { FALLOS_LOG } from "./types";
+
 export const about = {
   es: {
     track: {
@@ -55,7 +57,7 @@ export const about = {
         { name: "Git · GitHub Actions", proof: "Cron diario en operación, con circuit breaker de rate limit", href: "/projects/trading-sim" },
         { name: "Econometría de panel", proof: "Efectos fijos de dos vías sobre 228 observaciones, con bootstrap salvaje por clúster (p = 0,89) y placebo por permutación (p = 0,68)", href: "/research/fintech-inclusion#resultados" },
         { name: "Diagnóstico y robustez", proof: "Driscoll-Kraay por dependencia transversal medida (p = 0,014), CCE, SLX y cuatro diseños contra la exogeneidad", href: "/research/fintech-inclusion#metodo" },
-        { name: "Machine learning", proof: "LightGBM sobre 95 M de registros: AUC 0,7005, +0,0311 sobre la scorecard interpretable", href: "/projects/credit-risk" },
+        { name: "Machine learning", proof: "LightGBM sobre 1,96 M de préstamos SBA y 62,4 M de solicitudes HMDA: AUC 0,7005, +0,0311 sobre la scorecard interpretable", href: "/projects/credit-risk" },
         { name: "Riesgo de crédito y scorecards", proof: "Binning WoE con optbinning, validación out-of-time que cruza el shock COVID, error de calibración 0,0107", href: "/projects/credit-risk#cr-cliff" },
         { name: "Gobierno de modelos (MLOps)", proof: "Diez gates de promoción juzgados por código de salida; uno bloquea mi propio modelo y no bajé el umbral", href: "/projects/credit-risk" },
       ] as ProofRow[],
@@ -65,7 +67,11 @@ export const about = {
       items: [
         {
           term: "Construido en público",
-          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, y los errores también. La bitácora de ingeniería lleva 35 fallos encontrados y corregidos, numerados uno a uno, con su causa raíz. Pocos portafolios publican esa lista. Es justo la que hace verificable todo lo demás.",
+          // Sin el número: «35» se escribía a mano y caducaba solo cada vez que
+          // se arreglaba algo. El enlace no caduca.
+          text: "Este sitio y los proyectos detrás se documentan mientras se hacen, y los errores también. La bitácora de ingeniería lleva cada fallo encontrado y corregido, numerado uno a uno, con su causa raíz. Pocos portafolios publican esa lista. Es justo la que hace verificable todo lo demás.",
+          href: FALLOS_LOG,
+          hrefLabel: "Ver la bitácora de fallos",
         },
         {
           term: "Rendimientos pasados",
@@ -149,7 +155,7 @@ export const about = {
     },
     toolkit: {
       title: "No logo wall",
-      note: "Anyone can type «Python» on a CV. Here every tool links to the exact work where I used it — the repository, the report or the role. If something has nowhere to link, it is not on this list.",
+      note: "Anyone can type “Python” on a CV. Here every tool links to the exact work where I used it — the repository, the report or the role. If something has nowhere to link, it is not on this list.",
       rows: [
         { name: "Financial analysis and FP&A", proof: "SG&A close and forecast across 15+ countries: variance against plan, against prior forecast and in constant currency", href: "/cv#experiencia" },
         { name: "Excel and financial modelling", proof: "The close and forecast for those 15+ countries, at Neoris EPAM", href: "/cv#experiencia" },
@@ -163,7 +169,7 @@ export const about = {
         { name: "Git · GitHub Actions", proof: "Daily cron in operation, with a rate-limit circuit breaker", href: "/projects/trading-sim" },
         { name: "Panel econometrics", proof: "Two-way fixed effects over 228 observations, with wild cluster bootstrap (p = 0.89) and permutation placebo (p = 0.68)", href: "/research/fintech-inclusion#resultados" },
         { name: "Diagnostics and robustness", proof: "Driscoll-Kraay for measured cross-sectional dependence (p = 0.014), CCE, SLX and four designs against exogeneity", href: "/research/fintech-inclusion#metodo" },
-        { name: "Machine learning", proof: "LightGBM over 95M records: AUC 0.7005, +0.0311 over the interpretable scorecard", href: "/projects/credit-risk" },
+        { name: "Machine learning", proof: "LightGBM over 1.96M SBA loans and 62.4M HMDA applications: AUC 0.7005, +0.0311 over the interpretable scorecard", href: "/projects/credit-risk" },
         { name: "Credit risk and scorecards", proof: "WoE binning with optbinning, out-of-time validation across the COVID shock, calibration error 0.0107", href: "/projects/credit-risk#cr-cliff" },
         { name: "Model governance (MLOps)", proof: "Ten promotion gates judged by exit code; one blocks my own model, and I did not move the threshold", href: "/projects/credit-risk" },
       ] as ProofRow[],
@@ -173,7 +179,9 @@ export const about = {
       items: [
         {
           term: "Built in public",
-          text: "This site and the projects behind it are documented as they are made, and so are the mistakes. The engineering log carries 35 defects found and fixed, numbered one by one, with their root cause. Few portfolios publish that list. It is precisely what makes everything else verifiable.",
+          text: "This site and the projects behind it are documented as they are made, and so are the mistakes. The engineering log carries every defect found and fixed, numbered one by one, with its root cause. Few portfolios publish that list. It is precisely what makes everything else verifiable.",
+          href: FALLOS_LOG,
+          hrefLabel: "See the defect log",
         },
         {
           term: "Past results",
@@ -185,7 +193,7 @@ export const about = {
         },
         {
           term: "Power BI report",
-          text: "The report exists as a PBIP project in the public repository and opens for free in Power BI Desktop. There is no public embed because «Publish to web» needs a Pro licence on a work tenant and makes the dataset public.",
+          text: "The report exists as a PBIP project in the public repository and opens for free in Power BI Desktop. There is no public embed because “Publish to web” needs a Pro licence on a work tenant and makes the dataset public.",
         },
         {
           term: "Analytics",
