@@ -355,6 +355,10 @@ function buildOnePage(lang: Locale): string {
   w(`  {\\Large\\bfseries\\color{ink} ${tex(cv.title)}}\\\\\[2pt]`);
   w(`  {\\normalsize\\color{cold} ${cv.targets.map(tex).join(dot)}}\\\\\[3pt]`);
   w(`  {\\small ${tex(cv.metaLine)}}\\\\\[2pt]`);
+  // Los términos de contratación que el sitio pone en ámbar sobre el pliegue
+  // —nivel, inicio, vía— no viajaban en el PDF, que es justo lo que se reenvía
+  // sin el enlace que lo trajo. Una línea, de la misma fuente que la portada.
+  w(`  {\\small\\color{cold} ${dict.sheet.hire.map((h) => `${tex(h.term)}: ${tex(h.detail)}`).join(dot)}}\\\\\[2pt]`);
   w(
     `  {\\small \\href{${url(`mailto:${dict.profile.email}`)}}{${tex(dict.profile.email)}}${dot}` +
       `\\href{${url(dict.profile.linkedin)}}{${tex(dict.profile.linkedin.replace("https://", ""))}}${dot}` +
@@ -403,7 +407,13 @@ function buildOnePage(lang: Locale): string {
     const roles = recent ? company.roles : company.roles.slice(0, 1);
     roles.forEach((role, r) => {
       w(`\\textit{${tex(role.title)}}\\hfill{\\small ${tex(role.period)}}\\par`);
-      const keep = recent && r === 0 ? role.bullets : role.bullets.slice(0, 1);
+      // La viñeta que se queda es la que lleva una CIFRA, y si no hay, la
+      // primera. Antes era siempre la primera, y en el Treasury Analyst la
+      // primera decía «automaticé la conciliación» y la segunda «60 horas al
+      // mes devueltas al equipo»: la hoja de una página —la que se reenvía—
+      // salía sin un solo resultado cuantificado en Experiencia (CO-02).
+      const withFigure = role.bullets.find((b) => /\d/.test(b)) ?? role.bullets[0];
+      const keep = recent && r === 0 ? role.bullets : withFigure ? [withFigure] : [];
       w("\\begin{itemize}[leftmargin=1em, itemsep=0pt, topsep=1pt, parsep=0pt]");
       for (const b of keep) w(`  \\item ${tex(b)}`);
       w("\\end{itemize}");
@@ -428,6 +438,13 @@ function buildOnePage(lang: Locale): string {
   for (const e of cv.education) {
     w(`\\row{${tex(e.title)} \\textnormal{---} ${tex(e.inst)}}{${tex(e.period)}}`);
   }
+  // Las certificaciones no salían en la hoja corta, y el Stanford ML es la
+  // línea que un screener de datos busca primero.
+  w(
+    `{\\small\\textbf{\\color{ink}${tex(t.certs)}:} ` +
+      cv.certs.map((c) => `${tex(c.title)} (${tex(c.inst)}, ${tex(c.year)})`).join(dot) +
+      "}\\par",
+  );
   w("");
 
   // ---------- reconocimientos ----------

@@ -101,7 +101,7 @@ Tres salvaguardas que no se pueden romper: el estado oculto vive dentro de `.js`
 
 ### Sin backend, y tres contratos de datos externos
 
-- **Trading sim** (`lib/data/trading-sim.ts`): lee `exports/*.json` del repositorio público `market-data-medallion` desde `raw.githubusercontent.com`, en el navegador y con tiempo límite. Un fallo de red enseña el error y ofrece reintentar; nunca se queda en «cargando».
+- **Trading sim** (`lib/data/trading-sim.ts`): lee `exports/*.json` del repositorio público `market-data-medallion` desde `raw.githubusercontent.com`, en el navegador y con tiempo límite. Un fallo de red enseña el error y ofrece reintentar; nunca se queda en «cargando». **Las cifras que se mueven cada noche** —supervivientes, eliminadas, «una de cada N»— **no se escriben en el diccionario**: van como plantilla (`{survivors}`) y las deriva `lib/data/lab-stats.ts` de la instantánea versionada en el build y del índice vivo en el navegador (`components/trading/LabText.tsx`); `check:figures` falla si alguien las vuelve a escribir a mano. **`npm run snapshot` antes de publicar**: sin eso el HTML lleva la cifra de la última vez que alguien lo corrió.
 - **Atlas** (`components/atlas/`, `public/atlas/*.json`): el contrato con el repositorio de la tesis (`financial-inclusion-colombia`) es su carpeta `atlas/data/`, copiada a `public/atlas/`. El SVG se dibuja fuera de React en `render.ts` porque la vista municipal son más de 5.000 nodos; React solo posee los controles. `lib/generated/atlas-figure.ts` es **generado** por `npm run atlas` — no se edita a mano.
 - **Catálogo Power BI** (`lib/data/powerbi-model.ts`): copiado a mano de `market-data-medallion/powerbi/`, con el commit de origen en su cabecera; al actualizarlo, actualizar también ese commit.
 

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import TradingSimDashboard from "@/components/trading/TradingSimDashboard";
+import LabText from "@/components/trading/LabText";
+import { labSnapshot, labSnapshotOverfitting } from "@/lib/data/lab-snapshot";
 import { TRADING_SIM_REPO } from "@/lib/data/trading-sim";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
@@ -48,8 +50,11 @@ export default async function TradingSimPage({
           {/* Iba a 50px con peso 500: más grande y más ligero que el nombre de la
               persona en la portada (44px/800), y ninguno de los dos valores
               existe en la escala del sistema. Paso Display. */}
+          {/* El titular lleva la cifra que cambia cada noche: sale de la
+              instantánea en el build y del índice vivo en el navegador, nunca
+              del diccionario (ver lib/data/lab-stats.ts). */}
           <h1 className="max-w-[820px] font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
-            {t.title}
+            <LabText template={t.title} initial={labSnapshot} lang={lang} />
           </h1>
           <p className="mt-5 text-[15.5px] leading-[1.75] max-w-[680px]">{t.intro}</p>
           <p className="mt-3 text-[14px] text-muted max-w-[680px]">{t.pipelineLine}</p>
@@ -64,7 +69,7 @@ export default async function TradingSimPage({
           <h2 id="ts-lab" className="sr-only">
             {t.explorer.windowTitle}
           </h2>
-          <TradingSimDashboard dict={t} lang={lang} />
+          <TradingSimDashboard dict={t} lang={lang} initialOverfitting={labSnapshotOverfitting} />
         </div>
       </section>
 

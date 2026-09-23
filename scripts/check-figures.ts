@@ -42,6 +42,48 @@ type Claim = {
   allow?: { values: number[]; why: string };
 };
 
+/** Números escritos con letra, 0–99, en los dos idiomas: «treinta y tres»,
+ *  «thirty-three», «veintidós», «twenty-two». Existe por CO-09: la banda de
+ *  JARVIS decía «34 tablas» y la prosa de la misma página «treinta y tres
+ *  tablas», y el patrón solo veía dígitos. */
+const UNIDADES_ES = ["cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve", "veinte", "veintiuno", "veintidós", "veintitrés", "veinticuatro", "veinticinco", "veintiséis", "veintisiete", "veintiocho", "veintinueve"];
+const DECENAS_ES: Record<string, number> = { treinta: 30, cuarenta: 40, cincuenta: 50, sesenta: 60, setenta: 70, ochenta: 80, noventa: 90 };
+const UNITS_EN = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+const TENS_EN: Record<string, number> = { twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70, eighty: 80, ninety: 90 };
+
+function palabraANumero(raw: string): number | null {
+  const w = raw.toLowerCase().trim();
+  const es = w.replace(/^una$/, "uno").replace(/^veintiuna$/, "veintiuno");
+  let i = UNIDADES_ES.indexOf(es);
+  if (i >= 0) return i;
+  if (DECENAS_ES[es] !== undefined) return DECENAS_ES[es];
+  let m = /^([a-záéíóúü]+)\s+y\s+([a-záéíóúü]+)$/.exec(es);
+  if (m && DECENAS_ES[m[1]] !== undefined) {
+    const u = UNIDADES_ES.indexOf(m[2] === "una" ? "uno" : m[2]);
+    if (u > 0 && u < 10) return DECENAS_ES[m[1]] + u;
+  }
+  i = UNITS_EN.indexOf(w);
+  if (i >= 0) return i;
+  if (TENS_EN[w] !== undefined) return TENS_EN[w];
+  m = /^([a-z]+)[-\s]([a-z]+)$/.exec(w);
+  if (m && TENS_EN[m[1]] !== undefined) {
+    const u = UNITS_EN.indexOf(m[2]);
+    if (u > 0 && u < 10) return TENS_EN[m[1]] + u;
+  }
+  return null;
+}
+
+/** El grupo de captura de una cifra: dígitos, o una palabra (con «y» o guion). */
+const NUM = "([\\d.,]+|[a-záéíóúü]+(?:\\s+y\\s+[a-záéíóúü]+|-[a-z]+)?)";
+
+/** Las cifras del laboratorio que se MUEVEN cada noche —supervivientes,
+ *  eliminadas, «una de cada N»— se derivan de la instantánea y del índice vivo
+ *  (lib/data/lab-stats.ts). Escribirlas a mano fue el fallo que motivó la
+ *  derivación: el titular decía «menos de 50» sobre un dato que valía 51 una
+ *  semana y 45 la siguiente. Si alguien las vuelve a escribir, esto lo dice. */
+const A_MANO =
+  /menos de (?:50|cincuenta) sobrevivieron|sobrevivieron menos de (?:50|cincuenta)|fewer than (?:50|fifty) survived|una de cada (?:siete|ocho)\b|one in (?:seven|eight)\b|1[.,]3[34]\d (?:que no|that didn)/gi;
+
 const CLAIMS: Claim[] = [
   {
     name: "solicitudes HMDA",
@@ -80,11 +122,11 @@ const CLAIMS: Claim[] = [
   },
   {
     name: "municipios del atlas",
-    pattern: /([\d.,]+)\s*(?:municipios|municipalities)/gi,
+    pattern: new RegExp(`${NUM}\\s*(?:municipios|municipalities)`, "gi"),
   },
   {
     name: "variantes de estrategia",
-    pattern: /([\d.,]+)\s*(?:variantes|strategy variants|strategies put to the test|estrategias de trading)/gi,
+    pattern: new RegExp(`${NUM}\\s*(?:variantes|strategy variants|strategies put to the test|estrategias de trading)`, "gi"),
     allow: {
       values: [1392, 1300],
       why:
@@ -94,11 +136,11 @@ const CLAIMS: Claim[] = [
   },
   {
     name: "pruebas de calidad de datos",
-    pattern: /([\d.,]+)\s*(?:pruebas de (?:calidad|datos)|quality tests|automated data tests)/gi,
+    pattern: new RegExp(`${NUM}\\s*(?:pruebas de (?:calidad|datos)|quality tests|automated data tests)`, "gi"),
   },
   {
     name: "fuentes públicas",
-    pattern: /([\d.,]+|[Dd]iecinueve|[Nn]ineteen)\s*(?:fuentes públicas|public sources)/gi,
+    pattern: new RegExp(`${NUM}\\s*(?:fuentes públicas|public sources)`, "gi"),
   },
   // «fallos de la bitácora» dejó de ser una afirmación con cifra en la sesión
   // 18: el «35» se escribía a mano y caducaba solo cada vez que se arreglaba
@@ -110,15 +152,11 @@ const CLAIMS: Claim[] = [
   },
 ];
 
-const PALABRAS: Record<string, number> = {
-  diecinueve: 19,
-  nineteen: 19,
-};
 
 /** «1,96» en español y «1.96» en inglés son el mismo número. */
 function parseNum(raw: string, locale: "es" | "en"): number | null {
-  const palabra = PALABRAS[raw.toLowerCase()];
-  if (palabra !== undefined) return palabra;
+  const palabra = palabraANumero(raw);
+  if (palabra !== null) return palabra;
 
   const milesSep = locale === "es" ? "." : ",";
   const decSep = locale === "es" ? "," : ".";
@@ -139,33 +177,60 @@ const archivos = fs.readdirSync(DIR).filter((f) => f.endsWith(".ts") && f !== "t
 
 type Hallazgo = { valor: number; crudo: string; archivo: string; locale: string; ctx: string };
 const porClaim = new Map<string, Hallazgo[]>();
+const problemas: string[] = [];
+
+function buscar(texto: string, locale: "es" | "en", archivo: string) {
+  for (const claim of CLAIMS) {
+    const re = new RegExp(claim.pattern.source, claim.pattern.flags);
+    let m: RegExpExecArray | null;
+    while ((m = re.exec(texto)) !== null) {
+      // Sin un dígito y sin ser un número escrito con letra, no es una cifra:
+      // `municipios: "Municipalities"` es una etiqueta de la interfaz, y casaba.
+      const esPalabra = palabraANumero(m[1]) !== null;
+      if (!esPalabra && !/\d/.test(m[1])) continue;
+      const valor = parseNum(m[1], locale);
+      if (valor === null) continue;
+      const desde = Math.max(0, m.index - 30);
+      const ctx = texto.slice(desde, m.index + m[0].length + 20).replace(/\s+/g, " ").trim();
+      if (!porClaim.has(claim.name)) porClaim.set(claim.name, []);
+      porClaim.get(claim.name)!.push({ valor, crudo: m[1], archivo, locale, ctx });
+    }
+  }
+  for (const m of texto.matchAll(A_MANO)) {
+    const desde = Math.max(0, (m.index ?? 0) - 30);
+    problemas.push(
+      `${archivo}:${locale} — «${texto.slice(desde, (m.index ?? 0) + m[0].length + 20).replace(/\s+/g, " ").trim()}»: ` +
+        `esa cifra del laboratorio cambia cada noche y se deriva de la instantánea; escríbela como plantilla ` +
+        `({survivors}, {eliminated}, {oneIn}), no a mano. Ver lib/data/lab-stats.ts.`,
+    );
+  }
+}
 
 for (const f of archivos) {
   const src = fs.readFileSync(path.join(DIR, f), "utf-8");
   const mitades = porIdioma(src);
 
+  // Si el fichero tiene bloque `es` y el corte no encontró el `en`, la
+  // comparación entre idiomas NO se haría y esto pasaría en verde sin medir
+  // nada — el tercer modo de quedarse ciega, que la primera versión no cubría.
+  if (mitades.en === "" && /\n  es: \{/.test(src)) {
+    problemas.push(
+      `${f}: tiene bloque \`es\` pero no se encontró "\\n  en: {" — o cambió el formato del fichero o falta la mitad ` +
+        `inglesa. Sin las dos mitades no se compara nada entre idiomas.`,
+    );
+  }
+
   for (const [locale, texto] of Object.entries(mitades) as ["es" | "en", string][]) {
     if (!texto) continue;
-    for (const claim of CLAIMS) {
-      const re = new RegExp(claim.pattern.source, claim.pattern.flags);
-      let m: RegExpExecArray | null;
-      while ((m = re.exec(texto)) !== null) {
-        // Sin un dígito y sin ser un número escrito con letra, no es una cifra:
-        // `municipios: "Municipalities"` es una etiqueta de la interfaz, y casaba.
-        const esPalabra = PALABRAS[m[1].toLowerCase()] !== undefined;
-        if (!esPalabra && !/\d/.test(m[1])) continue;
-        const valor = parseNum(m[1], locale);
-        if (valor === null) continue;
-        const desde = Math.max(0, m.index - 30);
-        const ctx = texto.slice(desde, m.index + m[0].length + 20).replace(/\s+/g, " ").trim();
-        if (!porClaim.has(claim.name)) porClaim.set(claim.name, []);
-        porClaim.get(claim.name)!.push({ valor, crudo: m[1], archivo: f, locale, ctx });
-      }
-    }
+    buscar(texto, locale, f);
   }
 }
 
-const problemas: string[] = [];
+// Los README también afirman cifras (19 fuentes, 1.123 municipios, 62,4 M) y
+// hasta hoy nadie los leía. Cada uno es un solo idioma.
+for (const [f, locale] of [["README.es.md", "es"], ["README.md", "en"]] as const) {
+  buscar(fs.readFileSync(path.join(process.cwd(), f), "utf-8"), locale, f);
+}
 
 for (const claim of CLAIMS) {
   const hallazgos = porClaim.get(claim.name) ?? [];
