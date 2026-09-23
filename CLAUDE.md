@@ -13,7 +13,7 @@ Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · estático pu
 
 ```bash
 npm run dev          # http://localhost:3000 → redirige a /en
-npm run check        # ← lo que hay que correr: lint + tipos + paridad + artefactos + cifras
+npm run check        # ← lo que hay que correr: lint + tipos (app y scripts) + pruebas + paridad + artefactos + cifras
 npm run build        # compilación de producción; prerenderiza las rutas de los dos idiomas
 npm run check:routes # humo de rutas contra un `next start` ya levantado
 npm run latex        # regenera public/*.tex desde lib/content/cv.ts
@@ -21,9 +21,11 @@ npm run cv           # latex + compila el PDF si hay tectonic/latexmk/xelatex
 npm run atlas        # regenera lib/generated/atlas-figure.ts desde public/atlas/*.json
 npm run icons        # regenera favicon.ico, apple-icon.png y public/icon-*.png (necesita Pillow)
 npm run snapshot     # refresca public/trading-sim-snapshot/ (la instantánea del índice del pipeline)
+npm test             # node --test sobre tests/: sin framework, cargado por tsx
+npm run check:weight # peso brotli por ruta contra el presupuesto de scripts/check-weight.mjs (tras un build)
 ```
 
-**No hay framework de pruebas, pero sí cuatro comprobaciones**, y `.github/workflows/ci.yml` las corre en cada PR y en cada push a `main`. Verificar un cambio es `npm run check` y `npm run build` en cero, y después mirarlo en un navegador en tema claro y oscuro, en español y en inglés. Para lo visual conviene medir en vez de opinar: desborde horizontal a 320/393/768/1280 px, contraste, y cero errores de consola.
+**No hay framework de pruebas, pero sí cinco comprobaciones y un `node --test`**, y `.github/workflows/ci.yml` las corre en cada PR y en cada push a `main`, más `npm audit`, `tsc` sobre `scripts/`, el presupuesto de peso y Lighthouse (accesibilidad y SEO al 100 son un error; rendimiento avisa). Verificar un cambio es `npm run check` y `npm run build` en cero, y después mirarlo en un navegador en tema claro y oscuro, en español y en inglés. Para lo visual conviene medir en vez de opinar: desborde horizontal a 320/393/768/1280 px, contraste, y cero errores de consola.
 
 Qué cubre cada una, y por qué existe:
 
@@ -34,6 +36,8 @@ Qué cubre cada una, y por qué existe:
 - **`check:routes`** — lee las rutas del `sitemap.xml` publicado (no de una lista copiada, que se desincroniza) y comprueba 200; más los redirects de idioma y los 404 que tienen que serlo. La bitácora registra **dos rutas que devolvían 200 debiendo ser 404** y un redirect que faltaba, encontrados a mano meses después. Además, en el HTML de cada ruta:
   - **`og:url` tiene que coincidir con el canonical de esa página** (FALLO-29). Cuando una subpágina olvida su `openGraph`, hereda el del layout y su `og:url` se queda en la portada: su tarjeta en LinkedIn enlaza a la portada, con el título de la portada. El síntoma es exacto, y esa es la diferencia que se mide.
   - ningún `<svg>` lleva `width`/`height="auto"` **como atributo** (FALLO-34): ahí exigen una longitud, y el navegador lo grita en consola en cada carga. En CSS sí valen.
+  - `twitter:title` coincide con `og:title` (FALLO-36: el bloque `twitter` también se reemplaza entero); `<title>` ≤ 60 caracteres y `description` ≤ 155; los ocho redirects leídos de `next.config.ts` con su código exacto; JSON-LD que parsea en cada ruta; y las cabeceras: la CSP arranca en `default-src 'none'`, conserva `'unsafe-inline'` y no declara ningún hash, HSTS con `preload`, sin `x-powered-by`, la demo con `wasm-unsafe-eval`, y una fuente con `max-age` real.
+- **`check:weight`** — tras el build, suma en brotli los chunks que cada HTML referencia y falla por encima de un presupuesto versionado en `scripts/check-weight.mjs`. Existe por IR-05: el renderizador del atlas bajaba con la página aunque sus datos esperaran, y el build estaba en verde.
 
 Las cuatro saben fallar, y se verificó una a una haciéndolas fallar a propósito. `check:figures` se probó de las tres maneras en que puede quedarse ciega: contradiciendo una cifra dentro de un idioma, haciéndola divergir entre `es` y `en`, y borrándola del sitio para que su patrón no encuentre nada. Las tres salieron con código 1.
 

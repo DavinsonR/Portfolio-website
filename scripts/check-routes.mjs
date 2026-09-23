@@ -76,6 +76,23 @@ for (const r of ["/pricing", "/es/no-existe", "/en/no-existe", "/es-CO"]) {
   if (res.status !== 200 || age < 86400) failures.push(`/fonts/archivo-latin.woff2 — Cache-Control «${cc}» (se espera max-age ≥ 86400)`);
 }
 
+// 3c. Las cabeceras que tanto costó razonar. La CSP de next.config.ts es la
+//     pieza más frágil del repositorio —su propio comentario advierte de que un
+//     solo hash mata la hidratación— y nada la comprobaba.
+{
+  const res = await fetch(`${BASE}/en`);
+  const csp = res.headers.get("content-security-policy") ?? "";
+  if (!csp.includes("default-src 'none'")) failures.push(`/en — la CSP no arranca en default-src 'none': «${csp.slice(0, 60)}…»`);
+  if (!csp.includes("'unsafe-inline'")) failures.push("/en — la CSP perdió 'unsafe-inline' y la hidratación muere (ver next.config.ts)");
+  if (/sha256-/.test(csp)) failures.push("/en — la CSP declara un hash: el navegador ignora 'unsafe-inline' y la hidratación muere (CLAUDE.md)");
+  const hsts = res.headers.get("strict-transport-security") ?? "";
+  if (!/max-age=\d{7,}/.test(hsts) || !hsts.includes("preload")) failures.push(`/en — HSTS «${hsts}» (se espera max-age ≥ 1 año y preload)`);
+  if (res.headers.get("x-powered-by")) failures.push("/en — x-powered-by sigue anunciando el framework");
+  const demo = await fetch(`${BASE}/credit-risk-demo/index.html`);
+  const dcsp = demo.headers.get("content-security-policy") ?? "";
+  if (!dcsp.includes("wasm-unsafe-eval")) failures.push("/credit-risk-demo/index.html — su CSP no lleva 'wasm-unsafe-eval': la demo muere con «no available backend»");
+}
+
 // 4. Los artefactos de metadatos que el sitio declara.
 for (const r of ["/robots.txt", "/sitemap.xml", "/manifest.webmanifest", "/icon.svg", "/apple-icon.png", "/.well-known/security.txt"]) {
   await expect(r, 200, "artefacto declarado");
@@ -131,6 +148,20 @@ for (const r of routes) {
   if (!ogUrl) failures.push(`${r} — sin og:url`);
   if (!ogImage) failures.push(`${r} — sin og:image (tarjeta sin imagen)`);
 
+  // Datos estructurados: en todas las rutas desde la sesión 22, y un JSON que no
+  // parsea es exactamente lo que el buscador ignora sin avisar.
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  if (blocks.length === 0) failures.push(`${r} — sin JSON-LD`);
+  for (const b of blocks) {
+    try {
+      const j = JSON.parse(b);
+      const types = (j["@graph"] ?? [j]).map((n) => n["@type"]).filter(Boolean);
+      if (types.length === 0) failures.push(`${r} — JSON-LD sin ningún @type`);
+    } catch {
+      failures.push(`${r} — JSON-LD inválido (no parsea)`);
+    }
+  }
+
   // FALLO-34: `height`/`width` como ATRIBUTO de un <svg> exigen una longitud.
   // `auto` no lo es, el navegador lo rechaza y lo grita en consola en cada
   // carga. En CSS sí es válido, así que va en el estilo. El estándar de este
@@ -153,7 +184,7 @@ for (const r of routes) {
 }
 
 if (failures.length === 0) {
-  console.log(`✓ rutas: ${routes.length} del sitemap a 200, ${redirects.length} redirects con su código, 404, metadatos y tarjetas OG y Twitter propias en cada página`);
+  console.log(`✓ rutas: ${routes.length} del sitemap a 200, ${redirects.length} redirects con su código, 404, cabeceras, metadatos, JSON-LD y tarjetas OG y Twitter propias en cada página`);
   process.exit(0);
 }
 

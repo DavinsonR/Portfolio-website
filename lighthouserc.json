@@ -1,0 +1,24 @@
+{
+  "_": "Lighthouse en CI (sesión 23). Las tres rutas con más superficie: la portada, la tesis (atlas, d3) y crédito (cuatro SVG de servidor). Accesibilidad y SEO son deterministas y exigen el 100 que el sitio ya tiene; rendimiento y buenas prácticas avisan sin poner el CI en rojo, porque en un runner compartido varían de un run a otro y en localhost falta el script de analítica de Vercel (404 en consola). El servidor lo levanta LHCI en un puerto propio para no depender del paso anterior.",
+  "ci": {
+    "collect": {
+      "startServerCommand": "npx next start -p 3005",
+      "startServerReadyPattern": "Ready",
+      "url": [
+        "http://localhost:3005/en",
+        "http://localhost:3005/en/research/fintech-inclusion",
+        "http://localhost:3005/en/projects/credit-risk"
+      ],
+      "numberOfRuns": 1,
+      "settings": { "preset": "desktop" }
+    },
+    "assert": {
+      "assertions": {
+        "categories:accessibility": ["error", { "minScore": 1 }],
+        "categories:seo": ["error", { "minScore": 1 }],
+        "categories:best-practices": ["warn", { "minScore": 0.9 }],
+        "categories:performance": ["warn", { "minScore": 0.9 }]
+      }
+    }
+  }
+}

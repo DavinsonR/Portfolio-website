@@ -35,9 +35,11 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      # Fijadas por SHA (OpenSSF): una etiqueta se puede reapuntar; un commit no.
+      # Dependabot las sigue actualizando y mantiene el comentario con la versión.
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
           cache: npm
@@ -61,6 +63,22 @@ jobs:
       - name: Tipos
         if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         run: npx tsc --noEmit
+
+      # `scripts/` estaba excluido de tsc: el único código que fabrica artefactos
+      # publicados (los .tex, los PDF, la figura del atlas, las comprobaciones)
+      # era el único sin tipar. FALLO-32 vivió meses ahí, y en la sesión 19 el
+      # generador leyó `dict.hire` donde era `dict.sheet.hire` sin que tsc lo viera.
+      - name: Tipos de los scripts
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run check:scripts
+
+      # Pruebas de la lógica con estado que ya rompió algo o puede romperlo en
+      # silencio: la regex de CountUp sobre los valores reales, la derivación de
+      # las cifras del laboratorio, las series del gráfico de crédito y la caída
+      # a la instantánea. node --test, sin framework.
+      - name: Pruebas
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm test
 
       # Los dos huecos que `tsc` no ve: longitudes de array y cadenas vacías.
       - name: Paridad del diccionario
@@ -104,8 +122,26 @@ jobs:
         if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         run: npm run build
 
+      # El presupuesto de peso por ruta (brotli, lo que el HTML referencia). Solo
+      # sube a mano y con motivo: es lo que habría dicho que el renderizador del
+      # atlas bajaba con la página aunque sus datos esperaran (IR-05).
+      - name: Presupuesto de peso
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        run: npm run check:weight
+
       - name: Humo de rutas
         if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
         run: |
           npx next start -p 3000 &
           npm run check:routes
+
+      # Lighthouse sobre tres rutas: accesibilidad y SEO al 100 son un error;
+      # rendimiento y buenas prácticas avisan (varían entre runners y en
+      # localhost falta el script de analítica). Config en lighthouserc.json.
+      - name: Lighthouse
+        if: ${{ !cancelled() && steps.deps.outcome == 'success' }}
+        uses: treosh/lighthouse-ci-action@3e7e23fb74242897f95c0ba9cabad3d0227b9b18 # v12
+        with:
+          configPath: ./lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: false
