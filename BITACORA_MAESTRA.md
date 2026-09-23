@@ -40,6 +40,7 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 20 | [23 sep](docs/bitacora/sesion-20.md) | Conversión: la portada adelgaza, las páginas de proyecto cierran con una salida, y el CV dice lo que un ATS busca |
 | 21 | [23 sep](docs/bitacora/sesion-21.md) | Diseño y accesibilidad: el foco que no existía, el texto de 4 píxeles en el teléfono, y la deriva del contrato visual |
 | 22 | [23 sep](docs/bitacora/sesion-22.md) | Ingeniería: caché para lo que no cambia, el serif a la mitad, el atlas baja con sus datos, y cada página dice al buscador qué es |
+| 23 | [23 sep](docs/bitacora/sesion-23.md) | La red: tipos para los scripts, pruebas sin framework, presupuesto de peso, cabeceras y JSON-LD en el humo de rutas, Lighthouse en CI |
 
 ## Después de la sesión 17
 

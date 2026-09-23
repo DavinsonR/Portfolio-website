@@ -22,3 +22,6 @@ next-env.d.ts
 # Se regeneran a mano cuando hacen falta; no son parte del sitio.
 /scripts/.atlas-frames/
 /scripts/.atlas-gif/
+
+# Informes locales de Lighthouse CI (en CI van como artifact)
+.lighthouseci/

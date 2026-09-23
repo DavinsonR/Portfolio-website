@@ -37,7 +37,9 @@ npm run dev      # http://localhost:3000 → redirects to /en
 | --- | --- |
 | `npm run dev` | Development server |
 | `npm run build` | Production build |
-| `npm run check` | Lint, types, dictionary parity, CV artefacts and figure consistency — what CI runs (CI also runs `npm audit`, the build and the route smoke test) |
+| `npm run check` | Lint, types (app and scripts), tests, dictionary parity, CV artefacts and figure consistency — what CI runs (CI also runs `npm audit`, the build, the weight budget, the route smoke test and Lighthouse) |
+| `npm test` | `node --test` over `tests/`: the CountUp regex against the real dictionary values, the lab-figure derivation, the credit-risk series and the snapshot fallback |
+| `npm run check:weight` | Brotli weight per route against a versioned budget; needs a build |
 | `npm run check:routes` | Route smoke test against a running `next start` |
 | `npm run lint` | ESLint with the Next configuration |
 | `npm run latex` | Regenerates `public/*.tex` from the dictionary |

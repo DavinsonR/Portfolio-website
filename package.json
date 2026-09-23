@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check": "npm run lint && tsc --noEmit && npm run check:dict && npm run check:artifacts && npm run check:figures",
+    "check": "npm run lint && tsc --noEmit && npm run check:scripts && npm test && npm run check:dict && npm run check:artifacts && npm run check:figures",
     "check:dict": "tsx scripts/check-dictionaries.ts",
     "check:artifacts": "tsx scripts/check-artifacts.ts",
     "check:routes": "node scripts/check-routes.mjs",
@@ -16,7 +16,10 @@
     "atlas": "node scripts/generate-atlas-figure.mjs",
     "icons": "python scripts/generate-icons.py",
     "snapshot": "node scripts/refresh-snapshot.mjs",
-    "check:figures": "tsx scripts/check-figures.ts"
+    "check:figures": "tsx scripts/check-figures.ts",
+    "check:scripts": "tsc -p scripts --noEmit",
+    "check:weight": "node scripts/check-weight.mjs",
+    "test": "node --import tsx --test \"tests/**/*.test.ts\""
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

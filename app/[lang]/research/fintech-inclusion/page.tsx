@@ -211,13 +211,17 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
             </table>
           </div>
 
-          {/* three readings that carry the inference */}
+          {/* three readings that carry the inference.
+              <dt> primero y la nota como segunda <dd>: un <p> suelto dentro del
+              grupo y la definición antes del término fallaban el audit
+              «definition-list» de Lighthouse (97 en accesibilidad, y el CI exige
+              100). La cifra sigue yendo primero en pantalla con `order`. */}
           <dl className="mt-8 grid grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-3">
             {t.results.tiles.map((f, i) => (
-              <div key={f.label} data-reveal className="reveal border-t border-rule pt-4" style={delay(i)}>
-                <dd className="font-figure text-[clamp(26px,3.2vw,34px)] leading-none text-ink">{f.value}</dd>
-                <dt className="mt-2 text-[14px] leading-[1.4] font-medium text-ink">{f.label}</dt>
-                <p className="mt-1 text-[14px] leading-[1.55] text-body">{f.note}</p>
+              <div key={f.label} data-reveal className="reveal flex flex-col border-t border-rule pt-4" style={delay(i)}>
+                <dt className="order-2 mt-2 text-[14px] leading-[1.4] font-medium text-ink">{f.label}</dt>
+                <dd className="order-1 font-figure text-[clamp(26px,3.2vw,34px)] leading-none text-ink">{f.value}</dd>
+                <dd className="order-3 mt-1 text-[14px] leading-[1.55] text-body">{f.note}</dd>
               </div>
             ))}
           </dl>
