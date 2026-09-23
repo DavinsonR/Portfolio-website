@@ -25,10 +25,10 @@ export const cv = {
       // evidencia de uso: un screener no técnico lo lee como «no fluido». El nivel
       // sigue publicado en «Preparado para remoto» y en Divulgaciones, junto a lo
       // que lo respalda.
-      metaLine: "Bogotá, Colombia · GMT-5 · 100% remoto · Inglés de trabajo a diario, con equipos en 15+ países · Español nativo",
+      metaLine: "Bogotá, Colombia · GMT-5 · 100% remoto · Inglés de trabajo a diario con EE. UU. y Europa · Español nativo",
       // La <meta name="description"> de /cv. Antes se derivaba recortando
       // `profileText` a 155 caracteres, y el corte caía a mitad de palabra.
-      metaDesc: "CV de Davirson Novoa: economista y consultor FP&A que también construye plataformas de datos en producción. Finance Data Analyst, remoto desde Bogotá.",
+      metaDesc: "CV de Davirson Novoa, Finance Data Analyst: dueño del cierre FP&A de 15+ países y constructor de plataformas de datos en producción. Remoto, GMT-5.",
       download: "Descargar CV (PDF)",
       downloadHref: "/Davirson_Novoa_CV_ES.pdf",
       downloadShort: "Versión de 1 página",
@@ -39,26 +39,26 @@ export const cv = {
       latexNote: "Compilable en Overleaf sin instalar nada.",
       contactBtn: "Contacto",
       facts: [
-        { value: "15+", label: "países en las operaciones que reporto, desde HQ" },
-        { value: "60 h/mes", label: "de reporting devueltas al equipo (10 por analista)" },
-        { value: "26 meses", label: "de practicante a especialista" },
+        { value: "15+", label: "países cuyo cierre y forecast de SG&A controlo, desde HQ" },
+        { value: "60 h/mes", label: "de trabajo manual eliminadas en tesorería (10 por analista)" },
+        { value: "2 ascensos", label: "en 26 meses en SLB, hasta liderar a un practicante" },
         // «procesados», no «modelados»: 93,4 M son la ventana del estudio de
         // evento y 1,96 M los préstamos SBA; el modelo entrena sobre 62,4 M.
         { value: "95 M", label: "registros de crédito procesados en un portátil" },
       ],
       profileLabel: "Perfil",
       profileText:
-        "Economista con tres años dentro de finanzas corporativas — tesorería, facturación y FP&A — construyendo yo mismo los datos que el negocio necesita, no esperando a que alguien me los pase: Python, SQL y Power BI aplicados a operaciones en más de 15 países de América y el hemisferio oriental. En paralelo opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI, actualizado a diario sin que yo toque nada, y un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno de modelos. Todo verificable: cada cifra de mi sitio enlaza al repositorio que la produce. Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad, no como dos mitades.",
+        "Finance Data Analyst y dueño del proceso de cierre y forecast de SG&A de más de 15 países de América y Europa, desde HQ. Economista formado en tesorería, facturación bajo SOX y FP&A, que construye los datos que el negocio necesita en vez de esperarlos: Python, SQL y Power BI sobre operaciones reales. En paralelo opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI que se actualiza solo a diario, y desplegué un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno de modelos. Todo verificable: cada cifra de mi sitio enlaza al repositorio que la produce. Traigo el criterio financiero y la ingeniería de datos en una sola contratación: sin traductor y sin la reunión de traspaso.",
       // Solo para la hoja de UNA pagina: ahi el lector escanea en treinta
       // segundos y el perfil largo se come el espacio de la experiencia — y
       // ademas empuja el documento a dos paginas, que es lo unico que esa
       // version no puede hacer. `check:artifacts` lo exige en 1.
       profileShortText:
-        "Economista con tres años dentro de finanzas corporativas — tesorería, facturación y FP&A — construyendo yo mismo los datos que el negocio necesita: Python, SQL y Power BI sobre operaciones en más de 15 países de América y el hemisferio oriental. En paralelo opero un warehouse PostgreSQL con dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI que se refresca solo a diario, y un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno. Cada cifra de mi sitio enlaza al repositorio que la produce.",
+        "Finance Data Analyst y dueño del cierre y forecast de SG&A de más de 15 países, desde HQ. Economista formado en tesorería, facturación bajo SOX y FP&A, que construye los datos que el negocio necesita en vez de esperarlos: Python, SQL y Power BI sobre operaciones reales. En paralelo opero un warehouse PostgreSQL con dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI que se refresca solo a diario, y un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno. Cada cifra de mi sitio enlaza al repositorio que la produce.",
       pivot: {
         label: "El rol cruzado",
-        shortBody: "No cambio de carrera: cobro por lo que ya hago. En cada rol financiero terminé construyendo código y datos porque el reporte que hacía falta no existía y nadie más lo iba a hacer. La ventaja no es saber Python — eso lo sabe muchísima gente. Es saber qué pregunta vale la pena responder antes de escribir la primera línea.",
-        body: "No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol financiero terminé construyendo lo mismo — código y datos — porque el reporte que hacía falta no existía y nadie más lo iba a hacer. Un análisis de descalces cambiarios en Python siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería — cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python; eso lo sabe muchísima gente. Es saber qué pregunta vale la pena responder antes de escribir la primera línea. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar — es quien no necesita traductor entre los dos. Contratar a esa persona es contratar dos perfiles en uno, sin la reunión de traducción entre ellos.",
+        shortBody: "Cobro por lo que llevo haciendo en cada rol financiero: construir el dato que el negocio necesita y que nadie más iba a construir. La ventaja no es saber Python — eso lo sabe muchísima gente. Es saber qué pregunta vale la pena responder antes de escribir la primera línea.",
+        body: "Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé construyendo lo mismo — código y datos — porque el reporte que el negocio necesitaba no existía y nadie más lo iba a construir. Un análisis de descalces cambiarios en Python que nadie había pedido, siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería — cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python; eso lo sabe muchísima gente. Es saber qué pregunta vale la pena responder antes de escribir la primera línea. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar — es quien no necesita traductor entre los dos. Contratar a esa persona son dos contrataciones en una, sin la reunión de traspaso entre ellas.",
       },
       expLabel: "Experiencia",
       expTitle: "Experiencia",
@@ -74,10 +74,10 @@ export const cv = {
               title: "Business Consultant, FP&A",
               period: "Mar 2026 — presente",
               bullets: [
-                "Diseñé y lideré sistemas de gestión financiera para el cierre y el forecast de gastos SG&A en más de 15 países de América y el hemisferio oriental (India, Hungría, España, República Checa).",
-                "Gestioné el cierre mensual y la confirmación del forecast a nivel compañía, analizando variaciones contra plan y forecast anterior.",
-                "Di seguimiento a la variación cambiaria en moneda constante y a la inflación por moneda.",
-                "Construí reporting FP&A con Excel avanzado, Power Query, Power BI, MicroStrategy, JD Edwards y SAP.",
+                "Dueño del proceso de cierre y forecast de gastos SG&A de más de 15 países de América y el hemisferio oriental (India, Hungría, España, República Checa), desde HQ.",
+                "Respondo por el cierre mensual y la confirmación del forecast a nivel compañía, y explico cada variación contra plan y contra forecast anterior.",
+                "Aíslo el efecto cambiario en moneda constante y la inflación por moneda, para que la variación operativa se lea limpia.",
+                "Construí el reporting FP&A sobre Excel avanzado, Power Query, Power BI, MicroStrategy, JD Edwards y SAP.",
               ],
             },
           ],
@@ -86,31 +86,31 @@ export const cv = {
           company: "SLB",
           location: "Bogotá, Colombia",
           mode: "hybrid",
-          note: "Progresión interna: de practicante a especialista en 26 meses.",
+          note: "Dos ascensos en 26 meses: de tesorería a especialista de facturación para Argentina y Brasil, con un practicante a cargo.",
           roles: [
             {
               title: "Especialista en Facturación (Argentina & Brasil)",
               period: "Dic 2024 — Mar 2026",
               bullets: [
-                "Ejecuté reconocimiento de ingresos en SAP bajo los requisitos de Sarbanes-Oxley (SOX).",
-                "Desarrollé modelos y visualizaciones en Power BI para análisis de ingresos y tendencias.",
-                "Realicé auditorías internas en proyectos tecnológicos integrados, asegurando trazabilidad y cumplimiento.",
+                "Responsable del reconocimiento de ingresos en SAP para Argentina y Brasil bajo controles Sarbanes-Oxley (SOX).",
+                "Supervisé y formé a un practicante del equipo de facturación.",
+                "Construí modelos y visualizaciones en Power BI para análisis de ingresos y tendencias.",
+                "Audité proyectos tecnológicos integrados, con trazabilidad de punta a punta y cumplimiento.",
               ],
             },
             {
               title: "Analista de Tesorería",
               period: "Oct 2024 — Dic 2024",
               bullets: [
-                "Automaticé la conciliación bancaria en SAP, mejorando precisión y eficiencia.",
-                "Eliminé cerca de 10 horas mensuales de reporting manual por analista — unas 60 horas al mes devueltas al equipo — optimizando y automatizando el proceso.",
-                "Implementé flujos de trabajo automatizados con Power Automate.",
+                "Devolví cerca de 60 horas al mes al equipo — unas 10 por analista — automatizando el reporting manual de tesorería.",
+                "Automaticé la conciliación bancaria en SAP y la llevé a flujos de trabajo en Power Automate.",
               ],
             },
             {
               title: "Practicante de Tesorería",
               period: "Ene 2024 — Jun 2024",
               bullets: [
-                "Desarrollé en Python un análisis integral de descalces cambiarios en mercados latinoamericanos, identificando riesgos y oportunidades de cobertura.",
+                "Detecté y cuantifiqué en Python los descalces cambiarios de los mercados latinoamericanos, identificando riesgos y oportunidades de cobertura.",
                 "Construí dashboards en Power BI para proyección de flujo de caja en 15+ países.",
                 "Automaticé reportes de transacciones bancarias en 10+ operaciones regionales.",
               ],
@@ -126,24 +126,8 @@ export const cv = {
               title: "Asistente de Investigación",
               period: "Jul 2023 — Dic 2023",
               bullets: [
-                "Analicé datos del sistema educativo colombiano con enfoque en educación superior.",
-                "Desarrollé dashboards en Power BI para visualización de resultados de investigación.",
-                "Contribuí a estudios de evaluación de impacto mediante análisis estadístico.",
-              ],
-            },
-          ],
-        },
-        {
-          company: "Solidariamente (voluntariado)",
-          location: "Remoto",
-          mode: "remote",
-          roles: [
-            {
-              title: "Analista de datos sociales",
-              period: "Ene 2023 — Jul 2023",
-              bullets: [
-                "Entregué herramientas analíticas e insights para ONG en entornos multiculturales.",
-                "Colaboré con equipos internacionales en iniciativas de impacto social basadas en datos.",
+                "Modelé datos del sistema de educación superior colombiano para estudios de evaluación de impacto.",
+                "Publiqué los resultados de la investigación en dashboards de Power BI.",
               ],
             },
           ],
@@ -155,7 +139,7 @@ export const cv = {
         {
           name: "credit-risk-mlops",
           role: "Sistema de decisión crediticia con gobierno de modelos — diseño y construcción",
-          period: "2026 — desplegado",
+          period: "2026 — desplegado, puntúa en vivo",
           href: "https://github.com/DavinsonR/credit-risk-mlops",
           hrefLabel: "github.com/DavinsonR/credit-risk-mlops",
           stack: [
@@ -163,7 +147,8 @@ export const cv = {
             "ONNX", "DuckDB", "pandera", "Docker", "Power BI",
           ],
           bullets: [
-            "Modelo en producción con AUC 0,7005 sobre 1,96 M de préstamos SBA 7(a) y 62,4 M de solicitudes HMDA: +0,0311 frente a una scorecard WoE interpretable, con error de calibración 0,0107. El estudio de evento corre aparte, sobre 93,4 M de solicitudes.",
+            "Rechazar el 10% más riesgoso de la cartera de prueba habría evitado 276,3 M USD en castigos — 2,15 veces lo que logra un rechazo al azar — y el reporte publica también el contrapeso: 1.990 M USD de crédito sano que se renuncia.",
+            "Modelo desplegado con AUC 0,7005 sobre 1,96 M de préstamos SBA 7(a) y 62,4 M de solicitudes HMDA: +0,0311 frente a una scorecard WoE interpretable, con error de calibración 0,0107. El estudio de evento corre aparte, sobre 93,4 M de solicitudes.",
             "La primera medición dio 0,9461 y no era un modelo, era una fuga: «TermInMonths» se sobrescribe cuando el préstamo se liquida, así que el campo llevaba dentro el resultado. Quitarlo derrumba la ablación a 0,6621, y esa es la cifra que se publica.",
             "Diez gates de promoción juzgados por código de salida, y uno está diseñado para bloquear mi propio modelo cuando no cumple el umbral.",
             "El monitoreo detectó que la fuente cambió de vocabulario sin avisar: una variable dejó de significar lo mismo entre cortes y nadie se habría enterado sin el control.",
@@ -171,24 +156,9 @@ export const cv = {
           ],
         },
         {
-          name: "JARVIS — app de seguimiento personal",
-          role: "Producto propio — diseño, construcción y operación",
-          period: "2026 — demo abierto",
-          href: "https://jarvis-app-psi-sable.vercel.app/demo",
-          hrefLabel: "demo público, sin cuenta",
-          stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
-          bullets: [
-            "Modelo multiusuario en Postgres con política de fila en 34 tablas: la conversión exigió reconstruir 22 claves primarias que identificaban filas sin el usuario, y meter el usuario dentro de las claves foráneas para que el aislamiento no dependiera solo de la política.",
-            "Ocho puertas en CI juzgadas por código de salida: tipos, formato, lint, 526 pruebas, build, auditoría de dependencias, un guardia que busca datos personales en el artefacto ya construido, y una prueba de humo que exige que el rol anónimo sea denegado en las 55 tablas y vistas.",
-            "Demo público que corre las cinco pantallas reales sobre 120 días generados con semilla y no consulta la base ni una vez; una prueba recorre el grafo de importaciones en ejecución y falla si algún módulo alcanzable llega al cliente de datos.",
-            "Registro del día en un formulario y un botón, con ocho escrituras independientes, borrador y cola de envío en el teléfono para sobrevivir a la pérdida de señal, y un lector de números propio porque un campo numérico del navegador guardaba los gastos divididos por mil.",
-            "Gráficas en SVG escrito a mano, sin librería, con contraste validado en tema claro y oscuro y estados diferenciados por forma además de por color.",
-          ],
-        },
-        {
           name: "market-data-medallion",
           role: "Plataforma de datos de mercado — diseño, construcción y operación",
-          period: "2026 — en operación",
+          period: "2026 — en operación diaria",
           href: "https://github.com/DavinsonR/market-data-medallion",
           hrefLabel: "github.com/DavinsonR/market-data-medallion",
           stack: [
@@ -201,6 +171,20 @@ export const cv = {
             "Motor de backtesting sin look-ahead con validación out-of-sample 70/30 sobre 1.392 variantes de estrategia: menos de una de cada seis ganadoras in-sample sobrevivió a la ventana ciega.",
             "Descomposición cambiaria de ADRs latinoamericanos, separando el retorno de la empresa del movimiento de la divisa mediante la identidad (1+r_USD) × (1+r_FX) = (1+r_local).",
             "Orquestación diaria en GitHub Actions con circuit breaker de rate limit, sobre infraestructura de costo cero.",
+          ],
+        },
+        {
+          name: "JARVIS — producto multiusuario con datos sensibles",
+          role: "Producto propio — diseño, construcción y operación",
+          period: "2026 — en producción · demo abierto",
+          href: "https://jarvis-app-psi-sable.vercel.app/demo",
+          hrefLabel: "demo público, sin cuenta",
+          stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
+          bullets: [
+            "Modelo multiusuario en Postgres con política de fila en 34 tablas: la conversión exigió reconstruir 22 claves primarias que identificaban filas sin el usuario, y meter el usuario dentro de las claves foráneas para que el aislamiento no dependiera solo de la política.",
+            "Ocho puertas en CI juzgadas por código de salida: tipos, formato, lint, 526 pruebas, build, auditoría de dependencias, un guardia que busca datos personales en el artefacto ya construido, y una prueba de humo que exige que el rol anónimo sea denegado en las 55 tablas y vistas.",
+            "Demo público que corre las cinco pantallas reales sobre 120 días generados con semilla y no consulta la base ni una vez; una prueba recorre el grafo de importaciones en ejecución y falla si algún módulo alcanzable llega al cliente de datos.",
+            "Registro del día en un formulario y un botón, con ocho escrituras independientes, borrador y cola de envío en el teléfono para sobrevivir a la pérdida de señal, y un lector de números propio porque un campo numérico del navegador guardaba los gastos divididos por mil.",
           ],
         },
       ] as CvProject[],
@@ -224,7 +208,7 @@ export const cv = {
       ] as CvProject[],
       skillsLabel: "Habilidades",
       skillsFinTitle: "Dominio financiero",
-      skillsFinDesc: "El contexto que los datos necesitan para significar algo.",
+      skillsFinDesc: "Lo que convierte un dato en una decisión de negocio.",
       skillsFin: [
         "FP&A", "Cierre y forecast", "SG&A", "Revenue recognition (SOX)", "Tesorería",
         "Análisis cambiario", "Presupuestos", "Moneda constante", "SAP", "JD Edwards", "MicroStrategy",
@@ -285,20 +269,18 @@ export const cv = {
           href: "/research/fintech-inclusion", hrefLabel: "ver la investigación",
         },
         { title: "Pregrado en Economía", inst: "Pontificia Universidad Javeriana", period: "2020 — 2024", status: "live", statusText: "COMPLETADO" },
-        { title: "Técnico en Sistemas", inst: "SENA", period: "2018", status: "live", statusText: "COMPLETADO" },
       ] as Education[],
       certs: [
         { title: "Especialización en Machine Learning", inst: "Stanford · Coursera", year: "2024" },
         { title: "Certificado de Ciberseguridad", inst: "Google · Coursera", year: "2024" },
-        { title: "Ciencia de Datos con Python", inst: "Platzi", year: "2023" },
       ],
       remote: {
         label: "Preparado para remoto",
         points: [
-          "4 empleadores, todos remotos o híbridos, con equipos distribuidos en 15+ países.",
-          "GMT-5 (Bogotá): solapamiento completo con horarios de EE. UU. y Canadá.",
-          "Experiencia trabajando con equipos de Norteamérica, Argentina y Brasil.",
-          "Español nativo · Inglés B2 · Portugués A2.",
+          "Toda mi experiencia es remota o híbrida, con equipos distribuidos en 15+ países.",
+          "GMT-5 (Bogotá): tu horario de EE. UU. y Canadá, completo.",
+          "Inglés de trabajo a diario con equipos de EE. UU. y Europa (Hungría, República Checa, España), y con Argentina y Brasil.",
+          "Español nativo · Portugués A2.",
         ],
       },
     },
@@ -311,8 +293,8 @@ export const cv = {
       targetsLabel: "Target roles",
       targets: ["Finance Data Analyst", "Financial BI Analyst", "Analytics Engineer"],
       subtitle: "I find the variance, I trace it to root cause, I leave the control running itself, and I explain it where the decision gets made. All four, with no translator between the business and the data.",
-      metaLine: "Bogotá, Colombia · GMT-5 · Fully remote · Working language English, daily, with teams across 15+ countries · Native Spanish",
-      metaDesc: "CV of Davirson Novoa: economist and FP&A consultant who also builds production data platforms. Finance Data Analyst, remote from Bogotá, GMT-5.",
+      metaLine: "Bogotá, Colombia · GMT-5 · Fully remote · Daily working English with US and European teams · Native Spanish",
+      metaDesc: "CV of Davirson Novoa, Finance Data Analyst: owns the FP&A close for 15+ countries and builds production data platforms. Remote, GMT-5.",
       download: "Download resume (PDF)",
       downloadHref: "/Davirson_Novoa_Resume_EN.pdf",
       downloadShort: "One-page version",
@@ -323,21 +305,21 @@ export const cv = {
       latexNote: "Compiles in Overleaf with nothing to install.",
       contactBtn: "Contact",
       facts: [
-        { value: "15+", label: "countries in the operations I report on, from HQ" },
-        { value: "60 hrs/mo", label: "of reporting given back to the team (10 per analyst)" },
-        { value: "26 months", label: "from intern to specialist" },
+        { value: "15+", label: "countries whose SG&A close and forecast I own, from HQ" },
+        { value: "60 hrs/mo", label: "of manual treasury work eliminated (10 per analyst)" },
+        { value: "2 promotions", label: "in 26 months at SLB, up to leading an intern" },
         { value: "95 M", label: "credit records processed on a laptop" },
       ],
       profileLabel: "Profile",
       profileText:
-        "Economist with three years inside corporate finance — treasury, billing and FP&A — building the data the business runs on rather than waiting for someone to hand it over: Python, SQL and Power BI applied to operations across 15+ countries in the Americas and the Eastern Hemisphere. Alongside that I run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model, refreshed daily with no manual step, plus a credit decisioning system over 95 million records with ten model-governance gates. All of it verifiable: every figure on my site links to the repository that produces it. I am looking for a remote role where financial judgment and data engineering are paid as one capability, not two halves.",
+        "Finance Data Analyst who owns the SG&A close and forecast process for 15+ countries across the Americas and Europe, from HQ. An economist trained in treasury, SOX billing and FP&A, who builds the data the business runs on instead of waiting for it: Python, SQL and Power BI on real operations. Alongside that I run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, and I deployed a credit decisioning system over 95 million records with ten model-governance gates. All of it verifiable: every figure on my site links to the repository that produces it. I bring financial judgment and data engineering in a single hire: no translator, no handoff meeting.",
       // One-page sheet only: see the Spanish note above.
       profileShortText:
-        "Economist with three years inside corporate finance — treasury, billing and FP&A — building the data the business runs on myself: Python, SQL and Power BI over operations across 15+ countries in the Americas and the Eastern Hemisphere. Alongside it I run a PostgreSQL warehouse with dbt, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, plus a credit decisioning system over 95 million records with ten governance gates. Every figure on my site links to the repository that produces it.",
+        "Finance Data Analyst who owns the SG&A close and forecast for 15+ countries, from HQ. An economist trained in treasury, SOX billing and FP&A, who builds the data the business runs on instead of waiting for it: Python, SQL and Power BI on real operations. Alongside it I run a PostgreSQL warehouse with dbt, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, plus a credit decisioning system over 95 million records with ten governance gates. Every figure on my site links to the repository that produces it.",
       pivot: {
         label: "The crossover role",
-        shortBody: "Not a career change: I am pricing what I already do. In every finance role I ended up building code and data because the report the business needed did not exist and nobody else was going to build it. The edge is not knowing Python — plenty of people do. It is knowing which question is worth answering before writing the first line.",
-        body: "This is not a career change; it is pricing what I already do. In every finance role I ended up building the same thing — code and data — because the report the business needed did not exist and nobody else was going to build it. An FX mismatch analysis in Python as an intern. Automation that gave every treasury analyst about 10 hours a month back — close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; plenty of people know Python. It is knowing which question is worth answering before writing the first line. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code — it is the one who needs no translator between them. Hiring that person is two hires in one, without the handoff meeting between them.",
+        shortBody: "I charge for what I have done in every finance role: build the data the business needed, which nobody else was going to build. The edge is not knowing Python — plenty of people do. It is knowing which question is worth answering before writing the first line.",
+        body: "I charge for what I have done in every finance role: in all of them I ended up building the same thing — code and data — because the report the business needed did not exist and nobody else was going to build it. An FX mismatch analysis in Python nobody had asked for, as an intern. Automation that gave every treasury analyst about 10 hours a month back — close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; plenty of people know Python. It is knowing which question is worth answering before writing the first line. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code — it is the one who needs no translator between them. Hiring that person is two hires in one, without the handoff meeting between them.",
       },
       expLabel: "Experience",
       expTitle: "Experience",
@@ -353,10 +335,10 @@ export const cv = {
               title: "Business Consultant, FP&A",
               period: "Mar 2026 — present",
               bullets: [
-                "Designed and led financial management systems for SG&A close and forecast across 15+ countries in the Americas and the Eastern Hemisphere (India, Hungary, Spain, Czech Republic).",
-                "Managed monthly close and company-wide forecast confirmation, analyzing variances against plan and prior forecast.",
-                "Tracked FX variance in constant currency and per-currency inflation.",
-                "Built FP&A reporting with advanced Excel, Power Query, Power BI, MicroStrategy, JD Edwards and SAP.",
+                "Own the SG&A close and forecast process for 15+ countries across the Americas and the Eastern Hemisphere (India, Hungary, Spain, Czech Republic), from HQ.",
+                "Accountable for the monthly close and company-wide forecast confirmation; I explain every variance against plan and prior forecast.",
+                "Isolate the FX effect in constant currency and per-currency inflation, so the operating variance reads clean.",
+                "Built the FP&A reporting on advanced Excel, Power Query, Power BI, MicroStrategy, JD Edwards and SAP.",
               ],
             },
           ],
@@ -365,31 +347,31 @@ export const cv = {
           company: "SLB",
           location: "Bogotá, Colombia",
           mode: "hybrid",
-          note: "Internal progression: intern to specialist in 26 months.",
+          note: "Two promotions in 26 months: from treasury to billing specialist for Argentina and Brazil, with an intern reporting to me.",
           roles: [
             {
               title: "Billing Specialist (Argentina & Brazil)",
               period: "Dec 2024 — Mar 2026",
               bullets: [
-                "Executed revenue recognition in SAP under Sarbanes-Oxley (SOX) requirements.",
+                "Owned revenue recognition in SAP for Argentina and Brazil under Sarbanes-Oxley (SOX) controls.",
+                "Supervised and trained an intern on the billing team.",
                 "Built Power BI models and visualizations for revenue and trend analysis.",
-                "Performed internal audits on integrated technology projects, ensuring traceability and compliance.",
+                "Audited integrated technology projects, with end-to-end traceability and compliance.",
               ],
             },
             {
               title: "Treasury Analyst",
               period: "Oct 2024 — Dec 2024",
               bullets: [
-                "Automated bank reconciliation in SAP, improving accuracy and efficiency.",
-                "Cut roughly 10 hours of manual reporting per analyst per month — about 60 hours a month back to the team — by optimizing and automating the process.",
-                "Implemented automated workflows with Power Automate.",
+                "Gave the team back about 60 hours a month — roughly 10 per analyst — by automating manual treasury reporting.",
+                "Automated bank reconciliation in SAP and moved it into Power Automate workflows.",
               ],
             },
             {
               title: "Treasury Intern",
               period: "Jan 2024 — Jun 2024",
               bullets: [
-                "Built a comprehensive FX mismatch analysis for Latin American markets in Python, identifying financial risks and hedging opportunities.",
+                "Detected and quantified FX mismatches across Latin American markets in Python, identifying financial risks and hedging opportunities.",
                 "Created Power BI dashboards for cash-flow projections across 15+ countries.",
                 "Automated bank transaction reporting across 10+ regional operations.",
               ],
@@ -405,24 +387,8 @@ export const cv = {
               title: "Research Assistant",
               period: "Jul 2023 — Dec 2023",
               bullets: [
-                "Analyzed Colombian education-system data with a focus on higher education.",
-                "Built Power BI dashboards to visualize research findings.",
-                "Contributed to impact-evaluation studies through statistical analysis.",
-              ],
-            },
-          ],
-        },
-        {
-          company: "Solidariamente (volunteer)",
-          location: "Remote",
-          mode: "remote",
-          roles: [
-            {
-              title: "Social Data Analyst",
-              period: "Jan 2023 — Jul 2023",
-              bullets: [
-                "Delivered analytical tools and insights for NGOs in multicultural environments.",
-                "Collaborated with international teams on data-driven social-impact initiatives.",
+                "Modelled Colombian higher-education data for impact-evaluation studies.",
+                "Published the research findings in Power BI dashboards.",
               ],
             },
           ],
@@ -434,7 +400,7 @@ export const cv = {
         {
           name: "credit-risk-mlops",
           role: "Credit decisioning system with model governance — design and build",
-          period: "2026 — deployed",
+          period: "2026 — deployed, scoring live",
           href: "https://github.com/DavinsonR/credit-risk-mlops",
           hrefLabel: "github.com/DavinsonR/credit-risk-mlops",
           stack: [
@@ -442,7 +408,8 @@ export const cv = {
             "ONNX", "DuckDB", "pandera", "Docker", "Power BI",
           ],
           bullets: [
-            "Production model at AUC 0.7005 over 1.96M SBA 7(a) loans and 62.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107. The event study runs separately, over 93.4M applications.",
+            "Declining the riskiest 10% of the test portfolio would have avoided $276.3M in charge-offs — 2.15x what random declines achieve — and the report ships the counterweight too: $1.99B in good lending forgone.",
+            "Deployed model at AUC 0.7005 over 1.96M SBA 7(a) loans and 62.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107. The event study runs separately, over 93.4M applications.",
             "The first reading was 0.9461, and it was not a model but a leak: TermInMonths is overwritten when a loan is liquidated, so the field carried the outcome. Removing it drops the ablation to 0.6621 — and that is the number published.",
             "Ten promotion gates judged by exit code, one of them designed to block my own model when it misses the threshold.",
             "Monitoring caught the source changing its vocabulary without notice: a field stopped meaning the same thing between vintages, and nobody would have known without the control.",
@@ -450,24 +417,9 @@ export const cv = {
           ],
         },
         {
-          name: "JARVIS — personal tracking app",
-          role: "Own product — designed, built and operated",
-          period: "2026 — open demo",
-          href: "https://jarvis-app-psi-sable.vercel.app/demo",
-          hrefLabel: "public demo, no account",
-          stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
-          bullets: [
-            "Multi-user model on Postgres with a row policy on 34 tables: the conversion required rebuilding 22 primary keys that identified rows without the user, and pushing the user inside the foreign keys so isolation did not rest on the policy alone.",
-            "Eight CI gates judged by exit code: types, format, lint, 526 tests, build, dependency audit, a guard that hunts personal data inside the built artifact, and a smoke test requiring the anonymous role to be denied across all 55 tables and views.",
-            "A public demo running the five real screens over 120 seed-generated days that never queries the database; a test walks the runtime import graph and fails if any reachable module gets to the data client.",
-            "Day logging in one form and one button, with eight independent writes, an on-device draft and send queue to survive losing signal, and a purpose-built number reader because a browser number field was storing expenses divided by a thousand.",
-            "Hand-written SVG charts, no library, with contrast validated in light and dark and states separated by shape as well as color.",
-          ],
-        },
-        {
           name: "market-data-medallion",
           role: "Market data platform — designed, built and operated",
-          period: "2026 — in operation",
+          period: "2026 — in daily operation",
           href: "https://github.com/DavinsonR/market-data-medallion",
           hrefLabel: "github.com/DavinsonR/market-data-medallion",
           stack: [
@@ -480,6 +432,20 @@ export const cv = {
             "No-look-ahead backtesting engine with 70/30 out-of-sample validation over 1,392 strategy variants: fewer than one in six in-sample winners survived the blind window.",
             "FX decomposition for Latin American ADRs, separating company performance from the currency move through the identity (1+r_USD) × (1+r_FX) = (1+r_local).",
             "Daily orchestration on GitHub Actions with a rate-limit circuit breaker, running on zero-cost infrastructure.",
+          ],
+        },
+        {
+          name: "JARVIS — multi-user product with sensitive data",
+          role: "Own product — designed, built and operated",
+          period: "2026 — in production · open demo",
+          href: "https://jarvis-app-psi-sable.vercel.app/demo",
+          hrefLabel: "public demo, no account",
+          stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
+          bullets: [
+            "Multi-user model on Postgres with a row policy on 34 tables: the conversion required rebuilding 22 primary keys that identified rows without the user, and pushing the user inside the foreign keys so isolation did not rest on the policy alone.",
+            "Eight CI gates judged by exit code: types, format, lint, 526 tests, build, dependency audit, a guard that hunts personal data inside the built artifact, and a smoke test requiring the anonymous role to be denied across all 55 tables and views.",
+            "A public demo running the five real screens over 120 seed-generated days that never queries the database; a test walks the runtime import graph and fails if any reachable module gets to the data client.",
+            "Day logging in one form and one button, with eight independent writes, an on-device draft and send queue to survive losing signal, and a purpose-built number reader because a browser number field was storing expenses divided by a thousand.",
           ],
         },
       ] as CvProject[],
@@ -503,7 +469,7 @@ export const cv = {
       ] as CvProject[],
       skillsLabel: "Skills",
       skillsFinTitle: "Finance domain",
-      skillsFinDesc: "The context data needs in order to mean something.",
+      skillsFinDesc: "What turns a data point into a business decision.",
       skillsFin: [
         "FP&A", "Close & forecast", "SG&A", "Revenue recognition (SOX)", "Treasury",
         "FX analysis", "Budgeting", "Constant currency", "SAP", "JD Edwards", "MicroStrategy",
@@ -560,20 +526,18 @@ export const cv = {
           href: "/research/fintech-inclusion", hrefLabel: "see the research",
         },
         { title: "B.Sc. in Economics", inst: "Pontificia Universidad Javeriana", period: "2020 — 2024", status: "live", statusText: "COMPLETED" },
-        { title: "Systems Technician", inst: "SENA", period: "2018", status: "live", statusText: "COMPLETED" },
       ] as Education[],
       certs: [
         { title: "Machine Learning Specialization", inst: "Stanford · Coursera", year: "2024" },
         { title: "Cybersecurity Certificate", inst: "Google · Coursera", year: "2024" },
-        { title: "Data Science with Python", inst: "Platzi", year: "2023" },
       ],
       remote: {
         label: "Remote-ready",
         points: [
-          "4 employers, all remote or hybrid, with teams distributed across 15+ countries.",
-          "GMT-5 (Bogotá): full overlap with US and Canadian hours.",
-          "Experience working with teams in North America, Argentina and Brazil.",
-          "Native Spanish · English B2 · Portuguese A2.",
+          "My entire track record is remote or hybrid, with teams distributed across 15+ countries.",
+          "GMT-5 (Bogotá): your US and Canadian hours, in full.",
+          "Daily working English with teams in the US and Europe (Hungary, Czech Republic, Spain), plus Argentina and Brazil.",
+          "Native Spanish · Portuguese A2.",
         ],
       },
     },

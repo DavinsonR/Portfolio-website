@@ -1,4 +1,4 @@
-# Proyecto Davirson
+# Davirson Novoa — Finance Data Analyst
 
 *[Read in English](README.md)*
 
@@ -16,7 +16,7 @@ No es un portafolio de capturas: cada página del sitio se alimenta del reposito
 | **Inclusión financiera y crecimiento regional** — warehouse de 19 fuentes públicas, índice por dimensiones, panel de efectos fijos y atlas de los 1.123 municipios | [`/es/research/fintech-inclusion`](https://davirson.com/es/research/fintech-inclusion) | [financial-inclusion-colombia](https://github.com/DavinsonR/financial-inclusion-colombia) | Resultado principal publicado |
 | **Plataforma de datos de mercado** — APIs públicas → medallion en Postgres con dbt → backtester sin look-ahead → refresh diario automatizado | [`/es/projects/trading-sim`](https://davirson.com/es/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 activos, refresh diario |
 | **Informe Power BI** — modelo, medidas y páginas del informe construido sobre la capa gold | [`/es/projects/powerbi`](https://davirson.com/es/projects/powerbi) | catálogo en `lib/data/powerbi-model.ts` | Catálogo publicado |
-| **JARVIS** — registro diario de hábitos, cuerpo, sueño y gasto en menos de noventa segundos | — | privado; [demo público sin cuenta](https://jarvis-app-psi-sable.vercel.app/demo) | v1 en uso |
+| **JARVIS** — Postgres multiusuario con seguridad por fila en 34 tablas, 526 pruebas y un demo público que nunca toca la base | — | privado; [demo público sin cuenta](https://jarvis-app-psi-sable.vercel.app/demo) | v1 en uso |
 
 ## El CV
 

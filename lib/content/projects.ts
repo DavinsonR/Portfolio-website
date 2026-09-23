@@ -124,7 +124,7 @@ export const projects = {
       },
     },
     tradingSim: {
-      metaTitle: "Más de 1.300 estrategias a prueba",
+      metaTitle: "1.392 estrategias, casi todas ruido",
       metaDesc:
         "1.392 variantes de estrategia sobre 48 activos, con comisiones, slippage y validación fuera de muestra. La mayoría de las ganadoras eran ilusiones.",
       kicker: "Laboratorio · trading_sim",
@@ -132,7 +132,7 @@ export const projects = {
       // la instantánea (build) y del índice vivo (navegador). Ver lib/data/lab-stats.ts.
       title: "{variants} estrategias entraron al laboratorio. Sobrevivieron {survivors}.",
       intro:
-        "Cinco estrategias técnicas clásicas y todas sus combinaciones posibles, evaluadas sobre 48 activos — cripto, ETFs, acciones de EE.UU., ADRs latinoamericanos y divisas — con comisiones, slippage y sin mirar el futuro. Cada variante se entrena en el 70% de la historia y se juzga en el 30% que nunca vio. Esto no es un curso de trading: es la medición honesta de cuánto sobrevive el análisis técnico al contacto con la realidad.",
+        "Cinco estrategias técnicas clásicas y todas sus combinaciones posibles, evaluadas sobre 48 activos — cripto, ETFs, acciones de EE.UU., ADRs latinoamericanos y divisas — con comisiones, slippage y sin mirar el futuro. Cada variante se entrena en el 70% de la historia y se juzga en el 30% que nunca vio. Es la medición que separa el alfa real del overfitting: cuánto sobrevive el análisis técnico al contacto con la realidad.",
       pipelineLine:
         "datos: pipeline propio (API → PostgreSQL → dbt → backtester) · actualización diaria automática · código abierto",
       loading: "cargando datos del pipeline…",
@@ -199,7 +199,7 @@ export const projects = {
       },
       fx: {
         title: "¿La empresa o la moneda? — ADRs latinoamericanos",
-        desc: "Ecopetrol, Bancolombia, Petrobras y los demás ADRs cotizan en Nueva York en dólares: su retorno mezcla el desempeño de la empresa con el movimiento cambiario. Con las divisas en el mismo warehouse, los separamos (ventana: 365 días).",
+        desc: "Ecopetrol, Bancolombia, Petrobras y los demás ADRs cotizan en Nueva York en dólares: su retorno mezcla el desempeño de la empresa con el movimiento cambiario. Con las divisas en el mismo warehouse, los separo (ventana: 365 días).",
         formula: "(1 + r_USD) × (1 + r_FX) = (1 + r_local)  ·  arrastre = r_USD − r_local",
         asset: "activo",
         pair: "par",
@@ -230,7 +230,7 @@ export const projects = {
           },
           {
             title: "validación 70/30",
-            body: "Cada variante se entrena en el 70% de la historia y se juzga en el 30% restante, que nunca influyó en su selección. Con más de 1.300 variantes, sin ventana ciega el resultado sería data dredging.",
+            body: "Cada variante se entrena en el 70% de la historia y se juzga en el 30% restante, que nunca influyó en su selección. Con 1.392 variantes, sin ventana ciega el resultado sería data dredging.",
           },
           {
             title: "calentamiento simétrico",
@@ -330,12 +330,12 @@ export const projects = {
         visualsWord: "visuales",
         shotCaption: "exportada desde Power BI Desktop",
         shotAlt: "Captura de la página",
-        noShot: "Sin captura todavía: la lista de visuales sale del archivo PBIR de la página.",
+        noShot: "Inventario de visuales leído directamente del archivo PBIR de la página.",
         types: { card: "tarjeta", slicer: "segmentador", tableEx: "tabla", clusteredColumnChart: "columnas", clusteredBarChart: "barras", scatterChart: "dispersión", lineChart: "líneas" },
       },
       licensing: {
         label: "Licenciamiento",
-        title: "Por qué no hay un informe embebido",
+        title: "Entregado como código, no como enlace",
         body: "«Publicar en la web» exige una licencia Power BI Pro sobre un tenant de trabajo cuyo administrador permita el embebido público, y además hace público el propio conjunto de datos. Este proyecto corre con presupuesto cero, así que el informe se entrega como fuente: el proyecto PBIP se abre gratis en Power BI Desktop y se refresca contra el warehouse. Decirlo abiertamente también es evidencia: saber qué cuesta publicar un informe es parte del oficio.",
         steps: [
           "Instalar Power BI Desktop, gratis y sin cuenta para editar.",
@@ -351,7 +351,7 @@ export const projects = {
     thesis: {
       metaTitle: "Inclusión financiera en Colombia",
       metaDesc: "Diecinueve fuentes públicas en un warehouse con dbt y DuckDB, un índice de inclusión financiera, dos paneles anuales y un atlas de los 1.123 municipios.",
-      kicker: "Investigación · datos abiertos",
+      kicker: "Investigación · tesis de maestría radicada",
       pill: "INVESTIGACIÓN",
       title: "Podía haber publicado el coeficiente bonito. Publiqué el cero.",
       subtitle: "Diecinueve fuentes públicas que nadie había cruzado, un índice de inclusión por dimensiones, dos paneles anuales, un atlas de los 1.123 municipios del país y una batería econométrica completa. La especificación ingenua daba +0,0242 con p < 0,001. Al descontar el año, cero. Está publicado el cero.",
@@ -505,12 +505,12 @@ export const projects = {
       },
     },
     tracking: {
-      metaTitle: "JARVIS: app de seguimiento personal",
+      metaTitle: "JARVIS: Postgres multiusuario",
       metaDesc:
         "Registro diario de hábitos, cuerpo, sueño, comida y gastos sobre Postgres con seguridad por fila: demo público, 526 pruebas y ocho puertas en CI.",
       kicker: "Producto propio · Next.js y Supabase",
       pill: "DEMO ABIERTO",
-      title: "Una app de seguimiento personal, y el porqué de cada decisión",
+      title: "Datos de salud y de dinero, abiertos al público sin exponer una sola fila.",
       subtitle:
         "JARVIS cierra el día —hábitos, cuerpo, sueño, comida, gastos— en un formulario y un botón, y lo devuelve leído, no en crudo. Hay un demo abierto con las cinco pantallas de verdad y los datos de una persona que no existe.",
       access: "Repositorio privado · el demo es la superficie pública",
@@ -624,13 +624,13 @@ export const projects = {
           "La app corre en producción para su autor, detrás de sesión y con seguridad por fila.",
           "El esquema multiusuario está aplicado, y el aislamiento entre dos usuarios comprobado con un usuario desechable que se borró después.",
         ],
-        pendingTitle: "Lo que falta para abrir las diez cuentas",
+        pendingTitle: "Siguiente fase: alta pública de diez cuentas",
         pending: [
           "El alta está escrita y probada, y cerrada en dos sitios a la vez: una fila en la base y el interruptor de altas del panel de autenticación, que hoy sigue respondiendo que el registro está deshabilitado.",
           "El correo de confirmación necesita un servidor de envío propio: el que viene incluido está limitado por hora, y con diez altas el mismo día alguien se queda con una cuenta que no puede confirmar.",
           "Las cuatro plantillas de correo tienen que apuntar a la ruta de confirmación de la app; las que trae el proveedor por defecto van a su propio punto final, y entonces el enlace parece no hacer nada.",
         ],
-        note: "Por eso esta página enlaza el demo y no un formulario de alta: publicar un botón de crear cuenta que hoy devuelve un error sería peor que no publicarlo.",
+        note: "No se publica un botón que todavía no puede cumplir lo que promete. Por eso esta página enlaza el demo y no un formulario de alta.",
       },
       backCta: "Volver al inicio",
     },
@@ -746,13 +746,13 @@ export const projects = {
       },
     },
     tradingSim: {
-      metaTitle: "1,300+ strategies put to the test",
+      metaTitle: "1,392 strategies, mostly noise",
       metaDesc:
         "1,392 strategy variants across 48 assets, with fees, slippage and out-of-sample validation. Most of the winners were backtest illusions.",
       kicker: "Lab · trading_sim",
       title: "{variants} strategies entered the lab. {survivors} survived.",
       intro:
-        "Five classic technical strategies and every possible combination of them, evaluated across 48 assets — crypto, ETFs, US stocks, Latin American ADRs and currencies — with fees, slippage and no look-ahead. Every variant trains on 70% of history and is judged on the 30% it never saw. This is not a trading course: it is an honest measurement of how much technical analysis survives contact with reality.",
+        "Five classic technical strategies and every possible combination of them, evaluated across 48 assets — crypto, ETFs, US stocks, Latin American ADRs and currencies — with fees, slippage and no look-ahead. Every variant trains on 70% of history and is judged on the 30% it never saw. It is the measurement that separates real alpha from overfitting: how much technical analysis survives contact with reality.",
       pipelineLine:
         "data: own pipeline (API → PostgreSQL → dbt → backtester) · automatic daily refresh · open source",
       loading: "loading pipeline data…",
@@ -850,7 +850,7 @@ export const projects = {
           },
           {
             title: "70/30 validation",
-            body: "Every variant trains on 70% of history and is judged on the remaining 30%, which never influenced its selection. With 1,300+ variants, skipping the blind window would be data dredging.",
+            body: "Every variant trains on 70% of history and is judged on the remaining 30%, which never influenced its selection. With 1,392 variants, skipping the blind window would be data dredging.",
           },
           {
             title: "symmetric warm-up",
@@ -950,12 +950,12 @@ export const projects = {
         visualsWord: "visuals",
         shotCaption: "exported from Power BI Desktop",
         shotAlt: "Screenshot of the page",
-        noShot: "No screenshot yet: the list of visuals comes from the page's PBIR file.",
+        noShot: "Visual inventory read straight from the page's PBIR file.",
         types: { card: "card", slicer: "slicer", tableEx: "table", clusteredColumnChart: "columns", clusteredBarChart: "bars", scatterChart: "scatter", lineChart: "lines" },
       },
       licensing: {
         label: "Licensing",
-        title: "Why there is no embedded report",
+        title: "Shipped as code, not as a link",
         body: "“Publish to web” needs a Power BI Pro licence on a work tenant whose administrator allows public embedding, and it makes the dataset itself public. This project runs on a zero budget, so the report ships as source: the PBIP project opens for free in Power BI Desktop and refreshes against the warehouse. Saying so openly is evidence too: knowing what it costs to publish a report is part of the job.",
         steps: [
           "Install Power BI Desktop, free and with no account needed to author.",
@@ -971,7 +971,7 @@ export const projects = {
     thesis: {
       metaTitle: "Financial inclusion in Colombia",
       metaDesc: "Nineteen public sources in a dbt and DuckDB warehouse, a financial-inclusion index, two annual panels and an atlas of all 1,123 municipalities.",
-      kicker: "Research · open data",
+      kicker: "Research · M.Sc. thesis filed",
       pill: "RESEARCH",
       title: "I could have published the pretty coefficient. I published the zero.",
       subtitle: "Nineteen public sources nobody had joined, a financial-inclusion index by dimension, two annual panels, an atlas of all 1,123 municipalities in the country and a full econometric battery. The naive specification gave +0.0242 at p < 0.001. Take the year out and it is zero. The zero is what got published.",
@@ -1123,12 +1123,12 @@ export const projects = {
       },
     },
     tracking: {
-      metaTitle: "JARVIS: a personal tracking app",
+      metaTitle: "JARVIS: multi-user Postgres",
       metaDesc:
         "Daily logging of habits, body, sleep, food and spending on Postgres with row-level security: public demo, 526 tests and eight CI gates.",
       kicker: "Own product · Next.js and Supabase",
       pill: "OPEN DEMO",
-      title: "A personal tracking app, and the reason behind every decision",
+      title: "Health and money data, open to the public without exposing a single row.",
       subtitle:
         "JARVIS closes the day — habits, body, sleep, food, spending — in one form and one button, and gives it back as a reading, not as rows. There is an open demo with the five real screens and the data of someone who does not exist.",
       access: "Private repository · the demo is the public surface",
@@ -1242,13 +1242,13 @@ export const projects = {
           "The app runs in production for its author, behind a session and row-level security.",
           "The multi-user schema is applied, and isolation between two users was verified with a throwaway account that was deleted afterwards.",
         ],
-        pendingTitle: "What is missing before the ten accounts open",
+        pendingTitle: "Next phase: ten public accounts",
         pending: [
           "Sign-up is written and tested, and closed in two places at once: a row in the database and the sign-up switch in the auth panel, which still answers that registration is disabled.",
           "The confirmation email needs its own sending server: the bundled one is rate-limited by the hour, and with ten sign-ups on the same day somebody ends up with an account they cannot confirm.",
           "The four email templates have to point at the app's confirmation route; the provider's defaults go to its own endpoint, and then the link looks like it does nothing.",
         ],
-        note: "That is why this page links the demo and not a sign-up form: publishing a create-account button that returns an error today would be worse than not publishing it.",
+        note: "A button is not published until it can keep its promise. That is why this page links the demo and not a sign-up form.",
       },
       backCta: "Back to home",
     },
