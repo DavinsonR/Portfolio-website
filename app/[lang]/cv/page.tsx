@@ -144,7 +144,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                 href={cv.downloadShortHref}
                 download
                 title={cv.downloadShortNote}
-                className="lift inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+                className="lift inline-flex items-center rounded-[3px] border border-control px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
               >
                 {cv.downloadShort}
               </a>
@@ -152,7 +152,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                 href={cv.latexHref}
                 download
                 title={cv.latexNote}
-                className="lift inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+                className="lift inline-flex items-center rounded-[3px] border border-control px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
               >
                 {cv.latex}
               </a>
@@ -219,7 +219,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
         <div className={wrap}>
           <div data-reveal className="reveal relative bg-warmsoft px-6 py-7">
             <span aria-hidden="true" className="rule-in absolute inset-x-0 top-0 h-[2px] bg-warm" />
-            <p className={`${label} text-warm`}>{cv.pivot.label}</p>
+            <h2 className={`${label} text-warm`}>{cv.pivot.label}</h2>
             <p className="mt-4 max-w-[76ch] text-[15.5px] leading-[1.85] text-ink">
               {cv.pivot.shortBody}
             </p>
@@ -228,7 +228,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       </section>
 
       {/* ===== EXPERIENCE ===== */}
-      <section id="experiencia" className="scroll-mt-16 border-b border-rule py-14">
+      <section id="experiencia" className="scroll-mt-[72px] border-b border-rule py-14">
         <div className={wrap}>
           <h2 data-reveal className={`reveal ${heading}`}>
             {cv.expLabel}
@@ -439,11 +439,11 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                 </div>
               ))}
               <div data-reveal className="reveal mt-8" style={d(60)}>
-                <p className={label}>{cv.awardsLabel}</p>
+                <h3 className={label}>{cv.awardsLabel}</h3>
                 {cv.awards.map((a) => (
                   <div key={a.title} className="mt-4 border-t border-rulesoft pt-3.5">
                     <div className="flex items-baseline justify-between gap-3">
-                      <h3 className="text-[14.5px] font-semibold text-ink">{a.title}</h3>
+                      <h4 className="text-[14.5px] font-semibold text-ink">{a.title}</h4>
                       <span className="text-[14px] text-muted">{a.year}</span>
                     </div>
                     <p className="mt-1 text-[14px] leading-[1.6] text-body">{a.desc}</p>
@@ -492,7 +492,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
               ))}
 
               <div data-reveal className="reveal mt-8" style={d(60)}>
-                <p className={label}>{cv.remote.label}</p>
+                <h3 className={label}>{cv.remote.label}</h3>
                 <div className="mt-4 flex flex-col gap-2">
                   {cv.remote.points.map((p, i) => (
                     <p
@@ -529,7 +529,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
             <a
               href={cv.downloadHref}
               download
-              className="lift inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+              className="lift inline-flex items-center rounded-[3px] border border-control px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
             >
               {cv.download}
             </a>

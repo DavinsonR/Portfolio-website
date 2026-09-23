@@ -35,6 +35,12 @@ export default function MotionRoot() {
         root.setAttribute("data-motion", "on");
         return;
       }
+      // Quien activa «reducir movimiento» con la página abierta no veía efecto
+      // hasta recargar: el patrón de ConstellationField, replicado.
+      const onChange = (e: MediaQueryListEvent) => {
+        if (e.matches) revealAll();
+      };
+      still.addEventListener("change", onChange);
 
       const io = new IntersectionObserver(
         (entries) => {
@@ -70,6 +76,7 @@ export default function MotionRoot() {
       return () => {
         io.disconnect();
         mo.disconnect();
+        still.removeEventListener("change", onChange);
       };
     } catch {
       // Sin observador no hay revelado: se enseña todo y el salvavidas del

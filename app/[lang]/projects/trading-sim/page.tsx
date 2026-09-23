@@ -98,7 +98,7 @@ export default async function TradingSimPage({
             </a>
             <Link
               href={`/${lang}`}
-              className="text-[14px] px-5 py-3 rounded-[3px] border border-rule text-ink hover:border-cold transition-colors"
+              className="text-[14px] px-5 py-3 rounded-[3px] border border-control text-ink hover:border-cold transition-colors"
             >
               {t.method.backCta}
             </Link>
@@ -107,7 +107,7 @@ export default async function TradingSimPage({
       </section>
 
       {/* ===== THE 89 TESTS, ITEMISED ===== */}
-      <section id="calidad" className="scroll-mt-16 border-t border-rule py-16">
+      <section id="calidad" className="scroll-mt-[72px] border-t border-rule py-16">
         <div className={wrap}>
           <p
             data-reveal
@@ -138,9 +138,12 @@ export default async function TradingSimPage({
                 className="reveal grid grid-cols-[auto_1fr] items-baseline gap-x-5 border-t border-rule py-4 first:border-t-2 first:border-ink sm:grid-cols-[64px_180px_1fr]"
                 style={{ "--d": `${i * 70}ms` } as React.CSSProperties}
               >
-                <dd className="font-figure text-[26px] leading-none text-cold">{r.n}</dd>
-                <dt className="text-[14.5px] font-semibold text-ink">{r.name}</dt>
-                <dd className="col-span-2 mt-1 max-w-[70ch] text-[14.5px] leading-[1.65] text-body sm:col-span-1 sm:mt-0">
+                {/* <dt> primero: el modelo de contenido de <dl> es término y luego sus
+                    definiciones, y con la cifra delante el «89» no quedaba asociado a
+                    nada (1.3.1). En pantalla el número sigue yendo primero, con `order`. */}
+                <dt className="order-2 text-[14.5px] font-semibold text-ink">{r.name}</dt>
+                <dd className="order-1 font-figure text-[26px] leading-none text-cold">{r.n}</dd>
+                <dd className="order-3 col-span-2 mt-1 max-w-[70ch] text-[14.5px] leading-[1.65] text-body sm:col-span-1 sm:mt-0">
                   {r.what}
                 </dd>
               </div>

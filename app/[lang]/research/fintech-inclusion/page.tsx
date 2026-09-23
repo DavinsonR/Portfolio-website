@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
    Technical content end to end, so the only accent here is the cold one — amber stays
    reserved for human content. Figures are set as written (no CountUp): "2018–2025" is a
    range, not a count, and a p-value is a reading, not a score. */
-const wrap = "mx-auto max-w-[1180px] px-6";
+const wrap = "mx-auto max-w-[980px] px-6";
 const prose = "max-w-[74ch]";
 const label = "text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase";
 const heading =
@@ -52,7 +52,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
               <StatusPill status="research" text={t.pill} />
             </div>
             <p className={label}>{t.kicker}</p>
-            <h1 className="mt-3 max-w-[30ch] text-balance font-display text-[clamp(26px,3.8vw,42px)] leading-[1.16] font-medium tracking-[-0.02em] text-ink">
+            <h1 className="mt-3 max-w-[30ch] text-balance font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
               {t.title}
             </h1>
             <p className="mt-4 max-w-[70ch] text-[15.5px] leading-[1.7] text-ink">{t.subtitle}</p>
@@ -91,12 +91,14 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
         </div>
       </header>
 
-      <SectionNav items={t.nav} label={t.metaTitle} />
+      <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
 
       {/* ================= ABSTRACT ================= */}
       <section id="resumen" className={section}>
         <div className={wrap}>
-          <p data-reveal className={`reveal ${label}`}>{t.abstract.label}</p>
+          {/* La SectionNav lleva aquí, y un destino sin encabezado deja al lector
+              sin confirmación de haber llegado (2.4.6). Mismo paso que las demás. */}
+          <h2 data-reveal className={`reveal ${heading} mt-0`}>{t.abstract.label}</h2>
           <p data-reveal className={`reveal mt-5 ${prose} text-[16px] leading-[1.8] text-body`} style={delay(1)}>
             {t.abstract.body}
           </p>
@@ -179,10 +181,10 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
           </div>
 
           {/* the table: the number the band only summarises */}
-          <div className="mt-8 overflow-x-auto">
+          <div tabIndex={0} role="region" aria-label={t.results.label} className="mt-8 overflow-x-auto">
             <table className="w-full min-w-[640px] border-collapse text-[14px]">
               <thead>
-                <tr className="border-b-2 border-ink text-left text-[11.5px] font-semibold tracking-[0.06em] text-muted uppercase">
+                <tr className="border-b-2 border-ink text-left text-[12.5px] font-semibold tracking-[0.06em] text-muted uppercase">
                   <th className="py-2 pr-4 font-semibold">{t.results.tableHead.spec}</th>
                   <th className="py-2 pr-4 text-right font-semibold">{t.results.tableHead.coef}</th>
                   <th className="py-2 pr-4 text-right font-semibold">{t.results.tableHead.se}</th>
@@ -296,7 +298,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
             >
               {t.repoCta}
             </a>
-            <Link href={`/${lang}`} className="rounded-[3px] border border-rule px-5 py-3 text-[14px] text-ink transition-colors hover:border-cold">
+            <Link href={`/${lang}`} className="rounded-[3px] border border-control px-5 py-3 text-[14px] text-ink transition-colors hover:border-cold">
               {t.backCta}
             </Link>
           </div>

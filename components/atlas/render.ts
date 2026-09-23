@@ -713,7 +713,7 @@ function drawLeftRail(host: HTMLElement, o: RailArgs): () => void {
   const w = 236;
   const h = 74;
   const m = { t: 6, r: 6, b: 15, l: 6 };
-  const spark = svgEl("svg", { viewBox: `0 0 ${w} ${h}`, width: "100%", role: "img" });
+  const spark = svgEl("svg", { viewBox: `0 0 ${w} ${h}`, width: "100%", role: "img", "aria-label": copy.evolutionLabel });
   spark.style.height = "auto";
   spark.style.display = "block";
   const matrix = series.series[indicator.id] ?? [];
@@ -763,7 +763,7 @@ function drawLeftRail(host: HTMLElement, o: RailArgs): () => void {
   const wd = 236;
   const rowH = 21;
   const hd = DIMS.length * rowH + 14;
-  const bars = svgEl("svg", { viewBox: `0 0 ${wd} ${hd}`, width: "100%" });
+  const bars = svgEl("svg", { viewBox: `0 0 ${wd} ${hd}`, width: "100%", role: "img", "aria-label": copy.dimensionsLabel });
   bars.style.height = "auto";
   bars.style.display = "block";
   const maxDim =
@@ -868,7 +868,12 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
   const wr = 250;
   const hf = 19;
   const hr = byGroup.length * hf + 6;
-  const svg = svgEl("svg", { viewBox: `0 0 ${wr} ${hr}`, width: "100%" });
+  const svg = svgEl("svg", {
+    viewBox: `0 0 ${wr} ${hr}`,
+    width: "100%",
+    role: "img",
+    "aria-label": o.level === "departamento" ? copy.byRegionLabel : copy.byDepartmentLabel,
+  });
   svg.style.height = "auto";
   svg.style.display = "block";
   const maxAbs = (max(byGroup, (d) => Math.abs(d[1])) as number) || 1;
@@ -879,7 +884,9 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
   byGroup.forEach((d, k) => {
     const y = k * hf + 2;
     const inside = o.group === copy.all || o.group === d[0];
-    const name = svgEl("text", { x: 0, y: y + 10, "font-size": 10.5, fill: token("--color-body"), opacity: inside ? 1 : 0.4 });
+    // Fuera del filtro: `muted`, no opacidad — body al 40 % sobre papel daba 1,99:1
+    // y el nombre de la región sigue siendo información (DA-07).
+    const name = svgEl("text", { x: 0, y: y + 10, "font-size": 10.5, fill: token(inside ? "--color-body" : "--color-muted") });
     name.textContent = d[0].length > 15 ? d[0].slice(0, 14) + "…" : d[0];
     svg.append(name);
     svg.append(
@@ -898,8 +905,7 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
       y: y + 10,
       "font-size": 10,
       "text-anchor": "end",
-      fill: token("--color-ink"),
-      opacity: inside ? 1 : 0.4,
+      fill: token(inside ? "--color-ink" : "--color-muted"),
     });
     num.textContent = fmt(d[1]);
     svg.append(num);
@@ -943,22 +949,21 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
       return;
     }
     tr.setAttribute("data-id", r.id);
-    tr.setAttribute("tabindex", "0");
-    /* Sin role="button": una fila que se anuncia como botón deja de anunciarse
-       como fila, y las celdas pierden su encabezado (WCAG 1.3.1). Sigue siendo
-       operable con Enter y Espacio, que es lo que de verdad importaba. */
-    tr.setAttribute("aria-label", r.name);
+    /* Sin role="button" en la fila: una fila que se anuncia como botón deja de
+       anunciarse como fila, y las celdas pierden su encabezado (WCAG 1.3.1). La
+       primera versión sacó de ahí la conclusión «entonces nada» y la fila era
+       focalizable y accionable sin rol ni estado: pulsar Enter cambiaba el mapa y
+       el lector de pantalla no oía nada (DA-16). El control es un botón DENTRO
+       de la celda del nombre, con aria-pressed, que es lo que de verdad alterna;
+       la fila sigue siendo fila y conserva sus encabezados. */
     tr.addEventListener("pointerenter", () => focus.hover(r.id));
     tr.addEventListener("pointerleave", () => focus.hover(null));
-    tr.addEventListener("click", () => focus.togglePin(r.id));
-    tr.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        focus.togglePin(r.id);
-      }
-    });
     tr.append(htmlEl("td", { class: "num muted" }, String(rows.indexOf(r) + 1)));
-    tr.append(htmlEl("td", {}, r.name));
+    const btn = htmlEl("button", { type: "button", class: "atlas-rowbtn", "aria-pressed": "false" }, r.name);
+    btn.addEventListener("click", () => focus.togglePin(r.id));
+    const nameTd = htmlEl("td");
+    nameTd.append(btn);
+    tr.append(nameTd);
     tr.append(htmlEl("td", { class: "num" }, fmt(r.value as number)));
     const pill = htmlEl("td");
     const span = htmlEl("span", { class: "atlas-pill" });
@@ -976,6 +981,7 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
     for (const [k, tr] of domRows) {
       if (k === id) tr.setAttribute("data-active", "yes");
       else tr.removeAttribute("data-active");
+      tr.querySelector("button")?.setAttribute("aria-pressed", k === id ? "true" : "false");
     }
   });
 }

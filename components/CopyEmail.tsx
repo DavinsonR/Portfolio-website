@@ -68,7 +68,7 @@ export default function CopyEmail({
     <button
       type="button"
       onClick={copy}
-      className={`lift inline-flex items-center gap-2 rounded-[3px] border border-rule px-3 py-2 text-[14px] font-semibold transition-colors hover:border-cold hover:text-cold ${
+      className={`lift inline-flex items-center gap-2 rounded-[3px] border border-control px-3 py-2 text-[14px] font-semibold transition-colors hover:border-cold hover:text-cold ${
         state === "done" ? "border-pos text-pos" : "text-ink"
       } ${className}`}
     >
