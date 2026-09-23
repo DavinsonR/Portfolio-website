@@ -121,9 +121,9 @@ Los tokens viven en los bloques `@theme` de `app/globals.css`, con el tema oscur
 
 `components/StatusPill.tsx` acepta solo `live | building | research | idea`. `components/SectionNav.tsx` es la navegación pegajosa de las páginas largas y su resaltado asume `scroll-mt-[118px]` en las secciones.
 
-### Contenido: verificable o no se publica
+### Contenido: vende al máximo, con datos verificables
 
-`docs/PRODUCT.md` recoge la evidencia real disponible. Ninguna cifra publicada puede inventarse ni inflarse, los indicadores de estado tienen que reflejar la realidad incluido lo que no está terminado, y `lib/structured-data.ts` no puede afirmarle al buscador nada que el lector no pueda verificar en la propia página. Cuando una capacidad no está viva —una cuenta que todavía no se puede crear, un repositorio privado— la página lo dice en vez de ofrecer un enlace roto.
+El sitio es un recurso de venta: el tono es asertivo, de dueño y centrado en quien contrata (ver *Brand Commitments* en `docs/PRODUCT.md` y `docs/auditoria-copy-persuasion-2026-09-23.md`). Se amplifica el encuadre, nunca el dato. `docs/PRODUCT.md` recoge la evidencia real disponible. Ninguna cifra publicada puede inventarse ni inflarse, los indicadores de estado tienen que reflejar la realidad incluido lo que no está terminado, y `lib/structured-data.ts` no puede afirmarle al buscador nada que el lector no pueda verificar en la propia página. Cuando una capacidad no está viva —una cuenta que todavía no se puede crear, un repositorio privado— la página lo dice en vez de ofrecer un enlace roto.
 
 <!-- BEGIN:nextjs-agent-rules -->
 

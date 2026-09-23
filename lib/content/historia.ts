@@ -30,11 +30,11 @@ import { FALLOS_LOG } from "./types";
 export const historia = {
   es: {
     historia: {
-      metaTitle: "La historia: no cambié de carrera",
+      metaTitle: "La historia: finanzas y datos",
       metaDesc:
         "De un análisis de practicante a una plataforma que corre sola: tres años de finanzas, una tesis, un warehouse y un modelo de crédito que se audita solo.",
-      kicker: "Trayectoria · en primera persona",
-      title: "No cambié de carrera. Apenas le puse nombre a lo que ya venía haciendo.",
+      kicker: "Trayectoria · cómo se construye un perfil que casi no existe",
+      title: "Llevo tres años haciendo este trabajo. Solo le faltaba el nombre.",
       intro:
         "Llevo tres años en finanzas corporativas y en cada puesto terminé haciendo lo mismo sin que nadie me lo pidiera: construir el dato que hacía falta y que no existía. Nunca lo planeé así. Esta es la línea —y es una línea recta— que conecta un análisis que escribí de practicante, un martes cualquiera, con una plataforma que hoy corre sola mientras yo duermo.",
       navLabel: "En esta página",
@@ -48,8 +48,8 @@ export const historia = {
           body: [
             "Entré a la tesorería de SLB en enero de 2024, de practicante. El trabajo era conciliar, reportar, cerrar. Y me pasó lo que le pasa a todo el que entra a un equipo de finanzas: el reporte que de verdad hacía falta nunca era el que el sistema sabía dar.",
             "El primero fue el descalce cambiario de los mercados latinoamericanos. No existía una vista que lo mostrara. Así que la hice en Python.",
-            "No lo pienses como una decisión de carrera, porque no lo fue. Fue que la pregunta me pareció buena y la herramienta que tenía a mano no la respondía. Así de simple, y así de poco heroico.",
-            "Después vino la conciliación bancaria automatizada en SAP. Esa le devolvió unas diez horas al mes a cada analista del equipo — como sesenta al mes entre todos. Es la cifra que mejor explica por qué seguí: nadie me pidió que automatizara nada. Lo hice porque la parte manual era la parte aburrida de algo que sí me estaba pareciendo interesante.",
+            "No lo pienses como una decisión de carrera, porque no lo fue. Fue que la pregunta me pareció buena y la herramienta que tenía a mano no la respondía.",
+            "Después vino la conciliación bancaria automatizada en SAP. Esa le devolvió unas diez horas al mes a cada analista del equipo — como sesenta al mes entre todos. Es la cifra que mejor explica por qué seguí: nadie me pidió que automatizara nada. Lo hice porque veo el proceso completo, no solo mi tarea.",
             "De practicante a especialista de facturación para Argentina y Brasil en veintiséis meses. En el camino, reconocimiento de ingresos en SAP bajo Sarbanes-Oxley y auditorías internas sobre proyectos de tecnología. Ahí aprendí algo que ningún curso me había dicho: un número que nadie puede auditar no sirve, por bonito que se vea. Guarda esa frase. Vuelve al final, y no por casualidad.",
           ],
           proofLabel: "Ver en el CV",
@@ -105,7 +105,7 @@ export const historia = {
           num: "04",
           title: "Construirlo entero, esta vez",
           body: [
-            "La tesis me dejó incómodo. Sabía hacer el análisis, sí, pero la infraestructura la había armado a pedazos cada vez, a mano. Así que me senté a construir una de verdad.",
+            "La tesis me dejó una exigencia: si el análisis es de producción, la infraestructura también tiene que serlo. Así que construí una de verdad.",
             "market-data-medallion es un warehouse en PostgreSQL con arquitectura medallion, transformaciones en dbt, ochenta y nueve pruebas automáticas de calidad y un cron diario que trae cuarenta y ocho activos —cripto, ETFs, acciones gringas, ADR latinoamericanos, divisas— sin que yo toque absolutamente nada. Encima lleva un modelo semántico de Power BI.",
             "Y un backtester honesto, que es donde se pone interesante. Cinco estrategias técnicas clásicas y todas sus combinaciones posibles: 1.392 variantes, con comisiones, con slippage y sin look-ahead. Entraron {variants}. Sobrevivieron {survivors}.",
             "Ese número es el producto. No las {survivors} que quedaron: las {eliminated} que no. Casi todas las estrategias ganadoras eran ilusiones del backtest, y la única forma de demostrarlo fue partir cada serie en 70% de entrenamiento y 30% que el modelo nunca vio. Sin esa ventana ciega, escoger la mejor de 1.392 no es análisis — es dragado de datos con buena presentación.",
@@ -119,7 +119,7 @@ export const historia = {
           num: "05",
           title: "La cifra que borré",
           body: [
-            "El proyecto más reciente es un sistema de decisión crediticia sobre 1,96 millones de préstamos SBA y 93,4 millones de solicitudes HMDA, datos públicos de Estados Unidos.",
+            "El proyecto más reciente es un sistema de decisión crediticia sobre 1,96 millones de préstamos SBA y 62,4 millones de solicitudes HMDA, datos públicos de Estados Unidos.",
             "La primera medición me dio AUC 0,9461.",
             "Y te voy a ser honesto: por un rato me sentí muy bien.",
             "Pero eso no es un modelo de crédito. Es una fuga. «TermInMonths» se sobrescribe cuando el préstamo se liquida, así que ese campo llevaba adentro exactamente el resultado que yo decía estar prediciendo. Quitarlo derrumba la ablación a 0,6621.",
@@ -127,7 +127,7 @@ export const historia = {
           ],
           verdict: "El número que me hizo quedar bien duró dos días. El que publiqué lleva meses aguantando.",
           bodyAfter: [
-            "El sistema tiene diez gates de promoción y uno está diseñado para bloquear mi propio modelo cuando no cumple. Eso era lo que quería construir: no un modelo que gane, sino uno que aguante una auditoría. Que es, mirándolo bien, la misma idea que me encontré en las auditorías internas de SLB cuatro años antes — solo que entonces yo estaba del otro lado de la mesa.",
+            "El sistema tiene diez gates de promoción y uno está diseñado para bloquear mi propio modelo cuando no cumple. Eso era lo que quería construir: no un modelo que gane, sino uno que aguante una auditoría. Que es, mirándolo bien, la misma idea que me encontré en las auditorías internas de SLB un año antes — solo que entonces yo estaba del otro lado de la mesa.",
           ],
           proofLabel: "Abrir el sistema de crédito",
           proofHref: "/projects/credit-risk",
@@ -140,7 +140,7 @@ export const historia = {
           body: [
             "Hay un hilo que atraviesa las tres cosas y me importa más que cualquiera de ellas: publico lo que falla.",
             "El nulo de la tesis está publicado. La fuga del 0,9461 está en el README con el número exacto, sin maquillar. De 1.392 estrategias, el titular es cuántas se murieron. Y este mismo sitio carga una bitácora de fallos numerados, cada uno con su causa raíz y su corrección — incluidos los que rompí esta semana.",
-            "No es humildad de vitrina, y quiero ser claro en eso. Es algo más aburrido y más útil: un portafolio donde todo salió bien no se puede verificar. Uno donde los errores están fechados, sí. Cada cifra de este sitio enlaza al artefacto que la produce — el repositorio, el commit, el pipeline. Si algo no se puede comprobar, no lo publico.",
+            "Es un criterio de ingeniería, no de humildad: un portafolio donde todo salió bien no se puede verificar. Uno donde los errores están fechados, sí. Cada cifra de este sitio enlaza al artefacto que la produce — el repositorio, el commit, el pipeline. Si algo no se puede comprobar, no lo publico.",
           ],
           verdict: "Publico lo que falla.",
           proofLabel: "Ver la bitácora de fallos",
@@ -152,25 +152,25 @@ export const historia = {
           num: "07",
           title: "Hacia dónde voy",
           body: [
-            "Busco un rol remoto donde el criterio financiero y la ingeniería de datos se paguen como una sola capacidad y no como dos mitades. Finance Data Analyst, Financial BI Analyst, Analytics Engineer — tres nombres distintos para el mismo puesto, según a quién le preguntes.",
+            "El rol que encaja paga el criterio financiero y la ingeniería de datos como una sola capacidad, no como dos mitades. Finance Data Analyst, Financial BI Analyst, Analytics Engineer — tres nombres distintos para el mismo puesto, según a quién le preguntes.",
             "Estoy en Bogotá, GMT-5, con solapamiento completo con el horario de Estados Unidos.",
             "Y si llegaste hasta acá, lo demás está a un clic: el código es público, las cifras enlazan a su fuente, y los errores también.",
           ],
         },
       ],
       ctaTitle: "Deja de elegir entre el que entiende el negocio y el que construye los datos.",
-      ctaBody: "Si lo de arriba se parece a lo que necesitas, escríbeme y hablamos esta semana. Respondo en español e inglés.",
+      ctaBody: "Si tu equipo necesita a alguien que lea el P&L y construya el pipeline que lo alimenta, hablemos esta semana. Respondo en menos de un día hábil.",
       ctaEmail: "Escribir un correo",
       ctaCv: "Descargar el CV",
     },
   },
   en: {
     historia: {
-      metaTitle: "The story: I didn't switch careers",
+      metaTitle: "The story: finance and data",
       metaDesc:
         "From an intern's analysis to a platform that runs itself: three years of finance, a thesis, a warehouse and a credit model that audits itself.",
-      kicker: "Track record · first person",
-      title: "I didn't switch careers. I just put a name to what I was already doing.",
+      kicker: "Track record · how a profile that barely exists gets built",
+      title: "I've been doing this job for three years. It just didn't have a name.",
       intro:
         "Three years in corporate finance, and in every role I ended up doing the same thing without anyone asking me to: building the data that was missing. I never planned it that way. This is the line — and it is a straight one — connecting an analysis I wrote as an intern, on some ordinary Tuesday, with a platform that now runs itself while I sleep.",
       navLabel: "On this page",
@@ -184,8 +184,8 @@ export const historia = {
           body: [
             "I joined SLB's treasury in January 2024, as an intern. The job was to reconcile, report, close. And what happens to everyone who joins a finance team happened to me: the report someone actually needed was never the one the system knew how to give.",
             "The first was the FX mismatch across Latin American markets. No view showed it. So I built one in Python.",
-            "Don't read that as a career decision, because it wasn't. The question struck me as a good one and the tool at hand didn't answer it. That simple, and that unheroic.",
-            "Then came automated bank reconciliation in SAP. That one gave every analyst on the team about ten hours a month back — around sixty a month between all of us. It's the figure that best explains why I kept going: nobody asked me to automate anything. I did it because the manual part was the boring part of something that was actually getting interesting.",
+            "Don't read that as a career decision, because it wasn't. The question struck me as a good one and the tool at hand didn't answer it.",
+            "Then came automated bank reconciliation in SAP. That one gave every analyst on the team about ten hours a month back — around sixty a month between all of us. It's the figure that best explains why I kept going: nobody asked me to automate anything. I did it because I see the whole process, not just my task.",
             "Intern to billing specialist for Argentina and Brazil in twenty-six months. Along the way, revenue recognition in SAP under Sarbanes-Oxley and internal audits on technology projects. That's where I learned something no course had told me: a number nobody can audit is worth nothing, however good it looks. Hold on to that one. It comes back at the end, and not by accident.",
           ],
           proofLabel: "See it in the CV",
@@ -241,7 +241,7 @@ export const historia = {
           num: "04",
           title: "Building the whole thing, this time",
           body: [
-            "The thesis left me uncomfortable. I knew how to do the analysis, yes, but I had assembled the infrastructure in pieces every time, by hand. So I sat down and built a real one.",
+            "The thesis left me with a standard: if the analysis is production-grade, the infrastructure has to be too. So I built a real one.",
             "market-data-medallion is a PostgreSQL warehouse in medallion architecture, transformations in dbt, eighty-nine automated quality tests and a daily cron that brings in forty-eight assets — crypto, ETFs, US equities, Latin American ADRs, currencies — without me touching a thing. It carries a Power BI semantic model on top.",
             "And an honest backtester, which is where it gets interesting. Five classic technical strategies and every combination of them: 1,392 variants, with fees, with slippage and no look-ahead. {variants} went in. {survivors} survived.",
             "That number is the product. Not the {survivors} that made it: the {eliminated} that didn't. Almost all the winning strategies were backtest illusions, and the only way to show it was to split every series into 70% training and 30% the model never saw. Without that blind window, picking the best of 1,392 isn't analysis — it's data dredging with good presentation.",
@@ -255,7 +255,7 @@ export const historia = {
           num: "05",
           title: "The number I deleted",
           body: [
-            "The most recent project is a credit decisioning system over 1.96 million SBA loans and 93.4 million HMDA applications, US public data.",
+            "The most recent project is a credit decisioning system over 1.96 million SBA loans and 62.4 million HMDA applications, US public data.",
             "The first reading gave me AUC 0.9461.",
             "And I'll be honest with you: for a while there, I felt pretty good.",
             "But that isn't a credit model. It's a leak. TermInMonths is overwritten when a loan is liquidated, so that field carried inside it exactly the outcome I claimed to be predicting. Removing it drops the ablation to 0.6621.",
@@ -263,7 +263,7 @@ export const historia = {
           ],
           verdict: "The number that made me look good lasted two days. The one I published has held for months.",
           bodyAfter: [
-            "The system has ten promotion gates and one of them is designed to block my own model when it doesn't comply. That's what I wanted to build: not a model that wins, but one that survives an audit. Which is, when you look at it, the same idea I met in SLB's internal audits four years earlier — except back then I was on the other side of the table.",
+            "The system has ten promotion gates and one of them is designed to block my own model when it doesn't comply. That's what I wanted to build: not a model that wins, but one that survives an audit. Which is, when you look at it, the same idea I met in SLB's internal audits a year earlier — except back then I was on the other side of the table.",
           ],
           proofLabel: "Open the credit system",
           proofHref: "/projects/credit-risk",
@@ -276,7 +276,7 @@ export const historia = {
           body: [
             "There's a thread running through all three and it matters to me more than any of them: I publish what fails.",
             "The thesis null is published. The 0.9461 leak is in the README with the exact number, unretouched. Of 1,392 strategies, the headline is how many died. And this very site carries a log of numbered defects, each with its root cause and its fix — including the ones I broke this week.",
-            "This isn't shop-window humility, and I want to be clear about that. It's something duller and more useful: a portfolio where everything went well can't be verified. One where the mistakes are dated can. Every figure on this site links to the artifact that produces it — the repository, the commit, the pipeline. If it can't be checked, I don't publish it.",
+            "It's an engineering standard, not humility: a portfolio where everything went well can't be verified. One where the mistakes are dated can. Every figure on this site links to the artifact that produces it — the repository, the commit, the pipeline. If it can't be checked, I don't publish it.",
           ],
           verdict: "I publish what fails.",
           proofLabel: "See the defect log",
@@ -288,14 +288,14 @@ export const historia = {
           num: "07",
           title: "Where I'm going",
           body: [
-            "I'm looking for a remote role where financial judgment and data engineering are paid as one capability and not as two halves. Finance Data Analyst, Financial BI Analyst, Analytics Engineer — three different names for the same job, depending on who you ask.",
+            "The right role pays for financial judgment and data engineering as one capability, not as two halves. Finance Data Analyst, Financial BI Analyst, Analytics Engineer — three different names for the same job, depending on who you ask.",
             "I'm in Bogotá, GMT-5, with full overlap with US hours.",
             "And if you made it this far, the rest is one click away: the code is public, the figures link to their source, and so do the mistakes.",
           ],
         },
       ],
       ctaTitle: "Stop choosing between the one who reads the business and the one who builds the data.",
-      ctaBody: "If what you just read looks like what you need, write to me and let's talk this week. I answer in English and Spanish.",
+      ctaBody: "If your team needs someone who reads the P&L and builds the pipeline that feeds it, let's talk this week. I reply within one business day.",
       ctaEmail: "Write an email",
       ctaCv: "Download the CV",
     },
