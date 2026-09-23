@@ -65,7 +65,7 @@ export const home = {
       metrics: [
         { value: "15+", label: "países bajo mi alcance", note: "desde HQ · América y hemisferio oriental", href: "/cv#experiencia" },
         { value: "95 M", label: "registros de crédito procesados", note: "93,4 M HMDA + 1,96 M SBA · el modelo entrena sobre 62,4 M", href: "/projects/credit-risk#cr-cliff" },
-        { value: "1.392", label: "estrategias puestas a prueba", note: "sobrevivieron menos de 50 · publiqué las 1.342 que no", href: "/projects/trading-sim" },
+        { value: "1.392", label: "estrategias puestas a prueba", note: "sobrevivieron {survivors} · publiqué las {eliminated} que no", href: "/projects/trading-sim" },
         { value: "1.123", label: "municipios levantados uno a uno", note: "19 fuentes públicas que nadie había cruzado", href: "/research/fintech-inclusion#atlas" },
         { value: "89", label: "pruebas que corren antes que tú", note: "cada día, antes de que un dato se publique", href: "/projects/trading-sim#calidad" },
       ] as Metric[],
@@ -136,7 +136,7 @@ export const home = {
             kind: "Plataforma en producción · se refresca sola",
             status: "live",
             statusText: "EN OPERACIÓN",
-            note: "Ingesta diaria desde cuatro fuentes de mercado a un warehouse PostgreSQL en capas medallion con dbt, 89 pruebas de calidad automáticas y CI/CD, sobre infraestructura gratuita. De más de 1.300 variantes de estrategia evaluadas encima, apenas una de cada ocho ganadoras dentro de muestra sobrevivió fuera de muestra — publiqué todas las que no.",
+            note: "Ingesta diaria desde cuatro fuentes de mercado a un warehouse PostgreSQL en capas medallion con dbt, 89 pruebas de calidad automáticas y CI/CD, sobre infraestructura gratuita. De más de 1.300 variantes de estrategia evaluadas encima, solo una de cada {oneIn} ganadoras dentro de muestra sobrevivió fuera de muestra — publiqué todas las que no.",
             href: "/projects/trading-sim",
           },
           {
@@ -203,7 +203,7 @@ export const home = {
       metrics: [
         { value: "15+", label: "countries under my scope", note: "from HQ · Americas and Eastern Hemisphere", href: "/cv#experiencia" },
         { value: "95 M", label: "credit records processed", note: "93.4 M HMDA + 1.96 M SBA · the model trains on 62.4 M", href: "/projects/credit-risk#cr-cliff" },
-        { value: "1,392", label: "strategies put to the test", note: "fewer than 50 survived · I published the 1,342 that didn't", href: "/projects/trading-sim" },
+        { value: "1,392", label: "strategies put to the test", note: "{survivors} survived · I published the {eliminated} that didn't", href: "/projects/trading-sim" },
         { value: "1,123", label: "municipalities built one by one", note: "19 public sources nobody had joined", href: "/research/fintech-inclusion#atlas" },
         { value: "89", label: "tests that run before you do", note: "every day, before a single figure ships", href: "/projects/trading-sim#calidad" },
       ] as Metric[],
@@ -274,7 +274,7 @@ export const home = {
             kind: "Production platform · refreshes itself",
             status: "live",
             statusText: "IN OPERATION",
-            note: "Daily ingestion from four market sources into a PostgreSQL warehouse in medallion layers with dbt, 89 automated quality tests and CI/CD, on free infrastructure. Of more than 1,300 strategy variants evaluated on top of it, barely one in eight of the in-sample winners survived out of sample — I published every one that did not.",
+            note: "Daily ingestion from four market sources into a PostgreSQL warehouse in medallion layers with dbt, 89 automated quality tests and CI/CD, on free infrastructure. Of more than 1,300 strategy variants evaluated on top of it, only one in {oneIn} in-sample winners survived out of sample — I published every one that did not.",
             href: "/projects/trading-sim",
           },
           {

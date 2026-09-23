@@ -5,6 +5,8 @@ import { alternates, social } from "@/lib/config/alternates";
 import { mailtoHref } from "@/lib/config/contact";
 import BackLink from "@/components/BackLink";
 import SectionNav from "@/components/SectionNav";
+import LabText from "@/components/trading/LabText";
+import { labSnapshot } from "@/lib/data/lab-snapshot";
 
 export async function generateMetadata({
   params,
@@ -87,7 +89,7 @@ export default async function HistoriaPage({
                 <div className={`mt-5 flex flex-col gap-4 ${prose}`}>
                   {s.body.map((p) => (
                     <p key={p.slice(0, 40)} className="text-[15.5px] leading-[1.8] text-body">
-                      {p}
+                      <LabText template={p} initial={labSnapshot} lang={lang} />
                     </p>
                   ))}
                 </div>
@@ -139,7 +141,7 @@ export default async function HistoriaPage({
                   <div className={`mt-6 flex flex-col gap-4 ${prose}`}>
                     {s.bodyAfter.map((p) => (
                       <p key={p.slice(0, 40)} className="text-[15.5px] leading-[1.8] text-body">
-                        {p}
+                        <LabText template={p} initial={labSnapshot} lang={lang} />
                       </p>
                     ))}
                   </div>

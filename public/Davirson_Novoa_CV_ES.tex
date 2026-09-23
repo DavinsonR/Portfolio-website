@@ -133,7 +133,7 @@ No estoy cambiando de carrera: estoy cobrando por lo que ya hago. En cada rol fi
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Ingesta incremental por watermark desde 4 fuentes (Tiingo, Coinbase, Kraken, FX) hacia un warehouse PostgreSQL de tres capas: 48 activos y más de 58.000 velas, idempotente y reanudable.
   \item 89 pruebas automáticas de calidad en dbt más 171 pruebas unitarias en Python; el pipeline falla antes de publicar un dato malo, no después.
-  \item Motor de backtesting sin look-ahead con validación out-of-sample 70/30 sobre 1.392 variantes de estrategia: solo el 13\% de las ganadoras in-sample sobrevivió a la ventana ciega.
+  \item Motor de backtesting sin look-ahead con validación out-of-sample 70/30 sobre 1.392 variantes de estrategia: menos de una de cada seis ganadoras in-sample sobrevivió a la ventana ciega.
   \item Descomposición cambiaria de ADRs latinoamericanos, separando el retorno de la empresa del movimiento de la divisa mediante la identidad (1+r\_USD) $\times$ (1+r\_FX) = (1+r\_local).
   \item Orquestación diaria en GitHub Actions con circuit breaker de rate limit, sobre infraestructura de costo cero.
 \end{itemize}

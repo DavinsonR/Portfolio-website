@@ -133,7 +133,7 @@ This is not a career change; it is pricing what I already do. In every finance r
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Watermark-based incremental ingestion from 4 sources (Tiingo, Coinbase, Kraken, FX) into a three-layer PostgreSQL warehouse: 48 assets and more than 58,000 candles, idempotent and resumable.
   \item 89 automated dbt data-quality tests plus 171 Python unit tests; the pipeline fails before publishing bad data, not after.
-  \item No-look-ahead backtesting engine with 70/30 out-of-sample validation over 1,392 strategy variants: only 13\% of the in-sample winners survived the blind window.
+  \item No-look-ahead backtesting engine with 70/30 out-of-sample validation over 1,392 strategy variants: fewer than one in six in-sample winners survived the blind window.
   \item FX decomposition for Latin American ADRs, separating company performance from the currency move through the identity (1+r\_USD) $\times$ (1+r\_FX) = (1+r\_local).
   \item Daily orchestration on GitHub Actions with a rate-limit circuit breaker, running on zero-cost infrastructure.
 \end{itemize}

@@ -128,7 +128,9 @@ export const projects = {
       metaDesc:
         "1.392 variantes de estrategia evaluadas sobre 48 activos con comisiones, slippage y validación fuera de muestra. La gran mayoría de las ganadoras eran ilusiones del backtest.",
       kicker: "Laboratorio · trading_sim",
-      title: "Más de 1.300 estrategias entraron al laboratorio. Sobrevivieron menos de 50.",
+      // Las cifras van como plantilla: el número cambia cada noche y sale de
+      // la instantánea (build) y del índice vivo (navegador). Ver lib/data/lab-stats.ts.
+      title: "{variants} estrategias entraron al laboratorio. Sobrevivieron {survivors}.",
       intro:
         "Cinco estrategias técnicas clásicas y todas sus combinaciones posibles, evaluadas sobre 48 activos — cripto, ETFs, acciones de EE.UU., ADRs latinoamericanos y divisas — con comisiones, slippage y sin mirar el futuro. Cada variante se entrena en el 70% de la historia y se juzga en el 30% que nunca vio. Esto no es un curso de trading: es la medición honesta de cuánto sobrevive el análisis técnico al contacto con la realidad.",
       pipelineLine:
@@ -145,7 +147,7 @@ export const projects = {
       },
       funnel: {
         title: "El embudo de la honestidad",
-        desc: "De todas las variantes que le ganaron a comprar-y-mantener en el periodo de entrenamiento, solo una de cada ocho siguió ganando en el periodo de validación que nunca influyó en su selección. El resto era ruido con buena suerte.",
+        desc: "De todas las variantes que le ganaron a comprar-y-mantener en el periodo de entrenamiento, solo una de cada {oneIn} siguió ganando en el periodo de validación que nunca influyó en su selección. El resto era ruido con buena suerte.",
         stageAll: "variantes evaluadas (5 estrategias + todas sus combinaciones AND)",
         stageIs: "le ganaron a buy & hold dentro de muestra",
         stageBoth: "siguieron ganándole fuera de muestra",
@@ -748,7 +750,7 @@ export const projects = {
       metaDesc:
         "1,392 strategy variants evaluated across 48 assets with fees, slippage and out-of-sample validation. The vast majority of the winners were backtest illusions.",
       kicker: "Lab · trading_sim",
-      title: "1,300+ strategies entered the lab. Fewer than 50 survived.",
+      title: "{variants} strategies entered the lab. {survivors} survived.",
       intro:
         "Five classic technical strategies and every possible combination of them, evaluated across 48 assets — crypto, ETFs, US stocks, Latin American ADRs and currencies — with fees, slippage and no look-ahead. Every variant trains on 70% of history and is judged on the 30% it never saw. This is not a trading course: it is an honest measurement of how much technical analysis survives contact with reality.",
       pipelineLine:
@@ -765,7 +767,7 @@ export const projects = {
       },
       funnel: {
         title: "The honesty funnel",
-        desc: "Of all the variants that beat buy-and-hold during the training period, only one in eight kept winning in the validation window that never influenced their selection. The rest was noise with good luck.",
+        desc: "Of all the variants that beat buy-and-hold during the training period, only one in {oneIn} kept winning in the validation window that never influenced their selection. The rest was noise with good luck.",
         stageAll: "variants evaluated (5 strategies + every AND-combination)",
         stageIs: "beat buy & hold in sample",
         stageBoth: "kept beating it out of sample",
@@ -1252,3 +1254,4 @@ export const projects = {
     },
   },
 };
+

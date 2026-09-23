@@ -107,8 +107,8 @@ export const historia = {
           body: [
             "La tesis me dejó incómodo. Sabía hacer el análisis, sí, pero la infraestructura la había armado a pedazos cada vez, a mano. Así que me senté a construir una de verdad.",
             "market-data-medallion es un warehouse en PostgreSQL con arquitectura medallion, transformaciones en dbt, ochenta y nueve pruebas automáticas de calidad y un cron diario que trae cuarenta y ocho activos —cripto, ETFs, acciones gringas, ADR latinoamericanos, divisas— sin que yo toque absolutamente nada. Encima lleva un modelo semántico de Power BI.",
-            "Y un backtester honesto, que es donde se pone interesante. Cinco estrategias técnicas clásicas y todas sus combinaciones posibles: 1.392 variantes, con comisiones, con slippage y sin look-ahead. Entraron más de mil trescientas. Sobrevivieron menos de cincuenta.",
-            "Ese número es el producto. No las cincuenta que quedaron: las mil trescientas que no. Casi todas las estrategias ganadoras eran ilusiones del backtest, y la única forma de demostrarlo fue partir cada serie en 70% de entrenamiento y 30% que el modelo nunca vio. Sin esa ventana ciega, escoger la mejor de 1.392 no es análisis — es dragado de datos con buena presentación.",
+            "Y un backtester honesto, que es donde se pone interesante. Cinco estrategias técnicas clásicas y todas sus combinaciones posibles: 1.392 variantes, con comisiones, con slippage y sin look-ahead. Entraron {variants}. Sobrevivieron {survivors}.",
+            "Ese número es el producto. No las {survivors} que quedaron: las {eliminated} que no. Casi todas las estrategias ganadoras eran ilusiones del backtest, y la única forma de demostrarlo fue partir cada serie en 70% de entrenamiento y 30% que el modelo nunca vio. Sin esa ventana ciega, escoger la mejor de 1.392 no es análisis — es dragado de datos con buena presentación.",
           ],
           proofLabel: "Abrir el laboratorio",
           proofHref: "/projects/trading-sim",
@@ -243,8 +243,8 @@ export const historia = {
           body: [
             "The thesis left me uncomfortable. I knew how to do the analysis, yes, but I had assembled the infrastructure in pieces every time, by hand. So I sat down and built a real one.",
             "market-data-medallion is a PostgreSQL warehouse in medallion architecture, transformations in dbt, eighty-nine automated quality tests and a daily cron that brings in forty-eight assets — crypto, ETFs, US equities, Latin American ADRs, currencies — without me touching a thing. It carries a Power BI semantic model on top.",
-            "And an honest backtester, which is where it gets interesting. Five classic technical strategies and every combination of them: 1,392 variants, with fees, with slippage and no look-ahead. More than thirteen hundred went in. Fewer than fifty survived.",
-            "That number is the product. Not the fifty that made it: the thirteen hundred that didn't. Almost all the winning strategies were backtest illusions, and the only way to show it was to split every series into 70% training and 30% the model never saw. Without that blind window, picking the best of 1,392 isn't analysis — it's data dredging with good presentation.",
+            "And an honest backtester, which is where it gets interesting. Five classic technical strategies and every combination of them: 1,392 variants, with fees, with slippage and no look-ahead. {variants} went in. {survivors} survived.",
+            "That number is the product. Not the {survivors} that made it: the {eliminated} that didn't. Almost all the winning strategies were backtest illusions, and the only way to show it was to split every series into 70% training and 30% the model never saw. Without that blind window, picking the best of 1,392 isn't analysis — it's data dredging with good presentation.",
           ],
           proofLabel: "Open the lab",
           proofHref: "/projects/trading-sim",

@@ -2,6 +2,8 @@ import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import PipelineStamp from "@/components/PipelineStamp";
 import CountUp from "@/components/CountUp";
+import LabText from "@/components/trading/LabText";
+import { labSnapshot } from "@/lib/data/lab-snapshot";
 import StatusPill from "@/components/StatusPill";
 import CopyEmail from "@/components/CopyEmail";
 import AtlasFigure from "@/components/AtlasFigure";
@@ -230,7 +232,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                         {m.label}
                       </span>
                     </a>
-                    <p className="mt-1 text-[14px] text-body">{m.note}</p>
+                    <p className="mt-1 text-[14px] text-body">
+                      <LabText template={m.note} initial={labSnapshot} lang={lang} />
+                    </p>
                   </li>
                 );
               })}
@@ -392,7 +396,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                       )}
                       <span className="text-[12.5px] tracking-[0.07em] text-muted uppercase">{r.kind}</span>
                     </div>
-                    <p className="mt-1 max-w-[68ch] text-[14.5px] leading-[1.65] text-body">{r.note}</p>
+                    <p className="mt-1 max-w-[68ch] text-[14.5px] leading-[1.65] text-body">
+                      <LabText template={r.note} initial={labSnapshot} lang={lang} />
+                    </p>
                     {r.access && <p className="mt-1 text-[14px] text-muted">{r.access}</p>}
                   </div>
                   <div className="sm:pt-0.5">

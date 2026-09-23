@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { INDEX_URL, fetchJson } from "@/lib/data/trading-sim";
+import { fetchIndexShared, type IndexData } from "@/lib/data/trading-sim";
 
 /** Proof, not prose.
  *
@@ -33,9 +33,13 @@ export default function PipelineStamp({
 
   useEffect(() => {
     let alive = true;
-    fetchJson<{ assets?: { summary?: { last_candle_ts?: string | null; is_stale?: boolean | null } | null }[] }>(INDEX_URL)
-      .then((d) => {
-        if (!alive || !Array.isArray(d.assets)) return;
+    // Comparte la lectura con las cifras del laboratorio de la misma portada
+    // (una petición, no dos). Pero SOLO acepta el dato vivo: la instantánea es
+    // real y tiene fecha, pero anunciarla bajo «pipeline en vivo» sería la
+    // misma trampa que motivó este componente. Sin dato vivo, texto estático.
+    fetchIndexShared<IndexData>()
+      .then(({ data: d, source }) => {
+        if (!alive || source !== "live" || !Array.isArray(d.assets)) return;
 
         const summaries = d.assets.map((a) => a.summary).filter((s): s is NonNullable<typeof s> => !!s);
         const stamps = summaries
