@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getDictionary, THESIS_REPO } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
+import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
 import Atlas from "@/components/atlas/Atlas";
 import { alternates, social } from "@/lib/config/alternates";
@@ -301,6 +302,10 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
           </div>
         </div>
       </section>
+
+      {/* Cerraba en «volver al inicio» o en GitHub: justo donde el lector está
+          más convencido. La banda es la misma de /historia. */}
+      <ContactBand dict={dict} lang={lang} wrap={wrap} />
     </main>
   );
 }

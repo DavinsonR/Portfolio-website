@@ -8,6 +8,7 @@ import {
 import { reportShot } from "@/lib/data/powerbi-shots";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
+import ContactBand from "@/components/ContactBand";
 import ModelDiagram from "@/components/powerbi/ModelDiagram";
 import MeasureCatalogue from "@/components/powerbi/MeasureCatalogue";
 import { alternates, social } from "@/lib/config/alternates";
@@ -257,6 +258,10 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
           </p>
         </div>
       </section>
+
+      {/* Cerraba en «volver al inicio» o en GitHub: justo donde el lector está
+          más convencido. La banda es la misma de /historia. */}
+      <ContactBand dict={dict} lang={lang} wrap={wrap} />
     </main>
   );
 }

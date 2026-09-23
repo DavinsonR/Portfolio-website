@@ -4,6 +4,7 @@ import Image from "next/image";
 import { getDictionary } from "@/lib/dictionaries";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
+import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
 import { alternates, social } from "@/lib/config/alternates";
 
@@ -319,6 +320,10 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
           </div>
         </div>
       </section>
+
+      {/* Cerraba en «volver al inicio» o en GitHub: justo donde el lector está
+          más convencido. La banda es la misma de /historia. */}
+      <ContactBand dict={dict} lang={lang} wrap={wrap} />
     </main>
   );
 }

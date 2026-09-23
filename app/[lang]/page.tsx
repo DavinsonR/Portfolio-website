@@ -207,7 +207,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 definiciones no definía nada. Una lista simple dice lo mismo, es
                 válida, y deja que el ancla siga envolviendo cifra y etiqueta —
                 que es lo que hace de cada cifra un objetivo de clic. */}
-            <ul className="grid grid-cols-2 pt-3 pb-6 sm:grid-cols-3 lg:grid-cols-5">
+            <ul className="grid grid-cols-2 pt-3 pb-6 lg:grid-cols-4">
               {sheet.metrics.map((m, i) => {
                 // Each figure lands where its evidence actually is. The first reviewer to
                 // click one found the CV's masthead and no sign of what he had clicked.

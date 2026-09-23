@@ -37,6 +37,7 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 17 | [7 sep](docs/bitacora/sesion-17.md) | El atlas sale del fondo, y la deriva que explica el nulo |
 | 18 | [23 sep](docs/bitacora/sesion-18.md) | Cinco expertos auditan el sitio, y la sesión 1: un CVE que nadie vio, las tarjetas de Twitter de la portada en catorce rutas, el nombre dos veces en el título del CV |
 | 19 | [23 sep](docs/bitacora/sesion-19.md) | Las cifras del laboratorio dejan de escribirse a mano, el veredicto entra en el HTML, y el PDF de una página lleva por fin un resultado |
+| 20 | [23 sep](docs/bitacora/sesion-20.md) | Conversión: la portada adelgaza, las páginas de proyecto cierran con una salida, y el CV dice lo que un ATS busca |
 
 ## Después de la sesión 17
 

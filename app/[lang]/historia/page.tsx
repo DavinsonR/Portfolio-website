@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import { alternates, social } from "@/lib/config/alternates";
-import { mailtoHref } from "@/lib/config/contact";
 import BackLink from "@/components/BackLink";
 import SectionNav from "@/components/SectionNav";
+import ContactBand from "@/components/ContactBand";
 import LabText from "@/components/trading/LabText";
 import { labSnapshot } from "@/lib/data/lab-snapshot";
 
@@ -178,34 +178,7 @@ export default async function HistoriaPage({
           Banda ámbar. Es la única de la página, y le corresponde: el acento
           cálido está reservado a contenido humano y de propósito, y esto es
           disponibilidad y contratación. Ninguna cifra de arriba lo lleva. */}
-      <section className="border-t-2 border-warm bg-warmsoft py-12">
-        <div className={wrap}>
-          <h2
-            data-reveal
-            className="reveal max-w-[26ch] font-display text-[clamp(22px,2.8vw,30px)] leading-[1.18] font-bold tracking-[-0.02em] text-ink"
-          >
-            {t.ctaTitle}
-          </h2>
-          <p data-reveal className="reveal mt-4 text-[15.5px] text-body" style={{ "--d": "60ms" } as React.CSSProperties}>
-            {t.ctaBody}
-          </p>
-          <div
-            data-reveal
-            className="reveal mt-7 flex flex-wrap items-center gap-x-6 gap-y-3"
-            style={{ "--d": "120ms" } as React.CSSProperties}
-          >
-            <a
-              href={mailtoHref(dict)}
-              className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
-            >
-              {t.ctaEmail}
-            </a>
-            <Link href={`/${lang}/cv`} className="text-[14.5px] font-medium text-cold hover:underline">
-              {t.ctaCv}
-            </Link>
-          </div>
-        </div>
-      </section>
+      <ContactBand dict={dict} lang={lang} wrap={wrap} />
     </main>
   );
 }

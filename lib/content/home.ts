@@ -21,7 +21,7 @@ export const home = {
     nav: {
       links: [
         { label: "Trabajo", href: "#work" },
-        { label: "Trayectoria", href: "/historia" },
+        { label: "La historia", href: "/historia" },
         { label: "CV", href: "/cv" },
       ],
       contact: "Contacto",
@@ -52,21 +52,22 @@ export const home = {
         { term: "Inicio", detail: "Preaviso de 15 días" },
         { term: "Vía", detail: "Contrato directo (B2B) o mediante EOR. Sin patrocinio de visa." },
       ],
-      metricsLabel: "Cinco cifras que puedes auditar ahora mismo",
+      metricsLabel: "Cuatro cifras que puedes auditar ahora mismo",
       metricsNote: "Ninguna está redondeada y ninguna es de adorno. Haz clic en la que menos te creas.",
       pipelineLive: "Pipeline en vivo · datos hasta",
       pipelineStalled: "Pipeline detenido · datos hasta",
       pipelineLiveFallback: "Pipeline en vivo · se actualiza a diario",
-      // Cinco cifras, cinco AFIRMACIONES DISTINTAS, una por cuerpo de trabajo.
-      // Antes eran cuatro y dos hablaban del mismo pipeline (48 activos y 89
-      // pruebas), así que dos de los cuatro huecos más valiosos de la portada
-      // decían lo mismo. El orden es deliberado: alcance de negocio, escala de
-      // datos, honestidad intelectual, investigación propia, rigor de producción.
+      // Cuatro cifras, cuatro AFIRMACIONES DISTINTAS, una por cuerpo de trabajo.
+      // Fueron cinco durante un tiempo: la quinta («1.123 municipios») era la más
+      // lejana del puesto y ya tiene su propio gráfico justo debajo —la figura del
+      // atlas cuenta esa historia entera—, y con cinco huecos el ojo no elige,
+      // recorre (auditoría del 23 sep 2026). Cuatro es además lo que declara
+      // DESIGN.md para la banda. El orden es deliberado: alcance de negocio,
+      // escala de datos, honestidad intelectual, rigor de producción.
       metrics: [
         { value: "15+", label: "países bajo mi alcance", note: "desde HQ · América y hemisferio oriental", href: "/cv#experiencia" },
         { value: "95 M", label: "registros de crédito procesados", note: "93,4 M HMDA + 1,96 M SBA · el modelo entrena sobre 62,4 M", href: "/projects/credit-risk#cr-cliff" },
         { value: "1.392", label: "estrategias puestas a prueba", note: "sobrevivieron {survivors} · publiqué las {eliminated} que no", href: "/projects/trading-sim" },
-        { value: "1.123", label: "municipios levantados uno a uno", note: "19 fuentes públicas que nadie había cruzado", href: "/research/fintech-inclusion#atlas" },
         { value: "89", label: "pruebas que corren antes que tú", note: "cada día, antes de que un dato se publique", href: "/projects/trading-sim#calidad" },
       ] as Metric[],
       ctaPrimary: "Descargar CV (PDF)",
@@ -97,7 +98,7 @@ export const home = {
         builtLabel: "Lo que construí",
         built: "Un sistema de decisión crediticia sobre 1,96 millones de préstamos SBA 7(a) y 62,4 millones de solicitudes HMDA, con validación out-of-time que cruza el shock COVID, diez gates que bloquean la promoción de un modelo que no cumpla, model card y reporte de validación generados desde la corrida, monitoreo de deriva y una capa de inferencia causal. Ninguna cifra publicada se escribe a mano: el gate las recomputa desde las predicciones guardadas antes de dejar promover nada.",
         matterLabel: "Por qué importa",
-        matter: "Es exactamente lo que separa un modelo de uno que se puede desplegar. La misma estructura —umbrales derivados y escritos, documentación que se regenera sola, controles que fallan cerrado— es la que pide un examen de riesgo de modelo en un banco, y la que hace que un número sobreviva a la única pregunta que importa: de dónde salió. Eso no se aprende en un curso. Se aprende auditando, y yo estuve del otro lado de esa mesa.",
+        matter: "Es lo que separa un modelo de uno que se puede desplegar: umbrales derivados y escritos, documentación que se regenera sola, controles que fallan cerrado. Es lo que pide un examen de riesgo de modelo en un banco, y lo que hace que un número sobreviva a la única pregunta que importa: de dónde salió. Eso se aprende auditando, y yo estuve del otro lado de esa mesa.",
         findingLabel: "Hallazgo publicado",
         finding: "Mi primer AUC fue 0,9461: espectacular, publicable y falso — era una fuga de datos. Lo dejé publicado con nombre y apellido en lugar de esconderlo, porque ese es el resultado. Y de los diez gates del sistema, uno bloquea mi propio modelo con una razón de impacto dispar de 0,7639 contra un umbral de 0,80. No bajé el umbral. Cualquiera lo habría bajado.",
         stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
@@ -119,7 +120,7 @@ export const home = {
             kind: "Investigación reproducible · datos abiertos",
             status: "research",
             statusText: "TESIS RADICADA",
-            note: "Diecinueve fuentes públicas en un warehouse dimensional con dbt y DuckDB, resueltas a código municipal DIVIPOLA. Encima: un índice de inclusión financiera por dimensiones, dos paneles anuales, un atlas de los 1.123 municipios y una batería econométrica completa, con sus resultados publicados.",
+            note: "Diecinueve fuentes públicas en un warehouse dimensional con dbt y DuckDB, resueltas a código municipal. Encima, un índice de inclusión financiera, dos paneles anuales, un atlas de los 1.123 municipios y la batería econométrica completa, con sus resultados publicados.",
             href: "/research/fintech-inclusion",
           },
           {
@@ -127,13 +128,13 @@ export const home = {
             kind: "Producto propio · Next.js + Supabase",
             status: "live",
             statusText: "DEMO ABIERTO",
-            note: "Registro diario de hábitos, cuerpo, sueño, comida y gastos sobre Postgres con política de fila en 34 tablas, 526 pruebas y ocho puertas en CI. Hay un demo abierto con las cinco pantallas reales y los datos de una persona que no existe: no consulta la base ni una vez, y eso lo obliga una prueba.",
+            note: "Producto propio en operación: Postgres multiusuario con política de fila en 34 tablas, 526 pruebas y ocho puertas en CI. El demo abierto corre las cinco pantallas reales con los datos de una persona que no existe, no consulta la base ni una vez, y una prueba lo obliga.",
             href: "/projects/tracking",
             access: "Repositorio privado · el demo es la superficie pública",
           },
           {
             name: "market-data-medallion — plataforma de datos",
-            kind: "Plataforma en producción · se refresca sola",
+            kind: "Plataforma en operación diaria · se refresca sola",
             status: "live",
             statusText: "EN OPERACIÓN",
             note: "Ingesta diaria desde cuatro fuentes de mercado a un warehouse PostgreSQL en capas medallion con dbt, 89 pruebas de calidad automáticas y CI/CD, sobre infraestructura gratuita. De más de 1.300 variantes de estrategia evaluadas encima, solo una de cada {oneIn} ganadoras dentro de muestra sobrevivió fuera de muestra — publiqué todas las que no.",
@@ -164,7 +165,7 @@ export const home = {
     nav: {
       links: [
         { label: "Work", href: "#work" },
-        { label: "Track record", href: "/historia" },
+        { label: "The story", href: "/historia" },
         { label: "CV", href: "/cv" },
       ],
       contact: "Contact",
@@ -195,7 +196,7 @@ export const home = {
         { term: "Start", detail: "15 days' notice" },
         { term: "Route", detail: "Direct contract (B2B) or through an EOR. No visa sponsorship needed." },
       ],
-      metricsLabel: "Five figures you can audit right now",
+      metricsLabel: "Four figures you can audit right now",
       metricsNote: "Not one is rounded and not one is decoration. Click the one you believe least.",
       pipelineLive: "Live pipeline · data through",
       pipelineStalled: "Pipeline stalled · data through",
@@ -204,7 +205,6 @@ export const home = {
         { value: "15+", label: "countries under my scope", note: "from HQ · Americas and Eastern Hemisphere", href: "/cv#experiencia" },
         { value: "95 M", label: "credit records processed", note: "93.4 M HMDA + 1.96 M SBA · the model trains on 62.4 M", href: "/projects/credit-risk#cr-cliff" },
         { value: "1,392", label: "strategies put to the test", note: "{survivors} survived · I published the {eliminated} that didn't", href: "/projects/trading-sim" },
-        { value: "1,123", label: "municipalities built one by one", note: "19 public sources nobody had joined", href: "/research/fintech-inclusion#atlas" },
         { value: "89", label: "tests that run before you do", note: "every day, before a single figure ships", href: "/projects/trading-sim#calidad" },
       ] as Metric[],
       ctaPrimary: "Download CV (PDF)",
@@ -235,7 +235,7 @@ export const home = {
         builtLabel: "What I built",
         built: "A credit decisioning system over 1.96M SBA 7(a) loans and 62.4M HMDA applications, with out-of-time validation across the COVID shock, ten gates that block promotion of a model that does not comply, a model card and validation report generated from the run, drift monitoring, and a causal inference layer. No published figure is written by hand: the gate recomputes them from the saved predictions before letting anything be promoted.",
         matterLabel: "Why it matters",
-        matter: "This is exactly what separates a model from a deployable one. The same structure — thresholds derived and written down, documentation that regenerates itself, controls that fail closed — is what a model risk examination at a bank asks for, and what makes a number survive the only question that matters: where it came from. You don't learn that on a course. You learn it auditing, and I sat on the other side of that table.",
+        matter: "This is what separates a model from a deployable one: thresholds derived and written down, documentation that regenerates itself, controls that fail closed. It is what a model risk examination at a bank asks for, and what makes a number survive the only question that matters: where it came from. You learn that auditing, and I sat on the other side of that table.",
         findingLabel: "Published finding",
         finding: "My first AUC was 0.9461: spectacular, publishable and false — it was a data leak. I left it published by name instead of burying it, because that is the result. And of the system's ten gates, one blocks my own model at a disparate impact ratio of 0.7639 against a 0.80 threshold. I didn't move the threshold. Anyone would have moved it.",
         stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
@@ -257,7 +257,7 @@ export const home = {
             kind: "Reproducible research · open data",
             status: "research",
             statusText: "THESIS FILED",
-            note: "Nineteen public sources in a dimensional warehouse on dbt and DuckDB, every series resolved to municipal codes. On top: a financial-inclusion index by dimension, two annual panels, an atlas of all 1,123 municipalities and a full econometric battery, with its results published.",
+            note: "Nineteen public sources in a dimensional warehouse on dbt and DuckDB, resolved to municipal codes. On top, a financial-inclusion index, two annual panels, an atlas of all 1,123 municipalities and the full econometric battery, with its results published.",
             href: "/research/fintech-inclusion",
           },
           {
@@ -265,13 +265,13 @@ export const home = {
             kind: "Own product · Next.js + Supabase",
             status: "live",
             statusText: "OPEN DEMO",
-            note: "Daily logging of habits, body, sleep, food and spending on Postgres with a row policy on 34 tables, 526 tests and eight CI gates. There is an open demo running the five real screens on data from someone who does not exist: it never queries the database, and a test enforces that.",
+            note: "Own product in operation: multi-user Postgres with a row policy on 34 tables, 526 tests and eight CI gates. The open demo runs the five real screens on data from someone who does not exist, never queries the database, and a test enforces that.",
             href: "/projects/tracking",
             access: "Private repository · the demo is the public surface",
           },
           {
             name: "market-data-medallion — data platform",
-            kind: "Production platform · refreshes itself",
+            kind: "Platform in daily operation · refreshes itself",
             status: "live",
             statusText: "IN OPERATION",
             note: "Daily ingestion from four market sources into a PostgreSQL warehouse in medallion layers with dbt, 89 automated quality tests and CI/CD, on free infrastructure. Of more than 1,300 strategy variants evaluated on top of it, only one in {oneIn} in-sample winners survived out of sample — I published every one that did not.",
