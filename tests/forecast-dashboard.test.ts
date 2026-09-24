@@ -63,3 +63,32 @@ test("los eventos del período elegido aparecen en la cronología y en el gráfi
   const html = render("es", { sel: ["ARG"], ind: "pib_crecimiento", from: 1998, to: 2004 });
   assert.ok(html.includes("Corralito"), "el corralito de 2001 debe estar en la cronología de Argentina 1998–2004");
 });
+
+test("tocar un evento abre su resumen: fecha, economía, tipo y el texto completo", () => {
+  const corralito = events.eventos.find((e) => e.iso3 === "ARG" && e.anio === 2001);
+  assert.ok(corralito, "el corralito está en la cronología");
+  const html = render("es", { sel: ["ARG"], from: 1995, to: 2007, pop: corralito });
+  assert.ok(html.includes('role="dialog"'), "el resumen es un diálogo");
+  assert.ok(html.includes(corralito.texto_es.slice(0, 40)), "con el texto del evento");
+  assert.ok(html.includes("Dic 2001"), "y su fecha con el mes");
+});
+
+// ---------------------------------------------------------------- la tabla ordenable
+
+import { SortTable } from "../components/forecast/ui";
+
+test("la tabla ordena por la columna pedida y deja los nulos al final, en los dos sentidos", () => {
+  const rows = [{ id: "a", v: 2 }, { id: "b", v: null }, { id: "c", v: 5 }, { id: "d", v: -1 }];
+  const cols = [
+    { key: "id", label: "id", sort: (r: (typeof rows)[number]) => r.id, render: (r: (typeof rows)[number]) => r.id },
+    { key: "v", label: "v", sort: (r: (typeof rows)[number]) => r.v, render: (r: (typeof rows)[number]) => `<${r.id}>` },
+  ];
+  const order = (dir: "asc" | "desc") => {
+    const html = renderToString(createElement(SortTable<(typeof rows)[number]>, { rows, columns: cols, rowKey: (r) => r.id, initial: { key: "v", dir } }));
+    return [...html.matchAll(/&lt;([a-z])&gt;/g)].map((m) => m[1]).join("");
+  };
+  assert.equal(order("desc"), "cadb");
+  assert.equal(order("asc"), "dacb");
+  const html = renderToString(createElement(SortTable<(typeof rows)[number]>, { rows, columns: cols, rowKey: (r) => r.id, initial: { key: "v", dir: "desc" } }));
+  assert.ok(html.includes('aria-sort="descending"'), "la cabecera dice cómo está ordenada");
+});
