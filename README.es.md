@@ -2,7 +2,7 @@
 
 *[Read in English](README.md)*
 
-Sitio personal bilingüe (ES/EN) y punto de entrada a cuatro proyectos con código abierto y datos en vivo: un sistema de decisión crediticia con gobierno de modelos, una investigación econométrica, una plataforma de datos de mercado y una app de registro diario.
+Sitio personal bilingüe (ES/EN) y punto de entrada a cinco proyectos con código abierto y datos en vivo: un sistema de decisión crediticia con gobierno de modelos, una investigación econométrica, un laboratorio interactivo de pronóstico macro para América Latina, una plataforma de datos de mercado y una app de registro diario.
 
 ### ▶ [davirson.com](https://davirson.com)
 
@@ -14,6 +14,7 @@ No es un portafolio de capturas: cada página del sitio se alimenta del reposito
 | --- | --- | --- | --- |
 | **Decisión crediticia con gobierno de modelos** — LightGBM sobre 1,96 M de préstamos SBA y 62,4 M de solicitudes HMDA, diez gates que bloquean (uno bloquea el modelo del propio autor) y un demo que puntúa en el navegador | [`/es/projects/credit-risk`](https://davirson.com/es/projects/credit-risk) | [credit-risk-mlops](https://github.com/DavinsonR/credit-risk-mlops) | Desplegado, puntuando en el navegador |
 | **Inclusión financiera y crecimiento regional** — warehouse de 19 fuentes públicas, índice por dimensiones, panel de efectos fijos y atlas de los 1.123 municipios | [`/es/research/fintech-inclusion`](https://davirson.com/es/research/fintech-inclusion) | [financial-inclusion-colombia](https://github.com/DavinsonR/financial-inclusion-colombia) | Resultado principal publicado |
+| **Laboratorio de pronóstico macro en LATAM** — trece modelos contra el pronóstico ingenuo en 20 economías, con Diebold-Mariano, Holm y Wilcoxon; el visitante juega contra el ingenuo y mueve el backtest | [`/es/labs/macro-forecast`](https://davirson.com/es/labs/macro-forecast) | [macro-forecast-lab-latam](https://github.com/DavinsonR/macro-forecast-lab-latam) | v1.1.0 publicada, laboratorio abierto |
 | **Plataforma de datos de mercado** — APIs públicas → medallion en Postgres con dbt → backtester sin look-ahead → refresh diario automatizado | [`/es/projects/trading-sim`](https://davirson.com/es/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 activos, refresh diario |
 | **Informe Power BI** — modelo, medidas y páginas del informe construido sobre la capa gold | [`/es/projects/powerbi`](https://davirson.com/es/projects/powerbi) | catálogo en `lib/data/powerbi-model.ts` | Catálogo publicado |
 | **JARVIS** — Postgres multiusuario con seguridad por fila en 34 tablas, 526 pruebas y un demo público que nunca toca la base | — | privado; [demo público sin cuenta](https://jarvis-app-psi-sable.vercel.app/demo) | v1 en uso |

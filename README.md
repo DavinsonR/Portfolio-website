@@ -2,7 +2,7 @@
 
 *[Leer en español](README.es.md)*
 
-Bilingual personal site (EN/ES) and the entry point to four projects with open code and live data: a credit-decisioning system with model governance, econometric research, a market data platform and a daily tracking app.
+Bilingual personal site (EN/ES) and the entry point to five projects with open code and live data: a credit-decisioning system with model governance, econometric research, an interactive macro-forecasting lab for Latin America, a market data platform and a daily tracking app.
 
 ### ▶ [davirson.com](https://davirson.com)
 
@@ -14,6 +14,7 @@ Not a portfolio of screenshots: every page on the site is fed by the repository 
 | --- | --- | --- | --- |
 | **Credit decisioning with model governance** — LightGBM over 1.96M SBA loans and 62.4M HMDA applications, ten gates that block (one blocks the author's own model), and a demo scoring in the browser | [`/en/projects/credit-risk`](https://davirson.com/en/projects/credit-risk) | [credit-risk-mlops](https://github.com/DavinsonR/credit-risk-mlops) | Deployed, scoring in the browser |
 | **Financial inclusion and regional growth** — a warehouse of 19 public sources, an index by dimension, a fixed-effects panel and an atlas of all 1,123 municipalities | [`/en/research/fintech-inclusion`](https://davirson.com/en/research/fintech-inclusion) | [financial-inclusion-colombia](https://github.com/DavinsonR/financial-inclusion-colombia) | Main result published |
+| **Macro forecasting lab across LATAM** — thirteen models against the naive forecast in 20 economies, with Diebold-Mariano, Holm and Wilcoxon; visitors play against naive and move the backtest | [`/en/labs/macro-forecast`](https://davirson.com/en/labs/macro-forecast) | [macro-forecast-lab-latam](https://github.com/DavinsonR/macro-forecast-lab-latam) | v1.1.0 released, open lab |
 | **Market data platform** — public APIs → a Postgres medallion warehouse with dbt → a backtester with no look-ahead → an automated daily refresh | [`/en/projects/trading-sim`](https://davirson.com/en/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 assets, refreshed daily |
 | **Power BI report** — the model, measures and pages of the report built on the gold layer | [`/en/projects/powerbi`](https://davirson.com/en/projects/powerbi) | catalogue in `lib/data/powerbi-model.ts` | Catalogue published |
 | **JARVIS** — multi-user Postgres with row-level security on 34 tables, 526 tests, and a public demo that never touches the database | — | private; [public demo, no account](https://jarvis-app-psi-sable.vercel.app/demo) | v1 in use |

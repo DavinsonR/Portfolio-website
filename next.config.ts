@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       // `/` se queda en 307 A PROPÓSITO (D-32): es el único sitio donde una
       // detección de idioma por Accept-Language tendría sentido algún día, y un
       // 308 queda cacheado en el navegador del visitante sin fecha de caducidad —
-      // lo congelaría. Los siete de ruta concreta son decisiones permanentes de
+      // lo congelaría. Los ocho de ruta concreta son decisiones permanentes de
       // arquitectura y van en 308: consolidan señal y se cachean. `check:routes`
       // lee esta lista y exige exactamente esos códigos.
       { source: "/", destination: "/en", permanent: false },
@@ -21,6 +21,7 @@ const nextConfig: NextConfig = {
       { source: "/projects/powerbi", destination: "/en/projects/powerbi", permanent: true },
       { source: "/projects/tracking", destination: "/en/projects/tracking", permanent: true },
       { source: "/research/fintech-inclusion", destination: "/en/research/fintech-inclusion", permanent: true },
+      { source: "/labs/macro-forecast", destination: "/en/labs/macro-forecast", permanent: true },
       { source: "/historia", destination: "/en/historia", permanent: true },
     ];
   },
@@ -86,6 +87,7 @@ const nextConfig: NextConfig = {
       cache("/fonts/:path*", immutable),
       cache(`/${demo}/model.onnx`, immutable),
       cache("/atlas/:path*", hourly),
+      cache("/forecast-lab/:path*", hourly),
       cache("/trading-sim-snapshot/:path*", hourly),
       cache("/og-:lang.png", weekly),
       cache("/icon-:size.png", weekly),
