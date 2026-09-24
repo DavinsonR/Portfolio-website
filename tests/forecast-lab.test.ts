@@ -140,3 +140,19 @@ test("el ISE trae sus 16 series del mismo largo, y el perfil estacional suma cer
   assert.ok(prof.every(Number.isFinite));
   assert.ok(Math.abs(prof.reduce((a, b) => a + b, 0)) < 1e-6, "los desvíos frente al promedio del año suman cero");
 });
+
+// ---------------------------------------------------------------- el pronóstico (D-008 del laboratorio)
+
+import type { Forecast } from "../lib/data/forecast-lab";
+const fcData = read<Forecast>("pronostico.json");
+
+test("el pronóstico llega hasta 2027 con bandas ordenadas y su cobertura medida", () => {
+  assert.ok(fcData.economias.length >= 19, `${fcData.economias.length} economías`);
+  for (const e of fcData.economias) {
+    assert.equal(e.pronostico[e.pronostico.length - 1].anio, 2027, e.iso3);
+    for (const f of e.pronostico) assert.ok(f.lo95 <= f.lo80 && f.lo80 <= f.media && f.media <= f.hi80 && f.hi80 <= f.hi95, `${e.iso3} ${f.anio}`);
+    assert.ok(e.cobertura.c80 >= 0 && e.cobertura.c95 <= 1 && e.cobertura.c80 <= e.cobertura.c95, `${e.iso3}: cobertura`);
+  }
+  const r = fcData.cobertura_region;
+  assert.ok(r.n > 500 && r.c95 > 0.8 && r.c95 <= 1, "la cobertura regional es una proporción medida sobre cientos de pronósticos");
+});
