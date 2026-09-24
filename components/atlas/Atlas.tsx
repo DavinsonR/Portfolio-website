@@ -17,6 +17,7 @@ type Renderer = typeof import("./render");
 let rendererPromise: Promise<Renderer> | null = null;
 const loadRenderer = () => (rendererPromise ??= import("./render"));
 import type { AtlasCopy, AtlasMeta, Indicator, Level, Series, Topology, View } from "./types";
+import { aniosDelGrupo, enPorCiento, esAnclada, fechaCorte, fill, lecturaEscenario, mesesDesde, ANCHO } from "./proyeccion";
 
 const BASE = "/atlas";
 const LEVEL_OF: Record<View, Level> = { plano: "departamento", relieve: "departamento", municipios: "municipio" };
@@ -67,7 +68,7 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
       loadRenderer(),
     ]);
     renderer.current = r;
-    return { series, topology, projection: r.buildProjection(topology) };
+    return { series: enPorCiento(series), topology, projection: r.buildProjection(topology) };
   }, []);
 
   useEffect(() => {
@@ -152,16 +153,50 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
   /* Switching level changes what exists. The choice is not corrected in state — that would
      be a second render for nothing — it is read through: what the map draws is always the
      nearest thing that exists, and the control shows exactly that. */
-  const years = useMemo(() => bundle?.series.anios ?? [], [bundle]);
-  /* The default is the last OBSERVED year: with the forecast layer `anios` ends in 2028,
-     where the index has no value, and opening there drew an empty map. */
-  const lastObserved = useMemo(() => {
-    const projected = new Set(bundle?.series.anios_proyectados ?? []);
-    const observed = years.filter((y) => !projected.has(y));
-    return observed[observed.length - 1] ?? years[years.length - 1] ?? null;
-  }, [bundle, years]);
-  const activeYear = year !== null && years.includes(year) ? year : lastObserved;
+  /* Los años del grupo del indicador (proyeccion.ts): con el filtro, el año por defecto de
+     un indicador medido es el último OBSERVADO, que es lo que main resolvía aparte. */
+  const years = useMemo(
+    () => aniosDelGrupo(bundle?.series.anios ?? [], bundle?.series.anios_proyectados, indicator?.grupo === "proyeccion"),
+    [bundle, indicator],
+  );
+  const activeYear = year !== null && years.includes(year) ? year : (years[years.length - 1] ?? null);
   const activeGroup = group === copy.all || groups.includes(group) ? group : copy.all;
+
+  /* La lectura de un año proyectado. El ancla se dice con su fecha y, si la tesis la
+     considera vencida, con su edad: un mapa que dice «anclado al FMI» sin fecha se lee como
+     la previsión vigente. La edad se calcula hoy, no la que congeló la exportación. */
+  const [hoy] = useState(() => Date.now());
+  const proj = useMemo(() => {
+    const s = bundle?.series;
+    const p = s?.proyeccion;
+    const proyectados = s?.anios_proyectados ?? [];
+    if (!s || !p || activeYear === null || !proyectados.includes(activeYear) || !indicator) return null;
+    let ancla: { fuente: string; corte: string; stale: string | null } | null = null;
+    if (esAnclada(indicator.id)) {
+      const a = p.ancla;
+      const t = fechaCorte(a.fecha_corte);
+      const corte = t === null ? a.fecha_corte : new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone: "UTC" }).format(t);
+      const meses = mesesDesde(a.fecha_corte, hoy);
+      const max = a.antiguedad_maxima_meses;
+      const vencida = meses !== null && max !== undefined ? meses > max : a.vencida === true;
+      ancla = {
+        /* La fuente llega en español desde la exportación; el diccionario la traduce si la conoce. */
+        fuente: copy.anchorSources[a.fuente] ?? a.fuente,
+        corte,
+        stale: !vencida
+          ? null
+          : meses !== null && max !== undefined
+            ? fill(copy.anchorStale, { m: Math.floor(meses), max })
+            : copy.anchorStaleFlag,
+      };
+    }
+    return {
+      ancla,
+      escenario: lecturaEscenario(indicator.id, p.escenario?.lectura),
+      backtest: p.backtest.lectura ?? null,
+      unvalidated: activeYear > Math.min(...proyectados),
+    };
+  }, [bundle, activeYear, indicator, locale, hoy, copy.anchorStale, copy.anchorStaleFlag, copy.anchorSources]);
 
   const onDrillDown = useCallback((name: string) => {
     setGroup(name);
@@ -216,7 +251,7 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
         <label className="atlas-field">
           <span>{copy.indicatorLabel}</span>
           <select value={indicator?.id ?? ""} onChange={(e) => setIndicatorId(e.target.value)} disabled={!indicators.length}>
-            {(["indice", "variable", "contexto"] as const).map((g) => {
+            {(["indice", "variable", "contexto", "proyeccion"] as const).map((g) => {
               const items = indicators.filter((i) => i.grupo === g);
               if (!items.length) return null;
               return (
@@ -268,7 +303,30 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
 
       <div className="atlas-canvas" data-hidden={failed ? "yes" : undefined}>
         <div ref={left} className="atlas-rail" />
-        <div ref={map} className="atlas-map" />
+        {/* La nota de la proyección va en la columna del mapa, justo debajo: después del
+            lienzo, en el teléfono quedaba tras los dos rieles y la tabla de 33 filas. El
+            mapa en sí no puede llevarla dentro: render.ts vacía su contenedor al pintar. */}
+        <div className="atlas-mapcol">
+          <div ref={map} className="atlas-map" />
+          {proj ? (
+            <aside className="atlas-proj" aria-label={`${copy.projectedBadge} ${activeYear ?? ""}`}>
+              <p>
+                <strong>{copy.projectedBadge}.</strong>{" "}
+                {fill(indicator?.id === ANCHO ? copy.intervalFoot : copy.projectedFoot, { y: String(activeYear ?? "") })}
+                {proj.unvalidated ? ` ${copy.unvalidatedWidth}` : ""}
+              </p>
+              {proj.ancla ? (
+                <p>
+                  {copy.anchorLabel} {proj.ancla.fuente}, {fill(copy.anchorCutoff, { d: proj.ancla.corte })}.{" "}
+                  {proj.ancla.stale ? <span className="atlas-stale">{proj.ancla.stale}</span> : null}
+                </p>
+              ) : null}
+              {/* Las lecturas vienen del export de la tesis y solo existen en español. */}
+              {proj.escenario ? <p lang="es">{proj.escenario}</p> : null}
+              {proj.backtest ? <p lang="es">{proj.backtest}</p> : null}
+            </aside>
+          ) : null}
+        </div>
         <div ref={right} className="atlas-rail" />
       </div>
 

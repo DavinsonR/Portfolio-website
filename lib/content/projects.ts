@@ -496,8 +496,8 @@ export const projects = {
         label: "Qué hay y qué llega",
         title: "El proyecto se publica por fases",
         items: [
-          "Publicado: las diecinueve fuentes con manifiesto, el warehouse completo en dbt, el índice por dimensiones con sus pesos, los dos paneles anuales, el atlas, la batería econométrica con su potencia y su curva de especificación, y la proyección 2026–2028 como escenario.",
-          "Después: la proyección sobre el mapa de esta página, el anexo de desagregación temporal (Chow-Lin, Denton y Fernández con el indicador trimestral del DANE) y el manuscrito.",
+          "Publicado: las diecinueve fuentes con manifiesto, el warehouse completo en dbt, el índice por dimensiones con sus pesos, los dos paneles anuales, el atlas, la batería econométrica con su potencia y su curva de especificación, y la proyección 2026–2028 como escenario, también sobre el mapa de esta página.",
+          "Después: el anexo de desagregación temporal (Chow-Lin, Denton y Fernández con el indicador trimestral del DANE) y el manuscrito.",
           "Todo el código, los datos derivados y las decisiones están en el repositorio, versionados.",
         ],
       },
@@ -518,7 +518,7 @@ export const projects = {
         viewLabel: "Vista",
         views: { plano: "Plano", relieve: "Relieve 3D", municipios: "Municipios" },
         indicatorLabel: "Qué se pinta",
-        groups: { indice: "Índice", variable: "Variables del índice", contexto: "Contexto" },
+        groups: { indice: "Índice", variable: "Variables del índice", contexto: "Contexto", proyeccion: `Proyección ${T.forecast.from}–${T.forecast.to}` },
         yearLabel: "Año",
         regionLabel: "Región",
         departmentLabel: "Departamento",
@@ -541,6 +541,23 @@ export const projects = {
         failed: "No se pudieron cargar los datos del atlas.",
         // La atribución existía en atlas_meta.json pero no se renderizaba: la
         // CC BY-SA 4.0 la exige en el medio donde se publica, no en el fichero.
+        projectedBadge: "Proyección",
+        projectedFoot:
+          "{y} es pronóstico, no dato: el mapa lleva trama y cada departamento se atenúa según el ancho de su intervalo al 80 %. " +
+          "El tamaño orienta poco sobre la incertidumbre (Spearman ≈ −0,4: los departamentos grandes tienden a intervalos más " +
+          "estrechos, pero no siempre): Meta pesa 3,2 % del PIB y tiene uno de los intervalos más anchos; Amazonas pesa 0,07 % " +
+          "y el más estrecho. Por eso el ancho viaja medido y no inferido.",
+        intervalFoot:
+          "{y} es pronóstico, no dato. El color es el ancho del intervalo al 80 % del crecimiento, del más estrecho al más ancho según la leyenda: cuanto más ancho, menos sabe el modelo de ese departamento.",
+        unvalidatedWidth: "A dos y tres años el ancho es el del modelo: el backtest solo valida el de un año.",
+        confidenceLabel: "Ancho del intervalo al 80 %",
+        anchorLabel: "Anclado a",
+        anchorCutoff: "corte de {d}",
+        anchorStale: "El ancla tiene {m} meses; la tesis la da por vencida pasados {max} meses.",
+        anchorStaleFlag: "La tesis marca el ancla como vencida.",
+        anchorSources: { "FMI, World Economic Outlook (via DBnomics)": "FMI, World Economic Outlook (vía DBnomics)" },
+        projectedTableLabel: "Por departamento · {n}, en orden alfabético",
+        widthHead: "Ancho",
         sourceLabel: "Fuente",
         licenceLabel: "Series derivadas publicadas bajo",
         licenceName: "CC BY-SA 4.0",
@@ -1148,8 +1165,8 @@ export const projects = {
         label: "What is there and what is coming",
         title: "The project ships in phases",
         items: [
-          "Published: the nineteen sources with a manifest, the full dbt warehouse, the index by dimension with its weights, the two annual panels, the atlas, the econometric battery with its power and its specification curve, and the 2026–2028 forecast as a scenario.",
-          "Next: the forecast on this page's map, the temporal-disaggregation annex (Chow-Lin, Denton and Fernández on the statistics office's quarterly indicator) and the manuscript.",
+          "Published: the nineteen sources with a manifest, the full dbt warehouse, the index by dimension with its weights, the two annual panels, the atlas, the econometric battery with its power and its specification curve, and the 2026–2028 forecast as a scenario, also on this page's map.",
+          "Next: the temporal-disaggregation annex (Chow-Lin, Denton and Fernández on the statistics office's quarterly indicator) and the manuscript.",
           "All the code, the derived data and the decisions are in the repository, versioned.",
         ],
       },
@@ -1168,7 +1185,7 @@ export const projects = {
         viewLabel: "View",
         views: { plano: "Flat", relieve: "Raised 3D", municipios: "Municipalities" },
         indicatorLabel: "What is painted",
-        groups: { indice: "Index", variable: "Index variables", contexto: "Context" },
+        groups: { indice: "Index", variable: "Index variables", contexto: "Context", proyeccion: `Forecast ${T.forecast.from}–${T.forecast.to}` },
         yearLabel: "Year",
         regionLabel: "Region",
         departmentLabel: "Department",
@@ -1189,6 +1206,23 @@ export const projects = {
         dimensions: { compuesto: "Composite", acceso: "Access", uso: "Use", profundidad: "Depth" },
         loading: "Loading the map and its series…",
         failed: "The atlas data could not be loaded.",
+        projectedBadge: "Forecast",
+        projectedFoot:
+          "{y} is a forecast, not a measurement: the map is hatched and each department is dimmed by the width of its 80% interval. " +
+          "Size is a weak guide to uncertainty (Spearman ≈ −0.4: larger departments tend to have narrower intervals, but not " +
+          "always): Meta is 3.2% of GDP and has one of the widest intervals; Amazonas is 0.07% and the narrowest. So the width " +
+          "travels measured, not inferred.",
+        intervalFoot:
+          "{y} is a forecast, not a measurement. The colour is the width of the 80% interval for growth, from narrowest to widest as the legend shows: the wider, the less the model knows about that department.",
+        unvalidatedWidth: "At two and three years the width is the model's own: the backtest only validates the one-year width.",
+        confidenceLabel: "80% interval width",
+        anchorLabel: "Anchored to",
+        anchorCutoff: "cutoff {d}",
+        anchorStale: "The anchor is {m} months old; the thesis treats it as stale after {max} months.",
+        anchorStaleFlag: "The thesis flags the anchor as stale.",
+        anchorSources: { "FMI, World Economic Outlook (via DBnomics)": "IMF, World Economic Outlook (via DBnomics)" },
+        projectedTableLabel: "By department · {n}, alphabetical",
+        widthHead: "Width",
         sourceLabel: "Source",
         licenceLabel: "Derived series published under",
         licenceName: "CC BY-SA 4.0",

@@ -20,6 +20,7 @@ import { scaleLinear } from "d3-scale";
 import { interpolateLab } from "d3-interpolate";
 import { color as toColor } from "d3-color";
 import { feature } from "topojson-client";
+import { ANCHO, aniosDelGrupo } from "./proyeccion";
 import type { AtlasCopy, Indicator, Level, Series, Topology, View } from "./types";
 
 /* {n} {total} {ind} {y} {name} filled from the dictionary's templates. */
@@ -271,14 +272,25 @@ export function renderAtlas(slots: Slots, o: RenderOptions): () => void {
 }
 
 function numberFormat(locale: string, indicator: Indicator) {
-  const signed = indicator.decimales >= 3;
-  const digits = indicator.decimales === 0 ? 0 : 2;
+  /* Un crecimiento lleva signo, medido o proyectado: «+2,30 %» en 2025 y «2,25 %» en 2026
+     se leían como cifras de distinta naturaleza. */
+  const signed = indicator.decimales >= 3 || indicator.id.startsWith("crecimiento_");
+  const digits = Math.min(indicator.decimales, 2);
   const nf = new Intl.NumberFormat(locale, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
     signDisplay: signed ? "exceptZero" : "auto",
   });
-  return (v: number) => nf.format(v);
+  /* Las etiquetas de crecimiento no traen unidad: sin ella, «2,62» no dice si es un por
+     ciento o un índice, y el ancho del intervalo son puntos porcentuales, no por ciento. */
+  const unit = unitOf(indicator, locale);
+  return (v: number) => nf.format(v) + unit;
+}
+
+function unitOf(indicator: Indicator, locale: string) {
+  if (indicator.id === ANCHO) return " pp";
+  if (indicator.id.startsWith("crecimiento_")) return locale.startsWith("es") ? " %" : "%";
+  return "";
 }
 
 function buildScale(visible: number[], indicator: Indicator) {
@@ -298,6 +310,59 @@ function buildScale(visible: number[], indicator: Indicator) {
 }
 
 /* -------------------------------------------------------------------- map */
+
+/* ADR-022: la incertidumbre se ve sin interactuar con nada.
+ *
+ *  La opacidad codifica la confianza y el ancho del intervalo llega MEDIDO, no inferido:
+ *  el tamaño del departamento lo predice poco (Spearman ≈ -0,4: los grandes tienden a
+ *  intervalos más estrechos, pero no siempre), así que cualquier heurística del navegador
+ *  —apagar los pequeños, apagar la periferia— se equivocaría con Meta, que es grande e
+ *  incierto, y con Amazonas, que es diminuto y preciso.
+ *
+ *  El suelo de 0,38 no es estética: por debajo, una unidad deja de distinguirse del vacío del
+ *  mapa y el lector no sabría si está apagada o si no hay dato. Un pronóstico muy incierto
+ *  sigue siendo un pronóstico y tiene que verse. */
+const CONFIANZA_MIN = 0.38;
+
+function confianzaPorAncho(anchos: (number | null)[] | undefined) {
+  if (!anchos) return () => 1;
+  const vistos = anchos.filter((v): v is number => v !== null && Number.isFinite(v));
+  if (vistos.length < 2) return () => 1;
+  const min = Math.min(...vistos);
+  const max = Math.max(...vistos);
+  if (max - min < 1e-9) return () => 1;
+  return (i: number | undefined) => {
+    if (i === undefined) return 1;
+    const v = anchos[i];
+    if (v === null || !Number.isFinite(v)) return 1;
+    return 1 - ((v - min) / (max - min)) * (1 - CONFIANZA_MIN);
+  };
+}
+
+/* La trama que distingue un año pronosticado de uno medido. Va sobre el relleno y no en
+ *  lugar de él, para que el color siga leyéndose. Y va en el SVG, no en la leyenda: una
+ *  captura de pantalla del mapa viaja sin su leyenda. */
+function tramaProyeccion(id: string) {
+  const pat = svgEl("pattern", {
+    id,
+    width: 5,
+    height: 5,
+    patternUnits: "userSpaceOnUse",
+    patternTransform: "rotate(45)",
+  });
+  pat.append(
+    svgEl("line", {
+      x1: 2.5,
+      y1: 0,
+      x2: 2.5,
+      y2: 5,
+      stroke: token("--color-body"),
+      "stroke-width": 1.6,
+      opacity: 0.3,
+    }),
+  );
+  return pat;
+}
 
 type MapArgs = RenderOptions & {
   geo: ReturnType<typeof viewGeometry>;
@@ -330,6 +395,16 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
   frame.append(layer);
   svg.append(frame);
 
+  const proyectado = (series.anios_proyectados ?? []).includes(o.year);
+  const anchos = proyectado ? series.series[ANCHO]?.[o.yearIndex] : undefined;
+  const confianza = confianzaPorAncho(indicator.id === ANCHO ? undefined : anchos);
+  /* El ancho viaja con el valor también al pasar el cursor y en la tarjeta fijada. */
+  const fmtAncho = new Intl.NumberFormat(o.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const lineaAncho = (i: number | undefined) => {
+    const w = i === undefined || indicator.id === ANCHO ? null : anchos?.[i];
+    return w === null || w === undefined ? [] : [htmlEl("span", {}, `${copy.confidenceLabel}: ${fmtAncho.format(w)} pp`)];
+  };
+
   const strokeOf = (px: number) => px / geo.scale;
   const colourOf = (i: number | undefined) =>
     i === undefined || values[i] === null ? token("--atlas-void") : inGroup(i) ? paint(values[i] as number) : token("--atlas-void");
@@ -345,14 +420,15 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
   const up = geo.up(1);
   const blockHeight = (LAYERS + 1) * STEP;
 
+  const defs = svgEl("defs");
+  if (proyectado) defs.append(tramaProyeccion("trama-proy"));
   if (LAYERS) {
-    const defs = svgEl("defs");
     projection.features.forEach((f, k) => {
       const d = path(f as unknown as GeoPermissibleObjects);
       if (d) defs.append(svgEl("path", { id: `pz-${k}`, d }));
     });
-    svg.append(defs);
   }
+  svg.append(defs);
 
   /* --- The archipelago, off scale. San Andrés is 700 km out and 26 km²: inside the
      frame it costs a fifth of the width to draw a dot, and inside a proportional inset
@@ -387,7 +463,8 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
   const pieceOf = new Map(pieces.map((p) => [p.id, p]));
   const opacityOf = (id: string) => {
     const i = position.get(id);
-    return o.group === copy.all || (i !== undefined && inGroup(i)) ? 1 : 0.32;
+    const enGrupo = o.group === copy.all || (i !== undefined && inGroup(i));
+    return (enGrupo ? 1 : 0.32) * (enGrupo ? confianza(i) : 1);
   };
 
   /* Painting order: back to front ON SCREEN, which with the turn is no longer north to
@@ -408,9 +485,15 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
       "stroke-width": strokeOf(o.level === "departamento" ? 0.7 : 0.22),
     };
     if (LAYERS) {
-      g.append(svgEl("use", { ...faceAttrs, href: `#pz-${p.k}`, x: (LAYERS + 1) * STEP * up[0], y: (LAYERS + 1) * STEP * up[1] }));
+      const cara = { ...faceAttrs, href: `#pz-${p.k}`, x: (LAYERS + 1) * STEP * up[0], y: (LAYERS + 1) * STEP * up[1] };
+      g.append(svgEl("use", cara));
+      /* La trama va ENCIMA del relleno, no en su lugar: el color tiene que seguir
+         leyéndose. Sin trazo, para no duplicar el borde de la cara. */
+      if (proyectado) g.append(svgEl("use", { ...cara, fill: "url(#trama-proy)", stroke: null, class: "proy" }));
     } else {
-      g.append(svgEl("path", { ...faceAttrs, d: path(p.f as unknown as GeoPermissibleObjects) }));
+      const d = path(p.f as unknown as GeoPermissibleObjects);
+      g.append(svgEl("path", { ...faceAttrs, d }));
+      if (proyectado) g.append(svgEl("path", { ...faceAttrs, d, fill: "url(#trama-proy)", stroke: null, class: "proy" }));
     }
     layer.append(g);
   }
@@ -418,26 +501,34 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
   if (insularGroup) {
     for (const p of pieces.filter((x) => x.chip !== undefined)) {
       const i = position.get(p.id);
-      const g = svgEl("g", { class: "unit", "data-id": p.id, opacity: opacityOf(p.id) });
+      const enGrupo = o.group === copy.all || (i !== undefined && inGroup(i));
+      const g = svgEl("g", { class: "unit", "data-id": p.id });
+      const chip = {
+        rx: 2,
+        x: chipBox.x,
+        y: chipBox.y + (p.chip as number) * CHIP.row,
+        width: CHIP.size,
+        height: CHIP.size,
+      };
       g.append(
         svgEl("rect", {
+          ...chip,
           class: "face",
-          rx: 2,
-          x: chipBox.x,
-          y: chipBox.y + (p.chip as number) * CHIP.row,
-          width: CHIP.size,
-          height: CHIP.size,
           fill: colourOf(i),
           stroke: token("--color-rule"),
           "stroke-width": 0.6,
+          opacity: enGrupo ? confianza(i) : 0.32,
         }),
       );
+      if (proyectado) {
+        g.append(svgEl("rect", { ...chip, class: "proy", fill: "url(#trama-proy)", "pointer-events": "none", opacity: enGrupo ? confianza(i) : 0.32 }));
+      }
       const name = i === undefined ? p.id : series.nombres[i];
       const label = svgEl("text", {
         x: chipBox.x + CHIP.size + 6,
         y: chipBox.y + (p.chip as number) * CHIP.row + CHIP.size - 2.5,
         "font-size": 10,
-        fill: token("--color-body"),
+        fill: token(enGrupo ? "--color-body" : "--color-muted"),
       });
       label.textContent = name.length > 30 ? name.slice(0, 29) + "…" : name;
       g.append(label);
@@ -493,7 +584,11 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
      neighbours bleed upward and without the band the ramp reads over the map. */
   const band = svgEl("g");
   band.append(svgEl("rect", { x: 0, y: 0, width, height: top - 4, fill: token("--color-paper") }));
-  band.append(legend(width - 8, indicator, paint, fmt, o.year, copy));
+  /* Una captura del mapa viaja sin su página: la marca de pronóstico va en el título de la
+     leyenda y en la trama, dentro del SVG. El ancla, su fecha y la lectura del escenario
+     van en HTML bajo el mapa, a tamaño de lectura (Atlas.tsx): dentro del SVG, a la escala
+     del lienzo, una línea de 65 caracteres se leía a 6 px y montada sobre el título. */
+  band.append(legend(width - 8, indicator, paint, fmt, o.year, copy, proyectado));
   svg.append(band);
 
   /* --- Interaction. One listener on the container instead of one per unit: with 1,121
@@ -530,6 +625,7 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
       htmlEl("strong", {}, i === undefined ? id : series.nombres[i]),
       htmlEl("span", {}, `${indicator.etiqueta}, ${o.year}`),
       htmlEl("b", {}, v === null ? copy.noData : fmt(v as number)),
+      ...lineaAncho(i),
     );
     const box = wrap.getBoundingClientRect();
     tip.style.left = `${Math.min(e.clientX - box.left + 14, box.width - 230)}px`;
@@ -555,6 +651,7 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
       const g = frame.querySelector(`g.unit[data-id="${CSS.escape(raised)}"]`);
       if (g) {
         g.removeAttribute("transform");
+        (g as SVGGElement).style.removeProperty("opacity");
         const face = g.querySelector(".face");
         face?.setAttribute("stroke", token("--color-paper"));
         face?.setAttribute("stroke-width", String(strokeOf(o.level === "departamento" ? 0.7 : 0.22)));
@@ -570,6 +667,8 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
     const g = frame.querySelector(`g.unit[data-id="${CSS.escape(id)}"]`) as SVGGElement | null;
     if (!g) return;
     g.parentNode?.appendChild(g);
+    const iF = position.get(id);
+    if (o.group === copy.all || (iF !== undefined && inGroup(iF))) g.style.opacity = "1";
     const flat = !g.querySelector("use.face") && !LAYERS ? true : g.querySelector("rect.face") !== null;
     /* Raise half the side: less is indistinguishable from a still block, more peels it
        off the country. */
@@ -596,7 +695,7 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
 
     const v = values[i];
     const body = v === null ? copy.noDataYear : `${indicator.etiqueta}: ${fmt(v as number)}`;
-    card.replaceChildren(htmlEl("strong", {}, series.nombres[i]), htmlEl("span", {}, body));
+    card.replaceChildren(htmlEl("strong", {}, series.nombres[i]), htmlEl("span", {}, body), ...lineaAncho(i));
     card.hidden = false;
 
     /* From canvas to screen: the card is placed in real pixels and kept inside the map. */
@@ -634,6 +733,7 @@ function legend(
   fmt: (v: number) => string,
   year: number,
   copy: AtlasCopy,
+  projected = false,
 ): SVGGElement {
   const g = svgEl("g", { transform: "translate(4,8)" });
   const w = Math.min(300, width - 130);
@@ -649,7 +749,7 @@ function legend(
   }
   defs.append(grad);
   const title = svgEl("text", { x: 0, y: y - 8, fill: token("--color-body"), "font-size": 12.5, "font-weight": 600 });
-  title.textContent = `${indicator.etiqueta} · ${year}`;
+  title.textContent = projected ? `${indicator.etiqueta} · ${year} · ${copy.projectedBadge}` : `${indicator.etiqueta} · ${year}`;
   g.append(defs, title);
   g.append(svgEl("rect", { x: 0, y, width: w, height: h, rx: 2, fill: `url(#${id})`, stroke: token("--color-rule") }));
 
@@ -717,17 +817,27 @@ function drawLeftRail(host: HTMLElement, o: RailArgs): () => void {
   spark.style.height = "auto";
   spark.style.display = "block";
   const matrix = series.series[indicator.id] ?? [];
+  /* Solo los años del grupo del indicador: con la capa de proyección `anios` llega a 2028 y
+     la evolución de un indicador medido terminaba en un 2028 vacío, con sus datos apretados
+     a la izquierda; la de uno proyectado, con tres puntos en la quinta parte derecha. */
+  const enProy = (series.anios_proyectados ?? []).includes(o.year);
+  const anios = aniosDelGrupo(series.anios, series.anios_proyectados, enProy);
+  const ks = anios.map((a) => series.anios.indexOf(a));
+  /* Indexadas por el año de la serie completa, como las filas: nulas fuera del grupo. */
+  const enGrupo = new Set(ks);
   const medians = series.anios.map((_, k) => {
+    if (!enGrupo.has(k)) return null;
     const row = matrix[k] ?? [];
     const vs = row.map((v, i) => ({ v, i })).filter((d) => d.v !== null && inGroup(d.i)).map((d) => d.v as number);
     return vs.length ? (median(vs) as number) : null;
   });
-  const all = matrix.flat().filter((v) => v !== null) as number[];
-  const x = scaleLinear().domain(extent(series.anios) as [number, number]).range([m.l, w - m.r]);
+  const all = ks.flatMap((k) => matrix[k] ?? []).filter((v) => v !== null) as number[];
+  const x = scaleLinear().domain(extent(anios) as [number, number]).range([m.l, w - m.r]);
   const y = scaleLinear().domain((extent(all) as [number, number]) ?? [0, 1]).nice().range([h - m.b, m.t]);
+  /* `row` va indexada por el año de la serie completa; se recorre solo por `ks`. */
   const line = (row: (number | null)[]) =>
-    series.anios
-      .map((a, k) => (row[k] === null || row[k] === undefined ? null : `${x(a).toFixed(1)},${y(row[k] as number).toFixed(1)}`))
+    ks
+      .map((k) => (row[k] === null || row[k] === undefined ? null : `${x(series.anios[k]).toFixed(1)},${y(row[k] as number).toFixed(1)}`))
       .filter(Boolean)
       .join(" ");
   if (indicator.escala === "divergente" && y.domain()[0] < 0) {
@@ -742,9 +852,9 @@ function drawLeftRail(host: HTMLElement, o: RailArgs): () => void {
     svgEl("circle", { r: 3, cx: x(o.year), cy: y(medians[yearIndex] ?? y.domain()[0]), fill: token("--color-ink") }),
   );
   const first = svgEl("text", { x: m.l, y: h - 4, "font-size": 10, fill: token("--color-muted") });
-  first.textContent = String(series.anios[0]);
+  first.textContent = String(anios[0]);
   const last = svgEl("text", { x: w - m.r, y: h - 4, "font-size": 10, "text-anchor": "end", fill: token("--color-muted") });
-  last.textContent = String(series.anios[series.anios.length - 1]);
+  last.textContent = String(anios[anios.length - 1]);
   spark.append(first, last);
   blockB.append(spark);
 
@@ -758,19 +868,21 @@ function drawLeftRail(host: HTMLElement, o: RailArgs): () => void {
     { id: "iif_uso", label: copy.dimensions.uso },
     { id: "iif_profundidad", label: copy.dimensions.profundidad },
   ].filter((d) => series.series[d.id]);
+  /* En un año proyectado el índice no tiene valor: cuatro «—» fijos no dicen nada. */
+  const dims = enProy ? [] : DIMS;
 
-  const blockC = block(host, copy.dimensionsLabel);
+  const blockC = dims.length ? block(host, copy.dimensionsLabel) : null;
   const wd = 236;
   const rowH = 21;
-  const hd = DIMS.length * rowH + 14;
+  const hd = dims.length * rowH + 14;
   const bars = svgEl("svg", { viewBox: `0 0 ${wd} ${hd}`, width: "100%", role: "img", "aria-label": copy.dimensionsLabel });
   bars.style.height = "auto";
   bars.style.display = "block";
   const maxDim =
-    (max(DIMS, (d) => max((series.series[d.id][yearIndex] ?? []).filter((v) => v !== null) as number[], Math.abs)) as number) || 1;
+    (max(dims, (d) => max((series.series[d.id][yearIndex] ?? []).filter((v) => v !== null) as number[], Math.abs)) as number) || 1;
   const xd = scaleLinear().domain([-maxDim, maxDim]).range([56, wd - 34]);
   bars.append(svgEl("line", { x1: xd(0), x2: xd(0), y1: 2, y2: hd - 12, stroke: token("--color-rule"), "stroke-width": 1 }));
-  const rows = DIMS.map((d, k) => {
+  const rows = dims.map((d, k) => {
     const yy = k * rowH + 4;
     const label = svgEl("text", { x: 0, y: yy + 10, "font-size": 11, fill: token("--color-body") });
     label.textContent = d.label;
@@ -788,7 +900,7 @@ function drawLeftRail(host: HTMLElement, o: RailArgs): () => void {
   const zero = svgEl("text", { x: xd(0), y: hd - 2, "font-size": 9.5, "text-anchor": "middle", fill: token("--color-muted") });
   zero.textContent = "0";
   bars.append(zero);
-  blockC.append(bars);
+  blockC?.append(bars);
 
   const signed = new Intl.NumberFormat(o.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2, signDisplay: "exceptZero" });
   const paintDims = (idx: number | null) => {
@@ -850,6 +962,11 @@ type ContextArgs = RenderOptions & {
 
 function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
   const { series, indicator, values, groupOf, inGroup, paint, fmt, focus, copy } = o;
+  /* «Con intervalos que se solapan casi por completo, el sitio no publica tablas de
+     posiciones del crecimiento proyectado» (tesis, ADR-022, adenda 1). En la proyección
+     las regiones y los departamentos van en orden alfabético y sin número de puesto; la
+     tabla sigue dando la cifra exacta, que es su trabajo, y a su lado el ancho. */
+  const esProy = indicator.grupo === "proyeccion";
 
   /* --- Share by region. Computed over ALL units and dimming those outside the filter:
      its job is to place the selection in the country, so recomputing it inside the filter
@@ -862,7 +979,7 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
     (vs) => median(vs, (p) => p.v) as number,
     (p) => p.g,
   )
-    .sort((a, b) => descending(a[1], b[1]))
+    .sort((a, b) => (esProy ? a[0].localeCompare(b[0], o.locale) : descending(a[1], b[1])))
     .slice(0, 12);
 
   const wr = 250;
@@ -879,8 +996,8 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
   const maxAbs = (max(byGroup, (d) => Math.abs(d[1])) as number) || 1;
   const xr =
     indicator.escala === "divergente"
-      ? scaleLinear().domain([-maxAbs, maxAbs]).range([92, wr - 30])
-      : scaleLinear().domain([0, max(byGroup, (d) => d[1]) as number]).range([92, wr - 30]);
+      ? scaleLinear().domain([-maxAbs, maxAbs]).range([92, wr - 46])
+      : scaleLinear().domain([0, max(byGroup, (d) => d[1]) as number]).range([92, wr - 46]);
   byGroup.forEach((d, k) => {
     const y = k * hf + 2;
     const inside = o.group === copy.all || o.group === d[0];
@@ -917,26 +1034,33 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
   const rows = series.ids
     .map((id, i) => ({ id, name: series.nombres[i], value: values[i], i }))
     .filter((r) => r.value !== null && inGroup(r.i))
-    .sort((a, b) => descending(a.value as number, b.value as number));
+    .sort((a, b) => (esProy ? a.name.localeCompare(b.name, o.locale) : descending(a.value as number, b.value as number)));
   const top = 12;
+  /* Una lista alfabética con el medio recortado no sirve para buscar: la proyección va entera. */
   const shown: Array<(typeof rows)[number] | null> =
-    rows.length <= top + 5 ? rows : [...rows.slice(0, top), null, ...rows.slice(-4)];
+    esProy || rows.length <= top + 5 ? rows : [...rows.slice(0, top), null, ...rows.slice(-4)];
+  const conAncho = esProy && indicator.id !== ANCHO;
+  const anchos = conAncho ? series.series[ANCHO]?.[series.anios.indexOf(o.year)] : undefined;
+  const fmtAncho = new Intl.NumberFormat(o.locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const barWidth = scaleLinear()
     .domain([min0(rows), (max(rows, (r) => r.value as number) as number) ?? 1])
     .range([0, 52])
     .clamp(true);
 
-  const blockB = block(host, fill(copy.rankingLabel, { n: rows.length }));
+  const blockB = block(host, fill(esProy ? copy.projectedTableLabel : copy.rankingLabel, { n: rows.length }));
   const table = htmlEl("table", { class: "atlas-table" });
   const cols = htmlEl("colgroup");
-  for (const w of ["46px", "auto", "68px", "54px"]) {
+  for (const w of esProy ? ["auto", "68px", "62px"] : ["46px", "auto", "68px", "54px"]) {
     const c = document.createElement("col");
     c.style.width = w;
     cols.append(c);
   }
   const thead = htmlEl("thead");
   const htr = htmlEl("tr");
-  for (const h of [copy.rankingHead.rank, copy.rankingHead.unit, copy.rankingHead.value, ""]) htr.append(htmlEl("th", {}, h));
+  const heads = esProy
+    ? [copy.rankingHead.unit, copy.rankingHead.value, conAncho ? copy.widthHead : ""]
+    : [copy.rankingHead.rank, copy.rankingHead.unit, copy.rankingHead.value, ""];
+  for (const h of heads) htr.append(htmlEl("th", {}, h));
   thead.append(htr);
   const tbody = htmlEl("tbody");
   const domRows = new Map<string, HTMLTableRowElement>();
@@ -958,13 +1082,20 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
        la fila sigue siendo fila y conserva sus encabezados. */
     tr.addEventListener("pointerenter", () => focus.hover(r.id));
     tr.addEventListener("pointerleave", () => focus.hover(null));
-    tr.append(htmlEl("td", { class: "num muted" }, String(rows.indexOf(r) + 1)));
+    if (!esProy) tr.append(htmlEl("td", { class: "num muted" }, String(rows.indexOf(r) + 1)));
     const btn = htmlEl("button", { type: "button", class: "atlas-rowbtn", "aria-pressed": "false" }, r.name);
     btn.addEventListener("click", () => focus.togglePin(r.id));
     const nameTd = htmlEl("td");
     nameTd.append(btn);
     tr.append(nameTd);
     tr.append(htmlEl("td", { class: "num" }, fmt(r.value as number)));
+    if (conAncho) {
+      const w = anchos?.[r.i];
+      tr.append(htmlEl("td", { class: "num muted" }, w === null || w === undefined ? "—" : `${fmtAncho.format(w)} pp`));
+      tbody.append(tr);
+      domRows.set(r.id, tr);
+      return;
+    }
     const pill = htmlEl("td");
     const span = htmlEl("span", { class: "atlas-pill" });
     span.style.width = `${Math.max(2, barWidth(r.value as number))}px`;

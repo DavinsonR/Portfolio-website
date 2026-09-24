@@ -580,7 +580,7 @@ a {
 .atlas-canvas[data-hidden="yes"] { display: none; }
 @media (max-width: 1080px) {
   .atlas-canvas { grid-template-columns: minmax(0, 1fr) minmax(255px, 0.75fr); }
-  .atlas-canvas > .atlas-map { grid-row: 1; grid-column: 1 / -1; }
+  .atlas-canvas > .atlas-mapcol { grid-row: 1; grid-column: 1 / -1; }
 }
 @media (max-width: 720px) {
   .atlas-canvas { grid-template-columns: 1fr; }
@@ -595,6 +595,22 @@ a {
   color: var(--color-muted);
 }
 .atlas-credit p { margin: 0 0 3px; }
+/* La lectura de la proyección, bajo el mapa y a tamaño de lectura: el ancla con su fecha,
+   la advertencia si venció, y el escenario y el backtest tal como los escribe la tesis. */
+.atlas-mapcol { min-width: 0; }
+.atlas-proj {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-left: 2px solid var(--color-cold);
+  background: var(--color-band);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-body);
+}
+.atlas-proj p { margin: 0 0 6px; }
+.atlas-proj p:last-child { margin-bottom: 0; }
+.atlas-proj strong { color: var(--color-ink); font-weight: 600; }
+.atlas-proj .atlas-stale { color: var(--color-neg); font-weight: 600; }
 .atlas-credit strong { color: var(--color-body); font-weight: 600; }
 .atlas-credit a { color: var(--color-cold); }
 

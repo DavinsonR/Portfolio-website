@@ -46,6 +46,7 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 27 | [23 sep](docs/bitacora/sesion-27.md) | Las cifras de la tesis se ponen al día con el repositorio y pasan a un solo módulo; el titular deja de ser «publiqué el cero» |
 | 28 | [24 sep](docs/bitacora/sesion-28.md) | El panorama pasa a ser un tablero: grilla de visuales, filtros desplegables, resumen flotante de eventos y tablas ordenables |
 | 29 | [24 sep](docs/bitacora/sesion-29.md) | El tablero pronostica 2026–2027 con bandas y su acierto medido, el filtro mueve todos los gráficos y se lee en el teléfono |
+| 30 | [24 sep](docs/bitacora/sesion-30.md) | La proyección de la tesis llega al mapa del atlas: sin tablas de posiciones, con trama, ancho del intervalo y el ancla vencida a la vista |
 
 ## Después de la sesión 17
 
