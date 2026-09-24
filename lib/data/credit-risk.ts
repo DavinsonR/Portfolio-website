@@ -22,16 +22,6 @@ import umbrales from "./credit-risk-data/umbrales.json";
 import vocabulario from "./credit-risk-data/vocabulario.json";
 
 export const REPO = "https://github.com/DavinsonR/credit-risk-mlops";
-/** La demo es bilingüe y toma el idioma de `?lang=`. Se lo pasamos explícitamente
- *  para que no dependa del idioma del navegador: quien está leyendo la página en
- *  inglés quiere la demo en inglés, aunque su Chrome esté en otra cosa.
- *
- *  Es `index.html` y no el directorio: `public/` sirve archivos, no resuelve
- *  índices de carpeta. */
-export function demoHref(lang: string): string {
-  return `/credit-risk-demo/index.html?lang=${lang === "es" ? "es" : "en"}`;
-}
-
 export const CR = {
   manifest,
   provenance,

@@ -8,13 +8,13 @@ import {
   FairnessGate,
   VocabularyCliff,
 } from "@/components/credit-risk/Charts";
+import Scorer from "@/components/credit-risk/Scorer";
 import { alternates, social } from "@/lib/config/alternates";
 import { pageGraph } from "@/lib/config/structured-data";
 import {
   CR,
   cliff,
   compactUSD,
-  demoHref,
   eventPoints,
   gateThreshold,
   money,
@@ -90,22 +90,14 @@ export default async function CreditRiskPage({
       </header>
 
       {/* ================= DEMO ================= */}
-      <section className="py-12 bg-band border-t-2 border-cold" aria-labelledby="cr-demo">
+      <section id="demo" className="scroll-mt-[118px] py-12 bg-band border-t-2 border-cold" aria-labelledby="cr-demo">
         <div className={wrap}>
-          <h2 id="cr-demo" className="font-display text-[19px] font-bold text-ink mb-2">
+          <h2 id="cr-demo" className={h2}>
             {t.demo.title}
           </h2>
-          <p className="text-[14.5px] leading-[1.7] max-w-[660px]">{t.demo.body}</p>
-          <div className="mt-5 flex flex-wrap items-center gap-4">
-            {/* Salida del árbol de Next a un estático de `public/`: <a>, no <Link>. */}
-            <a
-              href={demoHref(lang)}
-              className="inline-flex items-center border border-ink bg-ink text-paper px-4 py-2 text-[14px] font-medium hover:opacity-90"
-            >
-              {t.demo.cta}
-            </a>
-            <span className="text-[14px] text-muted">{t.demo.note}</span>
-          </div>
+          <p className="text-[14.5px] leading-[1.7] max-w-[680px]">{t.demo.body}</p>
+          <p className="mt-2 text-[14px] text-muted">{t.demo.note}</p>
+          <Scorer copy={t.demo} lang={lang} />
         </div>
       </section>
 

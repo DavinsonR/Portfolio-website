@@ -36,7 +36,7 @@ Qué cubre cada una, y por qué existe:
 - **`check:routes`** — lee las rutas del `sitemap.xml` publicado (no de una lista copiada, que se desincroniza) y comprueba 200; más los redirects de idioma y los 404 que tienen que serlo. La bitácora registra **dos rutas que devolvían 200 debiendo ser 404** y un redirect que faltaba, encontrados a mano meses después. Además, en el HTML de cada ruta:
   - **`og:url` tiene que coincidir con el canonical de esa página** (FALLO-29). Cuando una subpágina olvida su `openGraph`, hereda el del layout y su `og:url` se queda en la portada: su tarjeta en LinkedIn enlaza a la portada, con el título de la portada. El síntoma es exacto, y esa es la diferencia que se mide.
   - ningún `<svg>` lleva `width`/`height="auto"` **como atributo** (FALLO-34): ahí exigen una longitud, y el navegador lo grita en consola en cada carga. En CSS sí valen.
-  - `twitter:title` coincide con `og:title` (FALLO-36: el bloque `twitter` también se reemplaza entero); `<title>` ≤ 60 caracteres y `description` ≤ 155; los nueve redirects leídos de `next.config.ts` con su código exacto; JSON-LD que parsea en cada ruta; y las cabeceras: la CSP arranca en `default-src 'none'`, conserva `'unsafe-inline'` y no declara ningún hash, HSTS con `preload`, sin `x-powered-by`, la demo con `wasm-unsafe-eval`, y una fuente con `max-age` real.
+  - `twitter:title` coincide con `og:title` (FALLO-36: el bloque `twitter` también se reemplaza entero); `<title>` ≤ 60 caracteres y `description` ≤ 155; los nueve redirects leídos de `next.config.ts` con su código exacto; JSON-LD que parsea en cada ruta; y las cabeceras: la CSP arranca en `default-src 'none'`, conserva `'unsafe-inline'` y no declara ningún hash, HSTS con `preload`, sin `x-powered-by`, la demo y la página de crédito con `wasm-unsafe-eval` —y la portada sin él—, y una fuente con `max-age` real.
 - **`check:weight`** — tras el build, suma en brotli los chunks que cada HTML referencia y falla por encima de un presupuesto versionado en `scripts/check-weight.mjs`. Existe por IR-05: el renderizador del atlas bajaba con la página aunque sus datos esperaran, y el build estaba en verde.
 
 Las cuatro saben fallar, y se verificó una a una haciéndolas fallar a propósito. `check:figures` se probó de las tres maneras en que puede quedarse ciega: contradiciendo una cifra dentro de un idioma, haciéndola divergir entre `es` y `en`, y borrándola del sitio para que su patrón no encuentre nada. Las tres salieron con código 1.
@@ -103,6 +103,8 @@ Tres salvaguardas que no se pueden romper: el estado oculto vive dentro de `.js`
 ### La CSP no admite hashes
 
 `next.config.ts` declara `script-src 'unsafe-inline'` a propósito, y su comentario explica por qué: el payload RSC de hidratación es distinto en cada página y cambia con cada edición del diccionario, así que una CSP por hash exigiría regenerarlos en cada commit y `headers()` se evalúa antes de renderizar. **En cuanto se declara un hash, el navegador ignora `'unsafe-inline'` y la hidratación muere.** No se pueden mezclar. Lo que esa CSP sí compra es `default-src 'none'` y un `connect-src` acotado.
+
+Dos rutas tienen su propia política y la regla general las excluye (con dos CSP en la misma respuesta el navegador aplica la intersección): `public/credit-risk-demo/` y `/(en|es)/projects/credit-risk`, que lleva el simulador de crédito dentro. La segunda es la del sitio más `wasm-unsafe-eval` y los dos CDN de onnxruntime-web, construida con `siteCsp()`; ver D-37.
 
 ### Sin backend, y tres contratos de datos externos
 

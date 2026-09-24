@@ -889,6 +889,41 @@ a {
   color: var(--color-ink);
 }
 .fl-field select:hover, .fl-ms-btn:hover { border-color: var(--color-cold); }
+/* El simulador de crédito usa el mismo campo, con números además de listas. */
+.fl-field input {
+  font: inherit;
+  font-size: 14px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--color-control);
+  border-radius: 3px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+.fl-field input:hover { border-color: var(--color-cold); }
+.cr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px 20px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.cr-grid select, .cr-grid input { width: 100%; min-width: 0; }
+.cr-legend {
+  grid-column: 1 / -1;
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
 .fl-field-wide select { max-width: 320px; }
 @media (max-width: 640px) {
   .fl-field, .fl-ms, .fl-field-wide select { width: 100%; max-width: none; }
