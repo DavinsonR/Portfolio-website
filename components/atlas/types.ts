@@ -112,14 +112,13 @@ export type AtlasCopy = {
     anchor: string;
     anchorAge: string;
     scenario: string;
+    scenarioUnanchored: string;
     backtest: string;
     coverage: string;
     encoding: string;
     encodingWidth: string;
     legendProjected: string;
     legendConfidence: string;
-    growthValue: string;
-    widthValue: string;
     interval: string;
     listLabel: string;
     listFoot: string;

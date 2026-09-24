@@ -17,6 +17,7 @@ type Renderer = typeof import("./render");
 let rendererPromise: Promise<Renderer> | null = null;
 const loadRenderer = () => (rendererPromise ??= import("./render"));
 import type { AtlasCopy, AtlasMeta, ForecastInfo, Indicator, Level, Series, Topology, View } from "./types";
+import { enPorCiento, esAnclada } from "./unidades";
 
 const BASE = "/atlas";
 const LEVEL_OF: Record<View, Level> = { plano: "departamento", relieve: "departamento", municipios: "municipio" };
@@ -83,7 +84,7 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
       loadRenderer(),
     ]);
     renderer.current = r;
-    return { series, topology, projection: r.buildProjection(topology) };
+    return { series: enPorCiento(series), topology, projection: r.buildProjection(topology) };
   }, []);
 
   useEffect(() => {
@@ -306,7 +307,13 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
       </div>
 
       {forecastInfo && indicator ? (
-        <ForecastNote info={forecastInfo} copy={copy.forecast} locale={locale} widthLayer={indicator.id === WIDTH_ID} />
+        <ForecastNote
+          info={forecastInfo}
+          copy={copy.forecast}
+          locale={locale}
+          widthLayer={indicator.id === WIDTH_ID}
+          anchored={esAnclada(indicator.id)}
+        />
       ) : null}
 
       {failed ? (
@@ -357,11 +364,13 @@ function ForecastNote({
   copy,
   locale,
   widthLayer,
+  anchored,
 }: {
   info: ForecastInfo;
   copy: AtlasCopy["forecast"];
   locale: string;
   widthLayer: boolean;
+  anchored: boolean;
 }) {
   const fill = (t: string, vars: Record<string, string | number>) => t.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
   const num = (v: number, digits: number) =>
@@ -371,17 +380,20 @@ function ForecastNote({
 
   const { ancla, backtest } = info;
   const sentences: string[] = [];
-  if (ancla?.fuente && ancla.fecha_corte) {
+  /* El ancla y su edad solo acompañan a las series ancladas; la capa sin anclar dice lo que
+     es, y la del ancho no depende del ancla. */
+  if (anchored && ancla?.fuente && ancla.fecha_corte) {
     const d = new Date(`${ancla.fecha_corte}T00:00:00Z`);
     const date = Number.isNaN(d.getTime())
       ? ancla.fecha_corte
       : new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "UTC" }).format(d);
     sentences.push(fill(copy.anchor, { source: ancla.fuente, date }));
   }
-  if (ancla?.vencida && finite(ancla.antiguedad_meses) && finite(ancla.antiguedad_maxima_meses)) {
+  if (anchored && ancla?.vencida && finite(ancla.antiguedad_meses) && finite(ancla.antiguedad_maxima_meses)) {
     sentences.push(fill(copy.anchorAge, { months: Math.floor(ancla.antiguedad_meses), max: ancla.antiguedad_maxima_meses }));
   }
-  sentences.push(copy.scenario);
+  if (anchored) sentences.push(copy.scenario);
+  else if (!widthLayer) sentences.push(copy.scenarioUnanchored);
   const won = backtest?.origenes_ganados;
   const total = backtest?.n_origenes;
   const p = backtest?.dm_p;

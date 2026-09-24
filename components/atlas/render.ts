@@ -20,6 +20,7 @@ import { scaleLinear } from "d3-scale";
 import { interpolateLab, interpolateRgb } from "d3-interpolate";
 import { color as toColor } from "d3-color";
 import { feature } from "topojson-client";
+import { unidad } from "./unidades";
 import type { AtlasCopy, Indicator, Level, Series, Topology, View } from "./types";
 
 /* {n} {total} {ind} {y} {name} filled from the dictionary's templates. */
@@ -319,15 +320,21 @@ export function renderAtlas(slots: Slots, o: RenderOptions): () => void {
   return () => cleanups.forEach((f) => f());
 }
 
-function numberFormat(locale: string, indicator: Indicator) {
-  const signed = indicator.decimales >= 3;
-  const digits = indicator.decimales === 0 ? 0 : 2;
+/* Los decimales que declara el indicador (el ancho del intervalo salía con dos de precisión
+   falsa), con signo todo crecimiento, medido o proyectado («+2,30 %» en 2025 y «2,25 %» en
+   2026 se leían como cifras de distinta naturaleza), y la unidad en cada cifra: la leyenda,
+   los rieles y la tabla la mostraban sin ella. `bare` la omite para las plantillas que ya
+   la escriben, como el intervalo del tooltip. */
+function numberFormat(locale: string, indicator: Indicator, bare = false) {
+  const signed = indicator.decimales >= 3 || indicator.id.startsWith("crecimiento_");
+  const digits = Math.min(indicator.decimales, 2);
   const nf = new Intl.NumberFormat(locale, {
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,
     signDisplay: signed ? "exceptZero" : "auto",
   });
-  return (v: number) => nf.format(v);
+  const unit = bare ? "" : unidad(indicator.id, locale);
+  return (v: number) => nf.format(v) + unit;
 }
 
 /* The value as the tooltip and the card say it: a projected growth carries its unit and
@@ -337,13 +344,16 @@ function describe(o: RenderOptions & { fmt: (v: number) => string; fc: Forecast 
   const { copy, indicator, fmt, fc } = o;
   if (!fc.on) return { value: fmt(v), interval: null };
   const isWidth = indicator.id === WIDTH_ID;
-  const value = fill(isWidth ? copy.forecast.widthValue : copy.forecast.growthValue, { v: fmt(v) });
+  /* `fmt` ya lleva la unidad; el intervalo la escribe en su plantilla, así que usa la cifra sola. */
+  const value = fmt(v);
   const w = fc.widths?.[i];
   if (isWidth || w === null || w === undefined || fc.level === null) return { value, interval: null };
   const pct = new Intl.NumberFormat(o.locale, { style: "percent", maximumFractionDigits: 0 }).format(fc.level);
+  const num = numberFormat(o.locale, { ...indicator, id: "" }, true);
+  const dos = new Intl.NumberFormat(o.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return {
     value,
-    interval: fill(copy.forecast.interval, { level: pct, lo: fmt(v - w / 2), hi: fmt(v + w / 2), half: fmt(w / 2) }),
+    interval: fill(copy.forecast.interval, { level: pct, lo: num(v - w / 2), hi: num(v + w / 2), half: dos.format(w / 2) }),
   };
 }
 
@@ -509,7 +519,10 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
   if (insularGroup) {
     for (const p of pieces.filter((x) => x.chip !== undefined)) {
       const i = position.get(p.id);
-      const g = svgEl("g", { class: "unit", "data-id": p.id, opacity: opacityOf(p.id) });
+      /* El filtro de región atenúa el cuadro y su trama (la trama es un clon del cuadro y
+         hereda su opacidad), no el nombre: texto atenuado por opacidad caía a 1,7:1 (DA-07). */
+      const dentro = opacityOf(p.id) === 1;
+      const g = svgEl("g", { class: "unit", "data-id": p.id });
       const chip = svgEl("rect", {
         class: "face",
         rx: 2,
@@ -520,6 +533,7 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
         fill: colourOf(i),
         stroke: token("--color-rule"),
         "stroke-width": 0.6,
+        opacity: dentro ? null : 0.32,
       });
       g.append(chip);
       if (fc.projected) g.append(hatchOver(chip, true));
@@ -528,7 +542,7 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
         x: chipBox.x + CHIP.size + 6,
         y: chipBox.y + (p.chip as number) * CHIP.row + CHIP.size - 2.5,
         "font-size": 10,
-        fill: token("--color-body"),
+        fill: token(dentro ? "--color-body" : "--color-muted"),
       });
       label.textContent = name.length > 30 ? name.slice(0, 29) + "…" : name;
       g.append(label);
@@ -1029,8 +1043,8 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
   const maxAbs = (max(byGroup, (d) => Math.abs(d[1])) as number) || 1;
   const xr =
     indicator.escala === "divergente"
-      ? scaleLinear().domain([-maxAbs, maxAbs]).range([92, wr - 30])
-      : scaleLinear().domain([0, max(byGroup, (d) => d[1]) as number]).range([92, wr - 30]);
+      ? scaleLinear().domain([-maxAbs, maxAbs]).range([92, wr - 46])
+      : scaleLinear().domain([0, max(byGroup, (d) => d[1]) as number]).range([92, wr - 46]);
   byGroup.forEach((d, k) => {
     const y = k * hf + 2;
     const inside = o.group === copy.all || o.group === d[0];
