@@ -1,4 +1,4 @@
-## Sesión 27 — 24 sep 2026 · El panorama pasa a ser un tablero
+## Sesión 28 — 24 sep 2026 · El panorama pasa a ser un tablero
 
 Encargo: que se vea como un tablero de Power BI, Tableau o Looker, con varios gráficos en la misma pantalla; economías y eventos en listas desplegables con selección múltiple, sin perder los atajos; un resumen flotante al tocar un evento; quitar la frontera de cobertura si no se podía explicar mejor; un mapa de calor menos tosco; tablas ordenables por columna.
 
