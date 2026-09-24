@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Sitio personal bilingüe de Davirson Novoa: un CV interactivo y las páginas de sus proyectos.
 Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · estático puro en Vercel, sin backend ni base de datos.
 
-**Lee [`docs/FALLOS.md`](docs/FALLOS.md) antes de tocar nada**: los 35 fallos que este proyecto ya tuvo, en una tabla, con su causa raíz enlazada. Está ordenado por ámbito — más de la mitad son de `market-data-medallion` y no de aquí, así que si vienes al sitio, filtra y ahórrate veinte. Al lado están [`docs/DECISIONES.md`](docs/DECISIONES.md) (por qué algo que parece arbitrario no lo es) y [`docs/ROADMAP.md`](docs/ROADMAP.md) (estado y pendientes). [`BITACORA_MAESTRA.md`](BITACORA_MAESTRA.md) es hoy el índice de todo eso; la narrativa completa, sesión por sesión, vive en `docs/bitacora/`.
+**Lee [`docs/FALLOS.md`](docs/FALLOS.md) antes de tocar nada**: los fallos que este proyecto ya tuvo, en una tabla, con su causa raíz enlazada. Está ordenado por ámbito — más de la mitad son de `market-data-medallion` y no de aquí, así que si vienes al sitio, filtra y ahórrate veinte. Al lado están [`docs/DECISIONES.md`](docs/DECISIONES.md) (por qué algo que parece arbitrario no lo es) y [`docs/ROADMAP.md`](docs/ROADMAP.md) (estado y pendientes). [`BITACORA_MAESTRA.md`](BITACORA_MAESTRA.md) es hoy el índice de todo eso; la narrativa completa, sesión por sesión, vive en `docs/bitacora/`.
 
 `docs/DESIGN.md` y `docs/PRODUCT.md` no son documentación descriptiva sino el contrato del sistema visual y del posicionamiento; varias de sus reglas son vinculantes y romperlas ya ha sido un hallazgo de revisión.
 
@@ -104,7 +104,7 @@ Tres salvaguardas que no se pueden romper: el estado oculto vive dentro de `.js`
 
 `next.config.ts` declara `script-src 'unsafe-inline'` a propósito, y su comentario explica por qué: el payload RSC de hidratación es distinto en cada página y cambia con cada edición del diccionario, así que una CSP por hash exigiría regenerarlos en cada commit y `headers()` se evalúa antes de renderizar. **En cuanto se declara un hash, el navegador ignora `'unsafe-inline'` y la hidratación muere.** No se pueden mezclar. Lo que esa CSP sí compra es `default-src 'none'` y un `connect-src` acotado.
 
-Dos rutas tienen su propia política y la regla general las excluye (con dos CSP en la misma respuesta el navegador aplica la intersección): `public/credit-risk-demo/` y `/(en|es)/projects/credit-risk`, que lleva el simulador de crédito dentro. La segunda es la del sitio más `wasm-unsafe-eval` y los dos CDN de onnxruntime-web, construida con `siteCsp()`; ver D-37.
+Dos rutas tienen su propia política y la regla general las excluye (con dos CSP en la misma respuesta el navegador aplica la intersección): `public/credit-risk-demo/` y `/(en|es)/projects/credit-risk`, que lleva el simulador de crédito dentro. La segunda es la del sitio más `wasm-unsafe-eval` y los dos CDN de onnxruntime-web, construida con `siteCsp()`; ver D-37. **La CSP es del documento, y Next no la cambia al navegar en el cliente**: si se llega a esa página con un `<Link>`, el documento sigue siendo el de origen y el runtime queda bloqueado (FALLO-41). Por eso `components/DocumentNavigation.tsx`, montado en el layout, fuerza la carga completa de las rutas de `lib/config/document-routes.ts`; una ruta nueva con CSP propia tiene que ir ahí.
 
 ### Sin backend, y tres contratos de datos externos
 

@@ -4,6 +4,7 @@ import { getDictionary, locales, type Locale } from "@/lib/dictionaries";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MotionRoot from "@/components/Motion";
+import DocumentNavigation from "@/components/DocumentNavigation";
 import { SITE } from "@/lib/config/site";
 import { alternates } from "@/lib/config/alternates";
 import { mailtoHref } from "@/lib/config/contact";
@@ -104,6 +105,8 @@ export default async function RootLayout({
           {dict.nav.skip}
         </a>
         <MotionRoot />
+        {/* La página de crédito tiene su propia CSP: se entra cargando el documento. */}
+        <DocumentNavigation />
         <Navbar nav={dict.nav} mailHref={mailtoHref(dict)} lang={lang as Locale} />
         {children}
         <Footer dict={dict} lang={lang as Locale} />

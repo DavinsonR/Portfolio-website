@@ -21,6 +21,7 @@
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { Dictionary } from "@/lib/dictionaries";
+import { documentHasScorerPolicy, loadedDocumentUrl } from "@/lib/config/document-routes";
 import {
   BANDS,
   DEFAULTS,
@@ -166,7 +167,10 @@ const BAND_TONE: Record<Band, string> = {
 
 // ---------------------------------------------------------------- el componente
 
-type Status = "idle" | "loading" | "ready" | "error";
+/* `blocked`: el documento no tiene la CSP de esta ruta (se llegó con navegación de
+   cliente y DocumentNavigation no pudo evitarlo). Intentar la carga solo daría un
+   error opaco; se dice qué pasa y se ofrece recargar, que sí trae la política. */
+type Status = "idle" | "loading" | "ready" | "error" | "blocked";
 
 export default function Scorer({ copy, lang }: { copy: Copy; lang: string }) {
   const root = useRef<HTMLDivElement>(null);
@@ -187,6 +191,10 @@ export default function Scorer({ copy, lang }: { copy: Copy; lang: string }) {
   const [resultInView, setResultInView] = useState(false);
 
   const start = useCallback(() => {
+    if (!documentHasScorerPolicy(loadedDocumentUrl(), location.href)) {
+      setStatus("blocked");
+      return;
+    }
     setStatus("loading");
     setError("");
     loadEngine().then(
@@ -308,7 +316,9 @@ export default function Scorer({ copy, lang }: { copy: Copy; lang: string }) {
       ? fill(copy.status.ready, { n: contract.feature_order.length })
       : status === "error"
         ? fill(copy.status.error, { msg: error })
-        : copy.status[status === "ready" ? "loading" : status];
+        : status === "blocked"
+          ? copy.status.blocked
+          : copy.status[status === "ready" ? "loading" : status];
 
   const id = (k: string) => `${uid}-${k}`;
   const yesNo = (k: "revolver_status" | "collateral_ind") => (
@@ -323,11 +333,16 @@ export default function Scorer({ copy, lang }: { copy: Copy; lang: string }) {
       {/* ---------------- el formulario ---------------- */}
       <form onSubmit={(e) => e.preventDefault()} noValidate>
         <p className="mb-5 flex items-baseline gap-2.5 text-[14px] text-muted" role="status">
-          <span className={`inline-block h-2 w-2 shrink-0 translate-y-[-1px] rounded-full ${status === "ready" ? "bg-pos" : status === "error" ? "bg-neg" : "bg-rule"}`} aria-hidden="true" />
+          <span className={`inline-block h-2 w-2 shrink-0 translate-y-[-1px] rounded-full ${status === "ready" ? "bg-pos" : status === "error" || status === "blocked" ? "bg-neg" : "bg-rule"}`} aria-hidden="true" />
           <span className="min-w-0">{statusText}</span>
           {status === "error" && (
             <button type="button" onClick={start} className="font-medium text-cold underline underline-offset-4">
               {copy.status.retry}
+            </button>
+          )}
+          {status === "blocked" && (
+            <button type="button" onClick={() => location.reload()} className="shrink-0 font-medium text-cold underline underline-offset-4">
+              {copy.status.reload}
             </button>
           )}
         </p>
