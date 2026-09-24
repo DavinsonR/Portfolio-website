@@ -84,6 +84,13 @@ const NUM = "([\\d.,]+|[a-záéíóúü]+(?:\\s+y\\s+[a-záéíóúü]+|-[a-z]+)
 const A_MANO =
   /menos de (?:50|cincuenta) sobrevivieron|sobrevivieron menos de (?:50|cincuenta)|fewer than (?:50|fifty) survived|una de cada (?:siete|ocho)\b|one in (?:seven|eight)\b|1[.,]3[34]\d (?:que no|that didn)/gi;
 
+/** Las cifras econométricas de la tesis viven en `lib/data/thesis-results.ts`
+ *  y el contenido las interpola. Escritas a mano en el diccionario fueron el
+ *  fallo de la sesión 24: la página publicó β = +0,0007 semanas después de que
+ *  el repositorio dijera +0,0038, en seis sitios y dos idiomas. Un «β = 0,…»
+ *  literal en `lib/content/` es exactamente eso volviendo a entrar. */
+const BETA_A_MANO = /β\s*=\s*[+−-]?\d/g;
+
 const CLAIMS: Claim[] = [
   {
     name: "solicitudes HMDA",
@@ -195,6 +202,13 @@ function buscar(texto: string, locale: "es" | "en", archivo: string) {
       if (!porClaim.has(claim.name)) porClaim.set(claim.name, []);
       porClaim.get(claim.name)!.push({ valor, crudo: m[1], archivo, locale, ctx });
     }
+  }
+  for (const m of texto.matchAll(BETA_A_MANO)) {
+    const desde = Math.max(0, (m.index ?? 0) - 30);
+    problemas.push(
+      `${archivo}:${locale} — «${texto.slice(desde, (m.index ?? 0) + m[0].length + 20).replace(/\s+/g, " ").trim()}»: ` +
+        `las cifras de la tesis no se escriben a mano; interpólalas desde lib/data/thesis-results.ts.`,
+    );
   }
   for (const m of texto.matchAll(A_MANO)) {
     const desde = Math.max(0, (m.index ?? 0) - 30);

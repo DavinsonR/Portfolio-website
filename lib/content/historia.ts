@@ -10,7 +10,7 @@
 // El registro es deliberado y tiene reglas:
 //   · se le habla a UNA persona («te cuento», «si llegaste hasta acá»);
 //   · se admite lo que no se eligió, no solo lo que se hizo («podía haber
-//     publicado el +0,0242 y nadie me habría dicho nada»);
+//     publicado el coeficiente ingenuo y nadie me habría dicho nada»);
 //   · se admite el sentimiento donde lo hubo, una vez y sin adornarlo
 //     («por un rato me sentí muy bien»);
 //   · español colombiano, no neutro de agencia.
@@ -26,6 +26,22 @@
 // ============================================================
 
 import { FALLOS_LOG } from "./types";
+import { THESIS as T, thesisFormat } from "../data/thesis-results";
+import { ATLAS_FIGURE } from "../generated/atlas-figure";
+
+/* Las cifras de la tesis salen de `lib/data/thesis-results.ts` y la tabla de la
+   deriva, de los mismos datos que pinta la figura del atlas (`npm run atlas`):
+   estaba escrita a mano y ya no coincidía con ellos. */
+const fes = thesisFormat("es");
+const fen = thesisFormat("en");
+const driftRows = (lang: "es" | "en") => {
+  const f = lang === "es" ? fes : fen;
+  return ATLAS_FIGURE.drift.map((d) => ({
+    year: String(d.year),
+    median: f.s({ value: d.median, digits: 2 }),
+    below: `${d.below} ${lang === "es" ? "de" : "of"} ${d.counted}`,
+  }));
+};
 
 export const historia = {
   es: {
@@ -79,22 +95,18 @@ export const historia = {
             "La maestría en Economía en la Javeriana fue donde ese hábito se volvió método. La tesis pregunta si la inclusión financiera explica el crecimiento regional en Colombia.",
             "Para responderla hacía falta, otra vez, un dato que no existía. Junté diecinueve fuentes públicas en un warehouse dimensional con dbt y DuckDB, armé un índice de inclusión por dimensiones y levanté un atlas de los 1.123 municipios del país.",
             "Y el resultado no salió.",
-            "Te cuento qué pasó, porque es la parte que importa. Al meter efectos de tiempo, el coeficiente se cae a cero. La especificación ingenua —solo efectos de entidad— publica un +0,0242 con p < 0,001 que suena muy bien y no significa nada. Lo que está recogiendo es otra cosa: que todo el país subió al tiempo.",
+            `Te cuento qué pasó, porque es la parte que importa. Al meter efectos de tiempo, el coeficiente se cae a algo que no se distingue de cero. La especificación ingenua —solo efectos de entidad— publica un ${fes.s(T.entityOnly.coefShort)} con p ${fes.lt(T.entityOnly.pBelow)} que suena muy bien y no significa nada. Lo que está recogiendo es otra cosa: que todo el país subió al tiempo.`,
           ],
           drift: {
             caption: "Índice compuesto de inclusión financiera, estandarizado contra 2018",
             colYear: "año",
             colMedian: "mediana",
             colBelow: "departamentos bajo cero",
-            rows: [
-              { year: "2018", median: "−0,02", below: "17 de 32" },
-              { year: "2021", median: "+1,20", below: "4 de 33" },
-              { year: "2025", median: "+2,47", below: "1 de 32" },
-            ],
+            rows: driftRows("es"),
           },
           bodyAfter: [
             "Esa subida común es el hallazgo. No es el ruido, es la respuesta.",
-            "Podía haber publicado el +0,0242 y nadie me habría dicho nada. Publiqué el nulo. Está en la página, con los dos mapas en la misma escala para que se vea por qué. Un resultado nulo bien medido dice más de cómo trabajo que un coeficiente bonito, y el que sabe leer nota la diferencia.",
+            `Podía haber publicado el ${fes.s(T.entityOnly.coefShort)} y nadie me habría dicho nada. Publiqué el nulo, y con él su potencia: el diseño descarta efectos mayores a ${fes.n(T.bound.pp)} puntos por desviación del índice y dice que no puede ver los menores. Es un límite, no una ausencia. Está en la página, con los dos mapas en la misma escala para que se vea por qué. Un resultado nulo bien medido dice más de cómo trabajo que un coeficiente bonito, y el que sabe leer nota la diferencia.`,
           ],
           proofLabel: "Abrir la investigación",
           proofHref: "/research/fintech-inclusion",
@@ -139,7 +151,7 @@ export const historia = {
           title: "Lo que sostiene todo",
           body: [
             "Hay un hilo que atraviesa las tres cosas y me importa más que cualquiera de ellas: publico lo que falla.",
-            "El nulo de la tesis está publicado. La fuga del 0,9461 está en el README con el número exacto, sin maquillar. De 1.392 estrategias, el titular es cuántas se murieron. Y este mismo sitio carga una bitácora de fallos numerados, cada uno con su causa raíz y su corrección — incluidos los que rompí esta semana.",
+            "El nulo de la tesis está publicado, con su potencia. La fuga del 0,9461 está en el README con el número exacto, sin maquillar. De 1.392 estrategias, el titular es cuántas se murieron. Y este mismo sitio carga una bitácora de fallos numerados, cada uno con su causa raíz y su corrección — incluidos los que rompí esta semana.",
             "Es un criterio de ingeniería, no de humildad: un portafolio donde todo salió bien no se puede verificar. Uno donde los errores están fechados, sí. Cada cifra de este sitio enlaza al artefacto que la produce — el repositorio, el commit, el pipeline. Si algo no se puede comprobar, no lo publico.",
           ],
           verdict: "Publico lo que falla.",
@@ -215,22 +227,18 @@ export const historia = {
             "The MSc in Economics at Javeriana is where that habit turned into a method. The thesis asks whether financial inclusion explains regional growth in Colombia.",
             "Answering it needed, once again, data that didn't exist. I pulled nineteen public sources into a dimensional warehouse with dbt and DuckDB, built an inclusion index by dimension, and raised an atlas of all 1,123 municipalities in the country.",
             "And the result didn't come.",
-            "Let me tell you what happened, because this is the part that matters. Add time effects and the coefficient collapses to zero. The naive specification — entity effects only — publishes a +0.0242 at p < 0.001 that sounds excellent and means nothing. What it's picking up is something else: the whole country rose at once.",
+            `Let me tell you what happened, because this is the part that matters. Add time effects and the coefficient collapses to something you can't tell apart from zero. The naive specification — entity effects only — publishes a ${fen.s(T.entityOnly.coefShort)} at p ${fen.lt(T.entityOnly.pBelow)} that sounds excellent and means nothing. What it's picking up is something else: the whole country rose at once.`,
           ],
           drift: {
             caption: "Composite financial-inclusion index, standardised against 2018",
             colYear: "year",
             colMedian: "median",
             colBelow: "departments below zero",
-            rows: [
-              { year: "2018", median: "−0.02", below: "17 of 32" },
-              { year: "2021", median: "+1.20", below: "4 of 33" },
-              { year: "2025", median: "+2.47", below: "1 of 32" },
-            ],
+            rows: driftRows("en"),
           },
           bodyAfter: [
             "That common rise is the finding. It isn't the noise, it's the answer.",
-            "I could have published the +0.0242 and nobody would have said a word. I published the null. It's on the page, with both maps on the same scale so you can see why. A well-measured null says more about how I work than a pretty coefficient, and anyone who can read tells the difference.",
+            `I could have published the ${fen.s(T.entityOnly.coefShort)} and nobody would have said a word. I published the null, and its power with it: the design rules out effects above ${fen.n(T.bound.pp)} points per standard deviation of the index and says it cannot see smaller ones. It's a bound, not an absence. It's on the page, with both maps on the same scale so you can see why. A well-measured null says more about how I work than a pretty coefficient, and anyone who can read tells the difference.`,
           ],
           proofLabel: "Open the research",
           proofHref: "/research/fintech-inclusion",
@@ -275,7 +283,7 @@ export const historia = {
           title: "What holds it together",
           body: [
             "There's a thread running through all three and it matters to me more than any of them: I publish what fails.",
-            "The thesis null is published. The 0.9461 leak is in the README with the exact number, unretouched. Of 1,392 strategies, the headline is how many died. And this very site carries a log of numbered defects, each with its root cause and its fix — including the ones I broke this week.",
+            "The thesis null is published, with its power. The 0.9461 leak is in the README with the exact number, unretouched. Of 1,392 strategies, the headline is how many died. And this very site carries a log of numbered defects, each with its root cause and its fix — including the ones I broke this week.",
             "It's an engineering standard, not humility: a portfolio where everything went well can't be verified. One where the mistakes are dated can. Every figure on this site links to the artifact that produces it — the repository, the commit, the pipeline. If it can't be checked, I don't publish it.",
           ],
           verdict: "I publish what fails.",

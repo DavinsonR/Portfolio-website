@@ -46,6 +46,9 @@ export type CvProject = {
 /* El proyecto no tiene sitio aparte: vive en /research/fintech-inclusion, dentro de este
    portafolio. Lo unico externo es el repositorio, que es donde esta el codigo. */
 export const THESIS_REPO = "https://github.com/DavinsonR/financial-inclusion-colombia";
+/* La ficha de cita del repositorio (CITATION.cff en `main`): es a donde lleva
+   «Cita el proyecto». GitHub la lee y ofrece el formato APA y BibTeX. */
+export const THESIS_CITATION = `${THESIS_REPO}/blob/main/CITATION.cff`;
 
 /* La bitácora de fallos, enlazada desde las divulgaciones y desde la historia.
    El texto que la cita ya no dice cuántos son: ese número caducaba solo. */
