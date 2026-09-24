@@ -92,7 +92,14 @@ export function personGraph(dict: Dictionary, lang: Locale) {
 export type PageWork =
   | { type: "SoftwareSourceCode"; codeRepository: string; programmingLanguage?: string }
   | { type: "SoftwareApplication"; url: string; applicationCategory: string }
-  | { type: "ScholarlyArticle"; codeRepository: string }
+  | {
+      type: "ScholarlyArticle";
+      codeRepository: string;
+      /** Los datos derivados que la página publica (el atlas), para Google
+       *  Dataset Search. Solo lo que la página ya enseña: licencia, cobertura
+       *  y el repositorio donde están. */
+      dataset?: { license: string; temporalCoverage: string; spatialCoverage: string };
+    }
   | { type: "Article" };
 
 export function pageGraph(
@@ -119,7 +126,7 @@ export function pageGraph(
       : work?.type === "SoftwareApplication"
         ? { "@type": "SoftwareApplication", ...base, url: work.url, applicationCategory: work.applicationCategory, operatingSystem: "Web" }
         : work?.type === "ScholarlyArticle"
-          ? { "@type": "ScholarlyArticle", ...base, isBasedOn: work.codeRepository }
+          ? { "@type": "ScholarlyArticle", ...base, isBasedOn: work.codeRepository, sourceOrganization: { "@type": "CollegeOrUniversity", name: "Pontificia Universidad Javeriana" } }
           : work?.type === "Article"
             ? { "@type": "Article", ...base }
             : null;
@@ -146,6 +153,24 @@ export function pageGraph(
         ],
       },
       ...(workNode ? [{ "@id": `${url}#work`, ...workNode }] : []),
+      ...(work?.type === "ScholarlyArticle" && work.dataset
+        ? [
+            {
+              "@type": "Dataset",
+              "@id": `${url}#dataset`,
+              name: meta.title,
+              description: meta.description,
+              url,
+              sameAs: work.codeRepository,
+              creator: { "@id": PERSON_ID },
+              license: work.dataset.license,
+              isAccessibleForFree: true,
+              inLanguage: lang,
+              temporalCoverage: work.dataset.temporalCoverage,
+              spatialCoverage: { "@type": "Place", name: work.dataset.spatialCoverage },
+            },
+          ]
+        : []),
     ],
   };
 }

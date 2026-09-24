@@ -153,7 +153,14 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
      be a second render for nothing — it is read through: what the map draws is always the
      nearest thing that exists, and the control shows exactly that. */
   const years = useMemo(() => bundle?.series.anios ?? [], [bundle]);
-  const activeYear = year !== null && years.includes(year) ? year : (years[years.length - 1] ?? null);
+  /* The default is the last OBSERVED year: with the forecast layer `anios` ends in 2028,
+     where the index has no value, and opening there drew an empty map. */
+  const lastObserved = useMemo(() => {
+    const projected = new Set(bundle?.series.anios_proyectados ?? []);
+    const observed = years.filter((y) => !projected.has(y));
+    return observed[observed.length - 1] ?? years[years.length - 1] ?? null;
+  }, [bundle, years]);
+  const activeYear = year !== null && years.includes(year) ? year : lastObserved;
   const activeGroup = group === copy.all || groups.includes(group) ? group : copy.all;
 
   const onDrillDown = useCallback((name: string) => {

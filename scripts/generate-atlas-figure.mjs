@@ -10,11 +10,12 @@
 // JavaScript, y se imprime.
 //
 // Qué dibuja. El índice compuesto en 2018 y en 2025, en la MISMA escala. El
-// índice está estandarizado contra 2018: ese año la mediana es -0,02 con 17 de
-// 32 departamentos bajo cero; en 2025 la mediana es +2,47 y solo queda uno.
+// índice está estandarizado contra 2018: ese año 17 de 32 departamentos están
+// bajo cero y en 2025 solo queda uno (las medianas exactas, en ATLAS_FIGURE).
 // Todo el país subió. Esa deriva común es exactamente la razón de que el
 // coeficiente se caiga a cero al añadir efectos de tiempo — la especificación
-// ingenua la recoge y publica un +0,0242 con p < 0,001 que no significa nada.
+// ingenua la recoge y publica un coeficiente muy significativo que no
+// significa nada (la cifra vive en lib/data/thesis-results.ts).
 // Escalar cada mapa contra sí mismo escondería el hallazgo, así que la escala
 // es una sola para los dos paneles.
 //
@@ -121,9 +122,18 @@ function main() {
   if (!indicator) throw new Error(`Indicador ${indicatorId} ausente en atlas_meta.json`);
 
   const years = series.anios;
-  const pick = [0, years.length - 1];
   const table = series.series[indicatorId];
   if (!table) throw new Error(`Serie ${indicatorId} ausente en series_departamento.json`);
+  // Desde la capa de proyección (ADR-019 a ADR-023 del repositorio de la
+  // tesis), `anios` llega hasta 2028 y el índice no tiene valor en los años
+  // proyectados: tomar «el último año» pintaba un panel vacío y una mediana
+  // NaN. Los paneles salen del primer y el último año OBSERVADOS del índice.
+  const projected = new Set(series.anios_proyectados ?? []);
+  const observed = years
+    .map((_, i) => i)
+    .filter((i) => !projected.has(years[i]) && (table[i] ?? []).some((v) => v != null));
+  if (observed.length < 2) throw new Error(`${indicatorId}: menos de dos años observados`);
+  const pick = [observed[0], observed[observed.length - 1]];
 
   // Una escala, siete pasos, simétrica alrededor de cero — el índice es un
   // score estandarizado y el cero es real, no el centro del rango observado.
@@ -200,10 +210,22 @@ function main() {
   // cifra que sostiene el pie de la figura, y sale del dato, no del ojo.
   const below = pick.map((i) => table[i].filter((v) => v != null && v < 0).length);
   const counted = pick.map((i) => table[i].filter((v) => v != null).length);
-  const medians = pick.map((i) => {
+  const medianOf = (i) => {
     const v = table[i].filter((x) => x != null).sort((a, b) => a - b);
     return v.length % 2 ? v[(v.length - 1) / 2] : (v[v.length / 2 - 1] + v[v.length / 2]) / 2;
-  });
+  };
+  const medians = pick.map(medianOf);
+
+  // La tabla de la deriva de /historia (§03): primer año, 2021 y último año
+  // observados. Estaba escrita a mano en el diccionario y ya no coincidía con
+  // los datos que esta misma figura pinta; ahora sale de aquí.
+  const mid = observed.find((i) => years[i] === 2021) ?? observed[Math.floor(observed.length / 2)];
+  const drift = [pick[0], mid, pick[1]].map((i) => ({
+    year: years[i],
+    median: Number(medianOf(i).toFixed(2)),
+    below: table[i].filter((v) => v != null && v < 0).length,
+    counted: table[i].filter((v) => v != null).length,
+  }));
 
   const body = `// GENERADO POR scripts/generate-atlas-figure.mjs — no editar a mano.
 // Se regenera con \`npm run atlas\` cuando cambien los datos de public/atlas/.
@@ -219,6 +241,8 @@ export const ATLAS_FIGURE = {
   below: ${JSON.stringify(below)},
   counted: ${JSON.stringify(counted)},
   medians: ${JSON.stringify(medians.map((v) => Number(v.toFixed(2))))},
+  /** La deriva que cuenta /historia: mediana y departamentos bajo cero por año. */
+  drift: ${JSON.stringify(drift)},
   source: ${JSON.stringify(meta.fuente ?? "")},
   generatedAt: ${JSON.stringify(meta.generado_en ?? "")},
 } as const;

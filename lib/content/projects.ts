@@ -9,8 +9,15 @@
 // ============================================================
 // Las cinco piezas de trabajo, una por página
 
-import type { Metric } from "./types";
+import { THESIS_CITATION, type Metric } from "./types";
+import { THESIS as T, thesisFormat } from "../data/thesis-results";
 import type { PbiTableName, PbiMeasureName, PbiPageId } from "../data/powerbi-model";
+
+/* Las cifras de la tesis no se escriben aquí: salen de `lib/data/thesis-results.ts`,
+   una vez, con el archivo y la clave del repositorio de donde vienen. `fes`/`fen`
+   solo les ponen el formato de cada idioma. */
+const fes = thesisFormat("es");
+const fen = thesisFormat("en");
 
 export const projects = {
   es: {
@@ -350,13 +357,23 @@ export const projects = {
     },
     thesis: {
       metaTitle: "Inclusión financiera en Colombia",
-      metaDesc: "Diecinueve fuentes públicas en un warehouse con dbt y DuckDB, un índice de inclusión financiera, dos paneles anuales y un atlas de los 1.123 municipios.",
+      metaDesc: "Warehouse abierto de 19 fuentes públicas, índice de inclusión financiera para 1.123 municipios, atlas interactivo y econometría con su potencia.",
       kicker: "Investigación · tesis de maestría radicada",
       pill: "INVESTIGACIÓN",
-      title: "Podía haber publicado el coeficiente bonito. Publiqué el cero.",
-      subtitle: "Diecinueve fuentes públicas que nadie había cruzado, un índice de inclusión por dimensiones, dos paneles anuales, un atlas de los 1.123 municipios del país y una batería econométrica completa. La especificación ingenua daba +0,0242 con p < 0,001. Al descontar el año, cero. Está publicado el cero.",
-      degree: "Tesis de Maestría en Economía · Pontificia Universidad Javeriana",
-      timeline: "Warehouse, índice, atlas y estimaciones publicados · siguen el anexo de desagregación temporal y el manuscrito",
+      // El titular anterior («Publiqué el cero») era anterior a ADR-017 y ADR-018
+      // del repositorio: un nulo sin su potencia no distingue «no hay efecto» de
+      // «este diseño no lo vería». Lo que el repositorio afirma hoy es un límite.
+      title: `Un límite, no una ausencia: el diseño descarta que la inclusión financiera mueva el crecimiento más de ${fes.n(T.bound.pp)} puntos por desviación del índice.`,
+      subtitle: `19 fuentes públicas, 1.123 municipios, un índice con sus pesos a la vista y ${T.curve.total} especificaciones estimadas. Construido con Python, dbt y DuckDB; cada cifra de esta página sale del archivo de resultados que el repositorio recalcula y prueba.`,
+      degree: "Tesis de Maestría en Economía · Pontificia Universidad Javeriana, 2026 · dirigida por Gabriel Penagos Londoño",
+      timeline: "Warehouse, índice, atlas, estimaciones y proyección 2026–2028 publicados · siguen el anexo de desagregación temporal y el manuscrito",
+      ctaAtlas: "Explorar el atlas",
+      ctaRepo: "Ver el código en GitHub",
+      bullets: [
+        { title: "Datos en los que se puede confiar.", body: "Cada descarga queda con su huella sha256; los ceros que son faltantes se tratan como faltantes; el empalme de las dos tablas de la Superintendencia está medido (diferencia mediana 0,02 %)." },
+        { title: "Un método elegido por evidencia, no por costumbre.", body: `El PCA se descartó porque la adecuación muestral dio ${fes.n(T.kmo.use)} y ${fes.n(T.kmo.depth)}; el denominador que fabricaba correlación (${fes.n(T.denominator.contemporaneous)}) se detectó y se corrigió (${fes.s(T.denominator.lagged)}).` },
+        { title: "Un resultado que dice cuánto sabe.", body: `β = ${fes.s(T.base.coef)} (p = ${fes.n(T.base.p)}) con efectos de entidad y tiempo: descarta efectos mayores a ${fes.n(T.bound.pp)} pp por desviación identificante del índice (unos ${fes.n(T.bound.raw)} pp por desviación bruta) y dice abiertamente que no puede ver los menores, ni siquiera ±${fes.n(T.tost.wide.margin)} pp.` },
+      ],
       nav: [
         { id: "resumen", label: "Resumen" },
         { id: "atlas", label: "Atlas" },
@@ -370,11 +387,21 @@ export const projects = {
         { value: "19", label: "fuentes públicas con manifiesto y sha256", note: "Superintendencia Financiera, DANE, MinTIC, MEN y el Marco Geoestadístico", href: "#datos" },
         { value: "2018–2025", label: "de panel anual sin un solo valor repetido", note: "264 filas departamentales y 231 crecimientos, ninguno duplicado", href: "#datos" },
         { value: "1.123", label: "municipios en el panel, 1.121 con polígono", note: "2018–2024 · 7.861 filas municipales", href: "#atlas" },
-        { value: "15", label: "especificaciones publicadas, cada una con su N y su p", note: "cuatro diseños contra la exogeneidad, bootstrap salvaje y placebo", href: "#resultados" },
+        { value: fes.int(T.curve.total), label: "especificaciones estimadas, cada una con su N y su p", note: `con efectos de tiempo, ${T.curve.significantTwoWay} de ${T.curve.perArm} salen significativas; sin ellos, ${T.curve.significantEntityOnly} de ${T.curve.perArm}`, href: "#resultados" },
       ] as Metric[],
+      shows: {
+        label: "Lo que esto demuestra",
+        title: "Cuatro capacidades, cada una con su prueba en esta página",
+        items: [
+          { title: "Un warehouse dimensional con pruebas de datos", body: "Esquema estrella en dbt sobre DuckDB, con pruebas que fallan si el empalme de las dos tablas o los totales por departamento se rompen." },
+          { title: "Econometría de panel con inferencia honesta", body: "Pocos clústeres, bootstrap salvaje, placebo por permutación, potencia y equivalencia: el resultado dice cuánto sabe y cuánto no." },
+          { title: "Cartografía interactiva en la web", body: "El atlas de esta página: d3 y TopoJSON, tres vistas y los 1.123 municipios, con la ausencia de dato pintada como ausencia." },
+          { title: "Ingeniería reproducible", body: `uv con archivo de bloqueo, integración continua que vuelve a calcular los resultados publicados y ${T.adrs} decisiones escritas antes del código.` },
+        ],
+      },
       abstract: {
         label: "Resumen",
-        body: "¿La inclusión financiera predice el crecimiento económico de los departamentos colombianos una vez descontadas las tendencias nacionales que los mueven a todos a la vez? Para responderla, el proyecto descarga diecinueve fuentes públicas con un manifiesto verificable, resuelve cada serie al código municipal DIVIPOLA, las modela en un esquema estrella con vintages sobre dbt y DuckDB, y construye un índice de inclusión financiera por dimensiones con pesos congelados y publicados por variable. Encima van dos paneles anuales, departamental y municipal, un atlas interactivo y una batería econométrica de efectos fijos de dos vías, diagnósticos de dependencia transversal y espacial, cuatro diseños que no dependen de la exogeneidad del índice, y una inferencia hecha para 33 clústeres. La respuesta se publica con su especificación, su N y sus pruebas, sea cual sea el signo.",
+        body: "¿La inclusión financiera predice el crecimiento económico de los departamentos colombianos una vez descontadas las tendencias nacionales que los mueven a todos a la vez? Para responderla, el proyecto descarga diecinueve fuentes públicas con un manifiesto verificable, resuelve cada serie al código municipal DIVIPOLA, las modela en un esquema estrella sobre dbt y DuckDB con la vintage de cada descarga en el manifiesto, y construye un índice de inclusión financiera por dimensiones con pesos congelados y publicados por variable. Encima van dos paneles anuales, departamental y municipal, un atlas interactivo y una batería econométrica de efectos fijos de dos vías, diagnósticos de dependencia transversal y espacial, diseños que no dependen de la exogeneidad del índice (CCE, exposición inicial, estudio de eventos con tendencias previas), y una inferencia hecha para 33 clústeres. La respuesta se publica con su especificación, su N, sus pruebas y su potencia, sea cual sea el signo, y es un límite y no una ausencia: con bootstrap salvaje agrupado, el diseño descarta efectos mayores a unos 0,55 puntos porcentuales de crecimiento anual por desviación identificante del índice, y no puede hablar de nada menor.",
       },
       data: {
         label: "Datos",
@@ -393,7 +420,8 @@ export const projects = {
         title: "Se mide el supuesto antes de elegir el método",
         items: [
           { title: "Ocho variables, tres dimensiones", body: "Acceso, uso y profundidad, cada una con sus variables normalizadas por adultos o por producto y estandarizadas en la ventana de calibración. Dieciocho candidatas quedaron fuera, cada una con su motivo escrito." },
-          { title: "El PCA se descartó midiéndolo", body: "La medida de adecuación muestral da 0,314 en acceso y 0,404 en uso, por debajo del umbral de 0,5 que hace falta para factorizar. Forzarlo produce pesos implícitos negativos en microcrédito, que es un índice que dice que más crédito es menos inclusión." },
+          { title: "El PCA se descartó midiéndolo", body: `La medida de adecuación muestral da ${fes.n(T.kmo.use)} en uso y ${fes.n(T.kmo.depth)} en profundidad, por debajo del umbral de 0,5 que hace falta para factorizar; acceso tiene una sola variable. Forzarlo produce pesos implícitos con el signo contrario: una variable que debería sumar entra restando.` },
+          { title: "El denominador, rezagado", body: `Los montos se normalizan por el producto del año anterior, no el del mismo año: ese PIB también está en la dependiente, y dividir por él fabrica correlación. Un índice placebo con los numeradores congelados, que solo se mueve por su denominador, «predice» el crecimiento con β = ${fes.n(T.denominator.contemporaneous)} si el producto es el del mismo año; con el rezagado el sesgo baja a ${fes.n(T.denominator.lagged)} (p = ${fes.n(T.denominator.laggedP)}) pero no desaparece, y con un denominador fijo de 2018 se va (${fes.s(T.denominator.fixed)}, p = ${fes.n(T.denominator.fixedP)}). Por eso el índice de denominador fijo se publica al lado, como coprincipal.` },
           { title: "Pesos iguales, congelados y publicados", body: "Dentro de cada dimensión los pesos son iguales, se fijan en la ventana 2018–2019 y no se vuelven a tocar. Los pesos implícitos por variable se publican siempre, y ninguno puede ser negativo." },
           { title: "Sensibilidad a la vista", body: "El PCA y el índice de distancia de Sarma se calculan igual y se publican como alternativas, con la correlación de rangos entre las tres versiones. Ninguna se esconde." },
           { title: "Cero es un promedio, no una ausencia", body: "El índice está estandarizado contra el promedio de los departamentos en la ventana de calibración. Un valor de 2 son dos desviaciones por encima de aquel promedio, no «el doble de inclusión»." },
@@ -412,29 +440,32 @@ export const projects = {
       },
       results: {
         label: "Resultados",
-        title: "Con efectos de entidad y tiempo, el coeficiente es cero",
-        headline: "La inclusión financiera no predice el crecimiento departamental una vez descontada la tendencia nacional.",
-        stat: "β = +0,0007 · p = 0,90",
-        body: "Treinta y tres departamentos, 2019 a 2025, 228 observaciones. Con efectos fijos de entidad y de tiempo, el índice compuesto no mueve el crecimiento del PIB real per cápita: el bootstrap salvaje por clúster da p = 0,89 y el placebo por permutación p = 0,68. Sin efectos de tiempo el mismo coeficiente vale +0,024 con p < 0,001. Esa distancia es exactamente lo que valía la tendencia nacional: el índice sube en todos los departamentos a la vez, y cualquier variable que también suba con los años se le parece.",
+        title: "Con efectos de entidad y tiempo, el efecto queda acotado",
+        headline: `El diseño descarta efectos mayores a ${fes.n(T.bound.pp)} puntos porcentuales de crecimiento anual por desviación identificante del índice (unos ${fes.n(T.bound.raw)} pp por desviación bruta), y no puede hablar de nada menor.`,
+        stat: `β = ${fes.s(T.base.coef)} · p = ${fes.n(T.base.p)}`,
+        body: `Treinta y tres departamentos, ${T.panel.from} a ${T.panel.to}, ${fes.int(T.panel.n)} observaciones. Con efectos fijos de entidad y de tiempo, el índice compuesto no mueve el crecimiento del PIB real per cápita de forma que se pueda distinguir de cero: el bootstrap salvaje por clúster da p = ${fes.n(T.bootstrap.p)} y el placebo por permutación p = ${fes.n(T.placebo.p)}. Un nulo sin su potencia no distingue «no hay efecto» de «este diseño no lo vería», así que se mide: el efecto mínimo detectable al 80 % es ${fes.n(T.mde80)} pp por desviación estándar identificante, y la prueba de equivalencia descarta efectos mayores a ±${fes.n(T.tost.wide.margin)} pp (p = ${fes.n(T.tost.wide.p)}) pero no consigue descartar ±${fes.n(T.tost.narrow.margin)} pp (p = ${fes.n(T.tost.narrow.p)}). Sin efectos de tiempo el mismo coeficiente vale ${fes.s(T.entityOnly.coefShort)} con p ${fes.lt(T.entityOnly.pBelow)}: esa distancia es lo que valía la tendencia nacional, y los efectos de dos vías se llevan el ${T.twoWayVariance.removedPct} % de la varianza del índice.`,
         tableHead: { spec: "Especificación", coef: "β", se: "EE", p: "p", n: "N" },
         rows: [
-          { spec: "Efectos de entidad y tiempo (base)", coef: "+0,0007", se: "0,0060", p: "0,90", n: "228" },
-          { spec: "Base con errores de Driscoll-Kraay", coef: "+0,0007", se: "0,0037", p: "0,84", n: "228" },
-          { spec: "Solo efectos de entidad", coef: "+0,0242", se: "0,0050", p: "< 0,001", n: "228" },
-          { spec: "En cambios del índice", coef: "−0,0071", se: "0,0051", p: "0,16", n: "226" },
-          { spec: "CCE, cargas heterogéneas por departamento", coef: "+0,0014", se: "0,0086", p: "0,87", n: "228" },
-          { spec: "SLX, rezago espacial del índice", coef: "+0,0046", se: "0,0066", p: "0,49", n: "221" },
-          { spec: "Shift-share, exposición 2018 × adopción nacional", coef: "+0,0182", se: "0,0067", p: "0,007", n: "223" },
+          { spec: "Efectos de entidad y tiempo (base)", coef: fes.s(T.base.coef), se: fes.n(T.base.se), p: fes.n(T.base.p), n: fes.int(T.base.n) },
+          { spec: "Base con errores de Driscoll-Kraay", coef: fes.s(T.driscollKraay.coef), se: fes.n(T.driscollKraay.se), p: fes.n(T.driscollKraay.p), n: fes.int(T.driscollKraay.n) },
+          { spec: "Solo efectos de entidad", coef: fes.s(T.entityOnly.coef), se: fes.n(T.entityOnly.se), p: fes.lt(T.entityOnly.pBelow), n: fes.int(T.entityOnly.n) },
+          { spec: "En cambios del índice", coef: fes.s(T.changes.coef), se: fes.n(T.changes.se), p: fes.n(T.changes.p), n: fes.int(T.changes.n) },
+          { spec: "CCE, cargas heterogéneas por departamento", coef: fes.s(T.cce.coef), se: fes.n(T.cce.se), p: fes.n(T.cce.p), n: fes.int(T.cce.n) },
+          { spec: "SLX, rezago espacial del índice", coef: fes.s(T.slx.coef), se: fes.n(T.slx.se), p: fes.n(T.slx.p), n: fes.int(T.slx.n) },
+          { spec: "Exposición inicial: índice 2018 × adopción nacional", coef: fes.s(T.shiftShare.coef), se: fes.n(T.shiftShare.se), p: fes.n(T.shiftShare.p), n: fes.int(T.shiftShare.n) },
         ],
         tiles: [
-          { value: "0,89", label: "p del bootstrap salvaje por clúster", note: "999 réplicas de Rademacher con la nula impuesta sobre 33 departamentos" },
-          { value: "0,68", label: "p del placebo por permutación", note: "499 barajados del índice dentro de cada año; el coeficiente real cae en el centro de la nube" },
-          { value: "2,46", label: "CD de Pesaran sobre los residuos", note: "dependencia transversal débil pero presente (p = 0,014); por eso Driscoll-Kraay acompaña al clúster" },
+          { value: `${fes.n(T.mde80)} pp`, label: "efecto mínimo detectable al 80 %", note: `por desviación estándar identificante del índice; con el bootstrap la equivalencia descarta ±${fes.n(T.tost.ruledOut.margin)} pp y no ±${fes.n(T.tost.wide.margin)} pp (p = ${fes.n(T.tost.wide.p)})` },
+          { value: fes.n(T.bootstrap.p), label: "p del bootstrap salvaje por clúster", note: `${fes.int(T.bootstrap.reps)} réplicas de Rademacher con la nula impuesta sobre ${T.bootstrap.clusters} departamentos, studentizadas con el error agrupado` },
+          { value: fes.n(T.placebo.p), label: "p del placebo por permutación", note: `${fes.int(T.placebo.reps)} reasignaciones de la trayectoria completa de cada departamento; barajar dentro del año estrecharía la nube de forma artificial` },
+          { value: fes.n(T.pesaranCd.stat), label: "CD de Pesaran sobre los residuos", note: `dependencia transversal débil pero presente (p = ${fes.n(T.pesaranCd.p)}); por eso Driscoll-Kraay acompaña al clúster` },
         ],
         reading: [
-          "Las tres dimensiones por separado, la especificación en cambios, el CCE, el SLX y los dos índices alternativos dan lo mismo: cero.",
-          "El único diseño con señal es el shift-share. Sobrevive al ingreso inicial como placebo, pero la urbanización inicial produce una pendiente igual de significativa (+0,051, p = 0,013): recoge que los departamentos más urbanos, que son también los más incluidos, crecieron más rápido en el periodo. Es una pendiente diferencial, no un efecto del índice, y se publica así.",
+          `Las tres dimensiones por separado, la especificación en cambios, el CCE, el SLX y los dos índices alternativos coinciden: ninguno se distingue de cero. Dejando fuera un departamento cada vez, el coeficiente queda entre ${fes.s(T.jackknife.min)} y ${fes.s(T.jackknife.max)} y nunca es significativo.`,
+          `La curva de especificación estima ${fes.int(T.curve.total)} variantes: sin efectos de tiempo, ${T.curve.significantEntityOnly} de ${T.curve.perArm} salen significativas; con efectos de tiempo, ${T.curve.significantTwoWay} de ${T.curve.perArm}. Lo que separa a las dos mitades es la tendencia nacional, no la inclusión.`,
+          `El único diseño con señal es el de exposición inicial (${fes.s(T.shiftShare.coefShort)}, p = ${fes.n(T.shiftShare.p)}), que sobrevive a su propio bootstrap y a su placebo. No sobrevive al contraste que importa: la urbanización inicial produce por sí sola una pendiente igual de significativa (${fes.s(T.shiftShareUrban.coef)}, p = ${fes.n(T.shiftShareUrban.p)}), y con las dos exposiciones en la misma ecuación el índice cae a p = ${fes.n(T.shiftShareUrban.indexPWithUrban)}. Tampoco sobrevive a la corrección de Holm sobre los doce contrastes publicados. Es una pendiente diferencial de los departamentos más urbanos, no un efecto del índice, y se publica así.`,
           "El estudio de eventos alrededor de 2020 no puede contrastar tendencias previas —la dependiente empieza en 2019 y el choque es 2020— y se publica con esa limitación escrita.",
+          `La capa de proyección ${T.forecast.from}–${T.forecast.to} se publica como escenario, no como pronóstico superior: en el backtest reduce un ${fes.n(T.forecast.gainPct)} % el error medio del pronóstico ingenuo, pero le gana en ${T.forecast.won} de ${T.forecast.of} años, sin ${T.forecast.bestOrigin} la ganancia es de ${fes.s(T.forecast.gainWithoutBestPct)} %, y agrupada por año de origen la diferencia no es significativa (p = ${fes.n(T.forecast.dmP)}).`,
         ],
       },
       decisions: {
@@ -443,9 +474,9 @@ export const projects = {
         body: "Las decisiones que cambian un resultado —la frecuencia, el modelo de datos, el método del índice, el diseño econométrico— van a un registro de decisión con sus alternativas, su coste y cómo revertirla. Las constantes viven en un solo sitio y ninguna cifra publicada existe sin la prueba que la sostiene.",
         items: [
           { title: "Frecuencia anual, dos paneles", body: "El producto subnacional es anual y ningún valor anual se reparte en cuatro trimestres. La desagregación temporal queda como anexo, con sus advertencias." },
-          { title: "Esquema estrella con vintages", body: "Claves naturales, hechos por descarga y un empalme de esquema medido en el trimestre que existe en las dos fuentes." },
+          { title: "Esquema estrella con procedencia", body: "Claves naturales, la huella sha256 de cada descarga en el manifiesto y un empalme de esquema medido en el trimestre que existe en las dos fuentes." },
           { title: "Índice por dimensiones con supuesto medido", body: "Adecuación muestral antes de factorizar; pesos iguales, congelados y publicados; alternativas visibles." },
-          { title: "Diseño econométrico", body: "Efectos fijos de dos vías, diagnósticos medidos y no supuestos, cuatro diseños contra la exogeneidad, y bootstrap salvaje porque 33 clústeres no bastan para la asintótica." },
+          { title: "Diseño econométrico", body: "Efectos fijos de dos vías, diagnósticos medidos y no supuestos, diseños contra la exogeneidad con sus tendencias previas, bootstrap salvaje studentizado con el error agrupado porque 33 clústeres no bastan para la asintótica, corrección de Holm y la potencia publicada junto al nulo." },
           { title: "Datos derivados con la licencia de la fuente", body: "Lo que sale de la Superintendencia, MinTIC y el Ministerio de Educación se publica CC BY-SA 4.0, con atribución." },
         ],
       },
@@ -455,7 +486,7 @@ export const projects = {
         steps: [
           { cmd: "uv sync", body: "Dependencias exactas desde el archivo de bloqueo. Nada se instala fuera de él." },
           { cmd: "uv run iif acquire all", body: "Descarga las diecinueve fuentes, verifica el conteo contra cada API y escribe el manifiesto con sha256." },
-          { cmd: "make check", body: "Ruff, 91 pruebas de Python, 250 modelos y pruebas de dbt sobre DuckDB, y el render del sitio. Sale en cero o no hay commit." },
+          { cmd: "make check", body: `Ruff, ${T.tests} pruebas de Python, los modelos y las pruebas de dbt sobre DuckDB, y el render del sitio. Sale en cero o no hay commit.` },
           { cmd: "uv run iif econ", body: "Corre la batería econométrica completa en menos de medio minuto y escribe el archivo del que sale cada cifra de esta página." },
           { cmd: "uv run iif atlas", body: "Genera la geometría y las series que consume este mapa, dentro del presupuesto de 3 MB que fija el contrato." },
         ],
@@ -465,13 +496,24 @@ export const projects = {
         label: "Qué hay y qué llega",
         title: "El proyecto se publica por fases",
         items: [
-          "Publicado: las diecinueve fuentes con manifiesto, el warehouse completo en dbt, el índice por dimensiones con sus pesos, los dos paneles anuales, el atlas y la batería econométrica con sus resultados.",
-          "Después: el anexo de desagregación temporal (Chow-Lin, Denton y Fernández con el indicador trimestral del DANE) y el manuscrito.",
+          "Publicado: las diecinueve fuentes con manifiesto, el warehouse completo en dbt, el índice por dimensiones con sus pesos, los dos paneles anuales, el atlas, la batería econométrica con su potencia y su curva de especificación, y la proyección 2026–2028 como escenario.",
+          "Después: la proyección sobre el mapa de esta página, el anexo de desagregación temporal (Chow-Lin, Denton y Fernández con el indicador trimestral del DANE) y el manuscrito.",
           "Todo el código, los datos derivados y las decisiones están en el repositorio, versionados.",
         ],
       },
       repoCta: "Ver el repositorio",
-      backCta: "Volver al inicio",
+      // Una salida por lector. No hay agenda en línea: la tercera es un correo,
+      // y lo dice, en vez de ofrecer un enlace que no existe.
+      audience: {
+        label: "Según quién lee",
+        hireLead: "¿Contratas?",
+        hire: "Descarga el CV",
+        researchLead: "¿Investigas?",
+        research: "Cita el proyecto",
+        researchHref: THESIS_CITATION,
+        orgLead: "¿Necesitas esto para tu organización?",
+        org: "Escríbeme",
+      },
       atlasCopy: {
         viewLabel: "Vista",
         views: { plano: "Plano", relieve: "Relieve 3D", municipios: "Municipios" },
@@ -970,13 +1012,20 @@ export const projects = {
     },
     thesis: {
       metaTitle: "Financial inclusion in Colombia",
-      metaDesc: "Nineteen public sources in a dbt and DuckDB warehouse, a financial-inclusion index, two annual panels and an atlas of all 1,123 municipalities.",
+      metaDesc: "Open warehouse of 19 public sources, a financial-inclusion index for 1,123 municipalities, an interactive atlas and panel econometrics with its power.",
       kicker: "Research · M.Sc. thesis filed",
       pill: "RESEARCH",
-      title: "I could have published the pretty coefficient. I published the zero.",
-      subtitle: "Nineteen public sources nobody had joined, a financial-inclusion index by dimension, two annual panels, an atlas of all 1,123 municipalities in the country and a full econometric battery. The naive specification gave +0.0242 at p < 0.001. Take the year out and it is zero. The zero is what got published.",
-      degree: "M.Sc. in Economics thesis · Pontificia Universidad Javeriana",
-      timeline: "Warehouse, index, atlas and estimates published · the temporal-disaggregation annex and the manuscript follow",
+      title: `A bound, not an absence: the design rules out financial inclusion moving growth by more than ${fen.n(T.bound.pp)} points per standard deviation of the index.`,
+      subtitle: `19 public sources, 1,123 municipalities, an index with its weights in plain sight and ${T.curve.total} specifications estimated. Built with Python, dbt and DuckDB; every figure on this page comes from the results file the repository recomputes and tests.`,
+      degree: "M.Sc. in Economics thesis · Pontificia Universidad Javeriana, 2026 · supervised by Gabriel Penagos Londoño",
+      timeline: "Warehouse, index, atlas, estimates and the 2026–2028 forecast published · the temporal-disaggregation annex and the manuscript follow",
+      ctaAtlas: "Explore the atlas",
+      ctaRepo: "See the code on GitHub",
+      bullets: [
+        { title: "Data you can trust.", body: "Every download is fingerprinted with sha256; zeros that are really missing values are treated as missing; the splice between the supervisor's two tables is measured (median gap 0.02%)." },
+        { title: "A method chosen by evidence, not habit.", body: `PCA was ruled out because sampling adequacy came in at ${fen.n(T.kmo.use)} and ${fen.n(T.kmo.depth)}; a denominator that manufactured correlation (${fen.n(T.denominator.contemporaneous)}) was found and fixed (${fen.s(T.denominator.lagged)}).` },
+        { title: "A result that says how much it knows.", body: `β = ${fen.s(T.base.coef)} (p = ${fen.n(T.base.p)}) with entity and time effects: it rules out effects above ${fen.n(T.bound.pp)} pp per identifying standard deviation of the index (about ${fen.n(T.bound.raw)} pp per raw standard deviation) and says plainly it cannot see smaller ones, not even ±${fen.n(T.tost.wide.margin)} pp.` },
+      ],
       nav: [
         { id: "resumen", label: "Abstract" },
         { id: "atlas", label: "Atlas" },
@@ -990,11 +1039,21 @@ export const projects = {
         { value: "19", label: "public sources with a manifest and sha256", note: "financial supervisor, statistics office, ICT and education ministries, national map", href: "#datos" },
         { value: "2018–2025", label: "of annual panel without a single repeated value", note: "264 department rows and 231 growth observations, none duplicated", href: "#datos" },
         { value: "1,123", label: "municipalities in the panel, 1,121 with a polygon", note: "2018–2024 · 7,861 municipal rows", href: "#atlas" },
-        { value: "15", label: "published specifications, each with its N and its p", note: "four designs against endogeneity, a wild cluster bootstrap and a placebo", href: "#resultados" },
+        { value: fen.int(T.curve.total), label: "specifications estimated, each with its N and its p", note: `with time effects, ${T.curve.significantTwoWay} of ${T.curve.perArm} come out significant; without them, ${T.curve.significantEntityOnly} of ${T.curve.perArm}`, href: "#resultados" },
       ] as Metric[],
+      shows: {
+        label: "What this shows",
+        title: "Four capabilities, each with its proof on this page",
+        items: [
+          { title: "A dimensional warehouse with data tests", body: "A star schema in dbt on DuckDB, with tests that fail if the splice between the two tables or the department totals break." },
+          { title: "Panel econometrics with honest inference", body: "Few clusters, a wild bootstrap, a permutation placebo, power and equivalence: the result says how much it knows and how much it does not." },
+          { title: "Interactive web cartography", body: "The atlas on this page: d3 and TopoJSON, three views and all 1,123 municipalities, with missing data painted as missing." },
+          { title: "Reproducible engineering", body: `uv with a lock file, continuous integration that recomputes the published results, and ${T.adrs} decisions written before the code.` },
+        ],
+      },
       abstract: {
         label: "Abstract",
-        body: "Does financial inclusion predict the economic growth of Colombia's departments once you take out the national trends that move all of them at once? To answer it, the project downloads nineteen public sources with a verifiable manifest, resolves every series to the municipal code, models them as a star schema with vintages on dbt and DuckDB, and builds a financial-inclusion index by dimension with frozen, published weights. On top go two annual panels, department and municipality, an interactive atlas, and an econometric battery of two-way fixed effects, cross-sectional and spatial dependence diagnostics, four designs that do not rely on the index being exogenous, and inference built for 33 clusters. The answer is published with its specification, its N and its tests, whatever the sign.",
+        body: "Does financial inclusion predict the economic growth of Colombia's departments once you take out the national trends that move all of them at once? To answer it, the project downloads nineteen public sources with a verifiable manifest, resolves every series to the municipal code, models them as a star schema on dbt and DuckDB with each download's vintage in the manifest, and builds a financial-inclusion index by dimension with frozen, published weights. On top go two annual panels, department and municipality, an interactive atlas, and an econometric battery of two-way fixed effects, cross-sectional and spatial dependence diagnostics, designs that do not rely on the index being exogenous (CCE, initial exposure, an event study with pre-trends), and inference built for 33 clusters. The answer is published with its specification, its N, its tests and its power, whatever the sign, and it is a bound rather than an absence: with a cluster wild bootstrap, the design rules out effects above about 0.55 percentage points of annual growth per identifying standard deviation of the index, and cannot speak to anything smaller.",
       },
       data: {
         label: "Data",
@@ -1013,7 +1072,8 @@ export const projects = {
         title: "The assumption gets measured before the method is chosen",
         items: [
           { title: "Eight variables, three dimensions", body: "Access, use and depth, each with its variables normalised per adult or per product and standardised over the calibration window. Eighteen candidates were left out, each with its reason written down." },
-          { title: "PCA was ruled out by measuring it", body: "Sampling adequacy comes to 0.314 for access and 0.404 for use, below the 0.5 a factor model needs. Forcing it produces negative implicit weights on microcredit — an index that says more credit is less inclusion." },
+          { title: "PCA was ruled out by measuring it", body: `Sampling adequacy comes to ${fen.n(T.kmo.use)} for use and ${fen.n(T.kmo.depth)} for depth, below the 0.5 a factor model needs; access has a single variable. Forcing it produces implicit weights with the wrong sign: a variable that should add enters subtracting.` },
+          { title: "The denominator, lagged", body: `Amounts are normalised by the previous year's output, not the same year's: that GDP also sits in the dependent variable, and dividing by it manufactures correlation. A placebo index with its numerators frozen, which moves only through its denominator, "predicts" growth with β = ${fen.n(T.denominator.contemporaneous)} when the output is the same year's; with the lagged one the bias falls to ${fen.n(T.denominator.lagged)} (p = ${fen.n(T.denominator.laggedP)}) but does not vanish, and with a fixed 2018 denominator it is gone (${fen.s(T.denominator.fixed)}, p = ${fen.n(T.denominator.fixedP)}). That is why the fixed-denominator index is published alongside, as co-principal.` },
           { title: "Equal weights, frozen and published", body: "Within each dimension the weights are equal, fixed over the 2018–2019 window and never touched again. Implicit weights per variable are always published, and none may be negative." },
           { title: "Sensitivity in plain sight", body: "PCA and Sarma's distance index are computed the same way and published as alternatives, with the rank correlation between the three versions. None is hidden." },
           { title: "Zero is an average, not an absence", body: "The index is standardised against the average department over the calibration window. A value of 2 is two standard deviations above that average, not \"twice the inclusion\"." },
@@ -1032,29 +1092,32 @@ export const projects = {
       },
       results: {
         label: "Results",
-        title: "With entity and time effects, the coefficient is zero",
-        headline: "Financial inclusion does not predict departmental growth once the national trend is taken out.",
-        stat: "β = +0.0007 · p = 0.90",
-        body: "Thirty-three departments, 2019 to 2025, 228 observations. With entity and time fixed effects the composite index does not move real GDP per capita growth: the wild cluster bootstrap gives p = 0.89 and the permutation placebo p = 0.68. Without time effects the same coefficient is +0.024 with p < 0.001. That distance is exactly what the national trend was worth: the index rises in every department at once, and anything else that rises with the years looks like it.",
+        title: "With entity and time effects, the effect is bounded",
+        headline: `The design rules out effects above ${fen.n(T.bound.pp)} percentage points of annual growth per identifying standard deviation of the index (about ${fen.n(T.bound.raw)} pp per raw standard deviation), and cannot speak to anything smaller.`,
+        stat: `β = ${fen.s(T.base.coef)} · p = ${fen.n(T.base.p)}`,
+        body: `Thirty-three departments, ${T.panel.from} to ${T.panel.to}, ${fen.int(T.panel.n)} observations. With entity and time fixed effects the composite index does not move real GDP per capita growth in any way distinguishable from zero: the wild cluster bootstrap gives p = ${fen.n(T.bootstrap.p)} and the permutation placebo p = ${fen.n(T.placebo.p)}. A null without its power cannot tell "there is no effect" from "this design would not see one", so the power is measured: the minimum detectable effect at 80% is ${fen.n(T.mde80)} pp per identifying standard deviation, and equivalence testing rules out effects above ±${fen.n(T.tost.wide.margin)} pp (p = ${fen.n(T.tost.wide.p)}) but fails to rule out ±${fen.n(T.tost.narrow.margin)} pp (p = ${fen.n(T.tost.narrow.p)}). Without time effects the same coefficient is ${fen.s(T.entityOnly.coefShort)} with p ${fen.lt(T.entityOnly.pBelow)}: that distance is what the national trend was worth, and two-way effects take away ${T.twoWayVariance.removedPct}% of the index's variance.`,
         tableHead: { spec: "Specification", coef: "β", se: "SE", p: "p", n: "N" },
         rows: [
-          { spec: "Entity and time effects (baseline)", coef: "+0.0007", se: "0.0060", p: "0.90", n: "228" },
-          { spec: "Baseline with Driscoll-Kraay errors", coef: "+0.0007", se: "0.0037", p: "0.84", n: "228" },
-          { spec: "Entity effects only", coef: "+0.0242", se: "0.0050", p: "< 0.001", n: "228" },
-          { spec: "In changes of the index", coef: "−0.0071", se: "0.0051", p: "0.16", n: "226" },
-          { spec: "CCE, heterogeneous loadings by department", coef: "+0.0014", se: "0.0086", p: "0.87", n: "228" },
-          { spec: "SLX, spatial lag of the index", coef: "+0.0046", se: "0.0066", p: "0.49", n: "221" },
-          { spec: "Shift-share, 2018 exposure × national adoption", coef: "+0.0182", se: "0.0067", p: "0.007", n: "223" },
+          { spec: "Entity and time effects (baseline)", coef: fen.s(T.base.coef), se: fen.n(T.base.se), p: fen.n(T.base.p), n: fen.int(T.base.n) },
+          { spec: "Baseline with Driscoll-Kraay errors", coef: fen.s(T.driscollKraay.coef), se: fen.n(T.driscollKraay.se), p: fen.n(T.driscollKraay.p), n: fen.int(T.driscollKraay.n) },
+          { spec: "Entity effects only", coef: fen.s(T.entityOnly.coef), se: fen.n(T.entityOnly.se), p: fen.lt(T.entityOnly.pBelow), n: fen.int(T.entityOnly.n) },
+          { spec: "In changes of the index", coef: fen.s(T.changes.coef), se: fen.n(T.changes.se), p: fen.n(T.changes.p), n: fen.int(T.changes.n) },
+          { spec: "CCE, heterogeneous loadings by department", coef: fen.s(T.cce.coef), se: fen.n(T.cce.se), p: fen.n(T.cce.p), n: fen.int(T.cce.n) },
+          { spec: "SLX, spatial lag of the index", coef: fen.s(T.slx.coef), se: fen.n(T.slx.se), p: fen.n(T.slx.p), n: fen.int(T.slx.n) },
+          { spec: "Initial exposure: 2018 index × national adoption", coef: fen.s(T.shiftShare.coef), se: fen.n(T.shiftShare.se), p: fen.n(T.shiftShare.p), n: fen.int(T.shiftShare.n) },
         ],
         tiles: [
-          { value: "0.89", label: "wild cluster bootstrap p", note: "999 Rademacher draws with the null imposed over 33 departments" },
-          { value: "0.68", label: "permutation placebo p", note: "499 shuffles of the index within each year; the real coefficient sits in the middle of the cloud" },
-          { value: "2.46", label: "Pesaran CD on the residuals", note: "weak but present cross-sectional dependence (p = 0.014); hence Driscoll-Kraay alongside the cluster" },
+          { value: `${fen.n(T.mde80)} pp`, label: "minimum detectable effect at 80%", note: `per identifying standard deviation of the index; with the bootstrap, equivalence rules out ±${fen.n(T.tost.ruledOut.margin)} pp and not ±${fen.n(T.tost.wide.margin)} pp (p = ${fen.n(T.tost.wide.p)})` },
+          { value: fen.n(T.bootstrap.p), label: "wild cluster bootstrap p", note: `${fen.int(T.bootstrap.reps)} Rademacher draws with the null imposed over ${T.bootstrap.clusters} departments, studentised with the cluster-robust error` },
+          { value: fen.n(T.placebo.p), label: "permutation placebo p", note: `${fen.int(T.placebo.reps)} reassignments of each department's whole trajectory; shuffling within the year would narrow the cloud artificially` },
+          { value: fen.n(T.pesaranCd.stat), label: "Pesaran CD on the residuals", note: `weak but present cross-sectional dependence (p = ${fen.n(T.pesaranCd.p)}); hence Driscoll-Kraay alongside the cluster` },
         ],
         reading: [
-          "The three dimensions on their own, the specification in changes, CCE, SLX and the two alternative indices all give the same thing: zero.",
-          "The only design with a signal is the shift-share. It survives initial income as a placebo, but initial urbanisation produces an equally significant slope (+0.051, p = 0.013): it captures that the more urban departments, which are also the more included ones, grew faster over the period. It is a differential slope, not an effect of the index, and it is published as such.",
+          `The three dimensions on their own, the specification in changes, CCE, SLX and the two alternative indices agree: none is distinguishable from zero. Leaving out one department at a time, the coefficient stays between ${fen.s(T.jackknife.min)} and ${fen.s(T.jackknife.max)} and is never significant.`,
+          `The specification curve estimates ${fen.int(T.curve.total)} variants: without time effects, ${T.curve.significantEntityOnly} of ${T.curve.perArm} come out significant; with time effects, ${T.curve.significantTwoWay} of ${T.curve.perArm}. What separates the two halves is the national trend, not inclusion.`,
+          `The only design with a signal is the initial-exposure design (${fen.s(T.shiftShare.coefShort)}, p = ${fen.n(T.shiftShare.p)}), which survives its own bootstrap and its own placebo. It does not survive the contrast that matters: initial urbanisation produces an equally significant slope on its own (${fen.s(T.shiftShareUrban.coef)}, p = ${fen.n(T.shiftShareUrban.p)}), and with both exposures in the same equation the index falls to p = ${fen.n(T.shiftShareUrban.indexPWithUrban)}. Nor does it survive a Holm correction over the twelve contrasts published. It is a differential slope for the more urban departments, not an effect of the index, and it is published as such.`,
           "The event study around 2020 cannot test pre-trends — the dependent variable starts in 2019 and the shock is 2020 — and it is published with that limitation written down.",
+          `The ${T.forecast.from}–${T.forecast.to} forecast layer is published as a scenario, not as a superior forecast: in the backtest it cuts the naive forecast's mean error by ${fen.n(T.forecast.gainPct)}%, but it wins in ${T.forecast.won} of ${T.forecast.of} years, without ${T.forecast.bestOrigin} the gain is ${fen.s(T.forecast.gainWithoutBestPct)}%, and grouped by origin year the difference is not significant (p = ${fen.n(T.forecast.dmP)}).`,
         ],
       },
       decisions: {
@@ -1063,9 +1126,9 @@ export const projects = {
         body: "The decisions that change a result — frequency, data model, index method, econometric design — go into a decision record with their alternatives, their cost and how to reverse them. Constants live in one place and no published figure exists without the test that holds it up.",
         items: [
           { title: "Annual frequency, two panels", body: "Subnational output is annual and no annual value is spread across four quarters. Temporal disaggregation stays an annex, with its caveats." },
-          { title: "Star schema with vintages", body: "Natural keys, one fact per download, and a schema splice measured in the quarter that exists in both sources." },
+          { title: "Star schema with provenance", body: "Natural keys, each download's sha256 fingerprint in the manifest, and a schema splice measured in the quarter that exists in both sources." },
           { title: "Index by dimension with its assumption measured", body: "Sampling adequacy before factoring; equal weights, frozen and published; alternatives in plain sight." },
-          { title: "Econometric design", body: "Two-way fixed effects, diagnostics measured rather than assumed, four designs against endogeneity, and a wild bootstrap because 33 clusters are not enough for the asymptotics." },
+          { title: "Econometric design", body: "Two-way fixed effects, diagnostics measured rather than assumed, designs against endogeneity with their pre-trends, a wild bootstrap studentised with the cluster-robust error because 33 clusters are not enough for the asymptotics, a Holm correction, and the power published beside the null." },
           { title: "Derived data under the source's licence", body: "What comes out of the supervisor, the ICT ministry and the education ministry is published CC BY-SA 4.0, with attribution." },
         ],
       },
@@ -1075,7 +1138,7 @@ export const projects = {
         steps: [
           { cmd: "uv sync", body: "Exact dependencies from the lock file. Nothing is installed outside it." },
           { cmd: "uv run iif acquire all", body: "Downloads the nineteen sources, verifies the count against each API and writes the manifest with sha256." },
-          { cmd: "make check", body: "Ruff, 91 Python tests, 250 dbt models and tests on DuckDB, and the site render. It exits zero or there is no commit." },
+          { cmd: "make check", body: `Ruff, ${T.tests} Python tests, the dbt models and tests on DuckDB, and the site render. It exits zero or there is no commit.` },
           { cmd: "uv run iif econ", body: "Runs the full econometric battery in under half a minute and writes the file every figure on this page comes from." },
           { cmd: "uv run iif atlas", body: "Generates the geometry and series this map consumes, inside the 3 MB budget the contract sets." },
         ],
@@ -1085,13 +1148,22 @@ export const projects = {
         label: "What is there and what is coming",
         title: "The project ships in phases",
         items: [
-          "Published: the nineteen sources with a manifest, the full dbt warehouse, the index by dimension with its weights, the two annual panels, the atlas and the econometric battery with its results.",
-          "Next: the temporal-disaggregation annex (Chow-Lin, Denton and Fernández on the statistics office's quarterly indicator) and the manuscript.",
+          "Published: the nineteen sources with a manifest, the full dbt warehouse, the index by dimension with its weights, the two annual panels, the atlas, the econometric battery with its power and its specification curve, and the 2026–2028 forecast as a scenario.",
+          "Next: the forecast on this page's map, the temporal-disaggregation annex (Chow-Lin, Denton and Fernández on the statistics office's quarterly indicator) and the manuscript.",
           "All the code, the derived data and the decisions are in the repository, versioned.",
         ],
       },
       repoCta: "See the repository",
-      backCta: "Back to home",
+      audience: {
+        label: "Depending on who is reading",
+        hireLead: "Hiring?",
+        hire: "Download the CV",
+        researchLead: "Researching?",
+        research: "Cite the project",
+        researchHref: THESIS_CITATION,
+        orgLead: "Need this for your organisation?",
+        org: "Write to me",
+      },
       atlasCopy: {
         viewLabel: "View",
         views: { plano: "Flat", relieve: "Raised 3D", municipios: "Municipalities" },
