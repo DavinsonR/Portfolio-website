@@ -42,6 +42,7 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 22 | [23 sep](docs/bitacora/sesion-22.md) | Ingeniería: caché para lo que no cambia, el serif a la mitad, el atlas baja con sus datos, y cada página dice al buscador qué es |
 | 23 | [23 sep](docs/bitacora/sesion-23.md) | La red: tipos para los scripts, pruebas sin framework, presupuesto de peso, cabeceras y JSON-LD en el humo de rutas, Lighthouse en CI |
 | 25 | [23 sep](docs/bitacora/sesion-25.md) | Se abre el lab: pronóstico macro en LATAM, para jugarlo y no solo leerlo |
+| 26 | [23 sep](docs/bitacora/sesion-26.md) | El panorama: analítica descriptiva de la región, eventos que la explican, y un empalme roto en la fuente |
 
 ## Después de la sesión 17
 

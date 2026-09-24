@@ -52,7 +52,8 @@ test("las economías trimestrales de meta son exactamente las que tienen serie",
   const conSerie = series.trimestral.map((s) => s.iso3).sort();
   const enMeta = meta.paises.filter((p) => p.trimestral).map((p) => p.iso3).sort();
   assert.deepEqual(enMeta, conSerie);
-  assert.equal(series.anual.length, meta.paises.length);
+  const anuales = series.anual.map((s) => s.iso3).sort();
+  assert.deepEqual(meta.paises.filter((p) => p.anual).map((p) => p.iso3).sort(), anuales);
 });
 
 test("el ingenuo contra sí mismo vale 1, y el cociente usa los mismos orígenes", () => {
@@ -74,18 +75,68 @@ test("las cifras escritas en la página salen de los datos que la página muestr
     const med3 = ar1.calma.mediana.toFixed(3).replace(".", dec);
     assert.equal(t.figures[1].value, med2, `${lang}: la cifra del AR(1)`);
     assert.ok(t.verdict.stat.startsWith(med3), `${lang}: el veredicto dice ${t.verdict.stat}, los datos ${med3}`);
+    assert.ok(t.verdict.stat.includes(`${series.anual.length} econom`), `${lang}: el veredicto cuenta ${series.anual.length} economías anuales`);
 
     // 17 de 20: economías con cero años al exigir las 33 variables
     const cero = summary.frontera.filter((f) => f.completos[32] === 0).length;
     const total = summary.frontera.length;
     assert.equal(t.figures[3].value, `${cero} ${lang === "es" ? "de" : "of"} ${total}`, `${lang}: la frontera`);
 
-    // 20: economías en la pista anual
-    assert.equal(t.figures[0].value, String(series.anual.length), `${lang}: economías`);
+    // 20: economías con alguna serie (anual o trimestral); la nota dice cuántas anuales
+    const conSerie = new Set([...series.anual, ...series.trimestral].map((s) => s.iso3));
+    assert.equal(t.figures[0].value, String(conSerie.size), `${lang}: economías`);
+    assert.ok(t.figures[0].note.startsWith(String(series.anual.length)), `${lang}: la nota dice ${t.figures[0].note}, las anuales son ${series.anual.length}`);
 
     // 4 de 18: el contador del widget de Holm lo calcula; aquí se fija que haya 18 filas,
     // porque el interruptor dice «18 comparaciones».
     assert.equal(summary.holm.length, 18, "el interruptor de Holm habla de 18 comparaciones");
     assert.match(t.lab.holm.switch, /18/);
   }
+});
+
+// ---------------------------------------------------------------- el panel
+
+import { seasonalProfile, type Events, type Ise, type Panel } from "../lib/data/forecast-lab";
+
+const panel = read<Panel>("panel.json");
+const ise = read<Ise>("ise.json");
+const events = read<Events>("eventos.json");
+
+test("el panel: cada serie mide lo mismo que el eje de años, y cada economía tiene sus diez métricas", () => {
+  for (const p of meta.paises) {
+    const d = panel.datos[p.iso3];
+    assert.ok(d, `${p.iso3}: sin datos en el panel`);
+    for (const ind of panel.indicadores) {
+      assert.equal(d[ind.id]?.length, panel.anios.length, `${p.iso3}/${ind.id}`);
+    }
+  }
+});
+
+test("el tramo roto de Honduras llega como faltante, no como cero (B-010)", () => {
+  assert.ok(panel.defectos?.some((x) => x.iso3 === "HND"), "el panel declara el defecto");
+  const g = panel.datos.HND.pib_crecimiento;
+  for (let y = 1990; y <= 1999; y++) assert.equal(g[panel.anios.indexOf(y)], null, `HND ${y}`);
+  assert.ok(g[panel.anios.indexOf(2005)] != null, "fuera del tramo el dato sigue");
+});
+
+test("los eventos caen dentro del panel, en economías que existen, y no llevan cifras de magnitud", () => {
+  const cats = new Set(events.categorias.map((c) => c.id));
+  const isos = new Set(meta.paises.map((p) => p.iso3));
+  for (const e of events.eventos) {
+    assert.ok(panel.anios.includes(e.anio), `${e.titulo_es}: ${e.anio} fuera del panel`);
+    assert.ok(e.iso3 === "LATAM" || isos.has(e.iso3), `${e.titulo_es}: ${e.iso3}`);
+    assert.ok(cats.has(e.cat), `${e.titulo_es}: categoría ${e.cat}`);
+    for (const t of [e.texto_es, e.texto_en]) assert.ok(!t.includes("%"), `la magnitud la pone la serie: ${t}`);
+  }
+});
+
+test("el ISE trae sus 16 series del mismo largo, y el perfil estacional suma cero", () => {
+  assert.equal(ise.series.length, 16);
+  const n = ise.series[0].v.length;
+  for (const s of ise.series) assert.equal(s.v.length, n, s.id);
+  const month = Number(ise.inicio.split("-")[1]);
+  const prof = seasonalProfile(ise.series[0].v, month);
+  assert.equal(prof.length, 12);
+  assert.ok(prof.every(Number.isFinite));
+  assert.ok(Math.abs(prof.reduce((a, b) => a + b, 0)) < 1e-6, "los desvíos frente al promedio del año suman cero");
 });

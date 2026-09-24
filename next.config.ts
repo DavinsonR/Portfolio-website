@@ -87,7 +87,10 @@ const nextConfig: NextConfig = {
       cache("/fonts/:path*", immutable),
       cache(`/${demo}/model.onnx`, immutable),
       cache("/atlas/:path*", hourly),
-      cache("/forecast-lab/:path*", hourly),
+      // Los JSON del laboratorio cambian con cada versión suya y el código que los lee cambia con
+      // ellos: se revalidan siempre (un 304 barato) para que nunca se mezclen datos viejos con
+      // código nuevo, como pasaría con una hora de caché más siete de stale-while-revalidate.
+      cache("/forecast-lab/:path*", "public, max-age=0, must-revalidate"),
       cache("/trading-sim-snapshot/:path*", hourly),
       cache("/og-:lang.png", weekly),
       cache("/icon-:size.png", weekly),
