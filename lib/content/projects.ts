@@ -110,7 +110,7 @@ export const projects = {
           { label: "Ver el código", href: "https://github.com/DavinsonR/credit-risk-mlops" },
           {
             label: "La bitácora de defectos",
-            href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md",
+            href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/docs/DEFECTS.es.md",
           },
           {
             label: "Los registros de decisión",
@@ -732,7 +732,7 @@ export const projects = {
           { label: "See the code", href: "https://github.com/DavinsonR/credit-risk-mlops" },
           {
             label: "The defect ledger",
-            href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md",
+            href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/docs/DEFECTS.md",
           },
           {
             label: "The decision records",
