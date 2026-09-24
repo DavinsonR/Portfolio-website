@@ -10,7 +10,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import type { LabCopy } from "@/lib/content/forecast";
 
-export type Kind = "dashboard" | "play" | "backtest" | "region" | "frontier" | "frequency" | "holm";
+export type Kind = "dashboard" | "play" | "backtest" | "region" | "frequency" | "holm";
 
 const Widgets = lazy(() => import("./widgets"));
 // El panel es su propio fragmento: quien solo mira el panorama no baja las piezas, y viceversa.
