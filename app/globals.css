@@ -565,6 +565,37 @@ a {
   min-width: 42px;
 }
 
+/* The municipal level has no forecast: its options stay listed, disabled, and this line
+   says why and where to find them (D-36). A sentence, so it keeps the 14px floor. */
+.atlas-hint {
+  max-width: 250px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+/* The note that travels with the forecast (D-36). A tinted region opened by a 2px blue
+   rule, the band's grammar: no box, no shadow, and blue because it is a technical claim. */
+.atlas-note {
+  margin-top: 14px;
+  padding: 10px 12px 11px;
+  border-top: 2px solid var(--color-cold);
+  background: var(--color-coldsoft);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-body);
+}
+.atlas-note strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-cold);
+}
+.atlas-note p { margin: 0; max-width: 96ch; }
+
 .atlas-state {
   padding: 28px 0;
   font-size: 14.5px;
@@ -643,6 +674,12 @@ a {
 .atlas-table tr[data-id] { cursor: pointer; }
 .atlas-table tr[data-id]:hover td { background: var(--color-band); }
 .atlas-table tr[data-active="yes"] td { background: var(--color-coldsoft); font-weight: 600; }
+/* Region headers of the forecast list: each region is its own <tbody>. The list holds
+   every department, so it scrolls in its own frame rather than stretching the row. */
+.atlas-scroll { max-height: 520px; overflow-y: auto; }
+.atlas-scroll:focus-visible { outline-offset: 2px; }
+.atlas-scroll thead th { position: sticky; top: 0; z-index: 1; background: var(--color-paper); }
+.atlas-table th.atlas-region { padding-top: 12px; }
 .atlas-pill { display: block; height: 8px; border-radius: 0 2px 2px 0; }
 
 /* El sistema declara que no se envía ni una sombra y llama defecto a cualquiera:

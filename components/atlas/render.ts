@@ -17,7 +17,7 @@ import { geoMercator, geoPath } from "d3-geo";
 import type { GeoPermissibleObjects } from "d3-geo";
 import { descending, extent, max, median, rollups } from "d3-array";
 import { scaleLinear } from "d3-scale";
-import { interpolateLab } from "d3-interpolate";
+import { interpolateLab, interpolateRgb } from "d3-interpolate";
 import { color as toColor } from "d3-color";
 import { feature } from "topojson-client";
 import type { AtlasCopy, Indicator, Level, Series, Topology, View } from "./types";
@@ -38,6 +38,15 @@ const RELIEF: Record<View, { layers: number; step: number }> = {
   relieve: { layers: 26, step: 1.2 },
   municipios: { layers: 4, step: 1.6 },
 };
+
+/* The forecast layer (D-36, thesis ADR-022). The width of the 80 % interval is published as
+   an indicator of its own and is what the fill's opacity reads; the range is bounded so the
+   least certain department fades and never disappears. */
+const FORECAST = "proyeccion";
+const WIDTH_ID = "intervalo_ancho_proy";
+const ALPHA = { certain: 1, uncertain: 0.35 };
+/* Extra room above the map for the legend's second row: the hatching and the opacity. */
+const FORECAST_LEGEND = 22;
 
 /* The archipelago (DIVIPOLA 88) is drawn apart and does not count for the frame:
    700 km of sea would shrink Colombia by a fifth to draw a dot. */
@@ -162,8 +171,8 @@ export type GeoFeature = {
    corners that have already been transformed. The same matrix serves the map and
    the labels, which live outside the tilted group.                             */
 
-function viewGeometry(view: View, projection: Projection, focusFeatures: GeoFeature[]) {
-  const { width, frame, top, pad } = CANVAS;
+function viewGeometry(view: View, projection: Projection, focusFeatures: GeoFeature[], top: number) {
+  const { width, frame, pad } = CANVAS;
   const relief = RELIEF[view];
   const angle = ((view === "municipios" ? -28 : view === "relieve" ? -17 : 0) * Math.PI) / 180;
   const ky = view === "municipios" ? 0.66 : view === "relieve" ? 0.74 : 1;
@@ -222,6 +231,8 @@ export type RenderOptions = {
   view: View;
   indicator: Indicator;
   year: number;
+  /* The years of the active indicator's group: the observed ones, or the projected ones. */
+  years: number[];
   group: string;
   copy: AtlasCopy;
   locale: string;
@@ -229,6 +240,38 @@ export type RenderOptions = {
 };
 
 export type Slots = { left: HTMLElement; map: HTMLElement; right: HTMLElement };
+
+/* What the forecast adds to a drawing. `alpha` is null outside the central layers of a
+   projected year: the observed layers and the width layer itself keep a flat fill. */
+type Forecast = {
+  on: boolean;
+  projected: boolean;
+  widths: (number | null)[] | null;
+  alpha: ((i: number) => number) | null;
+  level: number | null;
+};
+
+function forecastOf(series: Series, indicator: Indicator, year: number, yearIndex: number): Forecast {
+  const on = indicator.grupo === FORECAST;
+  const projected = (series.anios_proyectados ?? []).includes(year);
+  const matrix = series.series[WIDTH_ID];
+  const level = series.proyeccion?.backtest?.cobertura_intervalo_nominal ?? series.proyeccion?.nivel_intervalo ?? null;
+  if (!on || !projected || !matrix) return { on, projected, widths: null, alpha: null, level };
+  const widths = matrix[yearIndex] ?? [];
+  if (indicator.id === WIDTH_ID) return { on, projected, widths, alpha: null, level };
+  /* One domain for the three projected years, so a paler 2028 means a wider 2028 and not
+     a rescaled one. */
+  const ahead = new Set(series.anios_proyectados ?? []);
+  const all = series.anios.flatMap((y, k) => (ahead.has(y) ? (matrix[k] ?? []) : [])).filter((v) => v !== null) as number[];
+  const [lo, hi] = (extent(all) as [number, number] | [undefined, undefined]) ?? [];
+  const span = lo === undefined || hi === undefined ? 0 : hi - lo;
+  const alpha = (i: number) => {
+    const w = widths[i];
+    if (w === null || w === undefined || !span) return ALPHA.certain;
+    return ALPHA.certain - ((w - (lo as number)) / span) * (ALPHA.certain - ALPHA.uncertain);
+  };
+  return { on, projected, widths, alpha, level };
+}
 
 export function renderAtlas(slots: Slots, o: RenderOptions): () => void {
   const { series, projection, indicator, copy } = o;
@@ -243,6 +286,7 @@ export function renderAtlas(slots: Slots, o: RenderOptions): () => void {
   const inGroup = (i: number) => o.group === copy.all || groupOf[i] === o.group;
 
   const fmt = numberFormat(o.locale, indicator);
+  const fc = forecastOf(series, indicator, o.year, yearIndex);
   const focus = makeFocus();
   const cleanups: Array<() => void> = [];
 
@@ -257,15 +301,20 @@ export function renderAtlas(slots: Slots, o: RenderOptions): () => void {
     const i = position.get(f.properties.id);
     return i !== undefined && inGroup(i);
   });
-  const geo = viewGeometry(o.view, projection, focusFeatures.length ? focusFeatures : (projection.mainland as unknown as { features: GeoFeature[] }).features);
+  const geo = viewGeometry(
+    o.view,
+    projection,
+    focusFeatures.length ? focusFeatures : (projection.mainland as unknown as { features: GeoFeature[] }).features,
+    CANVAS.top + (fc.projected ? FORECAST_LEGEND : 0),
+  );
 
   slots.left.replaceChildren();
   slots.map.replaceChildren();
   slots.right.replaceChildren();
 
-  cleanups.push(drawMap(slots.map, { ...o, geo, values, position, inGroup, paint, fmt, focus, yearIndex }));
-  cleanups.push(drawLeftRail(slots.left, { ...o, values, position, inGroup, fmt, focus, yearIndex }));
-  cleanups.push(drawRightRail(slots.right, { ...o, values, groupOf, inGroup, paint, fmt, focus }));
+  cleanups.push(drawMap(slots.map, { ...o, geo, values, position, inGroup, paint, fmt, focus, yearIndex, fc }));
+  cleanups.push(drawLeftRail(slots.left, { ...o, values, position, inGroup, fmt, focus, yearIndex, fc }));
+  cleanups.push(drawRightRail(slots.right, { ...o, values, groupOf, inGroup, paint, fmt, focus, fc }));
 
   return () => cleanups.forEach((f) => f());
 }
@@ -279,6 +328,23 @@ function numberFormat(locale: string, indicator: Indicator) {
     signDisplay: signed ? "exceptZero" : "auto",
   });
   return (v: number) => nf.format(v);
+}
+
+/* The value as the tooltip and the card say it: a projected growth carries its unit and
+   its interval, central ± half the width, because the colour alone claims a precision the
+   model does not have (ADR-022). */
+function describe(o: RenderOptions & { fmt: (v: number) => string; fc: Forecast }, i: number, v: number) {
+  const { copy, indicator, fmt, fc } = o;
+  if (!fc.on) return { value: fmt(v), interval: null };
+  const isWidth = indicator.id === WIDTH_ID;
+  const value = fill(isWidth ? copy.forecast.widthValue : copy.forecast.growthValue, { v: fmt(v) });
+  const w = fc.widths?.[i];
+  if (isWidth || w === null || w === undefined || fc.level === null) return { value, interval: null };
+  const pct = new Intl.NumberFormat(o.locale, { style: "percent", maximumFractionDigits: 0 }).format(fc.level);
+  return {
+    value,
+    interval: fill(copy.forecast.interval, { level: pct, lo: fmt(v - w / 2), hi: fmt(v + w / 2), half: fmt(w / 2) }),
+  };
 }
 
 function buildScale(visible: number[], indicator: Indicator) {
@@ -308,10 +374,11 @@ type MapArgs = RenderOptions & {
   fmt: (v: number) => string;
   focus: ReturnType<typeof makeFocus>;
   yearIndex: number;
+  fc: Forecast;
 };
 
 function drawMap(host: HTMLElement, o: MapArgs): () => void {
-  const { geo, series, projection, indicator, values, position, inGroup, paint, fmt, focus, copy } = o;
+  const { geo, series, projection, indicator, values, position, inGroup, paint, focus, copy, fc } = o;
   const { width, height, top } = geo;
   const path = projection.path;
 
@@ -331,8 +398,14 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
   svg.append(frame);
 
   const strokeOf = (px: number) => px / geo.scale;
-  const colourOf = (i: number | undefined) =>
-    i === undefined || values[i] === null ? token("--atlas-void") : inGroup(i) ? paint(values[i] as number) : token("--atlas-void");
+  /* Opacity is laid over the paper as a solid mix, not as fill-opacity: in the raised
+     views a translucent face would let the stacked side show through it. */
+  const paper = token("--color-paper");
+  const colourOf = (i: number | undefined) => {
+    if (i === undefined || values[i] === null || !inGroup(i)) return token("--atlas-void");
+    const c = paint(values[i] as number);
+    return fc.alpha ? interpolateRgb(paper, c)(fc.alpha(i)) : c;
+  };
   /* The side carries the face colour darkened, not a translucent black: twenty-six
      copies of a black at 34% add up to solid black and the block reads as a hole. */
   const sideOf = (i: number | undefined) => {
@@ -353,6 +426,24 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
     });
     svg.append(defs);
   }
+
+  /* --- The hatching of a projected year. Two patterns: one inside the tilted group, sized
+     against its scale so the lines keep the same pitch on screen, and one flat for the
+     archipelago chips and the legend. A paper line and a faint ink line, so it reads on
+     the palest and on the darkest step of either ramp, in either theme. */
+  if (fc.projected) {
+    const defs = svgEl("defs");
+    defs.append(hatchPattern(HATCH.map, 7 / geo.scale), hatchPattern(HATCH.flat, 5));
+    svg.append(defs);
+  }
+  const hatchOver = (el: SVGElement, flat = false) => {
+    const h = el.cloneNode(false) as SVGElement;
+    h.setAttribute("class", "hatch");
+    h.setAttribute("fill", `url(#${flat ? HATCH.flat : HATCH.map})`);
+    h.setAttribute("stroke", "none");
+    h.setAttribute("pointer-events", "none");
+    return h;
+  };
 
   /* --- The archipelago, off scale. San Andrés is 700 km out and 26 km²: inside the
      frame it costs a fifth of the width to draw a dot, and inside a proportional inset
@@ -407,11 +498,11 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
       stroke: token("--color-paper"),
       "stroke-width": strokeOf(o.level === "departamento" ? 0.7 : 0.22),
     };
-    if (LAYERS) {
-      g.append(svgEl("use", { ...faceAttrs, href: `#pz-${p.k}`, x: (LAYERS + 1) * STEP * up[0], y: (LAYERS + 1) * STEP * up[1] }));
-    } else {
-      g.append(svgEl("path", { ...faceAttrs, d: path(p.f as unknown as GeoPermissibleObjects) }));
-    }
+    const face = LAYERS
+      ? svgEl("use", { ...faceAttrs, href: `#pz-${p.k}`, x: (LAYERS + 1) * STEP * up[0], y: (LAYERS + 1) * STEP * up[1] })
+      : svgEl("path", { ...faceAttrs, d: path(p.f as unknown as GeoPermissibleObjects) });
+    g.append(face);
+    if (fc.projected) g.append(hatchOver(face));
     layer.append(g);
   }
 
@@ -419,19 +510,19 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
     for (const p of pieces.filter((x) => x.chip !== undefined)) {
       const i = position.get(p.id);
       const g = svgEl("g", { class: "unit", "data-id": p.id, opacity: opacityOf(p.id) });
-      g.append(
-        svgEl("rect", {
-          class: "face",
-          rx: 2,
-          x: chipBox.x,
-          y: chipBox.y + (p.chip as number) * CHIP.row,
-          width: CHIP.size,
-          height: CHIP.size,
-          fill: colourOf(i),
-          stroke: token("--color-rule"),
-          "stroke-width": 0.6,
-        }),
-      );
+      const chip = svgEl("rect", {
+        class: "face",
+        rx: 2,
+        x: chipBox.x,
+        y: chipBox.y + (p.chip as number) * CHIP.row,
+        width: CHIP.size,
+        height: CHIP.size,
+        fill: colourOf(i),
+        stroke: token("--color-rule"),
+        "stroke-width": 0.6,
+      });
+      g.append(chip);
+      if (fc.projected) g.append(hatchOver(chip, true));
       const name = i === undefined ? p.id : series.nombres[i];
       const label = svgEl("text", {
         x: chipBox.x + CHIP.size + 6,
@@ -493,7 +584,7 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
      neighbours bleed upward and without the band the ramp reads over the map. */
   const band = svgEl("g");
   band.append(svgEl("rect", { x: 0, y: 0, width, height: top - 4, fill: token("--color-paper") }));
-  band.append(legend(width - 8, indicator, paint, fmt, o.year, copy));
+  band.append(legend(width - 8, indicator, paint, o.fmt, o.year, copy, fc));
   svg.append(band);
 
   /* --- Interaction. One listener on the container instead of one per unit: with 1,121
@@ -525,12 +616,14 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
     }
     const i = position.get(id);
     const v = i === undefined ? null : values[i];
+    const said = i === undefined || v === null ? null : describe(o, i, v);
     tip.style.opacity = "1";
     tip.replaceChildren(
       htmlEl("strong", {}, i === undefined ? id : series.nombres[i]),
       htmlEl("span", {}, `${indicator.etiqueta}, ${o.year}`),
-      htmlEl("b", {}, v === null ? copy.noData : fmt(v as number)),
+      htmlEl("b", {}, said === null ? copy.noData : said.value),
     );
+    if (said?.interval) tip.append(htmlEl("span", {}, said.interval));
     const box = wrap.getBoundingClientRect();
     tip.style.left = `${Math.min(e.clientX - box.left + 14, box.width - 230)}px`;
     tip.style.top = `${e.clientY - box.top + 12}px`;
@@ -595,8 +688,10 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
     svg.appendChild(markLayer);
 
     const v = values[i];
-    const body = v === null ? copy.noDataYear : `${indicator.etiqueta}: ${fmt(v as number)}`;
+    const said = v === null ? null : describe(o, i, v);
+    const body = said === null ? copy.noDataYear : `${indicator.etiqueta}: ${said.value}`;
     card.replaceChildren(htmlEl("strong", {}, series.nombres[i]), htmlEl("span", {}, body));
+    if (said?.interval) card.append(htmlEl("span", {}, said.interval));
     card.hidden = false;
 
     /* From canvas to screen: the card is placed in real pixels and kept inside the map. */
@@ -625,8 +720,21 @@ function drawMap(host: HTMLElement, o: MapArgs): () => void {
   };
 }
 
+const HATCH = { map: "atlas-hatch-map", flat: "atlas-hatch-flat" };
+
+function hatchPattern(id: string, size: number) {
+  const p = svgEl("pattern", { id, patternUnits: "userSpaceOnUse", width: size, height: size, patternTransform: "rotate(45)" });
+  p.append(
+    svgEl("rect", { x: 0, y: 0, width: size * 0.2, height: size, fill: token("--color-paper"), opacity: 0.8 }),
+    svgEl("rect", { x: size * 0.5, y: 0, width: size * 0.12, height: size, fill: token("--color-ink"), opacity: 0.35 }),
+  );
+  return p;
+}
+
 /* A continuous legend, always present, with zero marked when the scale diverges and a
-   swatch for "no data" so absence is not read as the low end. */
+   swatch for "no data" so absence is not read as the low end. In a projected year a second
+   row names the hatching and, for the central layers, the opacity: the pattern is never
+   the only thing that says "projected". */
 function legend(
   width: number,
   indicator: Indicator,
@@ -634,6 +742,7 @@ function legend(
   fmt: (v: number) => string,
   year: number,
   copy: AtlasCopy,
+  fc: Forecast,
 ): SVGGElement {
   const g = svgEl("g", { transform: "translate(4,8)" });
   const w = Math.min(300, width - 130);
@@ -673,6 +782,32 @@ function legend(
   nt.textContent = copy.noData;
   none.append(nt);
   g.append(none);
+
+  if (fc.projected) {
+    const row = svgEl("g", { transform: `translate(0,${y + h + 22})` });
+    /* The swatch carries a mid-strong step, not the neutral centre: the hatching has to be
+       read on a colour, which is where the map shows it. */
+    const sample = paint(lo + 0.8 * (hi - lo));
+    row.append(svgEl("rect", { width: 18, height: h, rx: 2, fill: sample, stroke: token("--color-rule") }));
+    row.append(svgEl("rect", { width: 18, height: h, rx: 2, fill: `url(#${HATCH.flat})` }));
+    const pt = svgEl("text", { x: 24, y: h - 1, fill: token("--color-muted"), "font-size": 10.5 });
+    pt.textContent = copy.forecast.legendProjected;
+    row.append(pt);
+    if (fc.alpha) {
+      const paper = token("--color-paper");
+      const strong = RAMPS.divergente()[5];
+      const x0 = 24 + copy.forecast.legendProjected.length * 6 + 16;
+      [ALPHA.certain, (ALPHA.certain + ALPHA.uncertain) / 2, ALPHA.uncertain].forEach((a, k) => {
+        row.append(
+          svgEl("rect", { x: x0 + k * 13, width: 12, height: h, fill: interpolateRgb(paper, strong)(a), stroke: token("--color-rule") }),
+        );
+      });
+      const ct = svgEl("text", { x: x0 + 3 * 13 + 6, y: h - 1, fill: token("--color-muted"), "font-size": 10.5 });
+      ct.textContent = copy.forecast.legendConfidence;
+      row.append(ct);
+    }
+    g.append(row);
+  }
   return g;
 }
 
@@ -685,6 +820,7 @@ type RailArgs = RenderOptions & {
   fmt: (v: number) => string;
   focus: ReturnType<typeof makeFocus>;
   yearIndex: number;
+  fc: Forecast;
 };
 
 function drawLeftRail(host: HTMLElement, o: RailArgs): () => void {
@@ -717,17 +853,25 @@ function drawLeftRail(host: HTMLElement, o: RailArgs): () => void {
   spark.style.height = "auto";
   spark.style.display = "block";
   const matrix = series.series[indicator.id] ?? [];
+  /* The line runs over the years of the indicator's group, not over `anios`: since the
+     forecast layer that runs to 2028, and the index drew 2018-2025 in a frame that ended
+     three empty years later. */
+  const span = o.years.length ? o.years : series.anios;
+  const at = span.map((a) => series.anios.indexOf(a));
   const medians = series.anios.map((_, k) => {
     const row = matrix[k] ?? [];
     const vs = row.map((v, i) => ({ v, i })).filter((d) => d.v !== null && inGroup(d.i)).map((d) => d.v as number);
     return vs.length ? (median(vs) as number) : null;
   });
-  const all = matrix.flat().filter((v) => v !== null) as number[];
-  const x = scaleLinear().domain(extent(series.anios) as [number, number]).range([m.l, w - m.r]);
+  const all = at.flatMap((k) => matrix[k] ?? []).filter((v) => v !== null) as number[];
+  const x = scaleLinear().domain(extent(span) as [number, number]).range([m.l, w - m.r]);
   const y = scaleLinear().domain((extent(all) as [number, number]) ?? [0, 1]).nice().range([h - m.b, m.t]);
   const line = (row: (number | null)[]) =>
-    series.anios
-      .map((a, k) => (row[k] === null || row[k] === undefined ? null : `${x(a).toFixed(1)},${y(row[k] as number).toFixed(1)}`))
+    span
+      .map((a, j) => {
+        const v = row[at[j]];
+        return v === null || v === undefined ? null : `${x(a).toFixed(1)},${y(v).toFixed(1)}`;
+      })
       .filter(Boolean)
       .join(" ");
   if (indicator.escala === "divergente" && y.domain()[0] < 0) {
@@ -742,24 +886,25 @@ function drawLeftRail(host: HTMLElement, o: RailArgs): () => void {
     svgEl("circle", { r: 3, cx: x(o.year), cy: y(medians[yearIndex] ?? y.domain()[0]), fill: token("--color-ink") }),
   );
   const first = svgEl("text", { x: m.l, y: h - 4, "font-size": 10, fill: token("--color-muted") });
-  first.textContent = String(series.anios[0]);
+  first.textContent = String(span[0]);
   const last = svgEl("text", { x: w - m.r, y: h - 4, "font-size": 10, "text-anchor": "end", fill: token("--color-muted") });
-  last.textContent = String(series.anios[series.anios.length - 1]);
+  last.textContent = String(span[span.length - 1]);
   spark.append(first, last);
   blockB.append(spark);
 
   /* --- The three dimensions plus the composite, as bars from zero. They are standardised
      scores in the same unit and with polarity: a bar from zero is the shape they deserve.
      They are coloured by sign alone, not with the map's ramp, because that ramp is built
-     on whichever indicator is selected and here the domain is another one. */
-  const DIMS = [
+     on whichever indicator is selected and here the domain is another one. The forecast
+     has no index: in a projected year the four bars would be four dashes, so they go. */
+  const DIMS = (o.fc.on ? [] : [
     { id: "iif_compuesto", label: copy.dimensions.compuesto },
     { id: "iif_acceso", label: copy.dimensions.acceso },
     { id: "iif_uso", label: copy.dimensions.uso },
     { id: "iif_profundidad", label: copy.dimensions.profundidad },
-  ].filter((d) => series.series[d.id]);
+  ]).filter((d) => series.series[d.id]);
 
-  const blockC = block(host, copy.dimensionsLabel);
+  const blockC = DIMS.length ? block(host, copy.dimensionsLabel) : htmlEl("div");
   const wd = 236;
   const rowH = 21;
   const hd = DIMS.length * rowH + 14;
@@ -846,10 +991,15 @@ type ContextArgs = RenderOptions & {
   paint: (v: number) => string;
   fmt: (v: number) => string;
   focus: ReturnType<typeof makeFocus>;
+  fc: Forecast;
 };
 
 function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
-  const { series, indicator, values, groupOf, inGroup, paint, fmt, focus, copy } = o;
+  const { series, indicator, values, groupOf, inGroup, paint, fmt, focus, copy, fc } = o;
+  /* No league tables of the forecast (thesis ADR-023): its intervals overlap almost
+     entirely, so an order by value would claim a precision the model does not have. In
+     the forecast the regions go alphabetically and the units by region, then by name. */
+  const byName = (a: string, b: string) => a.localeCompare(b, "es");
 
   /* --- Share by region. Computed over ALL units and dimming those outside the filter:
      its job is to place the selection in the country, so recomputing it inside the filter
@@ -862,7 +1012,7 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
     (vs) => median(vs, (p) => p.v) as number,
     (p) => p.g,
   )
-    .sort((a, b) => descending(a[1], b[1]))
+    .sort((a, b) => (fc.on ? byName(a[0], b[0]) : descending(a[1], b[1])))
     .slice(0, 12);
 
   const wr = 250;
@@ -915,32 +1065,51 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
   /* --- The ranking, which doubles as the table view: it gives the exact number that the
      colour only hints at, which is what a continuous scale with clear steps demands. */
   const rows = series.ids
-    .map((id, i) => ({ id, name: series.nombres[i], value: values[i], i }))
+    .map((id, i) => ({ id, name: series.nombres[i], value: values[i], i, region: groupOf[i] ?? "" }))
     .filter((r) => r.value !== null && inGroup(r.i))
-    .sort((a, b) => descending(a.value as number, b.value as number));
+    .sort((a, b) =>
+      fc.on ? byName(a.region, b.region) || byName(a.name, b.name) : descending(a.value as number, b.value as number),
+    );
   const top = 12;
+  /* The forecast lists every unit: cutting to a head and a tail is a ranking too. */
   const shown: Array<(typeof rows)[number] | null> =
-    rows.length <= top + 5 ? rows : [...rows.slice(0, top), null, ...rows.slice(-4)];
+    fc.on || rows.length <= top + 5 ? rows : [...rows.slice(0, top), null, ...rows.slice(-4)];
   const barWidth = scaleLinear()
     .domain([min0(rows), (max(rows, (r) => r.value as number) as number) ?? 1])
     .range([0, 52])
     .clamp(true);
 
-  const blockB = block(host, fill(copy.rankingLabel, { n: rows.length }));
+  const blockB = block(host, fill(fc.on ? copy.forecast.listLabel : copy.rankingLabel, { n: rows.length }));
   const table = htmlEl("table", { class: "atlas-table" });
   const cols = htmlEl("colgroup");
-  for (const w of ["46px", "auto", "68px", "54px"]) {
+  for (const w of fc.on ? ["auto", "68px", "54px"] : ["46px", "auto", "68px", "54px"]) {
     const c = document.createElement("col");
     c.style.width = w;
     cols.append(c);
   }
   const thead = htmlEl("thead");
   const htr = htmlEl("tr");
-  for (const h of [copy.rankingHead.rank, copy.rankingHead.unit, copy.rankingHead.value, ""]) htr.append(htmlEl("th", {}, h));
+  const heads = [copy.rankingHead.unit, copy.rankingHead.value, ""];
+  for (const h of fc.on ? heads : [copy.rankingHead.rank, ...heads]) htr.append(htmlEl("th", {}, h));
   thead.append(htr);
-  const tbody = htmlEl("tbody");
+  /* In the forecast each region is its own <tbody>, headed by a rowgroup header: the
+     grouping is read by a screen reader, not only seen. */
+  const bodies: HTMLTableSectionElement[] = [];
+  let tbody = htmlEl("tbody");
+  bodies.push(tbody);
+  let region: string | null = null;
   const domRows = new Map<string, HTMLTableRowElement>();
   shown.forEach((r) => {
+    if (fc.on && r !== null && r.region !== region) {
+      region = r.region;
+      if (tbody.childElementCount) {
+        tbody = htmlEl("tbody");
+        bodies.push(tbody);
+      }
+      const hr = htmlEl("tr");
+      hr.append(htmlEl("th", { scope: "rowgroup", colspan: "3", class: "atlas-region" }, region));
+      tbody.append(hr);
+    }
     const tr = htmlEl("tr");
     if (r === null) {
       const td = htmlEl("td", { colspan: "4", class: "atlas-gap" }, fill(copy.moreUnits, { n: rows.length - top - 4 }));
@@ -958,7 +1127,7 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
        la fila sigue siendo fila y conserva sus encabezados. */
     tr.addEventListener("pointerenter", () => focus.hover(r.id));
     tr.addEventListener("pointerleave", () => focus.hover(null));
-    tr.append(htmlEl("td", { class: "num muted" }, String(rows.indexOf(r) + 1)));
+    if (!fc.on) tr.append(htmlEl("td", { class: "num muted" }, String(rows.indexOf(r) + 1)));
     const btn = htmlEl("button", { type: "button", class: "atlas-rowbtn", "aria-pressed": "false" }, r.name);
     btn.addEventListener("click", () => focus.togglePin(r.id));
     const nameTd = htmlEl("td");
@@ -974,8 +1143,17 @@ function drawRightRail(host: HTMLElement, o: ContextArgs): () => void {
     tbody.append(tr);
     domRows.set(r.id, tr);
   });
-  table.append(cols, thead, tbody);
-  blockB.append(table);
+  table.append(cols, thead, ...bodies);
+  if (fc.on) {
+    /* Every unit is listed, so the list scrolls inside its own frame instead of stretching
+       the grid row a metre below the map. Focusable, so a keyboard can scroll it too. */
+    const frame = htmlEl("div", { class: "atlas-scroll", tabindex: "0", role: "region", "aria-label": fill(copy.forecast.listLabel, { n: rows.length }) });
+    frame.append(table);
+    blockB.append(frame);
+  } else {
+    blockB.append(table);
+  }
+  if (fc.on) blockB.append(htmlEl("p", { class: "atlas-foot" }, copy.forecast.listFoot));
 
   return focus.listen(({ id }) => {
     for (const [k, tr] of domRows) {

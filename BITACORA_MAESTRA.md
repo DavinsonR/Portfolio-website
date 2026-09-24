@@ -44,6 +44,7 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 25 | [23 sep](docs/bitacora/sesion-25.md) | Se abre el lab: pronóstico macro en LATAM, para jugarlo y no solo leerlo |
 | 26 | [23 sep](docs/bitacora/sesion-26.md) | El panorama: analítica descriptiva de la región, eventos que la explican, y un empalme roto en la fuente |
 | 27 | [23 sep](docs/bitacora/sesion-27.md) | Las cifras de la tesis se ponen al día con el repositorio y pasan a un solo módulo; el titular deja de ser «publiqué el cero» |
+| 29 | [24 sep](docs/bitacora/sesion-29.md) | El atlas pinta la proyección 2026–2028: años por grupo, trama y opacidad por el ancho del intervalo, una nota que sale del JSON y ninguna tabla de posiciones |
 
 ## Después de la sesión 17
 

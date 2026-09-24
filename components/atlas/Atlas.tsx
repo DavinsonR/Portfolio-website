@@ -16,12 +16,28 @@ import type { Projection } from "./render";
 type Renderer = typeof import("./render");
 let rendererPromise: Promise<Renderer> | null = null;
 const loadRenderer = () => (rendererPromise ??= import("./render"));
-import type { AtlasCopy, AtlasMeta, Indicator, Level, Series, Topology, View } from "./types";
+import type { AtlasCopy, AtlasMeta, ForecastInfo, Indicator, Level, Series, Topology, View } from "./types";
 
 const BASE = "/atlas";
 const LEVEL_OF: Record<View, Level> = { plano: "departamento", relieve: "departamento", municipios: "municipio" };
 
 type Bundle = { series: Series; topology: Topology; projection: Projection };
+
+/* The forecast group (D-36). It lives only at department level and only in the projected
+   years; the other three groups live only in the observed ones. */
+const FORECAST = "proyeccion";
+const DEFAULT_INDICATOR = "iif_compuesto";
+const WIDTH_ID = "intervalo_ancho_proy";
+const GROUPS = ["indice", "variable", "contexto", FORECAST] as const;
+
+/* The year that exists for this group and is closest to the one asked for; on a tie, the
+   later one. Changing group reads the year through this instead of correcting it in state. */
+const nearest = (years: number[], want: number | null) =>
+  years.length === 0
+    ? null
+    : want === null
+      ? years[years.length - 1]
+      : years.reduce((best, y) => (Math.abs(y - want) <= Math.abs(best - want) ? y : best), years[0]);
 
 async function loadJSON<T>(file: string): Promise<T> {
   const res = await fetch(`${BASE}/${file}`);
@@ -45,7 +61,7 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
   const shell = useRef<HTMLElement>(null);
 
   const [view, setView] = useState<View>("plano");
-  const [indicatorId, setIndicatorId] = useState("iif_compuesto");
+  const [indicatorId, setIndicatorId] = useState(DEFAULT_INDICATOR);
   const [year, setYear] = useState<number | null>(null);
   const [group, setGroup] = useState(copy.all);
 
@@ -134,9 +150,21 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
   }, [bundles.departamento]);
 
   const indicators: Indicator[] = useMemo(() => meta?.indicadores[level] ?? [], [meta, level]);
+  /* Read through, like the year: the forecast has no municipal series, so asking for it
+     at municipal level draws the composite index and the selector shows exactly that. */
   const indicator = useMemo(
-    () => indicators.find((i) => i.id === indicatorId) ?? indicators[0],
+    () =>
+      indicators.find((i) => i.id === indicatorId) ??
+      indicators.find((i) => i.id === DEFAULT_INDICATOR) ??
+      indicators[0],
     [indicators, indicatorId],
+  );
+  const isForecast = indicator?.grupo === FORECAST;
+  /* The forecast options stay visible at municipal level, disabled, so the reader learns
+     the layer exists and where to find it instead of watching it vanish. */
+  const forecastOptions: Indicator[] = useMemo(
+    () => (level === "municipio" ? (meta?.indicadores.departamento ?? []).filter((i) => i.grupo === FORECAST) : []),
+    [meta, level],
   );
 
   const groups = useMemo(() => {
@@ -152,15 +180,20 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
   /* Switching level changes what exists. The choice is not corrected in state — that would
      be a second render for nothing — it is read through: what the map draws is always the
      nearest thing that exists, and the control shows exactly that. */
-  const years = useMemo(() => bundle?.series.anios ?? [], [bundle]);
-  /* The default is the last OBSERVED year: with the forecast layer `anios` ends in 2028,
-     where the index has no value, and opening there drew an empty map. */
-  const lastObserved = useMemo(() => {
-    const projected = new Set(bundle?.series.anios_proyectados ?? []);
-    const observed = years.filter((y) => !projected.has(y));
-    return observed[observed.length - 1] ?? years[years.length - 1] ?? null;
-  }, [bundle, years]);
-  const activeYear = year !== null && years.includes(year) ? year : lastObserved;
+  /* Years belong to the group (D-36): the observed ones for the index, its variables and
+     the context; `anios_proyectados` for the forecast. The slider only walks the years
+     where the active layer has a value, so no year of it draws an empty map. */
+  const { observed, projected } = useMemo(() => {
+    const all = bundle?.series.anios ?? [];
+    const ahead = new Set(bundle?.series.anios_proyectados ?? []);
+    return { observed: all.filter((y) => !ahead.has(y)), projected: all.filter((y) => ahead.has(y)) };
+  }, [bundle]);
+  const years = isForecast && projected.length ? projected : observed;
+  /* With nothing chosen yet the atlas opens on the last OBSERVED year: with the forecast
+     layer `anios` ends in 2028, where the index has no value. Once a year is chosen, a
+     change of group lands on the nearest year that group has (2025 -> 2026 and back). */
+  const activeYear = nearest(years, year ?? observed[observed.length - 1] ?? null);
+  const forecastInfo: ForecastInfo | undefined = isForecast ? bundle?.series.proyeccion : undefined;
   const activeGroup = group === copy.all || groups.includes(group) ? group : copy.all;
 
   const onDrillDown = useCallback((name: string) => {
@@ -188,6 +221,7 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
         view,
         indicator,
         year: activeYear,
+        years,
         group: activeGroup,
         copy,
         locale,
@@ -195,7 +229,7 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
       },
     );
     return stop;
-  }, [meta, bundle, indicator, activeYear, activeGroup, view, level, departmentNames, copy, locale, onDrillDown]);
+  }, [meta, bundle, indicator, activeYear, years, activeGroup, view, level, departmentNames, copy, locale, onDrillDown]);
 
   return (
     <section ref={shell} className="atlas">
@@ -215,13 +249,19 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
 
         <label className="atlas-field">
           <span>{copy.indicatorLabel}</span>
-          <select value={indicator?.id ?? ""} onChange={(e) => setIndicatorId(e.target.value)} disabled={!indicators.length}>
-            {(["indice", "variable", "contexto"] as const).map((g) => {
+          <select
+            value={indicator?.id ?? ""}
+            onChange={(e) => setIndicatorId(e.target.value)}
+            disabled={!indicators.length}
+            aria-describedby={forecastOptions.length ? "atlas-forecast-municipal" : undefined}
+          >
+            {GROUPS.map((g) => {
               const items = indicators.filter((i) => i.grupo === g);
-              if (!items.length) return null;
+              const off = !items.length && g === FORECAST ? forecastOptions : [];
+              if (!items.length && !off.length) return null;
               return (
-                <optgroup key={g} label={copy.groups[g]}>
-                  {items.map((i) => (
+                <optgroup key={g} label={copy.groups[g]} disabled={off.length ? true : undefined}>
+                  {(items.length ? items : off).map((i) => (
                     <option key={i.id} value={i.id}>
                       {i.etiqueta}
                     </option>
@@ -230,6 +270,11 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
               );
             })}
           </select>
+          {forecastOptions.length ? (
+            <small id="atlas-forecast-municipal" className="atlas-hint">
+              {copy.forecast.municipalOnly}
+            </small>
+          ) : null}
         </label>
 
         <label className="atlas-field">
@@ -259,6 +304,10 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
           </select>
         </label>
       </div>
+
+      {forecastInfo && indicator ? (
+        <ForecastNote info={forecastInfo} copy={copy.forecast} locale={locale} widthLayer={indicator.id === WIDTH_ID} />
+      ) : null}
 
       {failed ? (
         <p className="atlas-state" role="alert">{copy.failed}</p>
@@ -296,5 +345,60 @@ export default function Atlas({ copy, locale }: { copy: AtlasCopy; locale: strin
         </footer>
       ) : null}
     </section>
+  );
+}
+
+/* The note that travels with the forecast (D-36, thesis ADR-022 and ADR-023). Every figure
+   in it is read from `proyeccion` in the series JSON and formatted here; a key the export
+   does not publish drops its sentence instead of being guessed. It is fixed, not a tooltip:
+   whoever looks at the map has to be told it is a scenario without asking for it. */
+function ForecastNote({
+  info,
+  copy,
+  locale,
+  widthLayer,
+}: {
+  info: ForecastInfo;
+  copy: AtlasCopy["forecast"];
+  locale: string;
+  widthLayer: boolean;
+}) {
+  const fill = (t: string, vars: Record<string, string | number>) => t.replace(/\{(\w+)\}/g, (_, k) => String(vars[k] ?? ""));
+  const num = (v: number, digits: number) =>
+    new Intl.NumberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(v);
+  const pct = (v: number) => new Intl.NumberFormat(locale, { style: "percent", maximumFractionDigits: 0 }).format(v);
+  const finite = (v: unknown): v is number => typeof v === "number" && Number.isFinite(v);
+
+  const { ancla, backtest } = info;
+  const sentences: string[] = [];
+  if (ancla?.fuente && ancla.fecha_corte) {
+    const d = new Date(`${ancla.fecha_corte}T00:00:00Z`);
+    const date = Number.isNaN(d.getTime())
+      ? ancla.fecha_corte
+      : new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "UTC" }).format(d);
+    sentences.push(fill(copy.anchor, { source: ancla.fuente, date }));
+  }
+  if (ancla?.vencida && finite(ancla.antiguedad_meses) && finite(ancla.antiguedad_maxima_meses)) {
+    sentences.push(fill(copy.anchorAge, { months: Math.floor(ancla.antiguedad_meses), max: ancla.antiguedad_maxima_meses }));
+  }
+  sentences.push(copy.scenario);
+  const won = backtest?.origenes_ganados;
+  const total = backtest?.n_origenes;
+  const p = backtest?.dm_p;
+  if (finite(won) && finite(total) && finite(p)) {
+    sentences.push(fill(copy.backtest, { won, n: total, p: num(p, 2) }));
+  }
+  const nominal = backtest?.cobertura_intervalo_nominal ?? info.nivel_intervalo;
+  const empirical = backtest?.cobertura_intervalo_empirica;
+  if (finite(empirical) && finite(nominal)) {
+    sentences.push(fill(copy.coverage, { nominal: pct(nominal), empirical: pct(empirical) }));
+  }
+  sentences.push(widthLayer ? copy.encodingWidth : copy.encoding);
+
+  return (
+    <div className="atlas-note" role="note">
+      <strong>{copy.noteLabel}</strong>
+      <p>{sentences.join(" ")}</p>
+    </div>
   );
 }
