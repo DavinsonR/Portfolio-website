@@ -105,7 +105,7 @@ export const home = {
         links: [
           { label: "Ver el proyecto", href: "/projects/credit-risk", tone: "solid" },
           { label: "Ver el código", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "outline" },
-          { label: "Leer la bitácora de defectos", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md", tone: "text" },
+          { label: "Leer la bitácora de defectos", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/docs/DEFECTS.es.md", tone: "text" },
         ] as ProjectLink[],
       },
       also: {
@@ -241,7 +241,7 @@ export const home = {
         links: [
           { label: "See the project", href: "/projects/credit-risk", tone: "solid" },
           { label: "See the code", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "outline" },
-          { label: "Read the defect log", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/NOTES.md", tone: "text" },
+          { label: "Read the defect log", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/docs/DEFECTS.md", tone: "text" },
         ] as ProjectLink[],
       },
       also: {
