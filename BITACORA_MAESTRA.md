@@ -41,6 +41,7 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 21 | [23 sep](docs/bitacora/sesion-21.md) | Diseño y accesibilidad: el foco que no existía, el texto de 4 píxeles en el teléfono, y la deriva del contrato visual |
 | 22 | [23 sep](docs/bitacora/sesion-22.md) | Ingeniería: caché para lo que no cambia, el serif a la mitad, el atlas baja con sus datos, y cada página dice al buscador qué es |
 | 23 | [23 sep](docs/bitacora/sesion-23.md) | La red: tipos para los scripts, pruebas sin framework, presupuesto de peso, cabeceras y JSON-LD en el humo de rutas, Lighthouse en CI |
+| 25 | [23 sep](docs/bitacora/sesion-25.md) | Se abre el lab: pronóstico macro en LATAM, para jugarlo y no solo leerlo |
 
 ## Después de la sesión 17
 

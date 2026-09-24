@@ -36,7 +36,7 @@ Qué cubre cada una, y por qué existe:
 - **`check:routes`** — lee las rutas del `sitemap.xml` publicado (no de una lista copiada, que se desincroniza) y comprueba 200; más los redirects de idioma y los 404 que tienen que serlo. La bitácora registra **dos rutas que devolvían 200 debiendo ser 404** y un redirect que faltaba, encontrados a mano meses después. Además, en el HTML de cada ruta:
   - **`og:url` tiene que coincidir con el canonical de esa página** (FALLO-29). Cuando una subpágina olvida su `openGraph`, hereda el del layout y su `og:url` se queda en la portada: su tarjeta en LinkedIn enlaza a la portada, con el título de la portada. El síntoma es exacto, y esa es la diferencia que se mide.
   - ningún `<svg>` lleva `width`/`height="auto"` **como atributo** (FALLO-34): ahí exigen una longitud, y el navegador lo grita en consola en cada carga. En CSS sí valen.
-  - `twitter:title` coincide con `og:title` (FALLO-36: el bloque `twitter` también se reemplaza entero); `<title>` ≤ 60 caracteres y `description` ≤ 155; los ocho redirects leídos de `next.config.ts` con su código exacto; JSON-LD que parsea en cada ruta; y las cabeceras: la CSP arranca en `default-src 'none'`, conserva `'unsafe-inline'` y no declara ningún hash, HSTS con `preload`, sin `x-powered-by`, la demo con `wasm-unsafe-eval`, y una fuente con `max-age` real.
+  - `twitter:title` coincide con `og:title` (FALLO-36: el bloque `twitter` también se reemplaza entero); `<title>` ≤ 60 caracteres y `description` ≤ 155; los nueve redirects leídos de `next.config.ts` con su código exacto; JSON-LD que parsea en cada ruta; y las cabeceras: la CSP arranca en `default-src 'none'`, conserva `'unsafe-inline'` y no declara ningún hash, HSTS con `preload`, sin `x-powered-by`, la demo con `wasm-unsafe-eval`, y una fuente con `max-age` real.
 - **`check:weight`** — tras el build, suma en brotli los chunks que cada HTML referencia y falla por encima de un presupuesto versionado en `scripts/check-weight.mjs`. Existe por IR-05: el renderizador del atlas bajaba con la página aunque sus datos esperaran, y el build estaba en verde.
 
 Las cuatro saben fallar, y se verificó una a una haciéndolas fallar a propósito. `check:figures` se probó de las tres maneras en que puede quedarse ciega: contradiciendo una cifra dentro de un idioma, haciéndola divergir entre `es` y `en`, y borrándola del sitio para que su patrón no encuentre nada. Las tres salieron con código 1.
@@ -56,6 +56,7 @@ Cada cadena del sitio vive una sola vez, en `es` y `en`. No hay texto literal en
 | `lib/content/about.ts` | trayectoria, herramientas, divulgaciones, contacto, pie, 404 |
 | `lib/content/cv.ts` | el CV — de aquí salen también el `.tex` y el PDF |
 | `lib/content/historia.ts` | la trayectoria en primera persona |
+| `lib/content/forecast.ts` | el laboratorio de pronóstico macro de LATAM (`/labs/macro-forecast`): la página y el texto de sus seis piezas interactivas |
 | `lib/content/error.ts` | la frontera de error de cliente: cuatro cadenas, en un fichero aparte porque `error.tsx` es cliente y lo que importa viaja en el bundle de todas las rutas |
 | `lib/content/types.ts` | los tipos y constantes que comparten los cuatro |
 
