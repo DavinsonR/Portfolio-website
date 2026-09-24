@@ -13,18 +13,18 @@ import { createElement } from "react";
 import { renderToString } from "react-dom/server";
 import { Board } from "../components/forecast/dashboard";
 import { forecast } from "../lib/content/forecast";
-import type { Events, IndicatorId, Ise, Meta, Panel } from "../lib/data/forecast-lab";
+import type { Events, Forecast, IndicatorId, Meta, Panel } from "../lib/data/forecast-lab";
 
 const DIR = path.join(process.cwd(), "public", "forecast-lab");
 const read = <T,>(f: string) => JSON.parse(fs.readFileSync(path.join(DIR, f), "utf8")) as T;
 const meta = read<Meta>("meta.json");
 const panel = read<Panel>("panel.json");
 const events = read<Events>("eventos.json");
-const ise = read<Ise>("ise.json");
+const fcData = read<Forecast>("pronostico.json");
 
 const render = (lang: "es" | "en", initial: Parameters<typeof Board>[0]["initial"]) =>
   renderToString(
-    createElement(Board, { copy: forecast[lang].forecastLab.lab.dash, lang, meta, panel, events, ise, initial }),
+    createElement(Board, { copy: forecast[lang].forecastLab.lab.dash, lang, meta, panel, events, forecast: fcData, initial }),
   );
 
 const bad = /NaN|Infinity|undefined|\[object Object\]/;
@@ -91,4 +91,24 @@ test("la tabla ordena por la columna pedida y deja los nulos al final, en los do
   assert.equal(order("asc"), "dacb");
   const html = renderToString(createElement(SortTable<(typeof rows)[number]>, { rows, columns: cols, rowKey: (r) => r.id, initial: { key: "v", dir: "desc" } }));
   assert.ok(html.includes('aria-sort="descending"'), "la cabecera dice cómo está ordenada");
+});
+
+test("el pronóstico se dibuja: 2026 y 2027 con sus bandas, en la serie y en su recuadro", () => {
+  const html = render("es", { sel: ["COL", "PER"] });
+  assert.ok(html.includes("Pronóstico 2026–2027"), "el título del recuadro");
+  const col = fcData.economias.find((e) => e.iso3 === "COL");
+  assert.ok(col, "Colombia tiene pronóstico");
+  const f26 = col.pronostico.find((f) => f.anio === 2026);
+  assert.ok(f26, "con 2026");
+  const n = (v: number) => new Intl.NumberFormat("es-CO", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v).replace("-", "−");
+  assert.ok(html.includes(n(f26.media)) && html.includes(n(f26.lo95)) && html.includes(n(f26.hi95)), "el punto y la banda del 95 % de 2026");
+});
+
+test("el filtro manda: con seis, la tabla trae seis filas; sin ninguna, las veinte y la mediana", () => {
+  const rowsOf = (html: string) => html.split("<tbody>").slice(1).map((t) => t.split("</tbody>")[0].split("<tr").length - 1);
+  const six = render("es", { sel: ["ARG", "BRA", "CHL", "COL", "MEX", "PER"] });
+  assert.ok(rowsOf(six).includes(6), `tablas con ${rowsOf(six).join("/")} filas`);
+  const everyone = render("es", { sel: [] });
+  assert.ok(rowsOf(everyone).includes(meta.paises.length), "las veinte en la tabla");
+  assert.ok(everyone.includes("Mediana de la región"), "y la mediana en la serie");
 });

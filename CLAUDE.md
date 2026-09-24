@@ -104,7 +104,7 @@ Tres salvaguardas que no se pueden romper: el estado oculto vive dentro de `.js`
 
 `next.config.ts` declara `script-src 'unsafe-inline'` a propósito, y su comentario explica por qué: el payload RSC de hidratación es distinto en cada página y cambia con cada edición del diccionario, así que una CSP por hash exigiría regenerarlos en cada commit y `headers()` se evalúa antes de renderizar. **En cuanto se declara un hash, el navegador ignora `'unsafe-inline'` y la hidratación muere.** No se pueden mezclar. Lo que esa CSP sí compra es `default-src 'none'` y un `connect-src` acotado.
 
-Dos rutas tienen su propia política y la regla general las excluye (con dos CSP en la misma respuesta el navegador aplica la intersección): `public/credit-risk-demo/` y `/(en|es)/projects/credit-risk`, que lleva el simulador de crédito dentro. La segunda es la del sitio más `wasm-unsafe-eval` y los dos CDN de onnxruntime-web, construida con `siteCsp()`; ver D-36.
+Dos rutas tienen su propia política y la regla general las excluye (con dos CSP en la misma respuesta el navegador aplica la intersección): `public/credit-risk-demo/` y `/(en|es)/projects/credit-risk`, que lleva el simulador de crédito dentro. La segunda es la del sitio más `wasm-unsafe-eval` y los dos CDN de onnxruntime-web, construida con `siteCsp()`; ver D-37.
 
 ### Sin backend, y tres contratos de datos externos
 
