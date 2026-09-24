@@ -83,6 +83,42 @@ const nextConfig: NextConfig = {
     const immutable = "public, max-age=31536000, immutable";
     const hourly = "public, max-age=3600, stale-while-revalidate=604800";
     const weekly = "public, max-age=604800, stale-while-revalidate=2592000";
+    const scorer = "(?:en|es)/projects/credit-risk";
+    const common = [
+      { key: "X-Frame-Options", value: "DENY" },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      // `browsing-topics` es lo que sustituyó a FLoC (`interest-cohort`); se
+      // dejan los dos porque los navegadores ignoran la directiva que no conocen.
+      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=(), browsing-topics=()" },
+      // Cierra la referencia `window.opener` entre orígenes. Coste cero: nada
+      // aquí depende de una ventana abierta desde otro sitio.
+      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+      { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+    ];
+    /** La CSP del sitio. `extra` añade orígenes a `script-src` y `connect-src` y
+     *  nada más: es la única forma de abrirla, y solo la usa la página del simulador. */
+    const siteCsp = (extra: { script?: string[]; connect?: string[] } = {}) =>
+      [
+        "default-src 'none'",
+        [
+          "script-src 'self' 'unsafe-inline'",
+          ...(extra.script ?? []),
+          ...(dev ? ["https://va.vercel-scripts.com"] : []),
+        ].join(" "),
+        dev ? "style-src 'self' 'unsafe-inline'" : "style-src 'self'",
+        "style-src-attr 'unsafe-inline'",
+        "font-src 'self'",
+        "img-src 'self' data:",
+        // El laboratorio de trading lee los JSON del pipeline en cliente.
+        ["connect-src 'self' https://raw.githubusercontent.com", ...(extra.connect ?? [])].join(" "),
+        "manifest-src 'self'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+        "object-src 'none'",
+        "upgrade-insecure-requests",
+      ].join("; ");
     return [
       cache("/fonts/:path*", immutable),
       cache(`/${demo}/model.onnx`, immutable),
@@ -98,36 +134,32 @@ const nextConfig: NextConfig = {
       cache("/tracking/:path*", weekly),
       cache("/:name*.pdf", "public, max-age=86400, stale-while-revalidate=604800"),
       {
-        source: `/:path((?!${demo}).*)`,
+        source: `/:path((?!${demo}|${scorer}$).*)`,
+        headers: [...common, { key: "Content-Security-Policy", value: siteCsp() }],
+      },
+      /** La página de credit-risk-mlops lleva el simulador dentro, y es la única
+       *  ruta del sitio con la política de la demo en `script-src` y `connect-src`.
+       *
+       *  Es la misma política de arriba, directiva por directiva, más lo mínimo para
+       *  que onnxruntime-web compile su WebAssembly: `wasm-unsafe-eval` y los dos CDN
+       *  del runtime (cdnjs sirve `ort.min.js` con `integrity`; jsdelivr sirve el
+       *  módulo `.mjs` y el `.wasm`, sin él — el mismo límite declarado de la demo).
+       *  No se abre nada más: ni `style-src`, ni `worker-src`, ni otro origen.
+       *
+       *  La regla general EXCLUYE esta ruta por la misma razón que excluye la demo:
+       *  con dos CSP en la misma respuesta el navegador aplica la intersección, y la
+       *  estricta seguiría bloqueando el runtime. `check:routes` exige que esta
+       *  ruta lleve `wasm-unsafe-eval` y que la portada NO lo lleve. */
+      {
+        source: `/:lang(en|es)/projects/credit-risk`,
         headers: [
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          // `browsing-topics` es lo que sustituyó a FLoC (`interest-cohort`); se
-          // dejan los dos porque los navegadores ignoran la directiva que no conocen.
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=(), browsing-topics=()" },
-          // Cierra la referencia `window.opener` entre orígenes. Coste cero: nada
-          // aquí depende de una ventana abierta desde otro sitio.
-          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+          ...common,
           {
             key: "Content-Security-Policy",
-            value: [
-              "default-src 'none'",
-              dev ? "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com" : "script-src 'self' 'unsafe-inline'",
-              dev ? "style-src 'self' 'unsafe-inline'" : "style-src 'self'",
-              "style-src-attr 'unsafe-inline'",
-              "font-src 'self'",
-              "img-src 'self' data:",
-              // El laboratorio de trading lee los JSON del pipeline en cliente.
-              "connect-src 'self' https://raw.githubusercontent.com",
-              "manifest-src 'self'",
-              "base-uri 'self'",
-              "form-action 'self'",
-              "frame-ancestors 'none'",
-              "object-src 'none'",
-              "upgrade-insecure-requests",
-            ].join("; "),
+            value: siteCsp({
+              script: ["'wasm-unsafe-eval'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net"],
+              connect: ["https://cdn.jsdelivr.net"],
+            }),
           },
         ],
       },

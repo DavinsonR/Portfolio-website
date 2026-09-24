@@ -91,6 +91,19 @@ for (const r of ["/pricing", "/es/no-existe", "/en/no-existe", "/es-CO"]) {
   const demo = await fetch(`${BASE}/credit-risk-demo/index.html`);
   const dcsp = demo.headers.get("content-security-policy") ?? "";
   if (!dcsp.includes("wasm-unsafe-eval")) failures.push("/credit-risk-demo/index.html — su CSP no lleva 'wasm-unsafe-eval': la demo muere con «no available backend»");
+  // El simulador vive dentro de la página del proyecto: esa ruta, y solo esa, abre
+  // la CSP al runtime. Se comprueban los dos lados — que la página lo tenga, y que
+  // la apertura no se haya escapado al resto del sitio — y que abrirla no le haya
+  // costado la base estricta (una sola cabecera, desde `default-src 'none'`).
+  for (const lang of ["en", "es"]) {
+    const page = await fetch(`${BASE}/${lang}/projects/credit-risk`);
+    const pcsp = page.headers.get("content-security-policy") ?? "";
+    const route = `/${lang}/projects/credit-risk`;
+    if (!pcsp.includes("wasm-unsafe-eval")) failures.push(`${route} — su CSP no lleva 'wasm-unsafe-eval': el simulador muere con «no available backend»`);
+    if (!pcsp.startsWith("default-src 'none'") || pcsp.includes(",")) failures.push(`${route} — la CSP no es una sola política desde default-src 'none': «${pcsp.slice(0, 80)}…»`);
+    if (!pcsp.includes("'unsafe-inline'") || /sha256-/.test(pcsp)) failures.push(`${route} — la CSP perdió 'unsafe-inline' o declara un hash: la hidratación muere`);
+  }
+  if (csp.includes("wasm-unsafe-eval")) failures.push("/en — la CSP de la portada lleva 'wasm-unsafe-eval': la apertura del simulador se escapó de su ruta");
 }
 
 // 4. Los artefactos de metadatos que el sitio declara.
