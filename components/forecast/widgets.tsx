@@ -41,6 +41,7 @@ import {
 } from "@/lib/data/forecast-lab";
 import type { Kind } from "./Island";
 import { setSel, useSel } from "./store";
+import { SortTable, type Column } from "./ui";
 
 // ---------------------------------------------------------------- datos
 
@@ -859,116 +860,36 @@ function Region({ copy, lang }: { copy: LabCopy; lang: string }) {
 
       <details className="mt-4">
         <summary className="cursor-pointer text-[14px] text-cold underline underline-offset-4">{copy.region.table}</summary>
-        <div tabIndex={0} role="region" aria-label={copy.region.table} className="mt-3 overflow-x-auto">
-          <table className="w-full min-w-[560px] border-collapse text-[14px]">
-            <thead>
-              <tr className="border-b-2 border-ink text-left text-[12.5px] font-semibold tracking-[0.06em] text-muted uppercase">
-                <th className="py-1.5 pr-3 font-semibold">{copy.economy}</th>
-                {REGION_MODELS.map((m) => (
-                  <th key={m} className="py-1.5 pr-3 text-right font-semibold">{copy.models[m]}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {economies.map((e) => (
-                <tr key={e} className="border-b border-rulesoft">
-                  <td className="py-1.5 pr-3 text-ink">
-                    <button type="button" onClick={() => setSel({ iso3: e })} className="text-left hover:text-cold" aria-pressed={e === iso3}>
-                      {countryName(byIso.get(e), lang)}
-                    </button>
-                  </td>
-                  {REGION_MODELS.map((m) => {
-                    const d = rows.find((r) => r.iso3 === e && r.modelo === m);
-                    return (
-                      <td key={m} className={`py-1.5 pr-3 text-right ${d?.rel != null && d.rel < 1 ? "text-cold" : "text-body"}`}>
-                        {d?.rel != null ? num(lang, d.rel, 2) : "—"}
-                        {d?.sig ? " *" : ""}
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="mt-3">
+          <SortTable
+            caption={copy.region.table}
+            minWidth={560}
+            rows={economies.map((e) => ({ iso3: e, name: countryName(byIso.get(e), lang), cells: REGION_MODELS.map((m) => rows.find((r) => r.iso3 === e && r.modelo === m)) }))}
+            rowKey={(r) => r.iso3}
+            initial={{ key: "ar1", dir: "asc" }}
+            rowClass={(r) => (r.iso3 === iso3 ? "fl-row-on" : "")}
+            onRow={(r) => setSel({ iso3: r.iso3 })}
+            columns={[
+              { key: "name", label: copy.economy, sort: (r) => r.name, render: (r) => <span className="text-ink">{r.name}</span> },
+              ...REGION_MODELS.map((m, k): Column<{ iso3: string; name: string; cells: ((typeof rows)[number] | undefined)[] }> => ({
+                key: m,
+                label: copy.models[m],
+                align: "right",
+                sort: (r) => r.cells[k]?.rel ?? null,
+                render: (r) => {
+                  const d = r.cells[k];
+                  return (
+                    <span className={d?.rel != null && d.rel < 1 ? "text-cold" : "text-body"}>
+                      {d?.rel != null ? num(lang, d.rel, 2) : "—"}
+                      {d?.sig ? " *" : ""}
+                    </span>
+                  );
+                },
+              })),
+            ]}
+          />
         </div>
       </details>
-    </div>
-  );
-}
-
-// ================================================================ FRONTERA
-
-function Frontier({ copy, lang }: { copy: LabCopy; lang: string }) {
-  const meta = useLoad(loadMeta, "meta");
-  const sum = useLoad(loadSummary, "summary");
-  const [k, setK] = useState(20);
-  if (meta.failed || sum.failed) return <Failed copy={copy} retry={() => { meta.retry(); sum.retry(); }} />;
-  if (!meta.data || !sum.data) return <Loading copy={copy} />;
-  const byIso = new Map(meta.data.paises.map((p) => [p.iso3, p]));
-  const rows = [...sum.data.frontera]
-    .map((f) => ({ iso3: f.iso3, full: f.completos[k - 1] ?? 0, run: f.contiguos[k - 1] ?? 0 }))
-    .sort((a, b) => b.run - a.run || b.full - a.full || a.iso3.localeCompare(b.iso3));
-  const total = rows.length;
-  const need = 3 * k;
-  const viable = rows.filter((r) => r.run >= need).length;
-  const zero = rows.filter((r) => r.full === 0).length;
-
-  const W = 720, rowH = 34, P = { l: 8, r: 70, t: 8, b: 26 };
-  const H = P.t + total * rowH + P.b;
-  const maxY = 70;
-  const x = lin(0, maxY, P.l, W - P.r);
-
-  return (
-    <div>
-      <label className="atlas-field">
-        <span>{copy.frontier.k}</span>
-        <span className="atlas-range">
-          <input type="range" min={1} max={33} value={k} onChange={(e) => setK(Number(e.target.value))} className="!w-[260px] max-w-full" />
-          <output className="!text-[26px]">{k}</output>
-        </span>
-      </label>
-      <p className="mt-4 text-[15px] text-ink" aria-live="polite">
-        <b className="font-semibold">{fill(copy.frontier.viable, { n: viable, total, k })}</b>
-        {zero > 0 && <span className="text-body"> · {fill(copy.frontier.zero, { n: zero, total })}</span>}
-      </p>
-      <ScaleAware base={W} className="mt-4">
-        <svg viewBox={`0 0 ${W} ${H}`} className="block w-full" role="img" aria-label={`${fill(copy.frontier.viable, { n: viable, total, k })}. ${fill(copy.frontier.zero, { n: zero, total })}.`}>
-          {[0, 20, 40, 60].map((v) => (
-            <g key={v}>
-              <line x1={x(v)} x2={x(v)} y1={P.t} y2={H - P.b} stroke="var(--color-rule)" />
-              <text x={x(v)} y={H - 8} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>
-                {v}
-              </text>
-            </g>
-          ))}
-          {rows.map((r, i) => {
-            const cy = P.t + i * rowH;
-            const ok = r.run >= need;
-            return (
-              <g key={r.iso3}>
-                <text x={P.l} y={cy + 12} fill="var(--color-ink)" style={TXT()}>
-                  {countryName(byIso.get(r.iso3), lang)}
-                </text>
-                <rect x={x(0)} y={cy + 17} width={x(r.full) - x(0)} height={12} fill="var(--color-coldsoft)" stroke="var(--color-coldline)" className="fl-bar" />
-                <rect x={x(0)} y={cy + 17} width={x(r.run) - x(0)} height={12} fill={ok ? "var(--color-cold)" : "var(--color-control)"} className="fl-bar" />
-                <text x={x(Math.max(r.full, r.run)) + 6} y={cy + 28} fill="var(--color-body)" style={TXT()}>
-                  {r.full > r.run ? `${r.run} / ${r.full}` : r.run}
-                </text>
-              </g>
-            );
-          })}
-          {need <= maxY && (
-            <g>
-              <line x1={x(need)} x2={x(need)} y1={P.t - 4} y2={H - P.b} stroke="var(--color-neg)" strokeWidth="1.5" strokeDasharray="4 4" />
-            </g>
-          )}
-        </svg>
-      </ScaleAware>
-      <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-[14px] text-body">
-        <li className="flex items-center gap-2"><span className="inline-block h-3 w-5 bg-cold" aria-hidden="true" />{copy.frontier.years}</li>
-        <li className="flex items-center gap-2"><span className="inline-block h-3 w-5 border border-coldline bg-coldsoft" aria-hidden="true" />{copy.frontier.complete}</li>
-        <li className="flex items-center gap-2"><span className="inline-block h-0 w-5 border-t-2 border-dashed border-neg" aria-hidden="true" />{copy.frontier.threshold}: {need}</li>
-      </ul>
     </div>
   );
 }
@@ -1025,35 +946,26 @@ function Frequency({ copy, lang }: { copy: LabCopy; lang: string }) {
         </div>
       </div>
 
-      <div tabIndex={0} role="region" aria-label={copy.frequency.arms} className="mt-8 overflow-x-auto">
-        <table className="w-full min-w-[560px] border-collapse text-[14px]">
-          <caption className="pb-2 text-left text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">{copy.frequency.arms}</caption>
-          <thead>
-            <tr className="border-b-2 border-ink text-left text-[12.5px] font-semibold tracking-[0.06em] text-muted uppercase">
-              <th className="py-1.5 pr-3 font-semibold">{copy.frequency.arm}</th>
-              <th className="py-1.5 pr-3 text-right font-semibold">{copy.models.naive}</th>
-              <th className="py-1.5 pr-3 text-right font-semibold">{copy.models.lstm}</th>
-              <th className="py-1.5 pr-3 text-right font-semibold">{copy.frequency.gain}</th>
-              <th className="py-1.5 pr-3 text-right font-semibold">p</th>
-              <th className="py-1.5 text-right font-semibold">Holm</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(["M", "A", "B", "C"] as const).map((b) => {
-              const l = get(b, "lstm");
-              return (
-                <tr key={b} className={`border-b border-rulesoft ${b === arm ? "bg-coldsoft" : ""}`}>
-                  <td className="py-2 pr-3 text-ink">{copy.frequency.armNames[b]}</td>
-                  <td className="py-2 pr-3 text-right text-body">{num(lang, get(b, "naive")?.mae)}</td>
-                  <td className="py-2 pr-3 text-right text-body">{num(lang, l?.mae)}</td>
-                  <td className={`py-2 pr-3 text-right font-figure text-[16px] ${l?.ganancia != null && l.ganancia > 0 ? "text-cold" : "text-neg"}`}>{signed(lang, l?.ganancia)} %</td>
-                  <td className="py-2 pr-3 text-right text-body">{pval(lang, l?.p)}</td>
-                  <td className="py-2 text-right text-body">{pval(lang, l?.holm)}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+      <p className="mt-8 text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">{copy.frequency.arms}</p>
+      <div className="mt-2">
+        <SortTable
+          caption={copy.frequency.arms}
+          minWidth={560}
+          rows={(["M", "A", "B", "C"] as const).map((b) => ({ b, naive: get(b, "naive"), lstm: get(b, "lstm") }))}
+          rowKey={(r) => r.b}
+          rowClass={(r) => (r.b === arm ? "fl-row-on" : "")}
+          columns={[
+            { key: "arm", label: copy.frequency.arm, sort: (r) => copy.frequency.armNames[r.b], render: (r) => <span className="text-ink">{copy.frequency.armNames[r.b]}</span> },
+            { key: "naive", label: copy.models.naive, align: "right", sort: (r) => r.naive?.mae ?? null, render: (r) => num(lang, r.naive?.mae) },
+            { key: "lstm", label: copy.models.lstm, align: "right", sort: (r) => r.lstm?.mae ?? null, render: (r) => num(lang, r.lstm?.mae) },
+            {
+              key: "gain", label: copy.frequency.gain, align: "right", sort: (r) => r.lstm?.ganancia ?? null,
+              render: (r) => <span className={`font-figure text-[16px] ${r.lstm?.ganancia != null && r.lstm.ganancia > 0 ? "text-cold" : "text-neg"}`}>{signed(lang, r.lstm?.ganancia)} %</span>,
+            },
+            { key: "p", label: "p", align: "right", sort: (r) => r.lstm?.p ?? null, render: (r) => pval(lang, r.lstm?.p) },
+            { key: "holm", label: "Holm", align: "right", sort: (r) => r.lstm?.holm ?? null, render: (r) => pval(lang, r.lstm?.holm) },
+          ]}
+        />
       </div>
     </div>
   );
@@ -1086,29 +998,24 @@ function Holm({ copy, lang }: { copy: LabCopy; lang: string }) {
           {fill(copy.holm.count, { n: count })}
         </p>
       </div>
-      <div tabIndex={0} role="region" aria-label={copy.holm.note} className="mt-5 overflow-x-auto">
-        <table className="w-full min-w-[520px] border-collapse text-[14px]">
-          <thead>
-            <tr className="border-b-2 border-ink text-left text-[12.5px] font-semibold tracking-[0.06em] text-muted uppercase">
-              <th className="py-1.5 pr-3 font-semibold">{copy.holm.model}</th>
-              <th className="py-1.5 pr-3 text-right font-semibold">{copy.holm.gain}</th>
-              <th className={`py-1.5 pr-3 text-right font-semibold ${on ? "opacity-60" : ""}`}>{copy.holm.p}</th>
-              <th className={`py-1.5 pr-3 text-right font-semibold ${on ? "" : "opacity-60"}`}>{copy.holm.pHolm}</th>
-              <th className="w-8 py-1.5 font-semibold" aria-label="5 %" />
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((r) => (
-              <tr key={r.modelo} className="border-b border-rulesoft">
-                <td className="py-1.5 pr-3 text-ink">{r.modelo}</td>
-                <td className={`py-1.5 pr-3 text-right ${(r.ganancia ?? 0) > 0 ? "text-ink" : "text-neg"}`}>{signed(lang, r.ganancia)} %</td>
-                <td className={`py-1.5 pr-3 text-right ${on ? "text-muted" : "text-ink"}`}>{pval(lang, r.p)}</td>
-                <td className={`py-1.5 pr-3 text-right ${on ? "text-ink" : "text-muted"}`}>{pval(lang, r.holm)}</td>
-                <td className="py-1.5 text-center font-figure text-[18px] text-cold">{star(r) ? "✱" : ""}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="mt-5">
+        <SortTable
+          caption={copy.holm.note}
+          minWidth={520}
+          rows={rows}
+          rowKey={(r) => r.modelo}
+          initial={{ key: "gain", dir: "desc" }}
+          columns={[
+            { key: "model", label: copy.holm.model, sort: (r) => r.modelo, render: (r) => <span className="text-ink">{r.modelo}</span> },
+            {
+              key: "gain", label: copy.holm.gain, align: "right", sort: (r) => r.ganancia,
+              render: (r) => <span className={(r.ganancia ?? 0) > 0 ? "text-ink" : "text-neg"}>{signed(lang, r.ganancia)} %</span>,
+            },
+            { key: "p", label: copy.holm.p, align: "right", sort: (r) => r.p, render: (r) => <span className={on ? "text-muted" : "text-ink"}>{pval(lang, r.p)}</span> },
+            { key: "holm", label: copy.holm.pHolm, align: "right", sort: (r) => r.holm, render: (r) => <span className={on ? "text-ink" : "text-muted"}>{pval(lang, r.holm)}</span> },
+            { key: "star", label: "5 %", align: "center", sort: (r) => (star(r) ? 1 : 0), render: (r) => <span className="font-figure text-[18px] text-cold">{star(r) ? "✱" : ""}</span> },
+          ]}
+        />
       </div>
       <p className="mt-3 text-[14px] text-muted">{copy.holm.note}</p>
     </div>
@@ -1125,8 +1032,6 @@ export default function Widgets({ kind, copy, lang }: { kind: Exclude<Kind, "das
       return <Backtest copy={copy} lang={lang} />;
     case "region":
       return <Region copy={copy} lang={lang} />;
-    case "frontier":
-      return <Frontier copy={copy} lang={lang} />;
     case "frequency":
       return <Frequency copy={copy} lang={lang} />;
     case "holm":

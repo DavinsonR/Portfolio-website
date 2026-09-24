@@ -58,7 +58,6 @@ export default async function ForecastLabPage({ params }: { params: Promise<{ la
     { id: "juega", kind: "play", copy: t.play },
     { id: "backtest", kind: "backtest", copy: t.backtest },
     { id: "region", kind: "region", copy: t.region },
-    { id: "frontera", kind: "frontier", copy: t.frontier },
     { id: "frecuencia", kind: "frequency", copy: t.frequency },
     { id: "holm", kind: "holm", copy: t.holm },
   ] as const;
@@ -121,11 +120,10 @@ export default async function ForecastLabPage({ params }: { params: Promise<{ la
 
       {/* ================= PANORAMA — lo primero después de la entrada ================= */}
       <section id="panorama" aria-labelledby="panorama-h" className={section}>
-        <div className={wrap}>
-          {intro("panorama", t.dashboard)}
-          <div className="mt-8">
-            <Island kind="dashboard" copy={t.lab} lang={lang} />
-          </div>
+        <div className={wrap}>{intro("panorama", t.dashboard)}</div>
+        {/* El tablero usa todo el ancho útil: una grilla de visuales no cabe en una columna de lectura. */}
+        <div className="mx-auto mt-8 max-w-[1440px] px-4 sm:px-6">
+          <Island kind="dashboard" copy={t.lab} lang={lang} />
         </div>
       </section>
 
