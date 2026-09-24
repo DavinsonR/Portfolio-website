@@ -204,3 +204,23 @@ export function seasonalProfile(values: (number | null)[], startMonth: number): 
   }
   return byMonth.map((xs) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : NaN));
 }
+
+// ---------------------------------------------------------------- el pronóstico publicado (D-008)
+
+export type ForecastPoint = { anio: number; media: number; lo80: number; hi80: number; lo95: number; hi95: number };
+export type EconomyForecast = {
+  iso3: string;
+  ultimo_anio: number;
+  ultimo: number;
+  pronostico: ForecastPoint[];
+  /** Cobertura empírica de la banda de un paso en el backtest: cuántas veces contuvo el dato. */
+  cobertura: { n: number; c80: number; c95: number };
+};
+export type Forecast = {
+  modelo: string;
+  hasta: number;
+  economias: EconomyForecast[];
+  cobertura_region: { n: number; c80: number; c95: number };
+};
+
+export const loadForecast = () => load<Forecast>("pronostico.json");
