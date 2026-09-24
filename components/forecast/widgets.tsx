@@ -73,6 +73,16 @@ const lin = (d0: number, d1: number, r0: number, r1: number) => (v: number) => r
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 const TXT = (px = 12) => ({ fontSize: `calc(${px}px * var(--k, 1))` });
 
+/** Títulos de los dos ejes: el de x centrado abajo, el de y girado a la izquierda. */
+function AxisTitles({ W, H, P, x, y }: { W: number; H: number; P: { l: number; r: number; t: number; b: number }; x: string; y: string }) {
+  return (
+    <g pointerEvents="none">
+      <text x={(P.l + W - P.r) / 2} y={H - 6} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>{x}</text>
+      <text transform={`translate(14,${(P.t + H - P.b) / 2}) rotate(-90)`} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>{y}</text>
+    </g>
+  );
+}
+
 type Style = { color: string; dash: string; shape: "ring" | "circle" | "square" | "triangle" | "diamond" | "cross" };
 const STYLE: Record<ModelId, Style> = {
   naive: { color: "var(--color-muted)", dash: "5 6", shape: "ring" },
@@ -267,7 +277,7 @@ function Round({ copy, lang, series: s, meta, onScore }: {
   const svg = useRef<SVGSVGElement>(null);
   const dragging = useRef(false);
 
-  const W = 720, H = 330, P = { l: 46, r: 150, t: 18, b: 34 };
+  const W = 720, H = 346, P = { l: 60, r: 150, t: 18, b: 48 };
   const span = s.inicio.includes("Q") ? 28 : 30;
   const t0 = Math.max(0, T - span);
   const vals = s.y.filter((v): v is number => v != null);
@@ -371,10 +381,11 @@ function Round({ copy, lang, series: s, meta, onScore }: {
               </g>
             ))}
             {xTicks.map((i) => (
-              <text key={i} x={x(i)} y={H - 10} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>
+              <text key={i} x={x(i)} y={H - P.b + 18} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>
                 {s.inicio.includes("Q") ? String(yearOf(periodLabel(s.inicio, i))) : periodLabel(s.inicio, i)}
               </text>
             ))}
+            <AxisTitles W={W} H={H} P={P} x={copy.yearAxis} y={copy.growth} />
             {/* la columna del período que se pronostica */}
             <rect x={x(T) - 14} y={P.t} width={28} height={H - P.b - P.t} fill="var(--color-coldsoft)" />
             <path d={hist.join("")} fill="none" stroke="var(--color-ink)" strokeWidth="2" strokeLinejoin="round" />
@@ -562,7 +573,7 @@ function BacktestChart({ copy, lang, s, meta }: { copy: LabCopy; lang: string; s
     return () => window.clearInterval(id);
   }, [playing, n, s.inicio]);
 
-  const W = 720, H = 300, H2 = 150, P = { l: 46, r: 16, t: 16, b: 30 };
+  const W = 720, H = 316, H2 = 176, P = { l: 60, r: 16, t: 16, b: 46 };
   const len = s.y.length;
   const vals = s.y.filter((v): v is number => v != null);
   const lo = Math.floor(Math.min(...vals, 0) - 1);
@@ -591,7 +602,7 @@ function BacktestChart({ copy, lang, s, meta }: { copy: LabCopy; lang: string; s
 
   // error acumulado relativo al ingenuo, origen a origen
   const rx = lin(0, n - 1, P.l, W - P.r);
-  const ry = lin(0.4, 1.8, H2 - 24, 10);
+  const ry = lin(0.4, 1.8, H2 - 40, 10);
   const running = (m: ModelId) => {
     let d = "";
     let pen = false;
@@ -648,10 +659,11 @@ function BacktestChart({ copy, lang, s, meta }: { copy: LabCopy; lang: string; s
             </g>
           ))}
           {xTicks.map((i) => (
-            <text key={i} x={x(i)} y={H - 9} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>
+            <text key={i} x={x(i)} y={H - P.b + 17} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>
               {yearOf(labels[i])}
             </text>
           ))}
+          <AxisTitles W={W} H={H} P={P} x={copy.yearAxis} y={copy.growth} />
           {rupt.length > 0 && (
             <text x={x(rupt[0]) - 8} y={P.t + 14} textAnchor="end" fill="var(--color-muted)" style={TXT()}>
               {copy.ruptura}
@@ -714,9 +726,10 @@ function BacktestChart({ copy, lang, s, meta }: { copy: LabCopy; lang: string; s
           {shown.map((m) => (
             <path key={m} d={running(m)} fill="none" stroke={STYLE[m].color} strokeWidth="2" strokeDasharray={STYLE[m].dash || undefined} />
           ))}
-          <text x={W - P.r} y={H2 - 6} textAnchor="end" fill="var(--color-muted)" style={TXT()}>
+          <text x={W - P.r} y={H2 - 22} textAnchor="end" fill="var(--color-muted)" style={TXT()}>
             {copy.backtest.origin} → {labels[T - 1]}
           </text>
+          <AxisTitles W={W} H={H2} P={{ ...P, t: 10, b: 40 }} x={copy.backtest.axisOrigin} y={copy.backtest.axisRel} />
         </svg>
       </ScaleAware>
       <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-[14px] text-body">
@@ -754,7 +767,7 @@ function Region({ copy, lang }: { copy: LabCopy; lang: string }) {
   const agg = S.agregado[freq];
   const byIso = new Map(M.paises.map((p) => [p.iso3, p]));
 
-  const W = 720, rowH = 58, P = { l: 16, r: 20, t: 34, b: 30 };
+  const W = 720, rowH = 58, P = { l: 16, r: 20, t: 34, b: 50 };
   const H = P.t + REGION_MODELS.length * rowH + P.b;
   const LO = 0.3, HI = 3.2;
   const x = (v: number) => lin(Math.log(LO), Math.log(HI), P.l, W - P.r)(Math.log(clamp(v, LO, HI)));
@@ -775,7 +788,7 @@ function Region({ copy, lang }: { copy: LabCopy; lang: string }) {
             {[0.5, 0.75, 1, 1.5, 2, 3].map((v) => (
               <g key={v}>
                 <line x1={x(v)} x2={x(v)} y1={P.t - 6} y2={H - P.b} stroke={v === 1 ? STYLE.naive.color : "var(--color-rule)"} strokeWidth={v === 1 ? 1.5 : 1} strokeDasharray={v === 1 ? "5 6" : undefined} />
-                <text x={x(v)} y={H - 10} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>
+                <text x={x(v)} y={H - P.b + 18} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>
                   {num(lang, v, v === 0.75 ? 2 : v % 1 ? 1 : 0)}
                 </text>
               </g>
@@ -816,6 +829,7 @@ function Region({ copy, lang }: { copy: LabCopy; lang: string }) {
                 </g>
               );
             })}
+            <text x={(P.l + W - P.r) / 2} y={H - 6} textAnchor="middle" fill="var(--color-muted)" style={TXT()}>{copy.region.axis}</text>
           </svg>
         </ScaleAware>
 

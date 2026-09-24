@@ -168,6 +168,25 @@ export function MultiSelect({ label, summary, options, selected, onChange, max, 
   );
 }
 
+// ---------------------------------------------------------------- ancho real
+
+/** Ancho real del contenedor. Los gráficos se dibujan a ese ancho —un píxel de viewBox es
+ *  un píxel de pantalla— en vez de encoger un lienzo de escritorio: en un teléfono de 390
+ *  px, un gráfico de 1.100 unidades comprimido dejaba ejes y etiquetas encimados. Mientras
+ *  no se mide (servidor, primer pintado) se usa el ancho de escritorio. */
+export function useWidth<T extends HTMLElement>(fallback: number) {
+  const ref = useRef<T>(null);
+  const [w, setW] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(([e]) => setW(Math.round(e.contentRect.width)));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return [ref, w || fallback] as const;
+}
+
 // ---------------------------------------------------------------- recuadro de un visual
 
 export function Tile({ title, hint, className, children, tools }: {
