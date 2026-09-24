@@ -15,7 +15,7 @@
    Una economía elegida en una pieza viaja a las demás: el estado de selección es un
    almacén de módulo, compartido por todas las islas de la página. */
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import ScaleAware from "@/components/ScaleAware";
 import type { LabCopy } from "@/lib/content/forecast";
 import {
@@ -33,7 +33,6 @@ import {
   relMae,
   signed,
   yearOf,
-  type Freq,
   type Meta,
   type ModelId,
   type Regime,
@@ -41,26 +40,7 @@ import {
   type Summary,
 } from "@/lib/data/forecast-lab";
 import type { Kind } from "./Island";
-
-// ---------------------------------------------------------------- estado compartido
-
-type Sel = { freq: Freq; iso3: string };
-let sel: Sel = { freq: "anual", iso3: "COL" };
-const subs = new Set<() => void>();
-function setSel(patch: Partial<Sel>) {
-  sel = { ...sel, ...patch };
-  subs.forEach((f) => f());
-}
-function useSel(): Sel {
-  return useSyncExternalStore(
-    (cb) => {
-      subs.add(cb);
-      return () => subs.delete(cb);
-    },
-    () => sel,
-    () => sel,
-  );
-}
+import { setSel, useSel } from "./store";
 
 // ---------------------------------------------------------------- datos
 
@@ -152,8 +132,9 @@ function Toggle<T extends string>({ legend, value, options, onChange }: {
 
 function FreqToggle({ copy, meta }: { copy: LabCopy; meta: Meta }) {
   const { freq, iso3 } = useSel();
-  // Una economía sin serie trimestral no puede seguir elegida al cambiar: se vuelve a Colombia.
-  const quarterly = new Set(meta.paises.filter((p) => p.trimestral).map((p) => p.iso3));
+  // Una economía sin serie en la nueva frecuencia no puede seguir elegida: se vuelve a Colombia.
+  const has = new Set(meta.paises.filter((p) => p.trimestral).map((p) => p.iso3));
+  const annual = new Set(meta.paises.filter((p) => p.anual).map((p) => p.iso3));
   return (
     <Toggle
       legend={copy.freq}
@@ -162,14 +143,15 @@ function FreqToggle({ copy, meta }: { copy: LabCopy; meta: Meta }) {
         { id: "anual", label: copy.anual },
         { id: "trimestral", label: copy.trimestral },
       ]}
-      onChange={(f) => setSel({ freq: f, iso3: f === "trimestral" && !quarterly.has(iso3) ? "COL" : iso3 })}
+      onChange={(f) => setSel({ freq: f, iso3: (f === "trimestral" ? has : annual).has(iso3) ? iso3 : "COL" })}
     />
   );
 }
 
 function CountrySelect({ copy, meta, lang }: { copy: LabCopy; meta: Meta; lang: string }) {
   const { freq, iso3 } = useSel();
-  const options = meta.paises.filter((p) => freq === "anual" || p.trimestral);
+  // Solo economías con serie en esa frecuencia: Honduras no tiene anual (B-010 del laboratorio).
+  const options = meta.paises.filter((p) => (freq === "anual" ? p.anual : p.trimestral));
   return (
     <label className="atlas-field">
       <span>{copy.economy}</span>
@@ -206,7 +188,7 @@ function useSeries() {
   const { freq, iso3 } = useSel();
   const meta = useLoad(loadMeta, "meta");
   const all = useLoad(() => loadSeries(freq), `series-${freq}`);
-  const series = all.data?.find((s) => s.iso3 === iso3) ?? null;
+  const series = all.data ? (all.data.find((s) => s.iso3 === iso3) ?? all.data.find((s) => s.iso3 === "COL") ?? null) : null;
   return {
     meta: meta.data,
     series,
@@ -1135,7 +1117,7 @@ function Holm({ copy, lang }: { copy: LabCopy; lang: string }) {
 
 // ================================================================ despacho
 
-export default function Widgets({ kind, copy, lang }: { kind: Kind; copy: LabCopy; lang: string }) {
+export default function Widgets({ kind, copy, lang }: { kind: Exclude<Kind, "dashboard">; copy: LabCopy; lang: string }) {
   switch (kind) {
     case "play":
       return <Play copy={copy} lang={lang} />;

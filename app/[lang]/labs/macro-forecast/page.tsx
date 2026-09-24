@@ -119,6 +119,16 @@ export default async function ForecastLabPage({ params }: { params: Promise<{ la
 
       <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
 
+      {/* ================= PANORAMA — lo primero después de la entrada ================= */}
+      <section id="panorama" aria-labelledby="panorama-h" className={section}>
+        <div className={wrap}>
+          {intro("panorama", t.dashboard)}
+          <div className="mt-8">
+            <Island kind="dashboard" copy={t.lab} lang={lang} />
+          </div>
+        </div>
+      </section>
+
       {/* ================= LAS SEIS PIEZAS ================= */}
       {pieces.map((p) => (
         <section key={p.id} id={p.id} aria-labelledby={`${p.id}-h`} className={section}>
