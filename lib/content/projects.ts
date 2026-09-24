@@ -550,7 +550,7 @@ export const projects = {
         forecast: {
           municipalOnly: "La proyección existe solo por departamento: vuelve a Plano o Relieve 3D para verla.",
           noteLabel: "Proyectado · escenario",
-          anchor: "Escenario condicional al ancla nacional: {source}, con corte al {date}.",
+          anchor: "Ancla nacional: {source}, con corte al {date}.",
           anchorAge: "Esa ancla tiene {months} meses; el proyecto la da por vencida pasados {max}.",
           scenario: "Es un escenario condicional al ancla, no un pronóstico con superioridad demostrada.",
           backtest: "En el backtest le gana al pronóstico ingenuo en {won} de {n} años (p\u00a0=\u00a0{p}, agrupado por año).",
@@ -1216,7 +1216,7 @@ export const projects = {
         forecast: {
           municipalOnly: "The forecast exists only by department: switch back to Flat or Raised 3D to see it.",
           noteLabel: "Projected · scenario",
-          anchor: "A scenario conditional on the national anchor: {source}, cut off on {date}.",
+          anchor: "National anchor: {source}, cut off on {date}.",
           anchorAge: "That anchor is {months} months old; the project treats it as stale after {max}.",
           scenario: "It is a scenario conditional on the anchor, not a forecast with demonstrated superiority.",
           backtest: "In the backtest it beats the naive forecast in {won} of {n} years (p\u00a0=\u00a0{p}, grouped by year).",
