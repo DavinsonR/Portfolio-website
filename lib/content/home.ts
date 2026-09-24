@@ -10,6 +10,11 @@
 // La portada: metadatos, navegación, la hoja y la mesa de trabajo
 
 import type { Metric, ProjectLink, AlsoRow } from "./types";
+import { THESIS as T, thesisFormat } from "../data/thesis-results";
+
+// Las cifras de la tesis salen de un solo sitio (lib/data/thesis-results.ts).
+const fes = thesisFormat("es");
+const fen = thesisFormat("en");
 
 export const home = {
   es: {
@@ -78,7 +83,7 @@ export const home = {
       atlasFigure: {
         label: "Figura · Índice de inclusión financiera por departamento",
         title: "En 2018, diecisiete departamentos estaban bajo la línea base. En 2025 queda uno.",
-        body: "Los dos mapas comparten escala, y el índice está estandarizado contra 2018. Todo el país subió a la vez — y esa subida común es justo la razón de que el efecto se desvanezca: con solo efectos de entidad, la inclusión financiera predice el crecimiento (+0,0242, p < 0,001); al descontar el año, el coeficiente es cero.",
+        body: `Los dos mapas comparten escala, y el índice está estandarizado contra 2018. Todo el país subió a la vez — y esa subida común es justo la razón de que el efecto se desvanezca: con solo efectos de entidad, la inclusión financiera predice el crecimiento (${fes.s(T.entityOnly.coefShort)}, p ${fes.lt(T.entityOnly.pBelow)}); al descontar el año, el coeficiente cae a ${fes.s(T.base.coef)} (p = ${fes.n(T.base.p)}) y el diseño descarta efectos mayores a ${fes.n(T.bound.pp)} puntos por desviación del índice.`,
         legendLow: "Bajo la base de 2018",
         legendMid: "Base 2018",
         legendHigh: "Sobre la base",
@@ -222,7 +227,7 @@ export const home = {
       atlasFigure: {
         label: "Figure · Financial-inclusion index by department",
         title: "In 2018, seventeen departments sat below the baseline. In 2025, one does.",
-        body: "Both maps share one scale, and the index is standardised against 2018. The whole country moved up at once — and that common rise is exactly why the effect vanishes: with entity effects alone, financial inclusion predicts growth (+0.0242, p < 0.001); take the year out and the coefficient is zero.",
+        body: `Both maps share one scale, and the index is standardised against 2018. The whole country moved up at once — and that common rise is exactly why the effect vanishes: with entity effects alone, financial inclusion predicts growth (${fen.s(T.entityOnly.coefShort)}, p ${fen.lt(T.entityOnly.pBelow)}); take the year out and the coefficient falls to ${fen.s(T.base.coef)} (p = ${fen.n(T.base.p)}), and the design rules out effects above ${fen.n(T.bound.pp)} points per standard deviation of the index.`,
         legendLow: "Below the 2018 baseline",
         legendMid: "2018 baseline",
         legendHigh: "Above the baseline",

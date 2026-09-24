@@ -27,6 +27,9 @@ export type Series = {
   nivel: Level;
   ids: string[];
   anios: number[];
+  /* Since the forecast layer (thesis ADR-019 to ADR-023) `anios` runs to 2028; these are
+     the projected years, where the index itself has no value. Absent in older exports. */
+  anios_proyectados?: number[];
   nombres: string[];
   /* One matrix per indicator: years by units. A null is a unit nobody reported, never a zero. */
   series: Record<string, (number | null)[][]>;

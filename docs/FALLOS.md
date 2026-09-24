@@ -1,4 +1,4 @@
-# Fallos — FALLO-01 … FALLO-39
+# Fallos — FALLO-01 … FALLO-40
 
 *Este es el documento que hay que leer antes de tocar nada.* Cada fila es un fallo que ya ocurrió, con su causa raíz en la sesión enlazada.
 
@@ -30,6 +30,7 @@ Dos columnas hacen el trabajo:
 | 37 | **El `<title>` de `/cv` llevaba el nombre dos veces**: la página lo ponía en su título y la plantilla del layout (`%s — nombre`) lo volvía a añadir. En producción, en los dos idiomas, 71 caracteres | ✗ | [18](bitacora/sesion-18.md) |
 | 38 | **`Motion.tsx` desarmaba el salvavidas de 3 s antes de montar el observador**: si algo lanzaba entre medias, todo `[data-reveal]` se quedaba invisible para siempre, y no existía ningún `error.tsx` que contuviera el fallo. Latente, nunca observado; lo encontró la auditoría | ✗ | [18](bitacora/sesion-18.md) |
 | 39 | **`next@16.3.1` llevaba un CVE crítico en el lockfile y nadie lo vio**: las alertas de Dependabot estaban apagadas a nivel de repositorio y ningún paso de CI corría `npm audit` | ✓ `npm audit` en CI + Dependabot | [18](bitacora/sesion-18.md) |
+| 40 | **La página de la tesis publicó cifras de inferencia viejas durante semanas** — β = +0,0007, p = 0,90, bootstrap 0,89, «91 pruebas», «15 especificaciones» y el titular «publiqué el cero», cuando el repositorio de la tesis ya decía +0,0038, p = 0,54, 189 pruebas, 160 especificaciones y «un límite, no una ausencia». Las cifras estaban copiadas a mano en seis sitios de dos idiomas y ninguna comprobación las comparaba con su fuente. Ahora viven en `lib/data/thesis-results.ts` con archivo y clave de origen, y `check:figures` rechaza un «β = …» escrito a mano | parcial: el valor sigue copiado del JSON del otro repositorio | [24](bitacora/sesion-27.md) |
 
 **Dos rutas que devolvían 200 debiendo ser 404** y un redirect de idioma que faltaba también salieron en la [sesión 16](bitacora/sesion-16.md); hoy los cubre `check:routes`.
 

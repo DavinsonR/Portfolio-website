@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getDictionary, THESIS_REPO } from "@/lib/dictionaries";
+import { mailtoHref } from "@/lib/config/contact";
 import StatusPill from "@/components/StatusPill";
 import BackLink from "@/components/BackLink";
 import ContactBand from "@/components/ContactBand";
@@ -46,7 +46,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
     <main id="main" tabIndex={-1}>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/research/fintech-inclusion", { title: t.metaTitle, description: t.metaDesc }, { type: "ScholarlyArticle", codeRepository: THESIS_REPO })) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/research/fintech-inclusion", { title: t.metaTitle, description: t.metaDesc }, { type: "ScholarlyArticle", codeRepository: THESIS_REPO, dataset: { license: "https://creativecommons.org/licenses/by-sa/4.0/", temporalCoverage: "2018/2025", spatialCoverage: "Colombia" } })) }}
       />
       {/* ================= HERO ================= */}
       <header className="border-b border-rule">
@@ -63,6 +63,30 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
             <p className="mt-4 max-w-[70ch] text-[15.5px] leading-[1.7] text-ink">{t.subtitle}</p>
             <p className="mt-3 text-[14px] text-body">{t.degree}</p>
             <p className="mt-1 text-[14px] text-muted">{t.timeline}</p>
+            {/* Una acción primaria arriba: el atlas es la razón de estar en esta
+                página. El código va de secundaria, en contorno. */}
+            <div className="mt-7 flex flex-wrap gap-3.5">
+              <a
+                href="#atlas"
+                className="lift rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
+              >
+                {t.ctaAtlas}
+              </a>
+              <a
+                href={THESIS_REPO}
+                {...ext}
+                className="rounded-[3px] border border-control px-5 py-3 text-[14.5px] text-ink transition-colors hover:border-cold hover:text-cold"
+              >
+                {t.ctaRepo}
+              </a>
+            </div>
+            <ul className="mt-9 grid grid-cols-1 gap-x-8 gap-y-4 md:grid-cols-3">
+              {t.bullets.map((b, i) => (
+                <li key={b.title} data-reveal className="reveal border-t border-rule pt-4 text-[14.5px] leading-[1.65] text-body" style={delay(i)}>
+                  <span className="font-semibold text-ink">{b.title}</span> {b.body}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
@@ -107,6 +131,22 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
           <p data-reveal className={`reveal mt-5 ${prose} text-[16px] leading-[1.8] text-body`} style={delay(1)}>
             {t.abstract.body}
           </p>
+        </div>
+      </section>
+
+      {/* ================= WHAT THIS SHOWS — for the reader who hires ================= */}
+      <section aria-labelledby="demuestra" className={section}>
+        <div className={wrap}>
+          <p data-reveal className={`reveal ${label}`}>{t.shows.label}</p>
+          <h2 id="demuestra" data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.shows.title}</h2>
+          <div className="mt-8 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2">
+            {t.shows.items.map((m, i) => (
+              <div key={m.title} data-reveal className="reveal border-t border-rule pt-5" style={delay(i)}>
+                <p className="text-[14.5px] font-semibold text-ink">{m.title}</p>
+                <p className="mt-2 text-[14.5px] leading-[1.7] text-body">{m.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -216,7 +256,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
               grupo y la definición antes del término fallaban el audit
               «definition-list» de Lighthouse (97 en accesibilidad, y el CI exige
               100). La cifra sigue yendo primero en pantalla con `order`. */}
-          <dl className="mt-8 grid grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-3">
+          <dl className="mt-8 grid grid-cols-1 gap-x-8 gap-y-5 md:grid-cols-2 lg:grid-cols-4">
             {t.results.tiles.map((f, i) => (
               <div key={f.label} data-reveal className="reveal flex flex-col border-t border-rule pt-4" style={delay(i)}>
                 <dt className="order-2 mt-2 text-[14px] leading-[1.4] font-medium text-ink">{f.label}</dt>
@@ -299,6 +339,30 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
               </li>
             ))}
           </ol>
+          {/* Una salida por lector: quien contrata, quien investiga y quien
+              necesita el trabajo para su organización. No hay agenda en línea,
+              así que la tercera es un correo y lo dice. */}
+          <p className={`mt-10 ${label}`}>{t.audience.label}</p>
+          <ul className="mt-3 grid grid-cols-1 gap-x-8 gap-y-3 border-t border-rule pt-4 md:grid-cols-3">
+            <li className="text-[14.5px] leading-[1.6] text-body">
+              {t.audience.hireLead}{" "}
+              <a href={dict.cv.downloadHref} download className="font-semibold text-cold hover:underline">
+                {t.audience.hire}
+              </a>
+            </li>
+            <li className="text-[14.5px] leading-[1.6] text-body">
+              {t.audience.researchLead}{" "}
+              <a href={t.audience.researchHref} {...ext} className="font-semibold text-cold hover:underline">
+                {t.audience.research}
+              </a>
+            </li>
+            <li className="text-[14.5px] leading-[1.6] text-body">
+              {t.audience.orgLead}{" "}
+              <a href={mailtoHref(dict)} className="font-semibold text-cold hover:underline">
+                {t.audience.org}
+              </a>
+            </li>
+          </ul>
           <div className="mt-8 flex flex-wrap gap-3.5">
             <a
               href={THESIS_REPO}
@@ -307,9 +371,6 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
             >
               {t.repoCta}
             </a>
-            <Link href={`/${lang}`} className="rounded-[3px] border border-control px-5 py-3 text-[14px] text-ink transition-colors hover:border-cold">
-              {t.backCta}
-            </Link>
           </div>
         </div>
       </section>
