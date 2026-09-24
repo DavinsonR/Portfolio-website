@@ -10,10 +10,10 @@
 | Sitio | **[davirson.com](https://davirson.com)** · Next.js 16 · estático en Vercel · $0 de hosting + ~$10/año de dominio |
 | Dominio | `davirson.com`, Cloudflare Registrar, precio plano. `proyecto-davirson-git.vercel.app` sigue vivo y redirige — **no se apaga**: está en LinkedIn, en correos enviados y en PDF que ya circulan |
 | Analítica | Vercel Web Analytics, sin cookies, mismo origen (por eso no hace falta tocar la CSP) |
-| CI | `.github/workflows/ci.yml` — lint, tipos, paridad del diccionario, artefactos del CV, cifras, `npm audit`, `.tex` y figura del atlas al día, build y humo de rutas (con tarjetas OG y Twitter y los ocho redirects con su código) |
+| CI | `.github/workflows/ci.yml` — lint, tipos, paridad del diccionario, artefactos del CV, cifras, `npm audit`, `.tex` y figura del atlas al día, build y humo de rutas (con tarjetas OG y Twitter y los nueve redirects con su código) |
 | Repositorio | `main` protegida: exige el check `verify` en verde y no admite force-push (el trabajo va en rama y se fusiona, o se empuja con `git push origin rama:main` cuando CI ya pasó). Dependabot activo (alertas y parches). `davirson.com` enviado a la lista de precarga HSTS el 23 sep 2026: estado `pending` hasta que Chromium lo incorpore |
-| Idiomas | ES y EN completos, 7 rutas por idioma |
-| Proyectos en la mesa | tesis de inclusión financiera · plataforma de datos de mercado · informe Power BI · demo de riesgo de crédito en el navegador · JARVIS (privado) |
+| Idiomas | ES y EN completos, 9 rutas por idioma |
+| Proyectos en la mesa | laboratorio de pronóstico macro en LATAM (`/labs/macro-forecast`) · tesis de inclusión financiera · plataforma de datos de mercado · informe Power BI · demo de riesgo de crédito en el navegador · JARVIS (privado) |
 
 ## Pendientes
 
@@ -48,4 +48,4 @@
 
 ## Reservado
 
-Lab de experimentos · blog · ventures · comunidad. Nada de esto se abre sin una necesidad real; están anotados para que no se reinventen.
+Blog · ventures · comunidad. Nada de esto se abre sin una necesidad real; están anotados para que no se reinventen. El «lab de experimentos» se abrió el 23 sep 2026 con `/labs/macro-forecast`, el primero con una necesidad real: un experimento que se entiende mejor moviéndolo que leyéndolo.

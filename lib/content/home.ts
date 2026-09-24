@@ -144,6 +144,14 @@ export const home = {
             href: "/research/fintech-inclusion",
           },
           {
+            name: "Pronóstico macro en LATAM — laboratorio interactivo",
+            kind: "Laboratorio abierto · juegas contra el pronóstico ingenuo",
+            status: "live",
+            statusText: "LAB ABIERTO",
+            note: "Trece modelos, de un AR(1) a un LSTM, contra el pronóstico ingenuo en 20 economías de América Latina, con cada ganancia sometida a Diebold-Mariano, Holm y Wilcoxon. En la página juegas tú contra el ingenuo, mueves el origen del backtest y ves caer las estrellas al corregir por comparaciones múltiples.",
+            href: "/labs/macro-forecast",
+          },
+          {
             name: "JARVIS — producto multiusuario con datos sensibles",
             kind: "Producto propio en producción · Postgres con seguridad por fila",
             status: "live",
@@ -276,6 +284,14 @@ export const home = {
             statusText: "THESIS FILED",
             note: "Nineteen public sources in a dimensional warehouse on dbt and DuckDB, resolved to municipal codes. On top, a financial-inclusion index, two annual panels, an atlas of all 1,123 municipalities and the full econometric battery, with its results published.",
             href: "/research/fintech-inclusion",
+          },
+          {
+            name: "Macro forecasting across LATAM — interactive lab",
+            kind: "Open lab · you play against the naive forecast",
+            status: "live",
+            statusText: "OPEN LAB",
+            note: "Thirteen models, from an AR(1) to an LSTM, against the naive forecast in 20 Latin American economies, with every gain put to Diebold-Mariano, Holm and Wilcoxon. On the page you play against naive yourself, move the backtest origin and watch the stars fall once multiple comparisons are corrected.",
+            href: "/labs/macro-forecast",
           },
           {
             name: "JARVIS — multi-user product with sensitive data",

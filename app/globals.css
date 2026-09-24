@@ -722,3 +722,137 @@ a {
   .atlas-tip, .atlas-card, .atlas-drill { display: none !important; }
   .atlas-canvas { grid-template-columns: 1fr 1fr; }
 }
+
+/* ============================================================
+   Laboratorio de pronóstico (/labs/macro-forecast)
+   Los controles reutilizan los del atlas (.atlas-field, .atlas-views,
+   .atlas-range); aquí solo lo que el atlas no tiene.
+   ============================================================ */
+.fl-shell { min-height: 240px; }
+
+/* chip de modelo: se enciende en azul, como los botones de vista del atlas */
+.fl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 14px;
+  padding: 5px 11px;
+  border: 1px solid var(--color-control);
+  border-radius: 3px;
+  background: var(--color-paper);
+  color: var(--color-body);
+  cursor: pointer;
+}
+.fl-chip:hover { border-color: var(--color-cold); color: var(--color-ink); }
+.fl-chip[aria-pressed="true"] { border-color: var(--color-cold); background: var(--color-coldsoft); color: var(--color-ink); font-weight: 600; }
+.fl-chip[aria-pressed="false"] svg { opacity: 0.45; }
+
+/* el tirador del juego: el foco rodea el punto ámbar, no el SVG entero */
+.fl-handle:focus { outline: none; }
+.fl-handle:focus-visible circle:last-child { stroke: var(--color-ink); stroke-width: 3; }
+
+/* interruptor de Holm */
+.fl-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: inherit;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.fl-switch-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border: 1.5px solid var(--color-control);
+  border-radius: 999px;
+  background: var(--color-paper);
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.fl-switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  background: var(--color-control);
+  transition: transform 160ms ease, background 160ms ease;
+}
+.fl-switch[aria-checked="true"] .fl-switch-track { background: var(--color-cold); border-color: var(--color-cold); }
+.fl-switch[aria-checked="true"] .fl-switch-knob { transform: translateX(18px); background: var(--color-paper); }
+
+/* barras que cambian con un control: se mueven, no saltan (y no se mueven
+   con movimiento reducido, que la regla global ya recorta) */
+.fl-bar { transition: width 220ms ease; }
+.fl-hbar { transition: width 260ms ease; border-radius: 0; }
+
+/* ---- panorama: el panel descriptivo del laboratorio ---- */
+.fl-board { position: relative; }
+.fl-preset {
+  font: inherit;
+  font-size: 13.5px;
+  padding: 4px 10px;
+  border: 1px dashed var(--color-control);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--color-body);
+  cursor: pointer;
+}
+.fl-preset:hover { border-color: var(--color-cold); color: var(--color-ink); }
+.fl-preset[aria-pressed="true"] { border-style: solid; border-color: var(--color-cold); color: var(--color-cold); font-weight: 600; }
+
+.fl-year {
+  font: inherit;
+  font-size: 13px;
+  padding: 2px 6px;
+  border: 1px solid var(--color-rule);
+  border-radius: 3px;
+  background: var(--color-paper);
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.fl-year:hover { border-color: var(--color-cold); color: var(--color-ink); }
+.fl-year[aria-pressed="true"] { border-color: var(--color-cold); background: var(--color-cold); color: var(--color-paper); }
+.fl-year[aria-pressed="true"]:focus-visible { outline-color: var(--color-ink); }
+
+/* una fila del ranking es un botón entero: nombre, barra y cifra */
+.fl-rank {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  padding: 3px 0;
+  font: inherit;
+  border: 0;
+  border-bottom: 1px solid var(--color-rulesoft);
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+.fl-rank:hover { background: var(--color-band); }
+
+/* tooltip plano: regla y papel, sin sombra (DESIGN.md) */
+.fl-tip {
+  position: absolute;
+  z-index: 6;
+  pointer-events: none;
+  min-width: 170px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-control);
+  border-radius: 3px;
+  background: var(--color-paper);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.fl-heat td { border: 1px solid var(--color-paper); }
+.fl-heat th button { font: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+
+@media print {
+  .fl-tip { display: none !important; }
+}

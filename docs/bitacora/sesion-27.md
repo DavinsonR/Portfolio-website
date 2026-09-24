@@ -1,4 +1,4 @@
-## Sesión 24 — 23 sep 2026 · Las cifras de la tesis, al día y en un solo sitio
+## Sesión 27 — 23 sep 2026 · Las cifras de la tesis, al día y en un solo sitio
 
 Encargo: la página `/research/fintech-inclusion` publicaba cifras anteriores a ADR-017 (denominador rezagado) y ADR-018 (potencia y equivalencia) del repositorio de la tesis. Rama `fintech-inclusion-cifras-vigentes`.
 

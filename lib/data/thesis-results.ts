@@ -4,7 +4,7 @@
 // La página /research/fintech-inclusion publicó durante semanas β = +0,0007,
 // p = 0,90, un bootstrap de 0,89, un placebo de 0,68, «91 pruebas» y «15
 // especificaciones», cuando el repositorio de la tesis ya decía +0,0038,
-// p = 0,54, 189 pruebas y 160 especificaciones (sesión 24). Las cifras estaban
+// p = 0,54, 189 pruebas y 160 especificaciones (sesión 27). Las cifras estaban
 // copiadas a mano en seis sitios de dos idiomas —la cabecera, la banda, la
 // tabla, las fichas, la portada y la historia— y nadie las comparaba con su
 // fuente. Es FALLO-28 en otro repositorio: la cifra venía de donde no debía.

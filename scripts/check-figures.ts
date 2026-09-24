@@ -86,7 +86,7 @@ const A_MANO =
 
 /** Las cifras econométricas de la tesis viven en `lib/data/thesis-results.ts`
  *  y el contenido las interpola. Escritas a mano en el diccionario fueron el
- *  fallo de la sesión 24: la página publicó β = +0,0007 semanas después de que
+ *  fallo de la sesión 27: la página publicó β = +0,0007 semanas después de que
  *  el repositorio dijera +0,0038, en seis sitios y dos idiomas. Un «β = 0,…»
  *  literal en `lib/content/` es exactamente eso volviendo a entrar. */
 const BETA_A_MANO = /β\s*=\s*[+−-]?\d/g;
