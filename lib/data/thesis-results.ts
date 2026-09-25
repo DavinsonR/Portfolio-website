@@ -18,7 +18,7 @@
 // tras el PR de cierre (ADR-024 y ADR-025, 2026-09-23). Rutas relativas a esa raíz:
 //   R = data/processed/econ/resultados.json          (generado 2026-09-17T16:38:07Z)
 //   C = data/processed/econ/curva_especificacion.json (generado 2026-09-17T16:38:37Z)
-//   F = data/processed/forecast/resultados.json      (generado 2026-09-24T02:05:26Z)
+//   F = data/processed/forecast/resultados.json      (generado 2026-09-25T16:06:44+00:00; ancla: EME de julio de 2026)
 //   I = data/processed/indice_diagnosticos.csv
 //
 // Los valores van al redondeo que se publica, no con todos sus decimales: el

@@ -387,7 +387,9 @@ function ForecastNote({
     const date = Number.isNaN(d.getTime())
       ? ancla.fecha_corte
       : new Intl.DateTimeFormat(locale, { dateStyle: "long", timeZone: "UTC" }).format(d);
-    sentences.push(fill(copy.anchor, { source: ancla.fuente, date }));
+    /* La fuente llega en español desde la exportación de la tesis; el diccionario la traduce
+       cuando la conoce y, si no, se cita tal cual. */
+    sentences.push(fill(copy.anchor, { source: copy.anchorSources[ancla.fuente] ?? ancla.fuente, date }));
   }
   if (anchored && ancla?.vencida && finite(ancla.antiguedad_meses) && finite(ancla.antiguedad_maxima_meses)) {
     sentences.push(fill(copy.anchorAge, { months: Math.floor(ancla.antiguedad_meses), max: ancla.antiguedad_maxima_meses }));

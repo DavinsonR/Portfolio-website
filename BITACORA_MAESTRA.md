@@ -48,6 +48,7 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 29 | [24 sep](docs/bitacora/sesion-29.md) | El tablero pronostica 2026–2027 con bandas y su acierto medido, el filtro mueve todos los gráficos y se lee en el teléfono |
 | 30 | [24 sep](docs/bitacora/sesion-30.md) | El atlas pinta la proyección 2026–2028: años por grupo, trama y opacidad por el ancho del intervalo, una nota que sale del JSON y ninguna tabla de posiciones |
 | 31 | [24 sep](docs/bitacora/sesion-31.md) | Dos versiones de la capa de proyección del atlas: se publica la de la sesión 30 con los seis arreglos de la otra, y pruebas contra los datos reales |
+| 32 | [25 sep](docs/bitacora/sesion-32.md) | El ancla del atlas se renueva con la EME de julio de 2026; el respaldo del WEO deja de estar congelado |
 
 ## Después de la sesión 17
 

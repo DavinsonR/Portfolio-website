@@ -111,6 +111,8 @@ export type AtlasCopy = {
     noteLabel: string;
     anchor: string;
     anchorAge: string;
+    /* Nombre de la fuente del ancla por idioma, con la clave tal como la exporta la tesis. */
+    anchorSources: Record<string, string>;
     scenario: string;
     scenarioUnanchored: string;
     backtest: string;
