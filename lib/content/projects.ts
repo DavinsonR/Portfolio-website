@@ -637,8 +637,8 @@ export const projects = {
           anchor: "Ancla nacional: {source}, con corte al {date}.",
           anchorAge: "Esa ancla tiene {months} meses; el proyecto la da por vencida pasados {max}.",
           anchorSources: {
-            "Banrep, Encuesta mensual de expectativas de analistas económicos (EME) de julio de 2026, mediana (2028 repite 2027)":
-              "Banrep, Encuesta mensual de expectativas de analistas económicos (EME) de julio de 2026, mediana; para 2028 se repite 2027",
+            "Banrep, Encuesta mensual de expectativas de analistas económicos (EME) de julio de 2026, mediana de los analistas, consultada el 2026-09-25 (2028 repite 2027, supuesto del proyecto)":
+              "Banrep, Encuesta mensual de expectativas de analistas económicos (EME) de julio de 2026: mediana de las expectativas de los analistas, no pronóstico del Banco; consultada el 25 de septiembre de 2026; 2028 repite 2027, supuesto del proyecto",
           },
           scenario: "Es un escenario condicional al ancla, no un pronóstico con superioridad demostrada.",
           scenarioUnanchored:
@@ -1391,8 +1391,8 @@ export const projects = {
           anchor: "National anchor: {source}, cut off on {date}.",
           anchorAge: "That anchor is {months} months old; the project treats it as stale after {max}.",
           anchorSources: {
-            "Banrep, Encuesta mensual de expectativas de analistas económicos (EME) de julio de 2026, mediana (2028 repite 2027)":
-              "Banrep's monthly survey of economic analysts (EME), July 2026, median; 2028 repeats 2027",
+            "Banrep, Encuesta mensual de expectativas de analistas económicos (EME) de julio de 2026, mediana de los analistas, consultada el 2026-09-25 (2028 repite 2027, supuesto del proyecto)":
+              "Banrep's monthly survey of economic analysts (EME), July 2026: median of the analysts' expectations, not a Banrep forecast; accessed 25 September 2026; 2028 repeats 2027, a project assumption",
           },
           scenario: "It is a scenario conditional on the anchor, not a forecast with demonstrated superiority.",
           scenarioUnanchored:
