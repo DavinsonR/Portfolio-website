@@ -57,18 +57,15 @@ export const home = {
       pipelineLive: "Pipeline en vivo · datos hasta",
       pipelineStalled: "Pipeline detenido · datos hasta",
       pipelineLiveFallback: "Pipeline en vivo · se actualiza a diario",
-      // Cuatro cifras, cuatro AFIRMACIONES DISTINTAS, una por cuerpo de trabajo.
-      // Fueron cinco durante un tiempo: la quinta («1.123 municipios») era la más
-      // lejana del puesto y ya tiene su propio gráfico justo debajo —la figura del
-      // atlas cuenta esa historia entera—, y con cinco huecos el ojo no elige,
-      // recorre (auditoría del 23 sep 2026). Cuatro es además lo que declara
-      // DESIGN.md para la banda. El orden es deliberado: alcance de negocio,
-      // escala de datos, honestidad intelectual, rigor de producción.
+      // Cuatro cifras sobre la PERSONA: alcance, impacto, trayectoria y cuánto
+      // trabajo se puede comprobar. Las cifras de cada proyecto (1.392, 89, 95 M)
+      // viven en su tarjeta de la vitrina, justo debajo; en la banda se repetían
+      // y competían con ellas (auditoría de portada y CV, PC-05, 25 sep 2026).
       metrics: [
-        { value: "15+", label: "países cuyo cierre controlo", note: "desde HQ · América y hemisferio oriental", href: "/cv#experiencia" },
-        { value: "95 M", label: "registros de crédito procesados", note: "93,4 M HMDA + 1,96 M SBA · el modelo entrena sobre 62,4 M", href: "/projects/credit-risk#cr-cliff" },
-        { value: "1.392", label: "estrategias puestas a prueba", note: "sobrevivieron {survivors} · publiqué las {eliminated} que no", href: "/projects/trading-sim" },
-        { value: "89", label: "pruebas que corren antes que tú", note: "cada día, antes de que un dato se publique", href: "/projects/trading-sim#calidad" },
+        { value: "15+", label: "países cuyo cierre controlo", note: "desde HQ · América, Europa y Asia", href: "/cv#experiencia" },
+        { value: "60 h/mes", label: "de trabajo manual eliminadas", note: "en la tesorería de SLB · 10 por analista", href: "/cv#experiencia" },
+        { value: "2 ascensos", label: "en 26 meses en SLB", note: "de tesorería a especialista, con un practicante a cargo", href: "/cv#experiencia" },
+        { value: "6", label: "proyectos con evidencia pública", note: "código, demo o datos abiertos, a un clic", href: "#work" },
       ] as Metric[],
       ctaPrimary: "Descargar CV (PDF)",
       ctaSecondary: "Ver la evidencia completa",
@@ -210,10 +207,10 @@ export const home = {
       pipelineStalled: "Pipeline stalled · data through",
       pipelineLiveFallback: "Live pipeline · refreshes daily",
       metrics: [
-        { value: "15+", label: "countries whose close I own", note: "from HQ · Americas and Eastern Hemisphere", href: "/cv#experiencia" },
-        { value: "95 M", label: "credit records processed", note: "93.4 M HMDA + 1.96 M SBA · the model trains on 62.4 M", href: "/projects/credit-risk#cr-cliff" },
-        { value: "1,392", label: "strategies put to the test", note: "{survivors} survived · I published the {eliminated} that didn't", href: "/projects/trading-sim" },
-        { value: "89", label: "tests that run before you do", note: "every day, before a single figure ships", href: "/projects/trading-sim#calidad" },
+        { value: "15+", label: "countries whose close I own", note: "from HQ · the Americas, Europe and Asia", href: "/cv#experiencia" },
+        { value: "60 hrs/mo", label: "of manual work eliminated", note: "in SLB's treasury · 10 per analyst", href: "/cv#experiencia" },
+        { value: "2 promotions", label: "in 26 months at SLB", note: "from treasury to specialist, leading an intern", href: "/cv#experiencia" },
+        { value: "6", label: "projects with public evidence", note: "code, demo or open data, one click away", href: "#work" },
       ] as Metric[],
       ctaPrimary: "Download CV (PDF)",
       ctaSecondary: "See the full evidence",

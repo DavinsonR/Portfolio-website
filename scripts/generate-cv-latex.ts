@@ -177,17 +177,17 @@ function build(lang: Locale): string {
   w("");
 
   // ---------- perfil ----------
-  w(`\\section*{${tex(cv.profileLabel)}}`);
+  w(`\\needspace{12\\baselineskip}\\section*{${tex(cv.profileLabel)}}`);
   w(tex(cv.profileText));
   w("");
 
   // ---------- el rol cruzado ----------
-  w(`\\section*{${tex(t.crossover)}}`);
+  w(`\\needspace{12\\baselineskip}\\section*{${tex(t.crossover)}}`);
   w(tex(cv.pivot.body));
   w("");
 
   // ---------- experiencia ----------
-  w(`\\section*{${tex(t.experience)}}`);
+  w(`\\needspace{12\\baselineskip}\\section*{${tex(t.experience)}}`);
   for (const company of cv.experience) {
     const mode = company.mode === "remote" ? cv.remoteTag : cv.hybridTag;
     // "Remoto · remoto" es ruido: cuando la sede ya es la modalidad, va una sola vez
@@ -212,21 +212,22 @@ function build(lang: Locale): string {
   const projectBlock = (pr: CvProject) => {
     w(`\\headline{${tex(pr.name)}}{${tex(pr.period)}}`);
     w(`\\subline{${tex(pr.role)}}{\\href{${url(abs(lang, pr.href))}}{${tex(pr.hrefLabel)}}}`);
+    w(`{\\small\\bfseries\\color{cold} ${tex(pr.highlight)}}\\par`);
     bullets(pr.bullets);
     w(`{\\small\\textbf{${tex(t.stack)}:} ${pr.stack.map(tex).join(" \\,\\textperiodcentered\\, ")}}\\par`);
     w("\\vspace{4pt}");
   };
-  w(`\\section*{${tex(t.projects)}}`);
+  w(`\\needspace{12\\baselineskip}\\section*{${tex(t.projects)}}`);
   w(`{\\small\\itshape ${tex(cv.projectsNote)}}\\par\\vspace{3pt}`);
   cv.projects.forEach(projectBlock);
   w("");
-  w(`\\section*{${tex(t.research)}}`);
+  w(`\\needspace{12\\baselineskip}\\section*{${tex(t.research)}}`);
   w(`{\\small\\itshape ${tex(cv.researchNote)}}\\par\\vspace{3pt}`);
   cv.research.forEach(projectBlock);
   w("");
 
   // ---------- habilidades ----------
-  w(`\\section*{${tex(t.skills)}}`);
+  w(`\\needspace{12\\baselineskip}\\section*{${tex(t.skills)}}`);
   w(`\\textbf{\\color{ink}${tex(cv.skillsFinTitle)}:} ${cv.skillsFin.map(tex).join(" \\,\\textperiodcentered\\, ")}\\par\\vspace{3pt}`);
   w(`\\textbf{\\color{ink}${tex(cv.skillsDataTitle)}:} ${cv.skillsData.map(tex).join(" \\,\\textperiodcentered\\, ")}\\par\\vspace{3pt}`);
   w(`\\textbf{\\color{ink}${tex(cv.skillsTechTitle)}}\\par\\vspace{2pt}`);
@@ -245,7 +246,7 @@ function build(lang: Locale): string {
   // ---------- educación, certificaciones y reconocimientos ----------
   // Un solo bloque: son cuatro listas cortas y cuatro títulos de sección
   // costaban media página en un documento que debe caber en dos.
-  w(`\\section*{${tex(t.education)}}`);
+  w(`\\needspace{12\\baselineskip}\\section*{${tex(t.education)}}`);
   for (const e of cv.education) {
     const title = e.href ? `\\href{${url(abs(lang, e.href))}}{${tex(e.title)}}` : tex(e.title);
     w(`\\headline{${title}}{${tex(e.period)}}`);
@@ -267,7 +268,7 @@ function build(lang: Locale): string {
   w("");
 
   // ---------- remoto ----------
-  w(`\\section*{${tex(t.remote)}}`);
+  w(`\\needspace{12\\baselineskip}\\section*{${tex(t.remote)}}`);
   w(cv.remote.points.map(tex).join(" \\,\\textperiodcentered\\, "));
   w("");
   w("\\end{document}");
@@ -427,7 +428,10 @@ function buildOnePage(lang: Locale): string {
   for (const p of [...cv.projects, ...cv.research]) {
     w(
       `\\row{${tex(p.name)}}{${tex(p.period)}}` +
-        `{\\small ${tex(p.stack.slice(0, 6).join(" \u00b7 "))}${dot}\\href{${url(abs(lang, p.href))}}{${tex(p.hrefLabel)}}}\\par`,
+        // El resultado es lo que esta hoja imprime del proyecto (auditor\u00eda PC-01):
+        // antes sal\u00eda solo el stack, sin una cifra, en el documento que se reenv\u00eda.
+        `{\\small\\color{ink} ${tex(p.highlight)}}\\par` +
+        `{\\small ${tex(p.stack.slice(0, 5).join(" \u00b7 "))}${dot}\\href{${url(abs(lang, p.href))}}{${tex(p.hrefLabel)}}}\\par`,
     );
     w("\\vspace{1pt}");
   }
