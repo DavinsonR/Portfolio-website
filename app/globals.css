@@ -285,6 +285,12 @@ a {
   to   { transform: scaleX(1); }
 }
 
+/* a chart line is drawn by the pen, left to right (pathLength="1") */
+@keyframes line-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
 /* the live dot: a slow instrument pulse, not a notification blink */
 @keyframes live-ping {
   0%   { transform: scale(1);   opacity: 0.55; }
@@ -338,6 +344,23 @@ a {
     animation-delay: var(--d, 0ms);
   }
 
+  /* the showcase charts draw themselves when their card arrives */
+  .js .draw-in {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .js .is-in .draw-in {
+    animation: line-draw 1500ms cubic-bezier(0.45, 0, 0.2, 1) both;
+    animation-delay: calc(var(--d, 0ms) + 250ms);
+  }
+
+  /* the showcase card: the one place on the site that lifts and zooms,
+     by owner request (DESIGN.md, Cards / Containers) */
+  .showcase-card { transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease; }
+  .showcase-card:hover { transform: translateY(-4px); }
+  .showcase-card .showcase-media { transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .showcase-card:hover .showcase-media { transform: scale(1.02); }
+
   .live-ping { animation: live-ping 2600ms cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 
   /* hover life, kept to the weight of ink: a hairline thickens,
@@ -350,7 +373,8 @@ a {
 /* the pen never crosses the page for a reader who asked for stillness */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .settle, .js .reveal, .js .rule-in, .js .bar-in { animation: none; }
+  .settle, .js .reveal, .js .rule-in, .js .bar-in, .js .draw-in { animation: none; }
+  .js .draw-in { stroke-dasharray: none; stroke-dashoffset: 0; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -369,6 +393,7 @@ a {
      `.settle` faltaba en esta lista y su estado inicial es `opacity: 0` con
      `blur(3px)` y `fill-mode: both`: imprimir dentro de los primeros 620 ms
      sacaba la cabecera, el nombre y el veredicto borrosos y a medio tono. */
+  .draw-in { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
   .settle, .reveal, .rule-in, .bar-in {
     opacity: 1 !important;
     transform: none !important;
@@ -1042,3 +1067,15 @@ a {
   .fl-tip, .fl-pop, .fl-ms-pop { display: none !important; }
   .fl-bar-filters { position: static; }
 }
+
+
+/* Una imagen por tema (la captura del tablero en la vitrina). Mismos selectores
+   que los tokens: preferencia del sistema salvo que el conmutador diga otra cosa. */
+.only-light { display: block; }
+.only-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .only-dark { display: block; }
+  :root:not([data-theme="light"]) .only-light { display: none; }
+}
+:root[data-theme="dark"] .only-dark { display: block; }
+:root[data-theme="dark"] .only-light { display: none; }

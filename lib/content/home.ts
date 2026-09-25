@@ -10,11 +10,6 @@
 // La portada: metadatos, navegación, la hoja y la mesa de trabajo
 
 import type { Metric, ShowcaseCard } from "./types";
-import { THESIS as T, thesisFormat } from "../data/thesis-results";
-
-// Las cifras de la tesis salen de un solo sitio (lib/data/thesis-results.ts).
-const fes = thesisFormat("es");
-const fen = thesisFormat("en");
 
 export const home = {
   es: {
@@ -77,19 +72,6 @@ export const home = {
       ] as Metric[],
       ctaPrimary: "Descargar CV (PDF)",
       ctaSecondary: "Ver la evidencia completa",
-      // La figura del atlas. No es adorno: el par de mapas ES el argumento del
-      // resultado nulo de la tesis, y era lo único visual del sitio que vivía
-      // cinco pantallas dentro de una ruta a dos clics.
-      atlasFigure: {
-        label: "Figura · Índice de inclusión financiera por departamento",
-        title: "En 2018, diecisiete departamentos estaban bajo la línea base. En 2025 queda uno.",
-        body: `Los dos mapas comparten escala, y el índice está estandarizado contra 2018. Todo el país subió a la vez — y esa subida común es justo la razón de que el efecto se desvanezca: con solo efectos de entidad, la inclusión financiera predice el crecimiento (${fes.s(T.entityOnly.coefShort)}, p ${fes.lt(T.entityOnly.pBelow)}); al descontar el año, el coeficiente cae a ${fes.s(T.base.coef)} (p = ${fes.n(T.base.p)}) y el diseño descarta efectos mayores a ${fes.n(T.bound.pp)} puntos por desviación del índice.`,
-        legendLow: "Bajo la base de 2018",
-        legendMid: "Base 2018",
-        legendHigh: "Sobre la base",
-        cta: "Abrir el atlas de los 1.123 municipios",
-        alt: "Dos mapas de Colombia por departamento con el índice compuesto de inclusión financiera, en la misma escala divergente: en 2018 el país aparece en tonos neutros con la periferia en rojo, y en 2025 casi todo el territorio está en azul.",
-      },
       portraitPending: "DNR",
     },
     work: {
@@ -102,7 +84,7 @@ export const home = {
       cta: "Ver el proyecto",
       cards: [
         {
-          viz: "credit",
+          viz: "event",
           name: "Riesgo de crédito que se audita solo",
           kind: "credit-risk-mlops · ML con gobierno de modelos",
           status: "live",
@@ -111,10 +93,11 @@ export const home = {
           statLabel: "en castigos evitables sobre la cartera de prueba",
           hook: "Diez gates que bloquean cualquier modelo que no cumpla, incluido el mío: impacto dispar de 0,7639 contra un umbral de 0,80.",
           href: "/projects/credit-risk",
-          vizLabels: ["Rechazo al azar", "Mi modelo", "más pérdida evitada que rechazando al azar", "2,15×"],
+          vizLabels: ["brecha (pp)", "umbral declarado", "antes", "después"],
+          caption: "Estudio de evento sobre 93,4 M de solicitudes HMDA: la brecha racial de denegación, año por año, con su intervalo al 95 %.",
         },
         {
-          viz: "funnel",
+          viz: "series",
           name: "Plataforma de datos de mercado",
           kind: "market-data-medallion · PostgreSQL + dbt",
           status: "live",
@@ -123,7 +106,8 @@ export const home = {
           statLabel: "de 1.392 estrategias sobrevivieron a la ventana ciega",
           hook: "48 activos cada día y 89 pruebas de calidad antes de publicar un dato.",
           href: "/projects/trading-sim",
-          vizLabels: ["evaluadas", "ganaron en muestra", "sobrevivieron"],
+          vizLabels: ["comprar y mantener", "SPY · las cinco estrategias", "ventana ciega →"],
+          caption: "Serie diaria de SPY, 2022–2026: ninguna de las cinco estrategias termina por encima de comprar y mantener.",
         },
         {
           viz: "star",
@@ -136,9 +120,10 @@ export const home = {
           hook: "Un modelo estrella que se revisa línea por línea en una pull request.",
           href: "/projects/powerbi",
           vizLabels: ["dim_assets", "hechos", "agregados"],
+          caption: "El modelo semántico: una dimensión, cuatro tablas de hechos y dos agregados que llegan resumidos desde dbt.",
         },
         {
-          viz: "forecast",
+          viz: "shot",
           name: "Pronóstico macro de LATAM",
           kind: "Laboratorio interactivo · 13 modelos",
           status: "live",
@@ -147,10 +132,11 @@ export const home = {
           statLabel: "economías pronosticadas a 2027, con su acierto medido",
           hook: "Trece modelos contra el pronóstico ingenuo. Y tú también puedes jugarle.",
           href: "/labs/macro-forecast",
-          vizLabels: ["error frente al ingenuo", "ingenuo = 1"],
+          vizLabels: [],
+          caption: "El tablero en vivo: el crecimiento del PIB de las seis grandes economías desde 1990, los choques numerados y el pronóstico 2026–2027.",
         },
         {
-          viz: "dots",
+          viz: "atlas",
           name: "Inclusión financiera en Colombia",
           kind: "Tesis de maestría · datos abiertos",
           status: "research",
@@ -159,7 +145,8 @@ export const home = {
           statLabel: "departamentos bajo la línea base, de 2018 a 2025",
           hook: "19 fuentes públicas, 1.123 municipios y el resultado publicado tal como salió.",
           href: "/research/fintech-inclusion",
-          vizLabels: ["2018", "2025", "bajo la línea base"],
+          vizLabels: ["bajo la base de 2018", "base 2018", "sobre la base"],
+          caption: "Índice de inclusión financiera por departamento, 2018 y 2025, en la misma escala: todo el país subió a la vez.",
         },
         {
           viz: "screen",
@@ -172,6 +159,7 @@ export const home = {
           hook: "Datos de salud y de dinero, abiertos en un demo público sin exponer una sola fila.",
           href: "/projects/tracking",
           vizLabels: [],
+          caption: "Dos pantallas reales del demo, con los datos de una persona que no existe.",
         },
       ] as ShowcaseCard[],
     },
@@ -229,19 +217,6 @@ export const home = {
       ] as Metric[],
       ctaPrimary: "Download CV (PDF)",
       ctaSecondary: "See the full evidence",
-      // The atlas figure. Not ornament: the pair of maps IS the argument for the
-      // thesis's null result, and it was the only visual on the site — five
-      // screens inside a route two clicks away.
-      atlasFigure: {
-        label: "Figure · Financial-inclusion index by department",
-        title: "In 2018, seventeen departments sat below the baseline. In 2025, one does.",
-        body: `Both maps share one scale, and the index is standardised against 2018. The whole country moved up at once — and that common rise is exactly why the effect vanishes: with entity effects alone, financial inclusion predicts growth (${fen.s(T.entityOnly.coefShort)}, p ${fen.lt(T.entityOnly.pBelow)}); take the year out and the coefficient falls to ${fen.s(T.base.coef)} (p = ${fen.n(T.base.p)}), and the design rules out effects above ${fen.n(T.bound.pp)} points per standard deviation of the index.`,
-        legendLow: "Below the 2018 baseline",
-        legendMid: "2018 baseline",
-        legendHigh: "Above the baseline",
-        cta: "Open the atlas of all 1,123 municipalities",
-        alt: "Two maps of Colombia by department showing the composite financial-inclusion index on one diverging scale: in 2018 the country reads in neutral tones with a red periphery, and by 2025 almost the whole territory is blue.",
-      },
       portraitPending: "DNR",
     },
     work: {
@@ -252,7 +227,7 @@ export const home = {
       cta: "See the project",
       cards: [
         {
-          viz: "credit",
+          viz: "event",
           name: "Credit risk that audits itself",
           kind: "credit-risk-mlops · ML with model governance",
           status: "live",
@@ -261,10 +236,11 @@ export const home = {
           statLabel: "in avoidable charge-offs on the test portfolio",
           hook: "Ten gates that block any model that fails, mine included: disparate impact of 0.7639 against a 0.80 threshold.",
           href: "/projects/credit-risk",
-          vizLabels: ["Random declines", "My model", "more loss avoided than declining at random", "2.15×"],
+          vizLabels: ["gap (pp)", "declared threshold", "before", "after"],
+          caption: "Event study over 93.4M HMDA applications: the racial denial gap, year by year, with its 95% interval.",
         },
         {
-          viz: "funnel",
+          viz: "series",
           name: "Market data platform",
           kind: "market-data-medallion · PostgreSQL + dbt",
           status: "live",
@@ -273,7 +249,8 @@ export const home = {
           statLabel: "of 1,392 strategies survived the blind window",
           hook: "48 assets every day, and 89 quality tests before a single figure ships.",
           href: "/projects/trading-sim",
-          vizLabels: ["evaluated", "won in-sample", "survived"],
+          vizLabels: ["buy & hold", "SPY · all five strategies", "blind window →"],
+          caption: "SPY daily series, 2022–2026: none of the five strategies ends above buy & hold.",
         },
         {
           viz: "star",
@@ -286,9 +263,10 @@ export const home = {
           hook: "A star schema you review line by line in a pull request.",
           href: "/projects/powerbi",
           vizLabels: ["dim_assets", "facts", "aggregates"],
+          caption: "The semantic model: one dimension, four fact tables and two aggregates that arrive summarised from dbt.",
         },
         {
-          viz: "forecast",
+          viz: "shot",
           name: "LATAM macro forecasting",
           kind: "Interactive lab · 13 models",
           status: "live",
@@ -297,10 +275,11 @@ export const home = {
           statLabel: "economies forecast to 2027, with their accuracy measured",
           hook: "Thirteen models against the naive forecast. And you can play against it too.",
           href: "/labs/macro-forecast",
-          vizLabels: ["error vs. naive", "naive = 1"],
+          vizLabels: [],
+          caption: "The live dashboard: GDP growth for the six largest economies since 1990, the numbered shocks and the 2026–2027 forecast.",
         },
         {
-          viz: "dots",
+          viz: "atlas",
           name: "Financial inclusion in Colombia",
           kind: "M.Sc. thesis · open data",
           status: "research",
@@ -309,7 +288,8 @@ export const home = {
           statLabel: "departments below the baseline, from 2018 to 2025",
           hook: "19 public sources, 1,123 municipalities and the result published as it came out.",
           href: "/research/fintech-inclusion",
-          vizLabels: ["2018", "2025", "below the baseline"],
+          vizLabels: ["below the 2018 baseline", "2018 baseline", "above the baseline"],
+          caption: "Financial-inclusion index by department, 2018 and 2025, on one scale: the whole country rose at once.",
         },
         {
           viz: "screen",
@@ -322,6 +302,7 @@ export const home = {
           hook: "Health and money data, open in a public demo without exposing a single row.",
           href: "/projects/tracking",
           vizLabels: [],
+          caption: "Two real screens from the demo, with data from someone who does not exist.",
         },
       ] as ShowcaseCard[],
     },

@@ -25,10 +25,12 @@ export type ProofRow = { name: string; proof: string; href?: string };
 // Tarjeta de la vitrina de la portada: una vista previa visual, una cifra y una
 // línea. `viz` decide qué gráfico dibuja `components/showcase/Previews.tsx`;
 // `vizLabels` son sus rótulos, en el orden que ese gráfico declara.
-export type ShowcaseViz = "credit" | "funnel" | "star" | "forecast" | "dots" | "screen";
+export type ShowcaseViz = "event" | "series" | "star" | "shot" | "atlas" | "screen";
 export type ShowcaseCard = {
   viz: ShowcaseViz; name: string; kind: string; status: Status; statusText: string;
   stat: string; statLabel: string; hook: string; href: string; vizLabels: string[];
+  /** Una línea bajo el gráfico: qué se está mirando. */
+  caption: string;
 };
 export type Education = {
   title: string; inst: string; period: string; status: Status; statusText: string;
