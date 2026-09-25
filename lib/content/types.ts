@@ -38,6 +38,9 @@ export type Education = {
 };
 export type CvProject = {
   name: string; role: string; period: string; href: string; hrefLabel: string;
+  /** Una línea de resultado con cifra: va bajo el nombre en la web y es lo
+   *  único que el PDF de una página imprime del proyecto (auditoría PC-01). */
+  highlight: string;
   stack: string[]; bullets: string[];
 };
 

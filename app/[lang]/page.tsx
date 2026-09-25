@@ -92,8 +92,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 {sheet.thesis}
               </p>
 
+              {/* En el teléfono este párrafo empujaba la vitrina a ~1.900 px
+                  (auditoría PC-04): la tesis de arriba ya dice lo esencial. */}
               <p
-                className="settle mt-5 max-w-[68ch] text-[15.5px] leading-[1.7]"
+                className="settle mt-5 hidden max-w-[68ch] text-[15.5px] leading-[1.7] sm:block"
                 style={{ animationDelay: "240ms" }}
               >
                 {sheet.sub}
@@ -139,6 +141,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 ))}
               </dl>
 
+              {/* El contacto ya está en la barra y al pie: en el teléfono el
+                  bloque se queda con nivel, inicio y vía (PC-04). */}
+              <div className="hidden lg:block">
               <dl className="mt-4 space-y-2 border-t border-warm pt-4 text-[14px]">
                 <div>
                   <dt className="text-warm">Email</dt>
@@ -182,6 +187,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 labels={{ copy: contact.copy, copied: contact.copied, fail: contact.copyFail }}
                 className="mt-4 bg-paper"
               />
+              </div>
             </aside>
           </div>
         </div>
@@ -208,7 +214,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 definiciones no definía nada. Una lista simple dice lo mismo, es
                 válida, y deja que el ancla siga envolviendo cifra y etiqueta —
                 que es lo que hace de cada cifra un objetivo de clic. */}
-            <ul className="grid grid-cols-2 pt-3 pb-6 lg:grid-cols-4">
+            <ul className="grid grid-cols-2 gap-x-5 pt-3 pb-6 lg:grid-cols-4 lg:gap-x-0">
               {sheet.metrics.map((m, i) => {
                 // Each figure lands where its evidence actually is. The first reviewer to
                 // click one found the CV's masthead and no sign of what he had clicked.
@@ -364,33 +370,23 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </h2>
             <p className="mt-2 max-w-[62ch] text-[14.5px] leading-[1.6] text-body">{toolkit.note}</p>
 
-            <dl className="mt-6 grid gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Una fila de fichas, no una rejilla de nueve párrafos: la prueba
+                de cada una va en el `title` y en su destino, y la lista completa
+                con su prueba escrita vive en el CV (auditoría PC-10). */}
+            <ul className="mt-6 flex flex-wrap gap-2.5">
               {toolkit.rows.map((r, ri) => (
-                <div
-                  key={r.name}
-                  data-reveal
-                  className="reveal border-t border-rule py-3"
-                  style={{ "--d": `${ri * 60}ms` } as React.CSSProperties}
-                >
-                  <dt className="text-[14.5px] font-semibold text-ink">{r.name}</dt>
-                  <dd className="mt-1 text-[14px] leading-[1.55] text-body">
-                    {r.href ? (
-                      <Link
-                        href={r.href.startsWith("http") ? r.href : `/${lang}${r.href}`}
-                        {...(r.href.startsWith("http")
-                          ? { target: "_blank", rel: "noopener noreferrer" }
-                          : {})}
-                        className="underline decoration-cold decoration-[1.5px] underline-offset-4 hover:text-cold"
-                      >
-                        {r.proof}
-                      </Link>
-                    ) : (
-                      r.proof
-                    )}
-                  </dd>
-                </div>
+                <li key={r.name} data-reveal className="reveal" style={{ "--d": `${ri * 40}ms` } as React.CSSProperties}>
+                  <Link
+                    href={r.href ? (r.href.startsWith("http") ? r.href : `/${lang}${r.href}`) : `/${lang}/cv`}
+                    {...(r.href?.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    title={r.proof}
+                    className="lift inline-flex items-center gap-1.5 rounded-full border border-coldline bg-coldsoft px-3.5 py-1.5 text-[14px] font-medium text-cold hover:border-cold"
+                  >
+                    {r.name} <span aria-hidden="true">→</span>
+                  </Link>
+                </li>
               ))}
-            </dl>
+            </ul>
           </div>
         </div>
       </section>

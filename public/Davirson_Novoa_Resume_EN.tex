@@ -47,13 +47,13 @@
 \end{center}
 \vspace{2pt}
 
-\section*{Profile}
-Finance Data Analyst who owns the SG\&A close and forecast process for 15+ countries across the Americas and Europe, from HQ. An economist trained in treasury, SOX billing and FP\&A, who builds the data the business runs on instead of waiting for it: Python, SQL and Power BI on real operations. Alongside that I run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, and I deployed a credit decisioning system over 95 million records with ten model-governance gates. All of it verifiable: every figure on my site links to the repository that produces it. I bring financial judgment and data engineering in a single hire: no translator, no handoff meeting.
+\needspace{12\baselineskip}\section*{Profile}
+Finance Data Analyst who owns the SG\&A close and forecast process for 15+ countries across the Americas, Europe and Asia, from HQ. An economist trained in treasury, SOX billing and FP\&A, who builds the data the business runs on instead of waiting for it: Python, SQL and Power BI on real operations. Alongside that I run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, and I deployed a credit decisioning system over 95 million records with ten model-governance gates. All of it verifiable: every figure on my site links to the repository that produces it. I bring financial judgment and data engineering in a single hire: no translator, no handoff meeting.
 
-\section*{The crossover role}
+\needspace{12\baselineskip}\section*{The crossover role}
 I charge for what I have done in every finance role: in all of them I ended up building the same thing --- code and data --- because the report the business needed did not exist and nobody else was going to build it. An FX mismatch analysis in Python nobody had asked for, as an intern. Automation that gave every treasury analyst about 10 hours a month back --- close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; plenty of people know Python. It is knowing which question is worth answering before writing the first line. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code --- it is the one who needs no translator between them. Hiring that person is two hires in one, without the handoff meeting between them.
 
-\section*{Experience}
+\needspace{12\baselineskip}\section*{Experience}
 \headline{Neoris EPAM}{Bogotá, Colombia \,\textperiodcentered\, remote}
 \vspace{1pt}
 \subline{Business Consultant, FP\&A}{Mar 2026 --- present}
@@ -95,10 +95,11 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \end{itemize}
 \vspace{4pt}
 
-\section*{Projects in operation}
+\needspace{12\baselineskip}\section*{Projects in operation}
 {\small\itshape Open source and checkable. None of this is a course exercise.}\par\vspace{3pt}
 \headline{credit-risk-mlops}{2026 --- deployed, scoring live}
 \subline{Credit decisioning system with model governance --- design and build}{\href{https://github.com/DavinsonR/credit-risk-mlops}{github.com/DavinsonR/credit-risk-mlops}}
+{\small\bfseries\color{cold} \$276.3M in avoidable charge-offs \,\textperiodcentered\, AUC 0.7005 \,\textperiodcentered\, 10 gates, and one blocks my own model}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Declining the riskiest 10\% of the test portfolio would have avoided \$276.3M in charge-offs --- 2.15x what random declines achieve --- and the report ships the counterweight too: \$1.99B in good lending forgone.
   \item Deployed model at AUC 0.7005 over 1.96M SBA 7(a) loans and 62.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107. The event study runs separately, over 93.4M applications.
@@ -111,6 +112,7 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \vspace{4pt}
 \headline{market-data-medallion}{2026 --- in daily operation}
 \subline{Market data platform --- designed, built and operated}{\href{https://github.com/DavinsonR/market-data-medallion}{github.com/DavinsonR/market-data-medallion}}
+{\small\bfseries\color{cold} 1,392 strategy variants validated out of sample \,\textperiodcentered\, 48 assets a day \,\textperiodcentered\, 89 quality tests before anything ships}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Watermark-based incremental ingestion from 4 sources (Tiingo, Coinbase, Kraken, FX) into a three-layer PostgreSQL warehouse: 48 assets and more than 58,000 candles, idempotent and resumable.
   \item 89 automated dbt data-quality tests plus 171 Python unit tests; the pipeline fails before publishing bad data, not after.
@@ -122,6 +124,7 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \vspace{4pt}
 \headline{JARVIS --- multi-user product with sensitive data}{2026 --- in production \,\textperiodcentered\, open demo}
 \subline{Own product --- designed, built and operated}{\href{https://jarvis-app-psi-sable.vercel.app/demo}{public demo, no account}}
+{\small\bfseries\color{cold} 526 tests across 8 CI gates \,\textperiodcentered\, 34 tables under row-level security \,\textperiodcentered\, a public demo that never touches the database}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Multi-user model on Postgres with a row policy on 34 tables: the conversion required rebuilding 22 primary keys that identified rows without the user, and pushing the user inside the foreign keys so isolation did not rest on the policy alone.
   \item Eight CI gates judged by exit code: types, format, lint, 526 tests, build, dependency audit, a guard that hunts personal data inside the built artifact, and a smoke test requiring the anonymous role to be denied across all 55 tables and views.
@@ -131,10 +134,11 @@ I charge for what I have done in every finance role: in all of them I ended up b
 {\small\textbf{Stack:} Next.js 16 \,\textperiodcentered\, React 19 \,\textperiodcentered\, TypeScript \,\textperiodcentered\, Postgres (Supabase) \,\textperiodcentered\, RLS \,\textperiodcentered\, Tailwind \,\textperiodcentered\, PWA \,\textperiodcentered\, Vitest}\par
 \vspace{4pt}
 
-\section*{Research}
+\needspace{12\baselineskip}\section*{Research}
 {\small\itshape My own research, built in public on open data.}\par\vspace{3pt}
 \headline{Financial inclusion and regional growth in Colombia}{2026 --- thesis filed}
 \subline{M.Sc. in Economics thesis, Javeriana --- reproducible research end to end}{\href{https://github.com/DavinsonR/financial-inclusion-colombia}{repository on GitHub}}
+{\small\bfseries\color{cold} 19 public sources \,\textperiodcentered\, 1,123 municipalities \,\textperiodcentered\, 160 specifications, each with its power}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Purpose-built open-data downloader with a verifiable manifest: nineteen sources (financial supervisor, statistics office, ICT and education ministries, national map), row counts verified against the source, metadata-driven typing and a sha256 per file.
   \item Dimensional warehouse in dbt on DuckDB: department, municipality and period dimensions, financial inclusion in long form by product block, and tests that reconcile each department total with the sum of its municipalities.
@@ -144,7 +148,7 @@ I charge for what I have done in every finance role: in all of them I ended up b
 {\small\textbf{Stack:} dbt \,\textperiodcentered\, DuckDB \,\textperiodcentered\, Python \,\textperiodcentered\, Parquet \,\textperiodcentered\, Panel data \,\textperiodcentered\, Quarto}\par
 \vspace{4pt}
 
-\section*{Skills}
+\needspace{12\baselineskip}\section*{Skills}
 \textbf{\color{ink}Finance domain:} FP\&A \,\textperiodcentered\, Close \& forecast \,\textperiodcentered\, SG\&A \,\textperiodcentered\, Revenue recognition (SOX) \,\textperiodcentered\, Treasury \,\textperiodcentered\, FX analysis \,\textperiodcentered\, Budgeting \,\textperiodcentered\, Constant currency \,\textperiodcentered\, SAP \,\textperiodcentered\, JD Edwards \,\textperiodcentered\, MicroStrategy \,\textperiodcentered\, Variance analysis \,\textperiodcentered\, Month-end close \,\textperiodcentered\, Cash-flow forecasting \,\textperiodcentered\, Management reporting \,\textperiodcentered\, Account reconciliation\par\vspace{3pt}
 \textbf{\color{ink}Data \& engineering:} Analytical SQL \,\textperiodcentered\, PostgreSQL \,\textperiodcentered\, DuckDB \,\textperiodcentered\, dbt \,\textperiodcentered\, Medallion architecture \,\textperiodcentered\, Python (pandas) \,\textperiodcentered\, Incremental ETL \,\textperiodcentered\, Prefect \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Supabase \,\textperiodcentered\, Power BI \,\textperiodcentered\, DAX \,\textperiodcentered\, Power Query \,\textperiodcentered\, Tableau \,\textperiodcentered\, Git \,\textperiodcentered\, Next.js \,\textperiodcentered\, Vercel \,\textperiodcentered\, Panel econometrics \,\textperiodcentered\, Fixed effects \,\textperiodcentered\, Causal inference \,\textperiodcentered\, Time series \,\textperiodcentered\, Credit scorecards (WoE) \,\textperiodcentered\, LightGBM \,\textperiodcentered\, MLflow \,\textperiodcentered\, ONNX \,\textperiodcentered\, MLOps \,\textperiodcentered\, Data testing \,\textperiodcentered\, Data warehousing \,\textperiodcentered\, Dimensional modelling (star schema) \,\textperiodcentered\, ELT \,\textperiodcentered\, CI/CD \,\textperiodcentered\, Dashboarding\par\vspace{3pt}
 \textbf{\color{ink}Technical stack}\par\vspace{2pt}
@@ -168,7 +172,7 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \end{itemize}
 \end{multicols}
 
-\section*{Education}
+\needspace{12\baselineskip}\section*{Education}
 \headline{\href{https://davirson.com/en/research/fintech-inclusion}{M.Sc. in Economics}}{2025 --- 2026}
 {\small Pontificia Universidad Javeriana \,\textperiodcentered\, thesis filed}\par
 {\small\itshape Thesis filed in August 2026; graduation expected in November 2026. It is the origin of the financial-inclusion project I keep building in public.}\par
@@ -180,7 +184,7 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \textbf{\color{ink}Certifications:} Machine Learning Specialization (Stanford \,\textperiodcentered\, Coursera, 2024) \,\textperiodcentered\, Cybersecurity Certificate (Google \,\textperiodcentered\, Coursera, 2024)\par\vspace{3pt}
 \textbf{\color{ink}Recognition:} \href{https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis}{Winner --- BodyTech Trends Hackathon (2024)} \,\textperiodcentered\, Ecopetrol Scholar --- Mario Galán Gómez Program (2018)\par
 
-\section*{Remote-ready}
+\needspace{12\baselineskip}\section*{Remote-ready}
 My entire track record is remote or hybrid, with teams distributed across 15+ countries. \,\textperiodcentered\, GMT-5 (Bogotá): your US and Canadian hours, in full. \,\textperiodcentered\, Daily working English with teams in the US and Europe (Hungary, Czech Republic, Spain), plus Argentina and Brazil. \,\textperiodcentered\, Native Spanish \,\textperiodcentered\, Portuguese A2.
 
 \end{document}

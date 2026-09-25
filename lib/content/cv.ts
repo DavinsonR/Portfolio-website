@@ -10,6 +10,7 @@
 // El CV — de aquí salen también el .tex y el PDF
 
 import { THESIS_REPO, TABLEAU_VIZ, TABLEAU_SHOT } from "./types";
+import { THESIS as T } from "../data/thesis-results";
 import type { Award, ProofRow, Education, CvProject } from "./types";
 
 export const cv = {
@@ -18,6 +19,7 @@ export const cv = {
       title: "Davirson Novoa Ramírez",
       // El "title mapping": los tres nombres con que las vacantes llaman al
       // mismo rol cruzado. Es el encabezado, no un subtítulo.
+      kicker: "CV · Finanzas y datos",
       targetsLabel: "Roles objetivo",
       targets: ["Finance Data Analyst", "Financial BI Analyst", "Analytics Engineer"],
       subtitle: "Encuentro la variación, llego a su causa raíz, dejo el control corriendo solo y lo explico donde se decide. Las cuatro cosas, sin traductor entre el negocio y el dato.",
@@ -31,7 +33,8 @@ export const cv = {
       metaDesc: "CV de Davirson Novoa, Finance Data Analyst: dueño del cierre FP&A de 15+ países y constructor de plataformas de datos en producción. Remoto, GMT-5.",
       download: "Descargar CV (PDF)",
       downloadHref: "/Davirson_Novoa_CV_ES.pdf",
-      downloadShort: "Versión de 1 página",
+      downloadShort: "Descargar CV (1 página)",
+      downloadFull: "Versión completa (3 páginas)",
       downloadShortHref: "/Davirson_Novoa_CV_ES_1p.pdf",
       downloadShortNote: "Una página para cribar; la completa tiene las tres.",
       latex: "Fuente LaTeX",
@@ -48,7 +51,7 @@ export const cv = {
       ],
       profileLabel: "Perfil",
       profileText:
-        "Finance Data Analyst y dueño del proceso de cierre y forecast de SG&A de más de 15 países de América y Europa, desde HQ. Economista formado en tesorería, facturación bajo SOX y FP&A, que construye los datos que el negocio necesita en vez de esperarlos: Python, SQL y Power BI sobre operaciones reales. En paralelo opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI que se actualiza solo a diario, y desplegué un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno de modelos. Todo verificable: cada cifra de mi sitio enlaza al repositorio que la produce. Traigo el criterio financiero y la ingeniería de datos en una sola contratación: sin traductor y sin la reunión de traspaso.",
+        "Finance Data Analyst y dueño del proceso de cierre y forecast de SG&A de más de 15 países de América, Europa y Asia, desde HQ. Economista formado en tesorería, facturación bajo SOX y FP&A, que construye los datos que el negocio necesita en vez de esperarlos: Python, SQL y Power BI sobre operaciones reales. En paralelo opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI que se actualiza solo a diario, y desplegué un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno de modelos. Todo verificable: cada cifra de mi sitio enlaza al repositorio que la produce. Traigo el criterio financiero y la ingeniería de datos en una sola contratación: sin traductor y sin la reunión de traspaso.",
       // Solo para la hoja de UNA pagina: ahi el lector escanea en treinta
       // segundos y el perfil largo se come el espacio de la experiencia — y
       // ademas empuja el documento a dos paginas, que es lo unico que esa
@@ -142,6 +145,7 @@ export const cv = {
           period: "2026 — desplegado, puntúa en vivo",
           href: "https://github.com/DavinsonR/credit-risk-mlops",
           hrefLabel: "github.com/DavinsonR/credit-risk-mlops",
+          highlight: "276,3 M USD en castigos evitables · AUC 0,7005 · 10 gates, y uno bloquea mi propio modelo",
           stack: [
             "Python", "LightGBM", "scikit-learn", "optbinning (WoE)", "MLflow",
             "ONNX", "DuckDB", "pandera", "Docker", "Power BI",
@@ -161,6 +165,7 @@ export const cv = {
           period: "2026 — en operación diaria",
           href: "https://github.com/DavinsonR/market-data-medallion",
           hrefLabel: "github.com/DavinsonR/market-data-medallion",
+          highlight: "1.392 variantes con validación fuera de muestra · 48 activos al día · 89 pruebas de calidad antes de publicar",
           stack: [
             "PostgreSQL", "Arquitectura medallion", "dbt", "Python", "Prefect",
             "GitHub Actions", "Supabase", "Power BI (TMDL / PBIP)", "Next.js",
@@ -179,6 +184,7 @@ export const cv = {
           period: "2026 — en producción · demo abierto",
           href: "https://jarvis-app-psi-sable.vercel.app/demo",
           hrefLabel: "demo público, sin cuenta",
+          highlight: "526 pruebas en 8 puertas de CI · 34 tablas con seguridad por fila · demo público que nunca toca la base",
           stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
           bullets: [
             "Modelo multiusuario en Postgres con política de fila en 34 tablas: la conversión exigió reconstruir 22 claves primarias que identificaban filas sin el usuario, y meter el usuario dentro de las claves foráneas para que el aislamiento no dependiera solo de la política.",
@@ -197,6 +203,7 @@ export const cv = {
           period: "2026 — tesis radicada",
           href: THESIS_REPO,
           hrefLabel: "repositorio en GitHub",
+          highlight: `19 fuentes públicas · 1.123 municipios · ${T.curve.total} especificaciones, cada una con su potencia`,
           stack: ["dbt", "DuckDB", "Python", "Parquet", "Datos de panel", "Quarto"],
           bullets: [
             "Descargador propio de datos abiertos con manifiesto verificable: diecinueve fuentes (Superintendencia Financiera, DANE, MinTIC, MEN, mapa nacional), conteo verificado contra la fuente, tipado por metadatos y sha256 por archivo.",
@@ -290,6 +297,7 @@ export const cv = {
       title: "Davirson Novoa Ramírez",
       // The title mapping: the three names job posts give the same crossover
       // role. It is the heading, not a subtitle.
+      kicker: "Resume · Finance & data",
       targetsLabel: "Target roles",
       targets: ["Finance Data Analyst", "Financial BI Analyst", "Analytics Engineer"],
       subtitle: "I find the variance, I trace it to root cause, I leave the control running itself, and I explain it where the decision gets made. All four, with no translator between the business and the data.",
@@ -297,7 +305,8 @@ export const cv = {
       metaDesc: "CV of Davirson Novoa, Finance Data Analyst: owns the FP&A close for 15+ countries and builds production data platforms. Remote, GMT-5.",
       download: "Download resume (PDF)",
       downloadHref: "/Davirson_Novoa_Resume_EN.pdf",
-      downloadShort: "One-page version",
+      downloadShort: "Download resume (1 page)",
+      downloadFull: "Full version (3 pages)",
       downloadShortHref: "/Davirson_Novoa_Resume_EN_1p.pdf",
       downloadShortNote: "One page to screen from; the full one has all three.",
       latex: "LaTeX source",
@@ -312,7 +321,7 @@ export const cv = {
       ],
       profileLabel: "Profile",
       profileText:
-        "Finance Data Analyst who owns the SG&A close and forecast process for 15+ countries across the Americas and Europe, from HQ. An economist trained in treasury, SOX billing and FP&A, who builds the data the business runs on instead of waiting for it: Python, SQL and Power BI on real operations. Alongside that I run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, and I deployed a credit decisioning system over 95 million records with ten model-governance gates. All of it verifiable: every figure on my site links to the repository that produces it. I bring financial judgment and data engineering in a single hire: no translator, no handoff meeting.",
+        "Finance Data Analyst who owns the SG&A close and forecast process for 15+ countries across the Americas, Europe and Asia, from HQ. An economist trained in treasury, SOX billing and FP&A, who builds the data the business runs on instead of waiting for it: Python, SQL and Power BI on real operations. Alongside that I run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, and I deployed a credit decisioning system over 95 million records with ten model-governance gates. All of it verifiable: every figure on my site links to the repository that produces it. I bring financial judgment and data engineering in a single hire: no translator, no handoff meeting.",
       // One-page sheet only: see the Spanish note above.
       profileShortText:
         "Finance Data Analyst who owns the SG&A close and forecast for 15+ countries, from HQ. An economist trained in treasury, SOX billing and FP&A, who builds the data the business runs on instead of waiting for it: Python, SQL and Power BI on real operations. Alongside it I run a PostgreSQL warehouse with dbt, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, plus a credit decisioning system over 95 million records with ten governance gates. Every figure on my site links to the repository that produces it.",
@@ -403,6 +412,7 @@ export const cv = {
           period: "2026 — deployed, scoring live",
           href: "https://github.com/DavinsonR/credit-risk-mlops",
           hrefLabel: "github.com/DavinsonR/credit-risk-mlops",
+          highlight: "$276.3M in avoidable charge-offs · AUC 0.7005 · 10 gates, and one blocks my own model",
           stack: [
             "Python", "LightGBM", "scikit-learn", "optbinning (WoE)", "MLflow",
             "ONNX", "DuckDB", "pandera", "Docker", "Power BI",
@@ -422,6 +432,7 @@ export const cv = {
           period: "2026 — in daily operation",
           href: "https://github.com/DavinsonR/market-data-medallion",
           hrefLabel: "github.com/DavinsonR/market-data-medallion",
+          highlight: "1,392 strategy variants validated out of sample · 48 assets a day · 89 quality tests before anything ships",
           stack: [
             "PostgreSQL", "Medallion architecture", "dbt", "Python", "Prefect",
             "GitHub Actions", "Supabase", "Power BI (TMDL / PBIP)", "Next.js",
@@ -440,6 +451,7 @@ export const cv = {
           period: "2026 — in production · open demo",
           href: "https://jarvis-app-psi-sable.vercel.app/demo",
           hrefLabel: "public demo, no account",
+          highlight: "526 tests across 8 CI gates · 34 tables under row-level security · a public demo that never touches the database",
           stack: ["Next.js 16", "React 19", "TypeScript", "Postgres (Supabase)", "RLS", "Tailwind", "PWA", "Vitest"],
           bullets: [
             "Multi-user model on Postgres with a row policy on 34 tables: the conversion required rebuilding 22 primary keys that identified rows without the user, and pushing the user inside the foreign keys so isolation did not rest on the policy alone.",
@@ -458,6 +470,7 @@ export const cv = {
           period: "2026 — thesis filed",
           href: THESIS_REPO,
           hrefLabel: "repository on GitHub",
+          highlight: `19 public sources · 1,123 municipalities · ${T.curve.total} specifications, each with its power`,
           stack: ["dbt", "DuckDB", "Python", "Parquet", "Panel data", "Quarto"],
           bullets: [
             "Purpose-built open-data downloader with a verifiable manifest: nineteen sources (financial supervisor, statistics office, ICT and education ministries, national map), row counts verified against the source, metadata-driven typing and a sha256 per file.",

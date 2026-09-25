@@ -47,13 +47,13 @@
 \end{center}
 \vspace{2pt}
 
-\section*{Perfil}
-Finance Data Analyst y dueño del proceso de cierre y forecast de SG\&A de más de 15 países de América y Europa, desde HQ. Economista formado en tesorería, facturación bajo SOX y FP\&A, que construye los datos que el negocio necesita en vez de esperarlos: Python, SQL y Power BI sobre operaciones reales. En paralelo opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI que se actualiza solo a diario, y desplegué un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno de modelos. Todo verificable: cada cifra de mi sitio enlaza al repositorio que la produce. Traigo el criterio financiero y la ingeniería de datos en una sola contratación: sin traductor y sin la reunión de traspaso.
+\needspace{12\baselineskip}\section*{Perfil}
+Finance Data Analyst y dueño del proceso de cierre y forecast de SG\&A de más de 15 países de América, Europa y Asia, desde HQ. Economista formado en tesorería, facturación bajo SOX y FP\&A, que construye los datos que el negocio necesita en vez de esperarlos: Python, SQL y Power BI sobre operaciones reales. En paralelo opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI que se actualiza solo a diario, y desplegué un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno de modelos. Todo verificable: cada cifra de mi sitio enlaza al repositorio que la produce. Traigo el criterio financiero y la ingeniería de datos en una sola contratación: sin traductor y sin la reunión de traspaso.
 
-\section*{El rol cruzado}
+\needspace{12\baselineskip}\section*{El rol cruzado}
 Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé construyendo lo mismo --- código y datos --- porque el reporte que el negocio necesitaba no existía y nadie más lo iba a construir. Un análisis de descalces cambiarios en Python que nadie había pedido, siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería --- cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python; eso lo sabe muchísima gente. Es saber qué pregunta vale la pena responder antes de escribir la primera línea. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar --- es quien no necesita traductor entre los dos. Contratar a esa persona son dos contrataciones en una, sin la reunión de traspaso entre ellas.
 
-\section*{Experiencia}
+\needspace{12\baselineskip}\section*{Experiencia}
 \headline{Neoris EPAM}{Bogotá, Colombia \,\textperiodcentered\, remoto}
 \vspace{1pt}
 \subline{Business Consultant, FP\&A}{Mar 2026 --- presente}
@@ -95,10 +95,11 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 \end{itemize}
 \vspace{4pt}
 
-\section*{Proyectos en operación}
+\needspace{12\baselineskip}\section*{Proyectos en operación}
 {\small\itshape Código abierto y verificable. Nada de esto es un ejercicio de curso.}\par\vspace{3pt}
 \headline{credit-risk-mlops}{2026 --- desplegado, puntúa en vivo}
 \subline{Sistema de decisión crediticia con gobierno de modelos --- diseño y construcción}{\href{https://github.com/DavinsonR/credit-risk-mlops}{github.com/DavinsonR/credit-risk-mlops}}
+{\small\bfseries\color{cold} 276,3 M USD en castigos evitables \,\textperiodcentered\, AUC 0,7005 \,\textperiodcentered\, 10 gates, y uno bloquea mi propio modelo}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Rechazar el 10\% más riesgoso de la cartera de prueba habría evitado 276,3 M USD en castigos --- 2,15 veces lo que logra un rechazo al azar --- y el reporte publica también el contrapeso: 1.990 M USD de crédito sano que se renuncia.
   \item Modelo desplegado con AUC 0,7005 sobre 1,96 M de préstamos SBA 7(a) y 62,4 M de solicitudes HMDA: +0,0311 frente a una scorecard WoE interpretable, con error de calibración 0,0107. El estudio de evento corre aparte, sobre 93,4 M de solicitudes.
@@ -111,6 +112,7 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 \vspace{4pt}
 \headline{market-data-medallion}{2026 --- en operación diaria}
 \subline{Plataforma de datos de mercado --- diseño, construcción y operación}{\href{https://github.com/DavinsonR/market-data-medallion}{github.com/DavinsonR/market-data-medallion}}
+{\small\bfseries\color{cold} 1.392 variantes con validación fuera de muestra \,\textperiodcentered\, 48 activos al día \,\textperiodcentered\, 89 pruebas de calidad antes de publicar}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Ingesta incremental por watermark desde 4 fuentes (Tiingo, Coinbase, Kraken, FX) hacia un warehouse PostgreSQL de tres capas: 48 activos y más de 58.000 velas, idempotente y reanudable.
   \item 89 pruebas automáticas de calidad en dbt más 171 pruebas unitarias en Python; el pipeline falla antes de publicar un dato malo, no después.
@@ -122,6 +124,7 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 \vspace{4pt}
 \headline{JARVIS --- producto multiusuario con datos sensibles}{2026 --- en producción \,\textperiodcentered\, demo abierto}
 \subline{Producto propio --- diseño, construcción y operación}{\href{https://jarvis-app-psi-sable.vercel.app/demo}{demo público, sin cuenta}}
+{\small\bfseries\color{cold} 526 pruebas en 8 puertas de CI \,\textperiodcentered\, 34 tablas con seguridad por fila \,\textperiodcentered\, demo público que nunca toca la base}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Modelo multiusuario en Postgres con política de fila en 34 tablas: la conversión exigió reconstruir 22 claves primarias que identificaban filas sin el usuario, y meter el usuario dentro de las claves foráneas para que el aislamiento no dependiera solo de la política.
   \item Ocho puertas en CI juzgadas por código de salida: tipos, formato, lint, 526 pruebas, build, auditoría de dependencias, un guardia que busca datos personales en el artefacto ya construido, y una prueba de humo que exige que el rol anónimo sea denegado en las 55 tablas y vistas.
@@ -131,10 +134,11 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 {\small\textbf{Stack:} Next.js 16 \,\textperiodcentered\, React 19 \,\textperiodcentered\, TypeScript \,\textperiodcentered\, Postgres (Supabase) \,\textperiodcentered\, RLS \,\textperiodcentered\, Tailwind \,\textperiodcentered\, PWA \,\textperiodcentered\, Vitest}\par
 \vspace{4pt}
 
-\section*{Investigación}
+\needspace{12\baselineskip}\section*{Investigación}
 {\small\itshape Investigación propia, construida en público con datos abiertos.}\par\vspace{3pt}
 \headline{Inclusión financiera y crecimiento regional en Colombia}{2026 --- tesis radicada}
 \subline{Tesis de Maestría en Economía, Javeriana --- investigación reproducible de punta a punta}{\href{https://github.com/DavinsonR/financial-inclusion-colombia}{repositorio en GitHub}}
+{\small\bfseries\color{cold} 19 fuentes públicas \,\textperiodcentered\, 1.123 municipios \,\textperiodcentered\, 160 especificaciones, cada una con su potencia}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Descargador propio de datos abiertos con manifiesto verificable: diecinueve fuentes (Superintendencia Financiera, DANE, MinTIC, MEN, mapa nacional), conteo verificado contra la fuente, tipado por metadatos y sha256 por archivo.
   \item Warehouse dimensional en dbt sobre DuckDB: dimensiones de departamento, municipio y periodo, inclusión financiera en formato largo por bloque de producto, y pruebas que cuadran el total departamental con la suma de sus municipios.
@@ -144,7 +148,7 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 {\small\textbf{Stack:} dbt \,\textperiodcentered\, DuckDB \,\textperiodcentered\, Python \,\textperiodcentered\, Parquet \,\textperiodcentered\, Datos de panel \,\textperiodcentered\, Quarto}\par
 \vspace{4pt}
 
-\section*{Habilidades}
+\needspace{12\baselineskip}\section*{Habilidades}
 \textbf{\color{ink}Dominio financiero:} FP\&A \,\textperiodcentered\, Cierre y forecast \,\textperiodcentered\, SG\&A \,\textperiodcentered\, Revenue recognition (SOX) \,\textperiodcentered\, Tesorería \,\textperiodcentered\, Análisis cambiario \,\textperiodcentered\, Presupuestos \,\textperiodcentered\, Moneda constante \,\textperiodcentered\, SAP \,\textperiodcentered\, JD Edwards \,\textperiodcentered\, MicroStrategy \,\textperiodcentered\, Análisis de variaciones \,\textperiodcentered\, Cierre mensual \,\textperiodcentered\, Proyección de flujo de caja \,\textperiodcentered\, Reporting gerencial \,\textperiodcentered\, Conciliación de cuentas\par\vspace{3pt}
 \textbf{\color{ink}Datos e ingeniería:} SQL analítico \,\textperiodcentered\, PostgreSQL \,\textperiodcentered\, DuckDB \,\textperiodcentered\, dbt \,\textperiodcentered\, Arquitectura medallion \,\textperiodcentered\, Python (pandas) \,\textperiodcentered\, ETL incremental \,\textperiodcentered\, Prefect \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Supabase \,\textperiodcentered\, Power BI \,\textperiodcentered\, DAX \,\textperiodcentered\, Power Query \,\textperiodcentered\, Tableau \,\textperiodcentered\, Git \,\textperiodcentered\, Next.js \,\textperiodcentered\, Vercel \,\textperiodcentered\, Econometría de panel \,\textperiodcentered\, Efectos fijos \,\textperiodcentered\, Inferencia causal \,\textperiodcentered\, Series de tiempo \,\textperiodcentered\, Scorecards de crédito (WoE) \,\textperiodcentered\, LightGBM \,\textperiodcentered\, MLflow \,\textperiodcentered\, ONNX \,\textperiodcentered\, MLOps \,\textperiodcentered\, Pruebas de datos \,\textperiodcentered\, Data warehousing \,\textperiodcentered\, Modelado dimensional (esquema estrella) \,\textperiodcentered\, ELT \,\textperiodcentered\, CI/CD \,\textperiodcentered\, Dashboards\par\vspace{3pt}
 \textbf{\color{ink}Stack técnico}\par\vspace{2pt}
@@ -168,7 +172,7 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 \end{itemize}
 \end{multicols}
 
-\section*{Educación}
+\needspace{12\baselineskip}\section*{Educación}
 \headline{\href{https://davirson.com/es/research/fintech-inclusion}{Maestría en Economía}}{2025 --- 2026}
 {\small Pontificia Universidad Javeriana \,\textperiodcentered\, tesis radicada}\par
 {\small\itshape Trabajo de grado radicado en agosto de 2026; grado previsto en noviembre de 2026. De ahí nace el proyecto de inclusión financiera que sigo construyendo en público.}\par
@@ -180,7 +184,7 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 \textbf{\color{ink}Certificaciones:} Especialización en Machine Learning (Stanford \,\textperiodcentered\, Coursera, 2024) \,\textperiodcentered\, Certificado de Ciberseguridad (Google \,\textperiodcentered\, Coursera, 2024)\par\vspace{3pt}
 \textbf{\color{ink}Reconocimientos:} \href{https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis}{Ganador --- BodyTech Trends Hackathon (2024)} \,\textperiodcentered\, Becario Ecopetrol --- Programa Mario Galán Gómez (2018)\par
 
-\section*{Preparado para remoto}
+\needspace{12\baselineskip}\section*{Preparado para remoto}
 Toda mi experiencia es remota o híbrida, con equipos distribuidos en 15+ países. \,\textperiodcentered\, GMT-5 (Bogotá): tu horario de EE. UU. y Canadá, completo. \,\textperiodcentered\, Inglés de trabajo a diario con equipos de EE. UU. y Europa (Hungría, República Checa, España), y con Argentina y Brasil. \,\textperiodcentered\, Español nativo \,\textperiodcentered\, Portugués A2.
 
 \end{document}
