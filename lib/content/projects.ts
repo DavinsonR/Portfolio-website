@@ -636,6 +636,10 @@ export const projects = {
           noteLabel: "Proyectado · escenario",
           anchor: "Ancla nacional: {source}, con corte al {date}.",
           anchorAge: "Esa ancla tiene {months} meses; el proyecto la da por vencida pasados {max}.",
+          anchorSources: {
+            "Banrep, Encuesta mensual de expectativas de analistas económicos (EME) de julio de 2026, mediana (2028 repite 2027)":
+              "Banrep, Encuesta mensual de expectativas de analistas económicos (EME) de julio de 2026, mediana; para 2028 se repite 2027",
+          },
           scenario: "Es un escenario condicional al ancla, no un pronóstico con superioridad demostrada.",
           scenarioUnanchored:
             "Esta capa es la de los modelos antes de reconciliarlos con el consenso nacional: no depende del ancla, y tampoco es un pronóstico con superioridad demostrada.",
@@ -1386,6 +1390,10 @@ export const projects = {
           noteLabel: "Projected · scenario",
           anchor: "National anchor: {source}, cut off on {date}.",
           anchorAge: "That anchor is {months} months old; the project treats it as stale after {max}.",
+          anchorSources: {
+            "Banrep, Encuesta mensual de expectativas de analistas económicos (EME) de julio de 2026, mediana (2028 repite 2027)":
+              "Banrep's monthly survey of economic analysts (EME), July 2026, median; 2028 repeats 2027",
+          },
           scenario: "It is a scenario conditional on the anchor, not a forecast with demonstrated superiority.",
           scenarioUnanchored:
             "This layer is the models' own projection before reconciling it with the national consensus: it does not depend on the anchor, and it is not a forecast with demonstrated superiority either.",

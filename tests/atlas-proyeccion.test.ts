@@ -89,3 +89,13 @@ test("el estado del proyecto ya no anuncia la proyección en el mapa como pendie
     assert.doesNotMatch(texto, /Después: la proyección sobre el mapa|Next: the forecast on this page's map/);
   }
 });
+
+test("la fuente del ancla que exporta la tesis tiene nombre en los dos idiomas", () => {
+  const fuente = serie.proyeccion?.ancla?.fuente;
+  assert.ok(fuente, "la exportación no trae ancla.fuente");
+  for (const lang of ["es", "en"] as const) {
+    const nombres: Record<string, string> = projects[lang].thesis.atlasCopy.forecast.anchorSources;
+    const nombre = nombres[fuente];
+    assert.ok(nombre, `${lang}: sin nombre para «${fuente}»; añadirlo a anchorSources al re-exportar`);
+  }
+});
