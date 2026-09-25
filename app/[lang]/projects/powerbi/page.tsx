@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import {
   TABLES, RELATIONSHIPS, MEASURES, PAGES, VISUAL_COUNT, PBI_SOURCE_COMMIT, pbiUrl, measuresOf, type PbiVisual,
 } from "@/lib/data/powerbi-model";
 import { reportShot } from "@/lib/data/powerbi-shots";
-import StatusPill from "@/components/StatusPill";
-import BackLink from "@/components/BackLink";
+import SectionNav from "@/components/SectionNav";
+import ProjectHero from "@/components/project/ProjectHero";
+import Preview from "@/components/showcase/Previews";
+import ReportMock from "@/components/powerbi/ReportMock";
 import ContactBand from "@/components/ContactBand";
 import ModelDiagram from "@/components/powerbi/ModelDiagram";
 import MeasureCatalogue from "@/components/powerbi/MeasureCatalogue";
@@ -37,6 +38,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
   const { lang } = await params;
   const dict = getDictionary(lang);
   const t = dict.powerbi;
+  const card = dict.work.cards.find((c) => c.href === "/projects/powerbi")!;
 
   // Every figure in the band is derived from the catalogue, never typed.
   const facts = [
@@ -53,59 +55,95 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/projects/powerbi", { title: t.metaTitle, description: t.metaDesc }, { type: "SoftwareSourceCode", codeRepository: TRADING_SIM_REPO })) }}
       />
       {/* ================= HERO ================= */}
-      <header className="border-b border-rule">
-        <div className={wrap}>
-          <div className="pt-20 pb-12">
-            <div className="mb-6 flex flex-wrap items-center gap-4">
-              <BackLink href={`/${lang}`} label={dict.nav.backHome} />
-              <StatusPill status="live" text={t.pill} />
-            </div>
-            <p className={label}>{t.kicker}</p>
-            <h1 className="mt-3 max-w-[820px] font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
-              {t.title}
-            </h1>
-            <p className="mt-5 max-w-[680px] text-[15.5px] leading-[1.75]">{t.intro}</p>
-            <p className="mt-3 max-w-[680px] text-[14px] text-muted">
-              {t.sourceLine}{" "}
-              <a href={pbiUrl.commit} {...ext} className="text-cold hover:underline">
-                {PBI_SOURCE_COMMIT.short}
-              </a>{" "}
-              ({PBI_SOURCE_COMMIT.date}) {t.sourceTail}
-            </p>
-          </div>
-        </div>
+      <ProjectHero
+        lang={lang}
+        backLabel={dict.nav.backHome}
+        status="live"
+        pill={t.pill}
+        kicker={t.kicker}
+        title={t.title}
+        lede={t.intro}
+        meta={[
+          <>
+            {t.sourceLine}{" "}
+            <a href={pbiUrl.commit} {...ext} className="text-cold hover:underline">{PBI_SOURCE_COMMIT.short}</a>{" "}
+            ({PBI_SOURCE_COMMIT.date}) {t.sourceTail}
+          </>,
+        ]}
+        ctas={[
+          { href: "#paginas", label: t.hero.ctaModel, tone: "solid" },
+          { href: pbiUrl.pbip, label: t.hero.ctaPbip, tone: "outline" },
+        ]}
+        visual={<Preview card={card} lang={lang} />}
+        visualCaption={card.caption}
+        figures={facts.map((f) => ({ value: String(f.value), label: f.label, href: f.href }))}
+      />
 
-        {/* figures band — the same instrument as the front page, derived from the data file */}
-        <div className="border-t-2 border-cold bg-coldsoft">
-          <div className={wrap}>
-            {/* Lista simple, no `<dl>`: el ancla envolvía `<dt>` y `<dd>` y no es
-                padre válido de ninguno, así que el par término/definición no se
-                exponía. Misma banda, mismo objetivo de clic, marcado válido. */}
-            <ul className="grid grid-cols-2 py-6 lg:grid-cols-4">
-              {facts.map((f, i) => (
-                <li
-                  key={f.label}
-                  data-reveal
-                  className="reveal border-coldline py-2 lg:border-l lg:pl-5 lg:first:border-l-0 lg:first:pl-0"
-                  style={{ "--d": `${i * 70}ms` } as React.CSSProperties}
-                >
-                  <a href={f.href} {...ext} className="lift group block">
-                    <span className="block font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink group-hover:text-cold">
-                      {f.value}
-                    </span>
-                    <span className="block mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
-                      {f.label}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+      <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
+
+      {/* ================= PAGES ================= */}
+      <section id="paginas" className="scroll-mt-[118px] border-b border-rule py-16">
+        <div className={wrap}>
+          <p data-reveal className={`reveal ${label}`}>{t.pages.label}</p>
+          <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
+            {t.pages.title}
+          </h2>
+          <p data-reveal className="reveal mt-3 max-w-[68ch] text-[15px] leading-[1.7]" style={{ "--d": "110ms" } as React.CSSProperties}>
+            {t.pages.desc}
+          </p>
+
+          {PAGES.map((p, i) => {
+            const shot = reportShot(p.id);
+            const visuals: readonly PbiVisual[] = p.visuals;
+            return (
+              <article key={p.id} data-reveal className="reveal mt-10 border-t border-rule pt-6 first:border-t-2 first:border-ink" style={{ "--d": `${i * 60}ms` } as React.CSSProperties}>
+                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                  <h3 className="font-display text-[19px] font-bold tracking-[-0.015em] text-ink">
+                    <a href={pbiUrl.page(p.id)} {...ext} className="hover:text-cold">{p.displayName}</a>
+                  </h3>
+                  <span className="text-[12.5px] tracking-[0.07em] text-muted uppercase">{p.visuals.length} {t.pages.visualsWord}</span>
+                </div>
+                <p className="mt-2 max-w-[68ch] text-[15px] leading-[1.7]">{t.pages.summary[p.id]}</p>
+
+                <div className="mt-5">
+                  {shot ? (
+                    <figure className="m-0">
+                      <img src={shot.src} width={shot.width} height={shot.height} loading="lazy" decoding="async" alt={`${t.pages.shotAlt} ${p.displayName}`} className="w-full rounded-[12px] border border-rule" />
+                      <figcaption className="mt-2 text-[14px] text-muted">{p.displayName} · {t.pages.shotCaption}</figcaption>
+                    </figure>
+                  ) : (
+                    <ReportMock page={p.id} lang={lang} pages={PAGES.map((x) => ({ id: x.id, name: x.displayName }))} note={t.pages.noShot} />
+                  )}
+                </div>
+
+                {/* El inventario sigue, pero plegado: le sirve a quien lee PBIR,
+                    y eran ~2.500 px de lista para todos los demás (DP-02). */}
+                <details className="group mt-4 border-t border-rulesoft pt-3">
+                  <summary className="cursor-pointer text-[14px] font-semibold text-cold">
+                    {t.pages.inventory} · {p.visuals.length} {t.pages.visualsWord}
+                  </summary>
+                <ol className="mt-3">
+                  {visuals.map((v) => (
+                    <li key={v.id} className="grid gap-x-5 gap-y-0.5 border-t border-rulesoft py-2.5 text-[14.5px] sm:grid-cols-[120px_1fr]">
+                      <span className="text-[12.5px] tracking-[0.07em] text-cold uppercase">{t.pages.types[v.type]}</span>
+                      <span>
+                        <a href={pbiUrl.visual(p.id, v.id)} {...ext} className="text-ink hover:text-cold">
+                          {v.title ?? v.id}
+                        </a>
+                        <span className="block text-[14px] text-muted">{v.fields.join(" · ")}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+                </details>
+              </article>
+            );
+          })}
         </div>
-      </header>
+      </section>
 
       {/* ================= MODEL ================= */}
-      <section id="modelo" className="scroll-mt-[72px] border-b border-rule py-16">
+      <section id="modelo" className="scroll-mt-[118px] border-b border-rule py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.model.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -116,7 +154,15 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
           </p>
 
           <div data-reveal className="reveal mt-8 border-t border-rule pt-6">
-            <ModelDiagram labels={{ diagramTitle: t.model.diagramTitle, legend: t.model.legend, headers: t.model.headers }} />
+            {/* El diagrama pide 640 px: en el teléfono se cortaba (DP-03). Ahí
+                va la estrella de la tarjeta, que escala; el detalle de cada
+                tabla sigue en la lista de abajo. */}
+            <div className="hidden sm:block">
+              <ModelDiagram labels={{ diagramTitle: t.model.diagramTitle, legend: t.model.legend, headers: t.model.headers }} />
+            </div>
+            <div className="sm:hidden">
+              <Preview card={card} lang={lang} />
+            </div>
           </div>
 
           <h3 className="mt-8 font-display text-[19px] font-bold tracking-[-0.015em] text-ink">{t.model.headers.relationships}</h3>
@@ -160,7 +206,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       </section>
 
       {/* ================= MEASURES ================= */}
-      <section id="medidas" className="scroll-mt-[72px] border-b border-rule py-16">
+      <section id="medidas" className="scroll-mt-[118px] border-b border-rule py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.measures.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -175,60 +221,8 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
         </div>
       </section>
 
-      {/* ================= PAGES ================= */}
-      <section id="paginas" className="scroll-mt-[72px] border-b border-rule py-16">
-        <div className={wrap}>
-          <p data-reveal className={`reveal ${label}`}>{t.pages.label}</p>
-          <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
-            {t.pages.title}
-          </h2>
-          <p data-reveal className="reveal mt-3 max-w-[68ch] text-[15px] leading-[1.7]" style={{ "--d": "110ms" } as React.CSSProperties}>
-            {t.pages.desc}
-          </p>
-
-          {PAGES.map((p, i) => {
-            const shot = reportShot(p.id);
-            const visuals: readonly PbiVisual[] = p.visuals;
-            return (
-              <article key={p.id} data-reveal className="reveal mt-10 border-t border-rule pt-6 first:border-t-2 first:border-ink" style={{ "--d": `${i * 60}ms` } as React.CSSProperties}>
-                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                  <h3 className="font-display text-[19px] font-bold tracking-[-0.015em] text-ink">
-                    <a href={pbiUrl.page(p.id)} {...ext} className="hover:text-cold">{p.displayName}</a>
-                  </h3>
-                  <span className="text-[12.5px] tracking-[0.07em] text-muted uppercase">{p.visuals.length} {t.pages.visualsWord}</span>
-                </div>
-                <p className="mt-2 max-w-[68ch] text-[15px] leading-[1.7]">{t.pages.summary[p.id]}</p>
-
-                {shot ? (
-                  <figure className="mt-5">
-                    <img src={shot.src} width={shot.width} height={shot.height} loading="lazy" decoding="async" alt={`${t.pages.shotAlt} ${p.displayName}`} className="w-full border border-rule" />
-                    <figcaption className="mt-2 text-[14px] text-muted">{p.displayName} · {t.pages.shotCaption}</figcaption>
-                  </figure>
-                ) : (
-                  <p className="mt-4 text-[14px] text-muted">{t.pages.noShot}</p>
-                )}
-
-                <ol className="mt-4">
-                  {visuals.map((v) => (
-                    <li key={v.id} className="grid gap-x-5 gap-y-0.5 border-t border-rulesoft py-2.5 text-[14.5px] sm:grid-cols-[120px_1fr]">
-                      <span className="text-[12.5px] tracking-[0.07em] text-cold uppercase">{t.pages.types[v.type]}</span>
-                      <span>
-                        <a href={pbiUrl.visual(p.id, v.id)} {...ext} className="text-ink hover:text-cold">
-                          {v.title ?? v.id}
-                        </a>
-                        <span className="block text-[14px] text-muted">{v.fields.join(" · ")}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              </article>
-            );
-          })}
-        </div>
-      </section>
-
       {/* ================= LICENSING ================= */}
-      <section id="licencia" className="scroll-mt-[72px] py-16">
+      <section id="licencia" className="scroll-mt-[118px] py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.licensing.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -256,11 +250,6 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
               {t.licensing.ctaReadme}
             </a>
           </div>
-          <p className="mt-10 border-t border-rule pt-5">
-            <Link href={`/${lang}`} className="text-[14px] font-semibold text-cold hover:underline">
-              {t.backCta}
-            </Link>
-          </p>
         </div>
       </section>
 

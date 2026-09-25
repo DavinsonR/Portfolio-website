@@ -26,9 +26,29 @@ export const projects = {
       metaDesc:
         "Sistema de decisión crediticia sobre 1,96 M de préstamos SBA y 62,4 M de solicitudes HMDA: gates que bloquean, monitoreo de deriva y un estudio de evento.",
       kicker: "Sistema de decisión · credit-risk-mlops",
+      pill: "DESPLEGADO",
       title: "El modelo no es el punto. El punto es que sobrevive una auditoría.",
       intro:
-        "Un modelo de crédito que nadie puede auditar no se despliega, por bueno que sea. Esta página muestra las cuatro cosas que un validador pregunta —y que casi ningún portafolio enseña— con la medición al lado: qué pasa cuando la fuente cambia de idioma, qué cuesta la decisión en dólares, qué hace el control cuando el modelo no cumple, y qué se puede afirmar de verdad sobre una brecha que se mueve.",
+        "Un modelo de crédito que nadie puede auditar no se despliega, por bueno que sea. Aquí están las cuatro preguntas de un validador, cada una con su medición: qué pasa cuando la fuente cambia de vocabulario, cuánto vale la decisión en dólares, qué hace el control cuando el modelo no cumple y qué se puede afirmar de una brecha que se mueve.",
+      hero: {
+        ctaDemo: "Puntuar un préstamo",
+        ctaCode: "Ver el código",
+        // Las cifras NO van aquí: la página las calcula del bundle del repositorio.
+        figures: [
+          { label: "AUC en prueba fuera de tiempo", href: "#demo" },
+          { label: "en castigos evitables al rechazar el 10 % más riesgoso", href: "#dinero" },
+          { label: "gates de promoción, juzgados por código de salida", href: "#gate" },
+          { label: "impacto dispar: el gate bloquea mi propio modelo", href: "#gate" },
+        ],
+      },
+      nav: [
+        { id: "demo", label: "Simulador" },
+        { id: "vocabulario", label: "Vocabulario" },
+        { id: "dinero", label: "Dólares" },
+        { id: "gate", label: "El gate" },
+        { id: "evento", label: "Evento" },
+        { id: "codigo", label: "Código" },
+      ],
       pipelineLine:
         "datos: SBA 7(a) FOIA + HMDA (FFIEC/CFPB) · métricas recomputadas desde las predicciones guardadas · código abierto",
       sourceNote:
@@ -218,7 +238,23 @@ export const projects = {
       metaTitle: "1.392 estrategias, casi todas ruido",
       metaDesc:
         "1.392 variantes de estrategia sobre 48 activos, con comisiones, slippage y validación fuera de muestra. La mayoría de las ganadoras eran ilusiones.",
-      kicker: "Laboratorio · trading_sim",
+      kicker: "Laboratorio · market-data-medallion",
+      pill: "EN OPERACIÓN",
+      hero: {
+        ctaLab: "Explorar el laboratorio",
+        ctaCode: "Ver el código",
+        figures: [
+          { label: "variantes de estrategia evaluadas", href: "#laboratorio" },
+          { label: "sobrevivieron a la ventana ciega", href: "#laboratorio" },
+          { label: "activos ingeridos cada día", href: "#laboratorio" },
+          { label: "pruebas de calidad antes de publicar un dato", href: "#calidad" },
+        ],
+      },
+      nav: [
+        { id: "laboratorio", label: "Laboratorio" },
+        { id: "metodologia", label: "Metodología" },
+        { id: "calidad", label: "Las 89 pruebas" },
+      ],
       // Las cifras van como plantilla: el número cambia cada noche y sale de
       // la instantánea (build) y del índice vivo (navegador). Ver lib/data/lab-stats.ts.
       title: "{variants} estrategias entraron al laboratorio. Sobrevivieron {survivors}.",
@@ -230,12 +266,6 @@ export const projects = {
       error: "No se pudieron cargar los datos ni en vivo ni desde la copia local. Reintenta en unos segundos.",
       snapshotNote: "Estás viendo una copia guardada en este mismo sitio: no se pudo alcanzar el repositorio del pipeline, que es lo que suelen bloquear las redes corporativas. Las cifras son reales y llevan su fecha arriba; las de hoy están en el repositorio.",
       retry: "reintentar",
-      stats: {
-        variants: "variantes evaluadas",
-        beatIs: "ganaron en entrenamiento",
-        survivors: "sobrevivieron fuera de muestra",
-        survival: "tasa de supervivencia",
-      },
       funnel: {
         title: "El embudo de la honestidad",
         desc: "De todas las variantes que le ganaron a comprar-y-mantener en el periodo de entrenamiento, solo una de cada {oneIn} siguió ganando en el periodo de validación que nunca influyó en su selección. El resto era ruido con buena suerte.",
@@ -336,8 +366,7 @@ export const projects = {
             body: "Más de 58.000 velas de Tiingo, Tiingo FX, Coinbase y Kraken en un warehouse PostgreSQL con arquitectura medallion, 89 tests de calidad de datos en dbt, 171 pruebas unitarias en Python y reconciliación entre fuentes. Todo reproducible desde el repo.",
           },
         ],
-        repoCta: "ver el pipeline completo en GitHub →",
-        backCta: "← volver al inicio",
+        repoCta: "Ver el pipeline completo en GitHub",
       },
     },
     quality: {
@@ -360,6 +389,13 @@ export const projects = {
       metaDesc: "Modelo semántico de siete tablas en TMDL, 17 medidas DAX y cuatro páginas de informe, versionados como texto. Cada medida enlaza al archivo que la define.",
       kicker: "Informe · Medallion Insights",
       pill: "EN EL REPO",
+      hero: { ctaModel: "Ver el informe, página por página", ctaPbip: "Abrir el .pbip" },
+      nav: [
+        { id: "paginas", label: "El informe" },
+        { id: "modelo", label: "Modelo" },
+        { id: "medidas", label: "Medidas DAX" },
+        { id: "licencia", label: "Abrirlo" },
+      ],
       title: "«Power BI» en un CV no significa nada. Aquí están las 17 medidas, una por una.",
       intro: "El warehouse del pipeline alimenta un informe interactivo de Power BI, Medallion Insights. Está versionado como proyecto de Power BI (PBIP): el modelo semántico en TMDL, las páginas en PBIR, todo texto plano que se revisa en una pull request. Esta página es el catálogo de ese modelo, copiado de los archivos fuente, para que nadie tenga que creer en la palabra «Power BI» sin ver qué hay detrás.",
       sourceLine: "Catálogo copiado del commit",
@@ -421,7 +457,8 @@ export const projects = {
         visualsWord: "visuales",
         shotCaption: "exportada desde Power BI Desktop",
         shotAlt: "Captura de la página",
-        noShot: "Inventario de visuales leído directamente del archivo PBIR de la página.",
+        noShot: "Maqueta dibujada con la disposición del PBIR y los datos del warehouse. La captura exportada desde Power BI Desktop la sustituirá.",
+        inventory: "Inventario de visuales, leído del PBIR",
         types: { card: "tarjeta", slicer: "segmentador", tableEx: "tabla", clusteredColumnChart: "columnas", clusteredBarChart: "barras", scatterChart: "dispersión", lineChart: "líneas" },
       },
       licensing: {
@@ -437,7 +474,6 @@ export const projects = {
         ctaFolder: "Ver la carpeta powerbi",
         ctaReadme: "Instrucciones y solución de problemas",
       },
-      backCta: "Volver al inicio",
     },
     thesis: {
       metaTitle: "Inclusión financiera en Colombia",
@@ -447,7 +483,10 @@ export const projects = {
       // El titular anterior («Publiqué el cero») era anterior a ADR-017 y ADR-018
       // del repositorio: un nulo sin su potencia no distingue «no hay efecto» de
       // «este diseño no lo vería». Lo que el repositorio afirma hoy es un límite.
-      title: `Un límite, no una ausencia: el diseño descarta que la inclusión financiera mueva el crecimiento más de ${fes.n(T.bound.pp)} puntos por desviación del índice.`,
+      title: "Un límite, no una ausencia.",
+      // El titular era la frase entera (4 líneas en escritorio, 7 en el teléfono;
+      // auditoría DP-09). La afirmación exacta, con su unidad, abre el párrafo.
+      lede: `El diseño descarta que la inclusión financiera mueva el crecimiento más de ${fes.n(T.bound.pp)} puntos por desviación del índice.`,
       subtitle: `19 fuentes públicas, 1.123 municipios, un índice con sus pesos a la vista y ${T.curve.total} especificaciones estimadas. Construido con Python, dbt y DuckDB; cada cifra de esta página sale del archivo de resultados que el repositorio recalcula y prueba.`,
       degree: "Tesis de Maestría en Economía · Pontificia Universidad Javeriana, 2026 · dirigida por Gabriel Penagos Londoño",
       timeline: "Warehouse, índice, atlas, estimaciones y proyección 2026–2028 publicados · siguen el anexo de desagregación temporal y el manuscrito",
@@ -459,8 +498,8 @@ export const projects = {
         { title: "Un resultado que dice cuánto sabe.", body: `β = ${fes.s(T.base.coef)} (p = ${fes.n(T.base.p)}) con efectos de entidad y tiempo: descarta efectos mayores a ${fes.n(T.bound.pp)} pp por desviación identificante del índice (unos ${fes.n(T.bound.raw)} pp por desviación bruta) y dice abiertamente que no puede ver los menores, ni siquiera ±${fes.n(T.tost.wide.margin)} pp.` },
       ],
       nav: [
-        { id: "resumen", label: "Resumen" },
         { id: "atlas", label: "Atlas" },
+        { id: "resumen", label: "Resumen" },
         { id: "datos", label: "Datos" },
         { id: "metodo", label: "Índice" },
         { id: "resultados", label: "Resultados" },
@@ -485,6 +524,7 @@ export const projects = {
       },
       abstract: {
         label: "Resumen",
+        more: "Leer el resumen completo",
         body: "¿La inclusión financiera predice el crecimiento económico de los departamentos colombianos una vez descontadas las tendencias nacionales que los mueven a todos a la vez? Para responderla, el proyecto descarga diecinueve fuentes públicas con un manifiesto verificable, resuelve cada serie al código municipal DIVIPOLA, las modela en un esquema estrella sobre dbt y DuckDB con la vintage de cada descarga en el manifiesto, y construye un índice de inclusión financiera por dimensiones con pesos congelados y publicados por variable. Encima van dos paneles anuales, departamental y municipal, un atlas interactivo y una batería econométrica de efectos fijos de dos vías, diagnósticos de dependencia transversal y espacial, diseños que no dependen de la exogeneidad del índice (CCE, exposición inicial, estudio de eventos con tendencias previas), y una inferencia hecha para 33 clústeres. La respuesta se publica con su especificación, su N, sus pruebas y su potencia, sea cual sea el signo, y es un límite y no una ausencia: con bootstrap salvaje agrupado, el diseño descarta efectos mayores a unos 0,55 puntos porcentuales de crecimiento anual por desviación identificante del índice, y no puede hablar de nada menor.",
       },
       data: {
@@ -665,6 +705,7 @@ export const projects = {
       subtitle:
         "JARVIS cierra el día —hábitos, cuerpo, sueño, comida, gastos— en un formulario y un botón, y lo devuelve leído, no en crudo. Hay un demo abierto con las cinco pantallas de verdad y los datos de una persona que no existe.",
       access: "Repositorio privado · el demo es la superficie pública",
+      more: "Ver las otras {n}",
       timeline: "Demo público y app en producción · el alta de cuentas está escrita y todavía cerrada",
       demoUrl: "https://jarvis-app-psi-sable.vercel.app/demo",
       nav: [
@@ -792,9 +833,28 @@ export const projects = {
       metaDesc:
         "A credit decisioning system over 1.96M SBA loans and 62.4M HMDA applications: gates that block, drift monitoring and an event study.",
       kicker: "Decision system · credit-risk-mlops",
+      pill: "DEPLOYED",
       title: "The model is not the point. The point is that it survives an audit.",
       intro:
-        "A credit model nobody can audit does not get deployed, however good it is. This page shows the four things a validator asks — and almost no portfolio shows — with the measurement beside each one: what happens when the source changes its vocabulary, what the decision costs in dollars, what the control does when the model does not comply, and what can honestly be claimed about a gap that moves.",
+        "A credit model nobody can audit does not get deployed, however good it is. Here are a validator's four questions, each with its measurement: what happens when the source changes its vocabulary, what the decision is worth in dollars, what the control does when the model does not comply, and what can honestly be claimed about a gap that moves.",
+      hero: {
+        ctaDemo: "Score a loan",
+        ctaCode: "See the code",
+        figures: [
+          { label: "out-of-time test AUC", href: "#demo" },
+          { label: "in avoidable charge-offs by declining the riskiest 10%", href: "#dinero" },
+          { label: "promotion gates, judged by exit code", href: "#gate" },
+          { label: "disparate impact: the gate blocks my own model", href: "#gate" },
+        ],
+      },
+      nav: [
+        { id: "demo", label: "Simulator" },
+        { id: "vocabulario", label: "Vocabulary" },
+        { id: "dinero", label: "Dollars" },
+        { id: "gate", label: "The gate" },
+        { id: "evento", label: "Event study" },
+        { id: "codigo", label: "Code" },
+      ],
       pipelineLine:
         "data: SBA 7(a) FOIA + HMDA (FFIEC/CFPB) · metrics recomputed from saved predictions · open source",
       sourceNote:
@@ -984,7 +1044,23 @@ export const projects = {
       metaTitle: "1,392 strategies, mostly noise",
       metaDesc:
         "1,392 strategy variants across 48 assets, with fees, slippage and out-of-sample validation. Most of the winners were backtest illusions.",
-      kicker: "Lab · trading_sim",
+      kicker: "Lab · market-data-medallion",
+      pill: "IN OPERATION",
+      hero: {
+        ctaLab: "Explore the lab",
+        ctaCode: "See the code",
+        figures: [
+          { label: "strategy variants evaluated", href: "#laboratorio" },
+          { label: "survived the blind window", href: "#laboratorio" },
+          { label: "assets ingested every day", href: "#laboratorio" },
+          { label: "quality tests before a single figure ships", href: "#calidad" },
+        ],
+      },
+      nav: [
+        { id: "laboratorio", label: "Lab" },
+        { id: "metodologia", label: "Method" },
+        { id: "calidad", label: "The 89 tests" },
+      ],
       title: "{variants} strategies entered the lab. {survivors} survived.",
       intro:
         "Five classic technical strategies and every possible combination of them, evaluated across 48 assets — crypto, ETFs, US stocks, Latin American ADRs and currencies — with fees, slippage and no look-ahead. Every variant trains on 70% of history and is judged on the 30% it never saw. It is the measurement that separates real alpha from overfitting: how much technical analysis survives contact with reality.",
@@ -994,12 +1070,6 @@ export const projects = {
       error: "Could not load the data, neither live nor from the local copy. Retry in a few seconds.",
       snapshotNote: "You are seeing a copy stored on this site: the pipeline repository could not be reached, which is what corporate networks usually block. The figures are real and carry their date above; today's are in the repository.",
       retry: "retry",
-      stats: {
-        variants: "variants evaluated",
-        beatIs: "won in training",
-        survivors: "survived out of sample",
-        survival: "survival rate",
-      },
       funnel: {
         title: "The honesty funnel",
         desc: "Of all the variants that beat buy-and-hold during the training period, only one in {oneIn} kept winning in the validation window that never influenced their selection. The rest was noise with good luck.",
@@ -1100,8 +1170,7 @@ export const projects = {
             body: "More than 58,000 candles from Tiingo, Tiingo FX, Coinbase and Kraken in a PostgreSQL medallion warehouse, 89 dbt data-quality tests, 171 Python unit tests and cross-source reconciliation. Everything reproducible from the repo.",
           },
         ],
-        repoCta: "see the full pipeline on GitHub →",
-        backCta: "← back to home",
+        repoCta: "See the full pipeline on GitHub",
       },
     },
     quality: {
@@ -1124,6 +1193,13 @@ export const projects = {
       metaDesc: "A seven-table semantic model in TMDL, 17 DAX measures and four report pages, versioned as text. Every measure links to the file that defines it.",
       kicker: "Report · Medallion Insights",
       pill: "IN THE REPO",
+      hero: { ctaModel: "See the report, page by page", ctaPbip: "Open the .pbip" },
+      nav: [
+        { id: "paginas", label: "The report" },
+        { id: "modelo", label: "Model" },
+        { id: "medidas", label: "DAX measures" },
+        { id: "licencia", label: "Open it" },
+      ],
       title: "“Power BI” on a CV means nothing. Here are all 17 measures, one by one.",
       intro: "The pipeline's warehouse feeds an interactive Power BI report, Medallion Insights. It is versioned as a Power BI Project (PBIP): the semantic model in TMDL, the pages in PBIR, all plain text reviewed in a pull request. This page is the catalogue of that model, copied from the source files, so nobody has to take the words “Power BI” on trust without seeing what is behind them.",
       sourceLine: "Catalogue copied from commit",
@@ -1185,7 +1261,8 @@ export const projects = {
         visualsWord: "visuals",
         shotCaption: "exported from Power BI Desktop",
         shotAlt: "Screenshot of the page",
-        noShot: "Visual inventory read straight from the page's PBIR file.",
+        noShot: "A mock-up drawn with the PBIR layout and the warehouse data. The capture exported from Power BI Desktop will replace it.",
+        inventory: "Visual inventory, read from the PBIR",
         types: { card: "card", slicer: "slicer", tableEx: "table", clusteredColumnChart: "columns", clusteredBarChart: "bars", scatterChart: "scatter", lineChart: "lines" },
       },
       licensing: {
@@ -1201,14 +1278,14 @@ export const projects = {
         ctaFolder: "See the powerbi folder",
         ctaReadme: "Instructions and troubleshooting",
       },
-      backCta: "Back to home",
     },
     thesis: {
       metaTitle: "Financial inclusion in Colombia",
       metaDesc: "Open warehouse of 19 public sources, a financial-inclusion index for 1,123 municipalities, an interactive atlas and panel econometrics with its power.",
       kicker: "Research · M.Sc. thesis filed",
       pill: "RESEARCH",
-      title: `A bound, not an absence: the design rules out financial inclusion moving growth by more than ${fen.n(T.bound.pp)} points per standard deviation of the index.`,
+      title: "A bound, not an absence.",
+      lede: `The design rules out financial inclusion moving growth by more than ${fen.n(T.bound.pp)} points per standard deviation of the index.`,
       subtitle: `19 public sources, 1,123 municipalities, an index with its weights in plain sight and ${T.curve.total} specifications estimated. Built with Python, dbt and DuckDB; every figure on this page comes from the results file the repository recomputes and tests.`,
       degree: "M.Sc. in Economics thesis · Pontificia Universidad Javeriana, 2026 · supervised by Gabriel Penagos Londoño",
       timeline: "Warehouse, index, atlas, estimates and the 2026–2028 forecast published · the temporal-disaggregation annex and the manuscript follow",
@@ -1220,8 +1297,8 @@ export const projects = {
         { title: "A result that says how much it knows.", body: `β = ${fen.s(T.base.coef)} (p = ${fen.n(T.base.p)}) with entity and time effects: it rules out effects above ${fen.n(T.bound.pp)} pp per identifying standard deviation of the index (about ${fen.n(T.bound.raw)} pp per raw standard deviation) and says plainly it cannot see smaller ones, not even ±${fen.n(T.tost.wide.margin)} pp.` },
       ],
       nav: [
-        { id: "resumen", label: "Abstract" },
         { id: "atlas", label: "Atlas" },
+        { id: "resumen", label: "Abstract" },
         { id: "datos", label: "Data" },
         { id: "metodo", label: "Index" },
         { id: "resultados", label: "Results" },
@@ -1246,6 +1323,7 @@ export const projects = {
       },
       abstract: {
         label: "Abstract",
+        more: "Read the full abstract",
         body: "Does financial inclusion predict the economic growth of Colombia's departments once you take out the national trends that move all of them at once? To answer it, the project downloads nineteen public sources with a verifiable manifest, resolves every series to the municipal code, models them as a star schema on dbt and DuckDB with each download's vintage in the manifest, and builds a financial-inclusion index by dimension with frozen, published weights. On top go two annual panels, department and municipality, an interactive atlas, and an econometric battery of two-way fixed effects, cross-sectional and spatial dependence diagnostics, designs that do not rely on the index being exogenous (CCE, initial exposure, an event study with pre-trends), and inference built for 33 clusters. The answer is published with its specification, its N, its tests and its power, whatever the sign, and it is a bound rather than an absence: with a cluster wild bootstrap, the design rules out effects above about 0.55 percentage points of annual growth per identifying standard deviation of the index, and cannot speak to anything smaller.",
       },
       data: {
@@ -1419,6 +1497,7 @@ export const projects = {
       subtitle:
         "JARVIS closes the day — habits, body, sleep, food, spending — in one form and one button, and gives it back as a reading, not as rows. There is an open demo with the five real screens and the data of someone who does not exist.",
       access: "Private repository · the demo is the public surface",
+      more: "See the other {n}",
       timeline: "Public demo and app in production · account sign-up is written and still closed",
       demoUrl: "https://jarvis-app-psi-sable.vercel.app/demo",
       nav: [
