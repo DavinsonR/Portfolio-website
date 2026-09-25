@@ -15,5 +15,5 @@ export const ATLAS_FIGURE = {
   /** La deriva que cuenta /historia: mediana y departamentos bajo cero por año. */
   drift: [{"year":2018,"median":-0.04,"below":17,"counted":32},{"year":2021,"median":1.35,"below":3,"counted":33},{"year":2025,"median":2.48,"below":1,"counted":32}],
   source: "Superintendencia Financiera (CC BY-SA 4.0), DANE, MinTIC y MEN. Índice: ADR-015.",
-  generatedAt: "2026-09-25T16:18:32Z",
+  generatedAt: "2026-09-25T18:36:50Z",
 } as const;
