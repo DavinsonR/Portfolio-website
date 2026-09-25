@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { getDictionary, THESIS_REPO } from "@/lib/dictionaries";
 import { mailtoHref } from "@/lib/config/contact";
-import StatusPill from "@/components/StatusPill";
-import BackLink from "@/components/BackLink";
+import ProjectHero from "@/components/project/ProjectHero";
+import Preview from "@/components/showcase/Previews";
 import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
 import Atlas from "@/components/atlas/Atlas";
@@ -41,6 +41,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
   const { lang } = await params;
   const dict = getDictionary(lang);
   const t = dict.thesis;
+  const card = dict.work.cards.find((c) => c.href === "/research/fintech-inclusion")!;
 
   return (
     <main id="main" tabIndex={-1}>
@@ -49,106 +50,25 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/research/fintech-inclusion", { title: t.metaTitle, description: t.metaDesc }, { type: "ScholarlyArticle", codeRepository: THESIS_REPO, dataset: { license: "https://creativecommons.org/licenses/by-sa/4.0/", temporalCoverage: "2018/2025", spatialCoverage: "Colombia" } })) }}
       />
       {/* ================= HERO ================= */}
-      <header className="border-b border-rule">
-        <div className={wrap}>
-          <div className="pt-20 pb-12">
-            <div className="mb-6 flex flex-wrap items-center gap-4">
-              <BackLink href={`/${lang}`} label={dict.nav.backHome} />
-              <StatusPill status="research" text={t.pill} />
-            </div>
-            <p className={label}>{t.kicker}</p>
-            <h1 className="mt-3 max-w-[30ch] text-balance font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
-              {t.title}
-            </h1>
-            <p className="mt-4 max-w-[70ch] text-[15.5px] leading-[1.7] text-ink">{t.subtitle}</p>
-            <p className="mt-3 text-[14px] text-body">{t.degree}</p>
-            <p className="mt-1 text-[14px] text-muted">{t.timeline}</p>
-            {/* Una acción primaria arriba: el atlas es la razón de estar en esta
-                página. El código va de secundaria, en contorno. */}
-            <div className="mt-7 flex flex-wrap gap-3.5">
-              <a
-                href="#atlas"
-                className="lift rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
-              >
-                {t.ctaAtlas}
-              </a>
-              <a
-                href={THESIS_REPO}
-                {...ext}
-                className="rounded-[3px] border border-control px-5 py-3 text-[14.5px] text-ink transition-colors hover:border-cold hover:text-cold"
-              >
-                {t.ctaRepo}
-              </a>
-            </div>
-            <ul className="mt-9 grid grid-cols-1 gap-x-8 gap-y-4 md:grid-cols-3">
-              {t.bullets.map((b, i) => (
-                <li key={b.title} data-reveal className="reveal border-t border-rule pt-4 text-[14.5px] leading-[1.65] text-body" style={delay(i)}>
-                  <span className="font-semibold text-ink">{b.title}</span> {b.body}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* figures band — each figure lands on the section that states it */}
-        <div className="border-t-2 border-cold bg-coldsoft">
-          <div className={wrap}>
-            {/* Lista simple, no `<dl>`: el ancla envolvía `<dt>` y `<dd>` y no es
-                padre válido de ninguno, así que el par término/definición no se
-                exponía. Misma banda, mismo objetivo de clic, marcado válido. */}
-            <ul className="grid grid-cols-2 py-6 lg:grid-cols-4">
-              {t.figures.map((f, i) => (
-                <li
-                  key={f.label}
-                  data-reveal
-                  className="reveal border-coldline py-2 lg:border-l lg:pl-5 lg:first:border-l-0 lg:first:pl-0"
-                  style={delay(i + 1)}
-                >
-                  <a href={f.href} className="lift group block">
-                    <span className="block font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink group-hover:text-cold">
-                      {f.value}
-                    </span>
-                    <span className="block mt-2 max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
-                      {f.label}
-                    </span>
-                  </a>
-                  <p className="mt-1 text-[14px] text-body">{f.note}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </header>
+      <ProjectHero
+        lang={lang}
+        backLabel={dict.nav.backHome}
+        status="research"
+        pill={t.pill}
+        kicker={t.kicker}
+        title={t.title}
+        lede={t.lede}
+        meta={[t.subtitle, t.degree]}
+        ctas={[
+          { href: "#atlas", label: t.ctaAtlas, tone: "solid" },
+          { href: THESIS_REPO, label: t.ctaRepo, tone: "outline" },
+        ]}
+        visual={<Preview card={card} lang={lang} />}
+        visualCaption={card.caption}
+        figures={t.figures.map((f) => ({ value: f.value, label: f.label, note: f.note, href: f.href }))}
+      />
 
       <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
-
-      {/* ================= ABSTRACT ================= */}
-      <section id="resumen" className={section}>
-        <div className={wrap}>
-          {/* La SectionNav lleva aquí, y un destino sin encabezado deja al lector
-              sin confirmación de haber llegado (2.4.6). Mismo paso que las demás. */}
-          <h2 data-reveal className={`reveal ${heading} mt-0`}>{t.abstract.label}</h2>
-          <p data-reveal className={`reveal mt-5 ${prose} text-[16px] leading-[1.8] text-body`} style={delay(1)}>
-            {t.abstract.body}
-          </p>
-        </div>
-      </section>
-
-      {/* ================= WHAT THIS SHOWS — for the reader who hires ================= */}
-      <section aria-labelledby="demuestra" className={section}>
-        <div className={wrap}>
-          <p data-reveal className={`reveal ${label}`}>{t.shows.label}</p>
-          <h2 id="demuestra" data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.shows.title}</h2>
-          <div className="mt-8 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2">
-            {t.shows.items.map((m, i) => (
-              <div key={m.title} data-reveal className="reveal border-t border-rule pt-5" style={delay(i)}>
-                <p className="text-[14.5px] font-semibold text-ink">{m.title}</p>
-                <p className="mt-2 text-[14.5px] leading-[1.7] text-body">{m.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* El atlas sube por delante de datos, índice y econometría. Arrancaba a
           2.820px de una página de 7.489 en escritorio y a 4.608 de 12.349 en el
@@ -176,6 +96,42 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* ================= ABSTRACT ================= */}
+      <section id="resumen" className={section}>
+        <div className={wrap}>
+          {/* La SectionNav lleva aquí, y un destino sin encabezado deja al lector
+              sin confirmación de haber llegado (2.4.6). Mismo paso que las demás. */}
+          <h2 data-reveal className={`reveal ${heading} mt-0`}>{t.abstract.label}</h2>
+          <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-4 md:grid-cols-3">
+            {t.bullets.map((b, i) => (
+              <li key={b.title} data-reveal className="reveal border-t border-rule pt-4 text-[14.5px] leading-[1.65] text-body" style={delay(i)}>
+                <span className="font-semibold text-ink">{b.title}</span> {b.body}
+              </li>
+            ))}
+          </ul>
+          <details className="mt-6">
+            <summary className="cursor-pointer text-[14.5px] font-semibold text-cold">{t.abstract.more}</summary>
+            <p className={`mt-4 ${prose} text-[16px] leading-[1.8] text-body`}>{t.abstract.body}</p>
+          </details>
+        </div>
+      </section>
+
+      {/* ================= WHAT THIS SHOWS — for the reader who hires ================= */}
+      <section aria-labelledby="demuestra" className={section}>
+        <div className={wrap}>
+          <p data-reveal className={`reveal ${label}`}>{t.shows.label}</p>
+          <h2 id="demuestra" data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.shows.title}</h2>
+          <div className="mt-8 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-2">
+            {t.shows.items.map((m, i) => (
+              <div key={m.title} data-reveal className="reveal border-t border-rule pt-5" style={delay(i)}>
+                <p className="text-[14.5px] font-semibold text-ink">{m.title}</p>
+                <p className="mt-2 text-[14.5px] leading-[1.7] text-body">{m.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

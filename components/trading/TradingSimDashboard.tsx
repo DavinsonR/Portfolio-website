@@ -193,25 +193,7 @@ export default function TradingSimDashboard({
     <div className="space-y-14">
       {/* ============ 1. EL VEREDICTO — stat tiles + embudo ============ */}
       <section aria-labelledby="ts-verdict">
-        <div className="mb-8 grid grid-cols-2 border-t-2 border-cold lg:grid-cols-4">
-          {[
-            { label: dict.stats.variants, value: num(lang, total?.n_variants ?? null, 0) },
-            { label: dict.stats.beatIs, value: num(lang, total?.n_beat_is ?? null, 0) },
-            { label: dict.stats.survivors, value: num(lang, total?.n_beat_is_and_oos ?? null, 0) },
-            { label: dict.stats.survival, value: pct(lang, total?.oos_survival_rate ?? null, 1), hero: true },
-          ].map((s) => (
-            <div key={s.label} className="border-t border-rule pt-5">
-              <p className="text-[12.5px] tracking-[0.1em] uppercase text-muted">{s.label}</p>
-              {/* Serif tabular, como toda cifra grande del sitio (DESIGN.md): la
-                  página con más cifras era la única que las vestía distinto. */}
-              <p className={`font-figure tabular-nums text-ink mt-2 ${s.hero ? "text-[clamp(28px,3.8vw,40px)]" : "text-[26px]"}`}>
-                {s.value}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="border-t border-rule pt-7">
+        <div>
           <h3 id="ts-verdict" className="font-display text-[18px] font-medium text-ink mb-1.5">{dict.funnel.title}</h3>
           <p className="text-[14px] leading-[1.7] max-w-[620px] mb-6">
             {funnel.stats ? fillLab(dict.funnel.desc, funnel.stats, lang) : dict.funnel.desc}

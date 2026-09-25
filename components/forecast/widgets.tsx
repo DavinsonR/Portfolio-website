@@ -41,7 +41,7 @@ import {
 } from "@/lib/data/forecast-lab";
 import type { Kind } from "./Island";
 import { setSel, useSel } from "./store";
-import { SortTable, type Column } from "./ui";
+import { SortTable, type Column, Loading as LoadingShape } from "./ui";
 
 // ---------------------------------------------------------------- datos
 
@@ -189,9 +189,7 @@ function Failed({ copy, retry }: { copy: LabCopy; retry: () => void }) {
 }
 
 const Loading = ({ copy }: { copy: LabCopy }) => (
-  <p role="status" className="py-16 text-center text-[14px] text-muted">
-    {copy.loading}
-  </p>
+  <LoadingShape text={copy.loading} />
 );
 
 /** Meta + la serie de la economía elegida, en la frecuencia elegida. */
