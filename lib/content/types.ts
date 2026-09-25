@@ -22,17 +22,13 @@ export type Award = {
 export type Metric = { value: string; label: string; note: string; href: string };
 // Herramienta con su prueba; la prueba puede enlazar a la página que la muestra.
 export type ProofRow = { name: string; proof: string; href?: string };
-// Botón del proyecto destacado. Vive en el diccionario y no en la página porque
-// antes los tres estaban fijos en el componente —uno de ellos apuntando a
-// /projects/trading-sim—, así que cambiar cuál es el proyecto destacado obligaba a
-// editar el layout. El destino es contenido, no estructura.
-// `tone` decide el peso visual: sólido el destino principal, contorno el
-// secundario, texto el terciario.
-export type ProjectLink = { label: string; href: string; tone: "solid" | "outline" | "text" };
-// Fila de "también en la mesa": sin href es un proyecto privado y lo dice en access.
-export type AlsoRow = {
-  name: string; kind: string; status: Status; statusText: string; note: string;
-  href?: string; access?: string;
+// Tarjeta de la vitrina de la portada: una vista previa visual, una cifra y una
+// línea. `viz` decide qué gráfico dibuja `components/showcase/Previews.tsx`;
+// `vizLabels` son sus rótulos, en el orden que ese gráfico declara.
+export type ShowcaseViz = "credit" | "funnel" | "star" | "forecast" | "dots" | "screen";
+export type ShowcaseCard = {
+  viz: ShowcaseViz; name: string; kind: string; status: Status; statusText: string;
+  stat: string; statLabel: string; hook: string; href: string; vizLabels: string[];
 };
 export type Education = {
   title: string; inst: string; period: string; status: Status; statusText: string;
