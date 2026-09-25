@@ -36,8 +36,7 @@ export type {
   Award,
   Metric,
   ProofRow,
-  ProjectLink,
-  AlsoRow,
+  ShowcaseCard,
   Education,
   CvProject,
 } from "./content/types";

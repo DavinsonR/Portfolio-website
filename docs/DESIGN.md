@@ -278,7 +278,9 @@ Icons are inline SVG drawn at a single 1.3px stroke weight on a 16px box. No ico
 - **Status Pill:** Fully rounded, 11px tracked caps, tinted from its own status hue (10% ground, 35% border, full-strength text) so it stays legible on paper and on the dark ground alike.
 
 ### Cards / Containers
-**There are no cards.** Cards were removed from all three surfaces during review. A grouping is expressed as: a top rule of the appropriate weight and color, optional tinted ground, and internal padding of `px-5 py-4`/`py-5`. The availability block and the "why it matters" callout are the canonical examples — both are open blocks, not enclosed boxes.
+**One exception: the project showcase on the home page** (`#work`, `components/showcase/Previews.tsx`). The owner asked for a visual preview per project instead of prose (Sept 2026), because the site is a sales asset and a scanner decides from pictures. Each project is a whole-clickable tile: a 1px `rule` border on `paper` (no radius, no shadow), a server-drawn SVG preview on `coldsoft`, one figure in the serif, one line, and the link. Hover changes only the border to `cold` and scales the preview 3%. The featured project spans two columns; the last one spans the full row. Nowhere else does a card appear.
+
+**Everywhere else there are no cards.** A grouping is expressed as: a top rule of the appropriate weight and color, optional tinted ground, and internal padding of `px-5 py-4`/`py-5`. The availability block and the "why it matters" callout are the canonical examples — both are open blocks, not enclosed boxes.
 
 ### Navigation
 Sticky hairline-capped bar on a 95% paper ground. Wordmark in Archivo 600 at 15px in ink; links at 14px 500 in body, hovering to blue; no underline, no active-state pill. The right cluster is three controls at 36px height: a **labelled** language switch (blue-on-blue-wash with a `coldline` border — labelled because a dim glyph in the previous build went unfound by reviewers), an outlined icon-only theme toggle, and a blue contact button **present at every width**. Mobile drops the center links entirely rather than collapsing them into a menu, but never the contact button: it is the site's only conversion control, and hiding it below `sm` removed it from the one device where the link arrives from LinkedIn. The wordmark truncates before the button is dropped.
@@ -335,7 +337,7 @@ Theme follows system preference by default, with a manual toggle persisted in `l
 
 ### Don't:
 - **Don't** add a shadow, glow, or gradient. The system is flat; a `box-shadow` here is a defect.
-- **Don't** wrap content in a card. Removing cards was a review decision on all three surfaces; use a top rule plus optional tint instead.
+- **Don't** wrap content in a card outside the home-page project showcase; use a top rule plus optional tint instead.
 - **Don't** put amber on a number, a metric, a stack tag, or any technical claim.
 - **Don't** introduce a third accent hue; extend with the existing verdict/status tokens.
 - **Don't** ship mono type, neon accents, terminal chrome, or a terminal-styled navigation bar — this world was chosen specifically against them.

@@ -9,7 +9,7 @@
 // ============================================================
 // La portada: metadatos, navegación, la hoja y la mesa de trabajo
 
-import type { Metric, ProjectLink, AlsoRow } from "./types";
+import type { Metric, ShowcaseCard } from "./types";
 import { THESIS as T, thesisFormat } from "../data/thesis-results";
 
 // Las cifras de la tesis salen de un solo sitio (lib/data/thesis-results.ts).
@@ -93,79 +93,87 @@ export const home = {
       portraitPending: "DNR",
     },
     work: {
-      title: "Construí un sistema de crédito que se audita solo. Y que bloquea a su propio autor.",
-      intro: "Lo que un examen de riesgo de modelo le exige a un banco, construido y en pie. Contado como se presenta un caso: el problema primero.",
-      project: {
-        name: "credit-risk-mlops",
-        kind: "Sistema de decisión con gobierno de modelos",
-        problemLabel: "El problema",
-        problem: "Un modelo de crédito que nadie puede auditar no se despliega jamás, por espectacular que sea su AUC. El validador no pregunta cuánto da: pregunta quién puede cambiar esa cifra sin que nadie se entere, qué pasa cuando cambia el régimen y cómo sabes que el modelo sigue viendo la población para la que se entrenó. La mayoría de los portafolios de datos no sobrevive la primera de esas tres preguntas.",
-        builtLabel: "Lo que construí",
-        built: "Un sistema de decisión crediticia sobre 1,96 millones de préstamos SBA 7(a) y 62,4 millones de solicitudes HMDA, con validación out-of-time que cruza el shock COVID, diez gates que bloquean la promoción de un modelo que no cumpla, model card y reporte de validación generados desde la corrida, monitoreo de deriva y una capa de inferencia causal. En la cartera de prueba, rechazar el 10% más riesgoso habría evitado 276,3 M USD en castigos: 2,15 veces lo que logra un rechazo al azar. Ninguna cifra publicada se escribe a mano: el gate las recomputa desde las predicciones guardadas antes de dejar promover nada.",
-        matterLabel: "Por qué importa",
-        matter: "Es lo que separa un modelo de uno que se puede desplegar: umbrales derivados y escritos, documentación que se regenera sola, controles que fallan cerrado. Es lo que pide un examen de riesgo de modelo en un banco, y lo que hace que un número sobreviva a la única pregunta que importa: de dónde salió. Eso se aprende auditando, y yo estuve del otro lado de esa mesa.",
-        findingLabel: "Hallazgo publicado",
-        finding: "Mi primer AUC fue 0,9461: espectacular, publicable y falso — era una fuga de datos. Lo dejé publicado con nombre y apellido en lugar de esconderlo, porque ese es el resultado. Y de los diez gates del sistema, uno bloquea mi propio modelo con una razón de impacto dispar de 0,7639 contra un umbral de 0,80. No bajé el umbral. Cualquiera lo habría bajado.",
-        stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
-        links: [
-          { label: "Ver el proyecto", href: "/projects/credit-risk", tone: "solid" },
-          { label: "Ver el código", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "outline" },
-          { label: "Leer la bitácora de defectos", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/docs/DEFECTS.es.md", tone: "text" },
-        ] as ProjectLink[],
-      },
-      also: {
-        title: "Y esto es solo lo que cabe en la portada",
-        // Orden: por relevancia para un puesto de Finance Data, no por fecha. La
-        // plataforma y el informe de BI primero; JARVIS al final, porque su valor
-        // para el puesto es la ingeniería de datos sensibles, no el caso de uso.
-        rows: [
-          {
-            name: "market-data-medallion — plataforma de datos",
-            kind: "Plataforma en operación diaria · se refresca sola",
-            status: "live",
-            statusText: "EN OPERACIÓN",
-            note: "Ingesta diaria desde cuatro fuentes de mercado a un warehouse PostgreSQL en capas medallion con dbt, 89 pruebas de calidad automáticas y CI/CD, sobre infraestructura gratuita. De 1.392 variantes de estrategia evaluadas encima, solo una de cada {oneIn} ganadoras dentro de muestra sobrevivió fuera de muestra — publiqué todas las que no.",
-            href: "/projects/trading-sim",
-          },
-          {
-            name: "Medallion Insights — informe Power BI",
-            kind: "Modelo semántico y reporte",
-            status: "live",
-            statusText: "EN EL REPO",
-            note: "Siete tablas en TMDL sobre el warehouse, 17 medidas DAX y cuatro páginas de informe, versionado como texto en el repositorio público. El catálogo completo, con cada expresión, está en su página.",
-            href: "/projects/powerbi",
-          },
-          {
-            name: "Inclusión financiera y crecimiento regional en Colombia",
-            kind: "Investigación reproducible · datos abiertos",
-            status: "research",
-            statusText: "TESIS RADICADA",
-            note: "Diecinueve fuentes públicas en un warehouse dimensional con dbt y DuckDB, resueltas a código municipal. Encima, un índice de inclusión financiera, dos paneles anuales, un atlas de los 1.123 municipios y la batería econométrica completa, con sus resultados publicados.",
-            href: "/research/fintech-inclusion",
-          },
-          {
-            name: "Pronóstico macro en LATAM — laboratorio interactivo",
-            kind: "Laboratorio abierto · juegas contra el pronóstico ingenuo",
-            status: "live",
-            statusText: "LAB ABIERTO",
-            note: "Trece modelos, de un AR(1) a un LSTM, contra el pronóstico ingenuo en 20 economías de América Latina, con cada ganancia sometida a Diebold-Mariano, Holm y Wilcoxon. En la página juegas tú contra el ingenuo, mueves el origen del backtest y ves caer las estrellas al corregir por comparaciones múltiples.",
-            href: "/labs/macro-forecast",
-          },
-          {
-            name: "JARVIS — producto multiusuario con datos sensibles",
-            kind: "Producto propio en producción · Postgres con seguridad por fila",
-            status: "live",
-            statusText: "DEMO ABIERTO",
-            note: "Producto propio en operación: Postgres multiusuario con política de fila en 34 tablas, 526 pruebas y ocho puertas en CI. El demo abierto corre las cinco pantallas reales con los datos de una persona que no existe, no consulta la base ni una vez, y una prueba lo obliga.",
-            href: "/projects/tracking",
-            access: "Repositorio privado · el demo es la superficie pública",
-          },
-        ] as AlsoRow[],
-      },
-      // "Lo que esto demuestra" salió de aquí y de la portada: sus seis entradas
-      // repetían una por una las ocho filas de `toolkit`, con la misma forma
-      // tipográfica y a 300 px de distancia, y ninguna llevaba prueba. La que
-      // sobrevive es la que nombra el artefacto y enlaza a él.
+      // La vitrina. Antes: un caso de 600 palabras más cinco filas de prosa, y
+      // la queja fue «no me gusta, quiero ver un preview de cada proyecto». Cada
+      // tarjeta es ahora un gráfico propio, una cifra, una línea y un clic a su
+      // página. El detalle vive en la página del proyecto, que es donde se lee.
+      title: "Seis piezas de trabajo. Cada una se verifica en un clic.",
+      intro: "Elige una: te lleva directo a la evidencia.",
+      cta: "Ver el proyecto",
+      cards: [
+        {
+          viz: "credit",
+          name: "Riesgo de crédito que se audita solo",
+          kind: "credit-risk-mlops · ML con gobierno de modelos",
+          status: "live",
+          statusText: "DESPLEGADO",
+          stat: "276,3 M USD",
+          statLabel: "en castigos evitables sobre la cartera de prueba",
+          hook: "Diez gates que bloquean cualquier modelo que no cumpla, incluido el mío: impacto dispar de 0,7639 contra un umbral de 0,80.",
+          href: "/projects/credit-risk",
+          vizLabels: ["Rechazo al azar", "Mi modelo", "más pérdida evitada que rechazando al azar", "2,15×"],
+        },
+        {
+          viz: "funnel",
+          name: "Plataforma de datos de mercado",
+          kind: "market-data-medallion · PostgreSQL + dbt",
+          status: "live",
+          statusText: "EN OPERACIÓN",
+          stat: "{survivors}",
+          statLabel: "de 1.392 estrategias sobrevivieron a la ventana ciega",
+          hook: "48 activos cada día y 89 pruebas de calidad antes de publicar un dato.",
+          href: "/projects/trading-sim",
+          vizLabels: ["evaluadas", "ganaron en muestra", "sobrevivieron"],
+        },
+        {
+          viz: "star",
+          name: "Informe Power BI",
+          kind: "Medallion Insights · TMDL + DAX",
+          status: "live",
+          statusText: "EN EL REPO",
+          stat: "17",
+          statLabel: "medidas DAX, versionadas como código",
+          hook: "Un modelo estrella que se revisa línea por línea en una pull request.",
+          href: "/projects/powerbi",
+          vizLabels: ["dim_assets", "hechos", "agregados"],
+        },
+        {
+          viz: "forecast",
+          name: "Pronóstico macro de LATAM",
+          kind: "Laboratorio interactivo · 13 modelos",
+          status: "live",
+          statusText: "LAB ABIERTO",
+          stat: "20",
+          statLabel: "economías pronosticadas a 2027, con su acierto medido",
+          hook: "Trece modelos contra el pronóstico ingenuo. Y tú también puedes jugarle.",
+          href: "/labs/macro-forecast",
+          vizLabels: ["error frente al ingenuo", "ingenuo = 1"],
+        },
+        {
+          viz: "dots",
+          name: "Inclusión financiera en Colombia",
+          kind: "Tesis de maestría · datos abiertos",
+          status: "research",
+          statusText: "TESIS RADICADA",
+          stat: "17 → 1",
+          statLabel: "departamentos bajo la línea base, de 2018 a 2025",
+          hook: "19 fuentes públicas, 1.123 municipios y el resultado publicado tal como salió.",
+          href: "/research/fintech-inclusion",
+          vizLabels: ["2018", "2025", "bajo la línea base"],
+        },
+        {
+          viz: "screen",
+          name: "JARVIS, producto multiusuario",
+          kind: "Next.js + Postgres con seguridad por fila",
+          status: "live",
+          statusText: "DEMO ABIERTO",
+          stat: "526",
+          statLabel: "pruebas automáticas en ocho puertas de CI",
+          hook: "Datos de salud y de dinero, abiertos en un demo público sin exponer una sola fila.",
+          href: "/projects/tracking",
+          vizLabels: [],
+        },
+      ] as ShowcaseCard[],
     },
   },
   en: {
@@ -237,77 +245,85 @@ export const home = {
       portraitPending: "DNR",
     },
     work: {
-      title: "I built a credit system that audits itself. And blocks its own author.",
-      intro: "What a model risk examination demands of a bank, built and standing. Told the way a case is presented: the problem first.",
-      project: {
-        name: "credit-risk-mlops",
-        kind: "Decision system with model governance",
-        problemLabel: "The problem",
-        problem: "A credit model nobody can audit never gets deployed, however spectacular its AUC. The validator doesn't ask what the number is: they ask who can change it without anyone noticing, what happens when the regime shifts, and how you know the model still sees the population it was trained for. Most data portfolios don't survive the first of those three questions.",
-        builtLabel: "What I built",
-        built: "A credit decisioning system over 1.96M SBA 7(a) loans and 62.4M HMDA applications, with out-of-time validation across the COVID shock, ten gates that block promotion of a model that does not comply, a model card and validation report generated from the run, drift monitoring, and a causal inference layer. On the test portfolio, declining the riskiest 10% would have avoided $276.3M in charge-offs: 2.15x what random declines achieve. No published figure is written by hand: the gate recomputes them from the saved predictions before letting anything be promoted.",
-        matterLabel: "Why it matters",
-        matter: "This is what separates a model from a deployable one: thresholds derived and written down, documentation that regenerates itself, controls that fail closed. It is what a model risk examination at a bank asks for, and what makes a number survive the only question that matters: where it came from. You learn that auditing, and I sat on the other side of that table.",
-        findingLabel: "Published finding",
-        finding: "My first AUC was 0.9461: spectacular, publishable and false — it was a data leak. I left it published by name instead of burying it, because that is the result. And of the system's ten gates, one blocks my own model at a disparate impact ratio of 0.7639 against a 0.80 threshold. I didn't move the threshold. Anyone would have moved it.",
-        stack: ["Python", "LightGBM", "PyTorch", "DuckDB", "PySpark", "MLflow", "ONNX", "Power BI"],
-        links: [
-          { label: "See the project", href: "/projects/credit-risk", tone: "solid" },
-          { label: "See the code", href: "https://github.com/DavinsonR/credit-risk-mlops", tone: "outline" },
-          { label: "Read the defect log", href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/docs/DEFECTS.md", tone: "text" },
-        ] as ProjectLink[],
-      },
-      also: {
-        title: "And this is only what fits on the home page",
-        // Order: by relevance to a Finance Data role, not by date. See the note above.
-        rows: [
-          {
-            name: "market-data-medallion — data platform",
-            kind: "Platform in daily operation · refreshes itself",
-            status: "live",
-            statusText: "IN OPERATION",
-            note: "Daily ingestion from four market sources into a PostgreSQL warehouse in medallion layers with dbt, 89 automated quality tests and CI/CD, on free infrastructure. Of 1,392 strategy variants evaluated on top of it, only one in {oneIn} in-sample winners survived out of sample — I published every one that did not.",
-            href: "/projects/trading-sim",
-          },
-          {
-            name: "Medallion Insights — Power BI report",
-            kind: "Semantic model and report",
-            status: "live",
-            statusText: "IN THE REPO",
-            note: "Seven tables in TMDL over the warehouse, 17 DAX measures and four report pages, versioned as text in the public repository. The full catalogue, expression by expression, is on its page.",
-            href: "/projects/powerbi",
-          },
-          {
-            name: "Financial inclusion and regional growth in Colombia",
-            kind: "Reproducible research · open data",
-            status: "research",
-            statusText: "THESIS FILED",
-            note: "Nineteen public sources in a dimensional warehouse on dbt and DuckDB, resolved to municipal codes. On top, a financial-inclusion index, two annual panels, an atlas of all 1,123 municipalities and the full econometric battery, with its results published.",
-            href: "/research/fintech-inclusion",
-          },
-          {
-            name: "Macro forecasting across LATAM — interactive lab",
-            kind: "Open lab · you play against the naive forecast",
-            status: "live",
-            statusText: "OPEN LAB",
-            note: "Thirteen models, from an AR(1) to an LSTM, against the naive forecast in 20 Latin American economies, with every gain put to Diebold-Mariano, Holm and Wilcoxon. On the page you play against naive yourself, move the backtest origin and watch the stars fall once multiple comparisons are corrected.",
-            href: "/labs/macro-forecast",
-          },
-          {
-            name: "JARVIS — multi-user product with sensitive data",
-            kind: "Own product in production · Postgres with row-level security",
-            status: "live",
-            statusText: "OPEN DEMO",
-            note: "Own product in operation: multi-user Postgres with a row policy on 34 tables, 526 tests and eight CI gates. The open demo runs the five real screens on data from someone who does not exist, never queries the database, and a test enforces that.",
-            href: "/projects/tracking",
-            access: "Private repository · the demo is the public surface",
-          },
-        ] as AlsoRow[],
-      },
-      // "What this demonstrates" left this file and the home page: its six entries
-      // repeated the eight `toolkit` rows one for one, in the same typographic
-      // form and 300px apart, and none of them carried proof. The list that
-      // survives is the one that names the artifact and links to it.
+      // The showcase: one visual, one figure, one line and one click per project.
+      // See the Spanish note above.
+      title: "Six pieces of work. Each one checkable in one click.",
+      intro: "Pick one: it takes you straight to the evidence.",
+      cta: "See the project",
+      cards: [
+        {
+          viz: "credit",
+          name: "Credit risk that audits itself",
+          kind: "credit-risk-mlops · ML with model governance",
+          status: "live",
+          statusText: "DEPLOYED",
+          stat: "$276.3M",
+          statLabel: "in avoidable charge-offs on the test portfolio",
+          hook: "Ten gates that block any model that fails, mine included: disparate impact of 0.7639 against a 0.80 threshold.",
+          href: "/projects/credit-risk",
+          vizLabels: ["Random declines", "My model", "more loss avoided than declining at random", "2.15×"],
+        },
+        {
+          viz: "funnel",
+          name: "Market data platform",
+          kind: "market-data-medallion · PostgreSQL + dbt",
+          status: "live",
+          statusText: "IN OPERATION",
+          stat: "{survivors}",
+          statLabel: "of 1,392 strategies survived the blind window",
+          hook: "48 assets every day, and 89 quality tests before a single figure ships.",
+          href: "/projects/trading-sim",
+          vizLabels: ["evaluated", "won in-sample", "survived"],
+        },
+        {
+          viz: "star",
+          name: "Power BI report",
+          kind: "Medallion Insights · TMDL + DAX",
+          status: "live",
+          statusText: "IN THE REPO",
+          stat: "17",
+          statLabel: "DAX measures, versioned as code",
+          hook: "A star schema you review line by line in a pull request.",
+          href: "/projects/powerbi",
+          vizLabels: ["dim_assets", "facts", "aggregates"],
+        },
+        {
+          viz: "forecast",
+          name: "LATAM macro forecasting",
+          kind: "Interactive lab · 13 models",
+          status: "live",
+          statusText: "OPEN LAB",
+          stat: "20",
+          statLabel: "economies forecast to 2027, with their accuracy measured",
+          hook: "Thirteen models against the naive forecast. And you can play against it too.",
+          href: "/labs/macro-forecast",
+          vizLabels: ["error vs. naive", "naive = 1"],
+        },
+        {
+          viz: "dots",
+          name: "Financial inclusion in Colombia",
+          kind: "M.Sc. thesis · open data",
+          status: "research",
+          statusText: "THESIS FILED",
+          stat: "17 → 1",
+          statLabel: "departments below the baseline, from 2018 to 2025",
+          hook: "19 public sources, 1,123 municipalities and the result published as it came out.",
+          href: "/research/fintech-inclusion",
+          vizLabels: ["2018", "2025", "below the baseline"],
+        },
+        {
+          viz: "screen",
+          name: "JARVIS, a multi-user product",
+          kind: "Next.js + Postgres with row-level security",
+          status: "live",
+          statusText: "OPEN DEMO",
+          stat: "526",
+          statLabel: "automated tests across eight CI gates",
+          hook: "Health and money data, open in a public demo without exposing a single row.",
+          href: "/projects/tracking",
+          vizLabels: [],
+        },
+      ] as ShowcaseCard[],
     },
   },
 };
