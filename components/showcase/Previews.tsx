@@ -1,180 +1,190 @@
 // ============================================================
-// Las vistas previas de la vitrina de la portada. Una por proyecto, dibujada
-// en el servidor como SVG: cero JavaScript, cero peticiones, y el mismo token
-// de color que el resto de la hoja, así que el tema oscuro sale gratis.
+// Las vistas previas de la vitrina de la portada: el MEJOR gráfico de cada
+// proyecto, no un dibujo nuevo. Todo se pinta en el servidor (SVG o imagen):
+// cero JavaScript propio y cero peticiones de datos.
 //
-// Ninguna cifra de aquí se inventa: cada gráfico dibuja un dato que ya está
-// publicado en la página del proyecto (el embudo sale de la instantánea del
-// laboratorio; el pronóstico, del resumen que publica el propio laboratorio).
+//   series   la curva real de SPY: cinco estrategias contra comprar y mantener,
+//            con la ventana ciega marcada (npm run snapshot la guarda)
+//   event    el estudio de evento de credit-risk-mlops, el mismo componente de
+//            su página
+//   atlas    los dos mapas del índice, 2018 y 2025 (npm run atlas)
+//   shot     el tablero del laboratorio de pronóstico, capturado en los dos
+//            temas y los dos idiomas (scripts/capture-showcase.mjs)
+//   star     la estrella del modelo semántico de Power BI
+//   screen   dos pantallas reales del demo de JARVIS
+//
+// Ninguna cifra se inventa: cada gráfico dibuja un dato ya publicado en la
+// página de su proyecto.
 // ============================================================
 import type { ShowcaseCard } from "@/lib/content/types";
-import type { LabStats } from "@/lib/data/lab-stats";
-import resumen from "@/public/forecast-lab/resumen.json";
-import LabText from "@/components/trading/LabText";
+import { EventStudy } from "@/components/credit-risk/Charts";
+import { eventPoints, umbralPP } from "@/lib/data/credit-risk";
+import { ATLAS_FIGURE } from "@/lib/generated/atlas-figure";
+import serie from "@/public/trading-sim-snapshot/showcase-series.json";
 
-const VB = "0 0 320 180";
-const svgClass = "block h-full w-full";
-const label = "fill-muted text-[12px] font-semibold tracking-[0.06em]";
-
-/* credit-risk: la pérdida evitada por el modelo contra el rechazo al azar.
-   La razón 2,15 es la del repositorio (exports/web/resumen.json). */
-function Credit({ l }: { l: string[] }) {
-  const RATIO = 2.15;
-  const full = 272;
+/* ---------------------------------------------------------------- series */
+function Series({ l, lang }: { l: string[]; lang: string }) {
+  const W = 640, H = 300, P = { t: 18, r: 16, b: 30, l: 16 };
+  const all = [...serie.buyHold, ...serie.strategies.flatMap((s) => s.equity)];
+  const lo = Math.min(...all) * 0.97, hi = Math.max(...all) * 1.02;
+  const n = serie.dates.length;
+  const x = (i: number) => P.l + ((W - P.l - P.r) * i) / (n - 1);
+  const y = (v: number) => P.t + (H - P.t - P.b) * (1 - (v - lo) / (hi - lo));
+  const d = (vals: number[]) => vals.map((v, i) => `${i ? "L" : "M"}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join("");
+  const split = serie.split_ts ? serie.dates.findIndex((t) => t >= serie.split_ts!.slice(0, 10)) : -1;
+  const years = serie.dates
+    .map((t, i) => [t.slice(0, 4), i] as const)
+    .filter(([yr], i, a) => i === 0 || a[i - 1][0] !== yr);
+  const fmtK = (v: number) => new Intl.NumberFormat(lang === "es" ? "es-CO" : "en-US", { maximumFractionDigits: 0 }).format(v);
+  const lastBh = serie.buyHold[n - 1];
   return (
-    <svg viewBox={VB} className={svgClass} role="presentation" aria-hidden="true">
-      <text x="24" y="50" className="fill-cold font-figure text-[46px] font-semibold">{l[3]}</text>
-      <text x="24" y="72" className="fill-ink text-[12.5px] font-semibold">{l[2]}</text>
-      <text x="24" y="100" className={label}>{l[0]}</text>
-      <rect x="24" y="106" width={full / RATIO} height="20" rx="2" className="fill-control/60" />
-      <text x="24" y="146" className={label}>{l[1]}</text>
-      <rect x="24" y="152" width={full} height="20" rx="2" className="fill-cold" />
+    <svg viewBox={`0 0 ${W} ${H}`} className="block h-auto w-full overflow-visible" aria-hidden="true">
+      {split > 0 && (
+        <>
+          <rect x={x(split)} y={P.t} width={W - P.r - x(split)} height={H - P.t - P.b} className="fill-cold/10" />
+          <text x={x(split) + 8} y={H - P.b - 10} className="fill-cold text-[13px] font-semibold">{l[2]}</text>
+        </>
+      )}
+      {years.map(([yr, i]) => (
+        <text key={yr} x={x(i)} y={H - 8} className="fill-muted text-[12.5px]">{yr}</text>
+      ))}
+      {serie.strategies.map((s, k) => (
+        <path
+          key={s.strategy}
+          d={d(s.equity)}
+          pathLength={1}
+          className="draw-in fill-none stroke-cold"
+          strokeOpacity={0.35 + k * 0.1}
+          strokeWidth={1.5}
+          style={{ "--d": `${250 + k * 140}ms` } as React.CSSProperties}
+        />
+      ))}
+      <path d={d(serie.buyHold)} pathLength={1} className="draw-in fill-none stroke-ink" strokeWidth={2.6} />
+      <circle cx={x(n - 1)} cy={y(lastBh)} r={4.5} className="fill-ink" />
+      <text x={x(n - 1) - 8} y={y(lastBh) - 12} textAnchor="end" className="fill-ink text-[13px] font-bold">
+        {l[0]} · {fmtK(lastBh)}
+      </text>
+      <text x={P.l + 4} y={P.t + 16} className="fill-muted text-[13px] font-semibold">{l[1]}</text>
     </svg>
   );
 }
 
-/* market-data-medallion: el embudo de la honestidad, con las cifras de la
-   instantánea que el build lee (lib/data/lab-snapshot.ts). */
-function Funnel({ l, lab, lang }: { l: string[]; lab: LabStats; lang: string }) {
-  // Los números van por LabText, igual que la cifra grande de la tarjeta: si el
-  // navegador trae el índice vivo, los dos se actualizan juntos y no se
-  // contradicen (el ancho de las barras se queda con la instantánea del build).
-  const rows = [
-    { v: lab.variants, k: "{variants}", t: l[0], c: "fill-control/50" },
-    { v: lab.beatIs, k: "{beatIs}", t: l[1], c: "fill-cold/55" },
-    { v: lab.survivors, k: "{survivors}", t: l[2], c: "fill-cold" },
-  ];
-  const W = 272;
-  return (
-    <svg viewBox={VB} className={svgClass} role="presentation" aria-hidden="true">
-      {rows.map((r, i) => {
-        // Raíz cuadrada: a escala lineal los 51 serían una raya invisible.
-        // El rótulo va encima de la barra y no dentro: sobre el azul lleno no se lee.
-        const w = Math.max(18, W * Math.sqrt(r.v / lab.variants));
-        const y = 30 + i * 54;
-        return (
-          <g key={r.t}>
-            <text x="160" y={y} textAnchor="middle" className="fill-ink text-[13px] font-bold">
-              <LabText template={r.k} initial={lab} lang={lang} /> <tspan className="fill-muted font-medium">{r.t}</tspan>
-            </text>
-            <rect x={(320 - w) / 2} y={y + 7} width={w} height="20" rx="2" className={r.c} />
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
-/* Power BI: la estrella del modelo semántico — una dimensión, cuatro hechos
-   relacionados y dos agregados sueltos (así lo dibuja la página del informe). */
+/* ---------------------------------------------------------------- star */
 function Star({ l }: { l: string[] }) {
-  const facts = [
-    [70, 38], [250, 38], [70, 142], [250, 142],
-  ];
+  // Las cuatro tablas de hechos del modelo (lib/data/powerbi-model.ts).
+  const facts = [[110, 58, "combination_analysis"], [530, 58, "asset_summary"], [110, 242, "fx_decomposition"], [530, 242, "equity_curves"]] as const;
   return (
-    <svg viewBox={VB} className={svgClass} role="presentation" aria-hidden="true">
-      {facts.map(([x, y]) => (
-        <line key={`${x}${y}`} x1="160" y1="90" x2={x} y2={y} className="stroke-cold/60" strokeWidth="1.5" />
+    <svg viewBox="0 0 640 300" className="block h-auto w-full" aria-hidden="true">
+      {facts.map(([x, y], i) => (
+        <line
+          key={`l${i}`}
+          x1="320" y1="150" x2={x} y2={y}
+          pathLength={1}
+          className="draw-in stroke-cold/60"
+          strokeWidth="2"
+          style={{ "--d": `${i * 120}ms` } as React.CSSProperties}
+        />
       ))}
-      {facts.map(([x, y]) => (
-        <rect key={`r${x}${y}`} x={x - 34} y={y - 13} width="68" height="26" rx="2" className="fill-coldsoft stroke-cold" strokeWidth="1.2" />
+      {facts.map(([x, y, name], i) => (
+        <g key={`r${i}`}>
+          <rect x={x - 80} y={y - 22} width="160" height="44" rx="6" className="fill-paper stroke-cold" strokeWidth="1.5" />
+          <text x={x} y={y + 5} textAnchor="middle" className="fill-ink text-[12.5px] font-semibold">{name}</text>
+        </g>
       ))}
-      <rect x="112" y="74" width="96" height="32" rx="2" className="fill-cold" />
-      <text x="160" y="95" textAnchor="middle" className="fill-paper text-[12px] font-bold">{l[0]}</text>
-      <text x="70" y="16" textAnchor="middle" className={label}>{l[1]}</text>
-      <rect x="224" y="78" width="30" height="24" rx="2" className="fill-none stroke-control" strokeDasharray="3 3" />
-      <rect x="262" y="78" width="30" height="24" rx="2" className="fill-none stroke-control" strokeDasharray="3 3" />
-      <text x="258" y="118" textAnchor="middle" className={label}>{l[2]}</text>
+      <rect x="236" y="124" width="168" height="52" rx="8" className="fill-cold" />
+      <text x="320" y="156" textAnchor="middle" className="fill-paper text-[17px] font-bold">{l[0]}</text>
+      <text x="110" y="20" textAnchor="middle" className="fill-muted text-[13px] font-semibold tracking-[0.06em]">{l[1]}</text>
+      <rect x="440" y="132" width="44" height="36" rx="5" className="fill-none stroke-control" strokeDasharray="4 4" />
+      <rect x="498" y="132" width="44" height="36" rx="5" className="fill-none stroke-control" strokeDasharray="4 4" />
+      <text x="491" y="192" textAnchor="middle" className="fill-muted text-[13px] font-semibold tracking-[0.06em]">{l[2]}</text>
     </svg>
   );
 }
 
-/* Pronóstico: el error de cada modelo sobre el del ingenuo (mediana, años de
-   calma). Por debajo de 1 le gana. Datos: public/forecast-lab/resumen.json. */
-type Fila = { modelo: string; id: string | null; calma: { mediana: number } };
-// Nombre corto para que quepa a la izquierda de la barra; el completo está en el laboratorio.
-const CORTO: Record<string, string> = { ar1: "AR(1)", arima: "ARIMA", lstm: "LSTM", rf: "Random Forest", comb: "Combinado" };
-const IDS = Object.keys(CORTO);
-const filas = ((resumen as unknown as { agregado: { anual: Fila[] } }).agregado.anual)
-  .filter((f) => f.id && IDS.includes(f.id))
-  .sort((a, b) => a.calma.mediana - b.calma.mediana);
-
-function Forecast({ l, lang }: { l: string[]; lang: string }) {
-  const n = new Intl.NumberFormat(lang === "es" ? "es-CO" : "en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  const x0 = 110;
-  const scale = 170; // 1,0 = 170 px
-  const one = x0 + scale;
+/* ---------------------------------------------------------------- atlas */
+function Atlas({ l }: { l: string[] }) {
+  // El SVG generado trae role="img" y un <title>: aquí es decorativo (la
+  // tarjeta ya se nombra con su texto), así que se le quitan los dos.
+  const svg = ATLAS_FIGURE.svg
+    .replace(/<title[^>]*>TITLE_SLOT<\/title>/, "")
+    .replace('role="img" aria-labelledby="atlas-figure-title"', 'aria-hidden="true"');
   return (
-    <svg viewBox={VB} className={svgClass} role="presentation" aria-hidden="true">
-      {filas.map((f, i) => {
-        const y = 14 + i * 28;
-        const win = f.calma.mediana < 1;
-        return (
-          <g key={f.modelo}>
-            <text x={x0 - 8} y={y + 15} textAnchor="end" className="fill-ink text-[12px] font-semibold">{CORTO[f.id!]}</text>
-            <rect x={x0} y={y + 3} width={scale * f.calma.mediana} height="16" rx="2" className={win ? "fill-cold" : "fill-control/60"} />
-            <text x={x0 + scale * f.calma.mediana + 4} y={y + 15} className="fill-muted text-[11px]">{n.format(f.calma.mediana)}</text>
-          </g>
-        );
-      })}
-      <line x1={one} y1="8" x2={one} y2="156" className="stroke-warm" strokeWidth="1.5" strokeDasharray="4 3" />
-      <text x={one} y="172" textAnchor="middle" className="fill-warm text-[12px] font-semibold">{l[1]}</text>
-    </svg>
+    <div>
+      {/* Contenido propio, generado en build desde los JSON del repo. */}
+      <div dangerouslySetInnerHTML={{ __html: svg }} />
+      <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
+        <span aria-hidden="true" className="flex overflow-hidden rounded-[3px]">
+          {ATLAS_FIGURE.ramp.map((token) => (
+            <span key={token} className="h-2.5 w-5" style={{ background: `var(${token})` }} />
+          ))}
+        </span>
+        <span className="text-[13px] text-muted">{l[0]} · {l[1]} · {l[2]}</span>
+      </div>
+    </div>
   );
 }
 
-/* Tesis: 32 departamentos, en rojo los que quedan bajo la línea base de 2018.
-   17 de 32 en 2018 y 1 de 32 en 2025 (la tabla de deriva de /historia). */
-function Dots({ l }: { l: string[] }) {
-  const grid = (ox: number, below: number) =>
-    Array.from({ length: 32 }, (_, i) => (
-      <circle
-        key={i}
-        cx={ox + (i % 8) * 16}
-        cy={52 + Math.floor(i / 8) * 16}
-        r="5.5"
-        className={i < below ? "fill-neg" : "fill-cold"}
-      />
-    ));
+/* ---------------------------------------------------------------- shot */
+function Shot({ lang }: { lang: string }) {
+  const f = lang === "es" ? "es" : "en";
+  // Viajan las dos capturas y una se oculta por tema (.only-light/.only-dark en
+  // globals.css, con los mismos selectores que los tokens del tema).
   return (
-    <svg viewBox={VB} className={svgClass} role="presentation" aria-hidden="true">
-      <text x="24" y="32" className="fill-ink text-[14px] font-bold">{l[0]}</text>
-      <text x="184" y="32" className="fill-ink text-[14px] font-bold">{l[1]}</text>
-      {grid(30, 17)}
-      {grid(190, 1)}
-      <circle cx="30" cy="163" r="5.5" className="fill-neg" />
-      <text x="42" y="167" className={label}>{l[2]}</text>
-    </svg>
+    <>
+      {(["light", "dark"] as const).map((t) => (
+        <img
+          key={t}
+          src={`/showcase/forecast-${f}-${t}.webp`}
+          width={1400}
+          height={512}
+          loading="lazy"
+          decoding="async"
+          alt=""
+          className={`only-${t} h-auto w-full rounded-[8px] border border-rule`}
+        />
+      ))}
+    </>
   );
 }
 
-export default function Preview({ card, lab, lang }: { card: ShowcaseCard; lab: LabStats; lang: string }) {
+/* ---------------------------------------------------------------- screen */
+function Screens() {
+  return (
+    <div className="flex justify-center gap-4">
+      {["hoy", "finanzas"].map((f, i) => (
+        <img
+          key={f}
+          src={`/tracking/${f}.webp`}
+          width={393}
+          height={800}
+          loading="lazy"
+          decoding="async"
+          alt=""
+          className={`block h-[320px] w-auto rounded-[14px] border border-rule object-cover object-top sm:h-[360px] ${i ? "mt-8" : ""}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default function Preview({ card, lang }: { card: ShowcaseCard; lang: string }) {
   const l = card.vizLabels;
   switch (card.viz) {
-    case "credit": return <Credit l={l} />;
-    case "funnel": return <Funnel l={l} lab={lab} lang={lang} />;
-    case "star": return <Star l={l} />;
-    case "forecast": return <Forecast l={l} lang={lang} />;
-    case "dots": return <Dots l={l} />;
-    case "screen":
-      // Dos pantallas reales del demo. <img> y no next/image: el sitio es
-      // estático y las capturas ya son WebP a su tamaño (mismo criterio que la
-      // página de JARVIS).
+    case "series": return <Series l={l} lang={lang} />;
+    case "event":
       return (
-        <div className="flex h-full justify-center gap-3">
-          {["hoy", "finanzas"].map((f) => (
-            <img
-              key={f}
-              src={`/tracking/${f}.webp`}
-              width={393}
-              height={800}
-              loading="lazy"
-              decoding="async"
-              alt=""
-              className="block h-full w-auto rounded-t-[6px] border border-b-0 border-rule object-cover object-top"
-            />
-          ))}
+        <div aria-hidden="true" className="[&_figcaption]:hidden [&_figure]:my-0">
+          <EventStudy
+            points={eventPoints}
+            threshold={umbralPP}
+            lang={lang}
+            labels={{ y: l[0], band: l[1], pre: l[2], post: l[3], caption: "" }}
+          />
         </div>
       );
+    case "atlas": return <Atlas l={l} />;
+    case "shot": return <Shot lang={lang} />;
+    case "star": return <Star l={l} />;
+    case "screen": return <Screens />;
   }
 }

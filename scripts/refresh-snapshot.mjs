@@ -43,3 +43,31 @@ const kb = (n) => (n / 1024).toFixed(0);
 console.log(`✓ public/trading-sim-snapshot/index.json  ${kb(fs.statSync(OUT).size)} KB`);
 console.log(`  generado por el pipeline: ${data.generated_at}`);
 console.log(`  ${data.assets.length} activos · ${data.leaderboard.length} filas de leaderboard`);
+
+// ---- La serie de la vitrina de la portada ------------------------------------
+// La tarjeta del laboratorio dibuja una serie de tiempo real: SPY, las cinco
+// estrategias contra comprar y mantener, con el corte de validación. Se guarda
+// solo ese activo, a un punto de cada dos (~200 por curva): lo importa un
+// componente de SERVIDOR y viaja como SVG ya pintado, nunca como JSON.
+const SHOWCASE_SYMBOL = "SPY";
+const SHOWCASE_OUT = path.join(process.cwd(), "public", "trading-sim-snapshot", "showcase-series.json");
+const r2 = await fetch(`https://raw.githubusercontent.com/DavinsonR/market-data-medallion/main/exports/backtests/${SHOWCASE_SYMBOL}.json`);
+if (!r2.ok) throw new Error(`No se pudo leer ${SHOWCASE_SYMBOL}: HTTP ${r2.status}`);
+const sym = await r2.json();
+const base = sym.backtests?.[0]?.equity_curve;
+if (!base?.length) throw new Error(`${SHOWCASE_SYMBOL} llegó sin curvas; no se sobrescribe la serie de la vitrina.`);
+const every2 = (a) => a.filter((_, i) => i % 2 === 0 || i === a.length - 1);
+const serie = {
+  symbol: sym.symbol,
+  generated_at: sym.generated_at,
+  split_ts: sym.split_ts ?? null,
+  dates: every2(base).map((p) => p[0]),
+  buyHold: every2(base).map((p) => Math.round(p[2])),
+  strategies: sym.backtests.map((b) => ({
+    strategy: b.strategy,
+    excess: b.metrics.excess_return,
+    equity: every2(b.equity_curve).map((p) => Math.round(p[1])),
+  })),
+};
+fs.writeFileSync(SHOWCASE_OUT, JSON.stringify(serie), "utf8");
+console.log(`✓ public/trading-sim-snapshot/showcase-series.json  ${kb(fs.statSync(SHOWCASE_OUT).size)} KB · ${serie.dates.length} puntos`);

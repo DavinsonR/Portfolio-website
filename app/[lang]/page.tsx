@@ -6,7 +6,6 @@ import LabText from "@/components/trading/LabText";
 import { labSnapshot } from "@/lib/data/lab-snapshot";
 import StatusPill from "@/components/StatusPill";
 import CopyEmail from "@/components/CopyEmail";
-import AtlasFigure from "@/components/AtlasFigure";
 import ConstellationField from "@/components/ConstellationField";
 import Preview from "@/components/showcase/Previews";
 import { mailtoHref } from "@/lib/config/contact";
@@ -245,24 +244,14 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </header>
 
-      {/* ===================== ATLAS FIGURE =====================
-          The second figure on the sheet, and the only picture on a site that
-          asserted visual work twenty times and shipped zero images. It earns the
-          position because it is an argument, not a decoration: two maps on one
-          scale showing every department rising off the 2018 baseline, which is
-          precisely why the coefficient dies once the year is taken out. The
-          interactive atlas it links to sat 2,820px into a page 7,489px long —
-          4,608 of 12,349 on a phone — behind two clicks. */}
-      <AtlasFigure copy={sheet.atlasFigure} lang={lang} />
-
       {/* ===================== WORK ===================== */}
-      {/* La vitrina. Era un caso de 600 palabras y cinco filas de prosa, y la
-          respuesta fue «quiero ver un preview de cada proyecto, sin tanto texto».
-          Cada pieza es una tarjeta entera clicable: un gráfico propio dibujado
-          en el servidor, una cifra, una línea y la salida a su página. El
-          destacado (crédito) ocupa dos columnas y JARVIS, con su captura de
-          teléfono, cierra a lo ancho. Sin sombra: la tarjeta se separa con una
-          regla de 1 px y el hover solo cambia el color de esa regla. */}
+      {/* La vitrina, en una sola columna: cada proyecto con su MEJOR gráfico
+          (la serie de tiempo del laboratorio, el estudio de evento del sistema
+          de crédito, el atlas de la tesis, el tablero de LATAM…), una cifra,
+          una línea y la salida a su página. Pedido del dueño (sept 2026). El
+          gráfico alterna de lado en escritorio para que la lectura zigzaguee;
+          en el teléfono va siempre arriba. La figura del atlas, que antes era
+          una sección propia encima de esta, vive ahora en su tarjeta. */}
       <section id="work" className="scroll-mt-[72px] border-b border-rule bg-band py-16">
         <div className={WRAP}>
           <h2
@@ -275,52 +264,38 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             {work.intro}
           </p>
 
-          <ul className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-10 space-y-8">
             {work.cards.map((c, i) => {
-              const featured = i === 0;
-              const last = i === work.cards.length - 1;
-              const span = featured ? "md:col-span-2" : last ? "md:col-span-2 lg:col-span-3" : "";
-              const row = featured || last;
+              const flip = i % 2 === 1;
               return (
-                <li
-                  key={c.href}
-                  data-reveal
-                  className={`reveal ${span}`}
-                  style={{ "--d": `${i * 70}ms` } as React.CSSProperties}
-                >
+                <li key={c.href} data-reveal className="reveal">
                   <Link
                     href={`/${lang}${c.href}`}
-                    className={`group flex h-full flex-col border border-rule bg-paper transition-colors hover:border-cold ${row ? "sm:flex-row" : ""}`}
+                    className={`showcase-card group grid overflow-hidden rounded-[14px] border border-rule bg-paper hover:border-cold ${flip ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)]" : "lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]"}`}
                   >
-                    <div
-                      aria-hidden="true"
-                      className={`relative shrink-0 overflow-hidden border-rule bg-coldsoft ${
-                        row
-                          ? `border-b sm:border-r sm:border-b-0 ${c.viz === "screen" ? "h-[300px] sm:h-auto sm:min-h-[300px] sm:w-[46%]" : "aspect-[16/9] sm:aspect-auto sm:min-h-[240px] sm:w-[52%]"}`
-                          : "aspect-[16/9] border-b"
-                      }`}
-                    >
-                      <div className={`absolute inset-0 transition-transform duration-300 group-hover:scale-[1.03] ${c.viz === "screen" ? "px-3 pt-5" : "p-3"}`}>
-                        <Preview card={c} lab={labSnapshot} lang={lang} />
+                    <div className={`flex flex-col justify-center gap-3 border-b border-rule bg-coldsoft p-5 sm:p-7 lg:border-b-0 ${flip ? "lg:order-2 lg:border-l" : "lg:border-r"}`}>
+                      <div className="showcase-media">
+                        <Preview card={c} lang={lang} />
                       </div>
+                      <p className="text-[14px] leading-[1.55] text-muted">{c.caption}</p>
                     </div>
 
-                    <div className="flex flex-1 flex-col p-5 sm:p-6">
+                    <div className="flex flex-col p-6 sm:p-8">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <span className="text-[12.5px] tracking-[0.07em] text-muted uppercase">{c.kind}</span>
                         <StatusPill status={c.status} text={c.statusText} />
                       </div>
-                      <h3 className="mt-3 font-display text-[20px] leading-[1.2] font-bold tracking-[-0.015em] text-ink">
+                      <h3 className="mt-4 font-display text-[clamp(21px,2.3vw,26px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
                         {c.name}
                       </h3>
-                      <p className={`mt-4 font-figure leading-none text-cold ${featured ? "text-[clamp(38px,4.6vw,52px)]" : "text-[40px]"}`}>
+                      <p className="mt-5 font-figure text-[clamp(40px,4.8vw,54px)] leading-none text-cold">
                         <LabText template={c.stat} initial={labSnapshot} lang={lang} />
                       </p>
-                      <p className="mt-1.5 text-[14px] leading-[1.4] font-medium text-ink">{c.statLabel}</p>
-                      <p className="mt-3 text-[14.5px] leading-[1.6] text-body">{c.hook}</p>
-                      <span className="mt-auto inline-flex items-center gap-1.5 pt-5 text-[14.5px] font-semibold text-cold">
+                      <p className="mt-2 text-[14.5px] leading-[1.4] font-medium text-ink">{c.statLabel}</p>
+                      <p className="mt-4 text-[15px] leading-[1.6] text-body">{c.hook}</p>
+                      <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-[15px] font-semibold text-cold">
                         {work.cta}
-                        <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
+                        <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
                       </span>
                     </div>
                   </Link>
