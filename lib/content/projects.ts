@@ -656,17 +656,17 @@ export const projects = {
       },
     },
     tracking: {
-      metaTitle: "JARVIS: Postgres multiusuario",
+      metaTitle: "Kairo: Postgres multiusuario",
       metaDesc:
-        "Registro diario de hábitos, cuerpo, sueño, comida y gastos sobre Postgres con seguridad por fila: demo público, 526 pruebas y ocho puertas en CI.",
+        "Registro diario de hábitos, cuerpo, sueño, comida y gastos sobre Postgres con seguridad por fila: demo público, 2.741 pruebas y ocho puertas en CI.",
       kicker: "Producto propio · Next.js y Supabase",
       pill: "DEMO ABIERTO",
       title: "Datos de salud y de dinero, abiertos al público sin exponer una sola fila.",
       subtitle:
-        "JARVIS cierra el día —hábitos, cuerpo, sueño, comida, gastos— en un formulario y un botón, y lo devuelve leído, no en crudo. Hay un demo abierto con las cinco pantallas de verdad y los datos de una persona que no existe.",
+        "Kairo cierra el día —hábitos, cuerpo, sueño, comida, gastos— en un formulario y un botón, y lo devuelve leído, no en crudo. Hay un demo abierto con las cinco pantallas de verdad y los datos de una persona que no existe.",
       access: "Repositorio privado · el demo es la superficie pública",
       timeline: "Demo público y app en producción · el alta de cuentas está escrita y todavía cerrada",
-      demoUrl: "https://jarvis-app-psi-sable.vercel.app/demo",
+      demoUrl: "https://kairo.davirson.com/demo",
       nav: [
         { id: "demo", label: "Demo" },
         { id: "decisiones", label: "Decisiones" },
@@ -678,7 +678,7 @@ export const projects = {
       figures: [
         { value: "5", label: "pantallas reales en el demo, no maquetas", note: "las mismas de la app, corriendo sobre datos de alguien inventado", href: "#demo" },
         { value: "0", label: "consultas a la base desde el demo", note: "medido en el navegador: cero peticiones y cero envíos en las seis rutas", href: "#seguridad" },
-        { value: "526", label: "pruebas automáticas en ocho puertas de CI", note: "tipos, formato, lint, pruebas, build, fuga en el bundle, dependencias y RLS", href: "#procesos" },
+        { value: "2.741", label: "pruebas automáticas en ocho puertas de CI", note: "tipos, formato, lint, pruebas, build, fuga en el bundle, dependencias y RLS", href: "#procesos" },
         { value: "34", label: "tablas con política de fila por usuario", note: "y las claves primarias reconstruidas, que era lo que de verdad bloqueaba", href: "#datos" },
       ] as Metric[],
       demo: {
@@ -743,7 +743,7 @@ export const projects = {
           { name: "Tipos", detail: "TypeScript estricto, sin un solo error" },
           { name: "Formato", detail: "Prettier en modo verificación" },
           { name: "Lint", detail: "ESLint con la configuración de Next" },
-          { name: "Pruebas", detail: "526 pruebas en 38 ficheros" },
+          { name: "Pruebas", detail: "2.741 pruebas en 172 ficheros" },
           { name: "Build", detail: "compilación de producción completa" },
           { name: "Fuga en el bundle", detail: "12 términos personales, ninguno en los 28 ficheros servidos" },
           { name: "Dependencias", detail: "auditoría sin vulnerabilidades altas" },
@@ -1410,17 +1410,17 @@ export const projects = {
       },
     },
     tracking: {
-      metaTitle: "JARVIS: multi-user Postgres",
+      metaTitle: "Kairo: multi-user Postgres",
       metaDesc:
-        "Daily logging of habits, body, sleep, food and spending on Postgres with row-level security: public demo, 526 tests and eight CI gates.",
+        "Daily logging of habits, body, sleep, food and spending on Postgres with row-level security: public demo, 2,741 tests and eight CI gates.",
       kicker: "Own product · Next.js and Supabase",
       pill: "OPEN DEMO",
       title: "Health and money data, open to the public without exposing a single row.",
       subtitle:
-        "JARVIS closes the day — habits, body, sleep, food, spending — in one form and one button, and gives it back as a reading, not as rows. There is an open demo with the five real screens and the data of someone who does not exist.",
+        "Kairo closes the day — habits, body, sleep, food, spending — in one form and one button, and gives it back as a reading, not as rows. There is an open demo with the five real screens and the data of someone who does not exist.",
       access: "Private repository · the demo is the public surface",
       timeline: "Public demo and app in production · account sign-up is written and still closed",
-      demoUrl: "https://jarvis-app-psi-sable.vercel.app/demo",
+      demoUrl: "https://kairo.davirson.com/demo",
       nav: [
         { id: "demo", label: "Demo" },
         { id: "decisiones", label: "Decisions" },
@@ -1432,7 +1432,7 @@ export const projects = {
       figures: [
         { value: "5", label: "real screens in the demo, not mockups", note: "the app's own, running on data from someone invented", href: "#demo" },
         { value: "0", label: "database queries from the demo", note: "measured in the browser: zero requests and zero submissions across six routes", href: "#seguridad" },
-        { value: "526", label: "automated tests across eight CI gates", note: "types, format, lint, tests, build, bundle leak, dependencies and row security", href: "#procesos" },
+        { value: "2,741", label: "automated tests across eight CI gates", note: "types, format, lint, tests, build, bundle leak, dependencies and row security", href: "#procesos" },
         { value: "34", label: "tables with a per-user row policy", note: "and the primary keys rebuilt, which is what was really in the way", href: "#datos" },
       ] as Metric[],
       demo: {
@@ -1497,7 +1497,7 @@ export const projects = {
           { name: "Types", detail: "strict TypeScript, not one error" },
           { name: "Format", detail: "Prettier in check mode" },
           { name: "Lint", detail: "ESLint with the Next config" },
-          { name: "Tests", detail: "526 tests across 38 files" },
+          { name: "Tests", detail: "2,741 tests across 172 files" },
           { name: "Build", detail: "full production compile" },
           { name: "Bundle leak", detail: "12 personal terms, none in the 28 files served" },
           { name: "Dependencies", detail: "audit with no high-severity findings" },

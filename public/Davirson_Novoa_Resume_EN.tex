@@ -120,11 +120,11 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \end{itemize}
 {\small\textbf{Stack:} PostgreSQL \,\textperiodcentered\, Medallion architecture \,\textperiodcentered\, dbt \,\textperiodcentered\, Python \,\textperiodcentered\, Prefect \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Supabase \,\textperiodcentered\, Power BI (TMDL / PBIP) \,\textperiodcentered\, Next.js}\par
 \vspace{4pt}
-\headline{JARVIS --- multi-user product with sensitive data}{2026 --- in production \,\textperiodcentered\, open demo}
-\subline{Own product --- designed, built and operated}{\href{https://jarvis-app-psi-sable.vercel.app/demo}{public demo, no account}}
+\headline{Kairo --- multi-user product with sensitive data}{2026 --- in production \,\textperiodcentered\, open demo}
+\subline{Own product --- designed, built and operated}{\href{https://kairo.davirson.com/demo}{public demo, no account}}
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Multi-user model on Postgres with a row policy on 34 tables: the conversion required rebuilding 22 primary keys that identified rows without the user, and pushing the user inside the foreign keys so isolation did not rest on the policy alone.
-  \item Eight CI gates judged by exit code: types, format, lint, 526 tests, build, dependency audit, a guard that hunts personal data inside the built artifact, and a smoke test requiring the anonymous role to be denied across all 55 tables and views.
+  \item Eight CI gates judged by exit code: types, format, lint, 2,741 tests, build, dependency audit, a guard that hunts personal data inside the built artifact, and a smoke test requiring the anonymous role to be denied across all 55 tables and views.
   \item A public demo running the five real screens over 120 seed-generated days that never queries the database; a test walks the runtime import graph and fails if any reachable module gets to the data client.
   \item Day logging in one form and one button, with eight independent writes, an on-device draft and send queue to survive losing signal, and a purpose-built number reader because a browser number field was storing expenses divided by a thousand.
 \end{itemize}
