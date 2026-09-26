@@ -17,7 +17,7 @@ No es un portafolio de capturas: cada página del sitio se alimenta del reposito
 | **Laboratorio de pronóstico macro en LATAM** — trece modelos contra el pronóstico ingenuo en 20 economías, con Diebold-Mariano, Holm y Wilcoxon; el visitante juega contra el ingenuo y mueve el backtest | [`/es/labs/macro-forecast`](https://davirson.com/es/labs/macro-forecast) | [macro-forecast-lab-latam](https://github.com/DavinsonR/macro-forecast-lab-latam) | v1.1.0 publicada, laboratorio abierto |
 | **Plataforma de datos de mercado** — APIs públicas → medallion en Postgres con dbt → backtester sin look-ahead → refresh diario automatizado | [`/es/projects/trading-sim`](https://davirson.com/es/projects/trading-sim) | [market-data-medallion](https://github.com/DavinsonR/market-data-medallion) | 48 activos, refresh diario |
 | **Informe Power BI** — modelo, medidas y páginas del informe construido sobre la capa gold | [`/es/projects/powerbi`](https://davirson.com/es/projects/powerbi) | catálogo en `lib/data/powerbi-model.ts` | Catálogo publicado |
-| **JARVIS** — Postgres multiusuario con seguridad por fila en 34 tablas, 526 pruebas y un demo público que nunca toca la base | — | privado; [demo público sin cuenta](https://jarvis-app-psi-sable.vercel.app/demo) | v1 en uso |
+| **Kairo** — Postgres multiusuario con seguridad por fila en 34 tablas, 2.741 pruebas y un demo público que nunca toca la base | — | privado; [demo público sin cuenta](https://kairo.davirson.com/demo) | v1 en uso |
 
 ## El CV
 

@@ -70,7 +70,7 @@ for (const name of fs.readdirSync(PUBLIC).filter((f) => /\.(tex|pdf)$/.test(f)))
     continue;
   }
 
-  // Un host de este sitio que ya no es el actual. La demo de JARVIS vive en su
+  // Un host de este sitio que ya no es el actual. La demo de Kairo vive en su
   // propio *.vercel.app y es otra aplicación: no entra aquí.
   const stale = [...text.matchAll(/proyecto-davirson[a-z0-9-]*\.vercel\.app/g)].map((x) => x[0]);
   if (stale.length) {

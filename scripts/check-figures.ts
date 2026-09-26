@@ -44,7 +44,7 @@ type Claim = {
 
 /** Números escritos con letra, 0–99, en los dos idiomas: «treinta y tres»,
  *  «thirty-three», «veintidós», «twenty-two». Existe por CO-09: la banda de
- *  JARVIS decía «34 tablas» y la prosa de la misma página «treinta y tres
+ *  Kairo decía «34 tablas» y la prosa de la misma página «treinta y tres
  *  tablas», y el patrón solo veía dígitos. */
 const UNIDADES_ES = ["cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez", "once", "doce", "trece", "catorce", "quince", "dieciséis", "diecisiete", "dieciocho", "diecinueve", "veinte", "veintiuno", "veintidós", "veintitrés", "veinticuatro", "veinticinco", "veintiséis", "veintisiete", "veintiocho", "veintinueve"];
 const DECENAS_ES: Record<string, number> = { treinta: 30, cuarenta: 40, cincuenta: 50, sesenta: 60, setenta: 70, ochenta: 80, noventa: 90 };

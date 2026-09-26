@@ -11,7 +11,7 @@
 //   shot     el tablero del laboratorio de pronóstico, capturado en los dos
 //            temas y los dos idiomas (scripts/capture-showcase.mjs)
 //   star     la estrella del modelo semántico de Power BI
-//   screen   dos pantallas reales del demo de JARVIS
+//   screen   dos pantallas reales del demo de Kairo
 //
 // Ninguna cifra se inventa: cada gráfico dibuja un dato ya publicado en la
 // página de su proyecto.
