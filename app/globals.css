@@ -22,6 +22,12 @@
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Instancia parcial de la variable: peso 400–600 y tamaño óptico 18–48, que es
+   exactamente el rango en que este sitio la usa (cifras grandes, línea de
+   veredicto, el «404»). El fichero completo traía peso 200–900 y óptico 8–60:
+   122 KB precargados en todas las rutas para usar 69. Se regenera con
+   fontTools (instancer wght=400:600 opsz=18:48, luego subset al unicode-range
+   de abajo). Si alguna vez cambia, se RENOMBRA: va con caché inmutable. */
 @font-face {
   font-family: "Source Serif 4";
   font-style: normal;
@@ -279,6 +285,12 @@ a {
   to   { transform: scaleX(1); }
 }
 
+/* a chart line is drawn by the pen, left to right (pathLength="1") */
+@keyframes line-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+
 /* the live dot: a slow instrument pulse, not a notification blink */
 @keyframes live-ping {
   0%   { transform: scale(1);   opacity: 0.55; }
@@ -295,6 +307,11 @@ a {
   .js .reveal {
     opacity: 0;
     transform: translateY(14px);
+  }
+  /* Solo mientras la animación está pendiente: un will-change permanente
+     retiene una capa de composición por elemento (26 en la tesis) después de
+     que la animación terminó. */
+  .js .reveal:not(.is-in) {
     will-change: opacity, transform;
   }
   .js .reveal.is-in {
@@ -327,6 +344,23 @@ a {
     animation-delay: var(--d, 0ms);
   }
 
+  /* the showcase charts draw themselves when their card arrives */
+  .js .draw-in {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+  .js .is-in .draw-in {
+    animation: line-draw 1500ms cubic-bezier(0.45, 0, 0.2, 1) both;
+    animation-delay: calc(var(--d, 0ms) + 250ms);
+  }
+
+  /* the showcase card: the one place on the site that lifts and zooms,
+     by owner request (DESIGN.md, Cards / Containers) */
+  .showcase-card { transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), border-color 200ms ease; }
+  .showcase-card:hover { transform: translateY(-4px); }
+  .showcase-card .showcase-media { transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .showcase-card:hover .showcase-media { transform: scale(1.02); }
+
   .live-ping { animation: live-ping 2600ms cubic-bezier(0.4, 0, 0.6, 1) infinite; }
 
   /* hover life, kept to the weight of ink: a hairline thickens,
@@ -339,7 +373,8 @@ a {
 /* the pen never crosses the page for a reader who asked for stillness */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .settle, .js .reveal, .js .rule-in, .js .bar-in { animation: none; }
+  .settle, .js .reveal, .js .rule-in, .js .bar-in, .js .draw-in { animation: none; }
+  .js .draw-in { stroke-dasharray: none; stroke-dashoffset: 0; }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
@@ -358,6 +393,7 @@ a {
      `.settle` faltaba en esta lista y su estado inicial es `opacity: 0` con
      `blur(3px)` y `fill-mode: both`: imprimir dentro de los primeros 620 ms
      sacaba la cabecera, el nombre y el veredicto borrosos y a medio tono. */
+  .draw-in { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
   .settle, .reveal, .rule-in, .bar-in {
     opacity: 1 !important;
     transform: none !important;
@@ -540,6 +576,10 @@ a {
   color: var(--color-paper);
   font-weight: 600;
 }
+/* El botón presionado es azul macizo y el anillo de foco iba en azul, metido
+   2px hacia dentro: 1,00:1 — el foco no existía justo en el control más usado
+   del mapa (auditoría del 23 sep 2026, DA-01). Sobre `cold`, papel da 8,86:1. */
+.atlas-views button[aria-pressed="true"]:focus-visible { outline-color: var(--color-paper); }
 
 .atlas-range { display: flex; align-items: center; gap: 10px; }
 .atlas-range input[type="range"] { width: 170px; accent-color: var(--color-cold); }
@@ -549,6 +589,37 @@ a {
   color: var(--color-ink);
   min-width: 42px;
 }
+
+/* The municipal level has no forecast: its options stay listed, disabled, and this line
+   says why and where to find them (D-36). A sentence, so it keeps the 14px floor. */
+.atlas-hint {
+  max-width: 250px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+/* The note that travels with the forecast (D-36). A tinted region opened by a 2px blue
+   rule, the band's grammar: no box, no shadow, and blue because it is a technical claim. */
+.atlas-note {
+  margin-top: 14px;
+  padding: 10px 12px 11px;
+  border-top: 2px solid var(--color-cold);
+  background: var(--color-coldsoft);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--color-body);
+}
+.atlas-note strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-cold);
+}
+.atlas-note p { margin: 0; max-width: 96ch; }
 
 .atlas-state {
   padding: 28px 0;
@@ -575,7 +646,7 @@ a {
   margin-top: 14px;
   padding-top: 10px;
   border-top: 1px solid var(--color-rule);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.55;
   color: var(--color-muted);
 }
@@ -628,6 +699,12 @@ a {
 .atlas-table tr[data-id] { cursor: pointer; }
 .atlas-table tr[data-id]:hover td { background: var(--color-band); }
 .atlas-table tr[data-active="yes"] td { background: var(--color-coldsoft); font-weight: 600; }
+/* Region headers of the forecast list: each region is its own <tbody>. The list holds
+   every department, so it scrolls in its own frame rather than stretching the row. */
+.atlas-scroll { max-height: 520px; overflow-y: auto; }
+.atlas-scroll:focus-visible { outline-offset: 2px; }
+.atlas-scroll thead th { position: sticky; top: 0; z-index: 1; background: var(--color-paper); }
+.atlas-table th.atlas-region { padding-top: 12px; }
 .atlas-pill { display: block; height: 8px; border-radius: 0 2px 2px 0; }
 
 /* El sistema declara que no se envía ni una sombra y llama defecto a cualquiera:
@@ -670,6 +747,19 @@ a {
   cursor: pointer;
 }
 .atlas-drill:hover { opacity: 0.9; }
+/* El anillo a +2px caía sobre el coropleto, y el escalón más oscuro del mapa es
+   exactamente `--color-cold`: 1,00:1 en el peor caso. Hacia dentro y en papel. */
+.atlas-drill:focus-visible { outline-color: var(--color-paper); outline-offset: -3px; }
+/* La fila de la tabla ya no es el control: lo es el botón del nombre (DA-16). */
+.atlas-table .atlas-rowbtn {
+  font: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
 
 /* ============================================================
    EL 404
@@ -694,3 +784,298 @@ a {
   .atlas-tip, .atlas-card, .atlas-drill { display: none !important; }
   .atlas-canvas { grid-template-columns: 1fr 1fr; }
 }
+
+/* ============================================================
+   Laboratorio de pronóstico (/labs/macro-forecast)
+   Los controles reutilizan los del atlas (.atlas-field, .atlas-views,
+   .atlas-range); aquí solo lo que el atlas no tiene.
+   ============================================================ */
+.fl-shell { min-height: 240px; }
+
+/* chip de modelo: se enciende en azul, como los botones de vista del atlas */
+.fl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 14px;
+  padding: 5px 11px;
+  border: 1px solid var(--color-control);
+  border-radius: 3px;
+  background: var(--color-paper);
+  color: var(--color-body);
+  cursor: pointer;
+}
+.fl-chip:hover { border-color: var(--color-cold); color: var(--color-ink); }
+.fl-chip[aria-pressed="true"] { border-color: var(--color-cold); background: var(--color-coldsoft); color: var(--color-ink); font-weight: 600; }
+.fl-chip[aria-pressed="false"] svg { opacity: 0.45; }
+
+/* el tirador del juego: el foco rodea el punto ámbar, no el SVG entero */
+.fl-handle:focus { outline: none; }
+.fl-handle:focus-visible circle:last-child { stroke: var(--color-ink); stroke-width: 3; }
+
+/* interruptor de Holm */
+.fl-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: inherit;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.fl-switch-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border: 1.5px solid var(--color-control);
+  border-radius: 999px;
+  background: var(--color-paper);
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.fl-switch-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 999px;
+  background: var(--color-control);
+  transition: transform 160ms ease, background 160ms ease;
+}
+.fl-switch[aria-checked="true"] .fl-switch-track { background: var(--color-cold); border-color: var(--color-cold); }
+.fl-switch[aria-checked="true"] .fl-switch-knob { transform: translateX(18px); background: var(--color-paper); }
+
+/* barras que cambian con un control: se mueven, no saltan (y no se mueven
+   con movimiento reducido, que la regla global ya recorta) */
+.fl-bar { transition: width 220ms ease; }
+.fl-hbar { transition: width 260ms ease; border-radius: 0; }
+
+/* ---- panorama: el tablero del laboratorio, con la grilla de un BI ----
+   Recuadros planos: regla de 1 px y fondo teñido, sin sombras ni radios grandes
+   (DESIGN.md). El aspecto de tablero sale de la grilla, no de tarjetas flotantes. */
+.fl-board { position: relative; }
+
+/* barra de filtros: una fila en escritorio, fija bajo la navegación de sección */
+.fl-bar-filters {
+  padding: 12px 14px;
+  border: 1px solid var(--color-rule);
+  border-top: 2px solid var(--color-cold);
+  border-radius: 6px;
+  background: var(--color-band);
+  z-index: 20;
+}
+.fl-filters-body { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px 16px; }
+/* en el teléfono la barra se pliega en una línea que resume el filtro activo */
+.fl-filters-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  min-height: 36px;
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  border: 0;
+  background: none;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+@media (max-width: 1023px) {
+  .fl-bar-filters { padding: 8px 12px; }
+  .fl-bar-filters[data-open="false"] .fl-filters-body { display: none; }
+  .fl-bar-filters[data-open="true"] .fl-filters-body { margin-top: 10px; }
+  .fl-filters-body > * { flex: 1 1 140px; }
+}
+@media (min-width: 1024px) {
+  .fl-bar-filters { position: sticky; top: 118px; }
+  .fl-filters-toggle { display: none; }
+}
+.fl-field { display: flex; flex-direction: column; gap: 4px; border: 0; margin: 0; padding: 0; min-width: 0; }
+.fl-field > span, .fl-field > legend, .fl-ms-label {
+  padding: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.fl-field select, .fl-ms-btn {
+  font: inherit;
+  font-size: 14px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--color-control);
+  border-radius: 3px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.fl-field select:hover, .fl-ms-btn:hover { border-color: var(--color-cold); }
+/* El simulador de crédito usa el mismo campo, con números además de listas. */
+.fl-field input {
+  font: inherit;
+  font-size: 14px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid var(--color-control);
+  border-radius: 3px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+.fl-field input:hover { border-color: var(--color-cold); }
+.cr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px 20px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.cr-grid select, .cr-grid input { width: 100%; min-width: 0; }
+.cr-legend {
+  grid-column: 1 / -1;
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-ink);
+}
+.fl-field-wide select { max-width: 320px; }
+@media (max-width: 640px) {
+  .fl-field, .fl-ms, .fl-field-wide select { width: 100%; max-width: none; }
+  .fl-field select { width: 100%; }
+}
+
+/* lista desplegable de selección múltiple */
+.fl-ms { position: relative; display: flex; flex-direction: column; gap: 4px; }
+.fl-ms-btn { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-width: 190px; cursor: pointer; text-align: left; }
+.fl-ms-btn[aria-expanded="true"] { border-color: var(--color-cold); }
+.fl-ms-caret { color: var(--color-muted); font-size: 12px; }
+.fl-ms-pop {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 30;
+  width: max(100%, 250px);
+  max-height: 360px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-control);
+  border-radius: 6px;
+  background: var(--color-paper);
+}
+.fl-ms-search {
+  font: inherit;
+  font-size: 14px;
+  margin: 8px 8px 4px;
+  padding: 6px 8px;
+  border: 1px solid var(--color-rule);
+  border-radius: 3px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.fl-ms-actions { display: flex; gap: 14px; padding: 4px 10px; border-bottom: 1px solid var(--color-rulesoft); }
+.fl-ms-list { overflow-y: auto; padding: 4px 0; }
+.fl-ms-opt { display: flex; align-items: center; gap: 9px; padding: 5px 10px; font-size: 14px; color: var(--color-ink); cursor: pointer; }
+.fl-ms-opt:hover { background: var(--color-band); }
+.fl-ms-opt input { accent-color: var(--color-cold); width: 15px; height: 15px; }
+.fl-link { font: inherit; font-size: 13.5px; padding: 0; border: 0; background: none; color: var(--color-cold); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+/* indicadores: una fila de cinco */
+.fl-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+@media (min-width: 768px) { .fl-kpis { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+.fl-kpi { display: flex; flex-direction: column; padding: 12px 14px; border: 1px solid var(--color-rule); border-top: 2px solid var(--color-ink); border-radius: 6px; background: var(--color-paper); }
+
+/* la grilla de visuales */
+.fl-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 12px; }
+@media (min-width: 1024px) { .fl-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); } }
+/* esquinas sutiles (6 px): la petición fue «un poco más redondeadas, no mucho» */
+.fl-tile { display: flex; flex-direction: column; min-width: 0; border: 1px solid var(--color-rule); border-radius: 6px; background: var(--color-paper); }
+.fl-tile-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 10px 14px 8px; border-bottom: 1px solid var(--color-rulesoft); border-radius: 5px 5px 0 0; background: var(--color-band); }
+.fl-tile-title { font-size: 12.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--color-ink); }
+.fl-tile-hint { margin-top: 2px; font-size: 14px; line-height: 1.45; color: var(--color-muted); }
+.fl-tile-body { position: relative; padding: 12px 14px 14px; flex: 1; min-height: 0; }
+@media (max-width: 639px) {
+  .fl-tile-head { flex-direction: column; align-items: stretch; }
+  .fl-tile-body { padding: 10px 8px 12px; }
+}
+.fl-unit { font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--color-muted); }
+.fl-tile .atlas-views button { font-size: 13.5px; padding: 4px 10px; }
+
+/* tablas ordenables */
+.fl-table th { padding: 6px 8px 6px 0; border-bottom: 2px solid var(--color-ink); font-size: 12px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: var(--color-muted); white-space: nowrap; }
+.fl-table td { padding: 6px 8px 6px 0; border-bottom: 1px solid var(--color-rulesoft); font-variant-numeric: tabular-nums; }
+.fl-table tbody tr:hover { background: var(--color-band); }
+.fl-table .fl-row-on { background: var(--color-coldsoft); }
+.fl-sort { display: inline-flex; align-items: center; gap: 5px; font: inherit; letter-spacing: inherit; text-transform: inherit; padding: 0; border: 0; background: none; color: inherit; cursor: pointer; }
+.fl-sort:hover, .fl-sort[data-active] { color: var(--color-ink); }
+.fl-sort-ico { font-size: 10px; opacity: 0.7; }
+/* barra de datos: la barra en su pista y la cifra aparte, sin montarse */
+.fl-databar { display: flex; align-items: center; gap: 6px; min-width: 92px; }
+.fl-databar-track { position: relative; flex: 1; height: 12px; min-width: 40px; }
+.fl-databar-bar { position: absolute; top: 0; bottom: 0; opacity: 0.7; }
+.fl-databar-num { min-width: 34px; text-align: right; }
+.fl-scroll { max-height: 440px; overflow-y: auto; }
+.fl-scroll .fl-table thead th { position: sticky; top: 0; background: var(--color-paper); z-index: 1; }
+
+/* leyenda continua del mapa de calor */
+.fl-legend { display: inline-flex; height: 10px; }
+.fl-legend > span { display: inline-block; width: 18px; height: 10px; }
+
+/* número del evento en el resumen flotante */
+.fl-tl-no { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 24px; height: 24px; border: 1.5px solid var(--color-cold); border-radius: 999px; font-family: var(--font-figure); font-size: 13px; color: var(--color-cold); }
+
+/* el resumen flotante de un evento: regla y papel, sin sombra */
+.fl-pop {
+  position: absolute;
+  top: 8px;
+  z-index: 8;
+  width: min(360px, 92%);
+  padding: 12px 14px;
+  border: 1px solid var(--color-control);
+  border-top: 2px solid var(--color-cold);
+  border-radius: 6px;
+  background: var(--color-paper);
+}
+.fl-pop-close { flex: none; width: 28px; height: 28px; margin: -4px -6px 0 0; font-size: 20px; line-height: 1; border: 0; border-radius: 3px; background: none; color: var(--color-muted); cursor: pointer; }
+.fl-pop-close:hover { color: var(--color-ink); background: var(--color-band); }
+
+/* tooltip plano: regla y papel, sin sombra (DESIGN.md) */
+.fl-tip {
+  position: absolute;
+  z-index: 6;
+  pointer-events: none;
+  min-width: 170px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-control);
+  border-radius: 4px;
+  background: var(--color-paper);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+@media print {
+  .fl-tip, .fl-pop, .fl-ms-pop { display: none !important; }
+  .fl-bar-filters { position: static; }
+}
+
+
+/* Una imagen por tema (la captura del tablero en la vitrina). Mismos selectores
+   que los tokens: preferencia del sistema salvo que el conmutador diga otra cosa. */
+.only-light { display: block; }
+.only-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .only-dark { display: block; }
+  :root:not([data-theme="light"]) .only-light { display: none; }
+}
+:root[data-theme="dark"] .only-dark { display: block; }
+:root[data-theme="dark"] .only-light { display: none; }

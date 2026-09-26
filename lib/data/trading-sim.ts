@@ -39,6 +39,23 @@ export async function fetchIndex<T>(): Promise<{ data: T; source: IndexSource }>
   }
 }
 
+/** Una sola lectura del índice por página.
+ *
+ *  La portada lo pide para el sello del pipeline y para las cifras del
+ *  laboratorio; la página del laboratorio, para el panel y para su titular.
+ *  Sin esto cada componente bajaba sus 318 KB por su cuenta. Una lectura
+ *  fallida no se cachea: el botón de reintentar vuelve a pedir de verdad. */
+let shared: Promise<{ data: unknown; source: IndexSource }> | null = null;
+export function fetchIndexShared<T>(): Promise<{ data: T; source: IndexSource }> {
+  if (!shared) {
+    shared = fetchIndex<T>().catch((e) => {
+      shared = null;
+      throw e;
+    });
+  }
+  return shared as Promise<{ data: T; source: IndexSource }>;
+}
+
 /** Lectura con tiempo límite.
  *
  *  Sin él, una red corporativa que bloquea raw.githubusercontent.com sin cerrar

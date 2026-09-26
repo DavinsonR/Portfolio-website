@@ -1,0 +1,18 @@
+# Los pasos de CI «los .tex versionados están al día» y «la figura del atlas
+# está al día» regeneran un fichero y hacen `git diff --exit-code`. Corren en
+# ubuntu-latest contra la salida de Node (que escribe \n), y hoy no fallan
+# porque el checkout es LF nativo. Nada en el repositorio lo garantizaba: el
+# equipo de desarrollo tiene core.autocrlf=true, y un editor que guardara
+# estos ficheros con CRLF los dejaría distintos byte a byte del generado.
+* text=auto
+*.tex text eol=lf
+lib/generated/*.ts text eol=lf
+public/trading-sim-snapshot/*.json text eol=lf
+
+*.pdf binary
+*.woff2 binary
+*.onnx binary
+*.webp binary
+*.png binary
+*.gif binary
+*.ico binary

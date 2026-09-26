@@ -251,10 +251,23 @@ export default function ConstellationField() {
       mark();
     };
 
+    // getBoundingClientRect fuerza un recálculo de diseño, y esto corría en
+    // cada pointermove del documento, también con la cabecera fuera de
+    // pantalla. El rectángulo se cachea y solo se vuelve a medir tras un
+    // scroll o un resize.
+    let hostRect = host.getBoundingClientRect();
+    let rectDirty = false;
+    const onScroll = () => {
+      rectDirty = true;
+    };
     const onPointer = (e: PointerEvent) => {
-      const r = host.getBoundingClientRect();
-      mouse.x = e.clientX - r.left;
-      mouse.y = e.clientY - r.top;
+      if (!onScreen) return;
+      if (rectDirty) {
+        hostRect = host.getBoundingClientRect();
+        rectDirty = false;
+      }
+      mouse.x = e.clientX - hostRect.left;
+      mouse.y = e.clientY - hostRect.top;
       start();
     };
     const onLeave = () => {
@@ -273,6 +286,7 @@ export default function ConstellationField() {
 
     const ro = new ResizeObserver(() => {
       build();
+      rectDirty = true;
       draw();
     });
     ro.observe(host);
@@ -313,6 +327,7 @@ export default function ConstellationField() {
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
     window.addEventListener("pointermove", onPointer, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     document.addEventListener("pointerleave", onLeave);
     document.addEventListener("visibilitychange", onVisibility);
     themeMedia.addEventListener("change", onTheme);
@@ -324,6 +339,7 @@ export default function ConstellationField() {
       io.disconnect();
       mo.disconnect();
       window.removeEventListener("pointermove", onPointer);
+      window.removeEventListener("scroll", onScroll);
       document.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("visibilitychange", onVisibility);
       themeMedia.removeEventListener("change", onTheme);

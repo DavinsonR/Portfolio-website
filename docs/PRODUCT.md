@@ -45,8 +45,10 @@ A neighboring candidate cannot truthfully copy this claim: finance people rarely
 
 - Name shown publicly: **Davirson Novoa Ramírez** (Davirson on legal documents; online accounts use "Davinson" — both are correct in their own place).
 - **The amber rule**: the warm accent (`#D9A05B`) is reserved for human/purpose content. Technical content uses the cold accent. This separation is binding and predates this redesign.
-- **Build in public, honestly**: status and progress indicators must reflect reality, including unfinished work. No heroic filter.
-- Voice: direct, specific, no marketing inflation. Claims are backed by artifacts.
+- **The site is a sales asset.** Its job is to make a hiring manager think "I believe him, and I want him as my best person". Every line is written to sell: assertive, confident, owner's voice, reader-first.
+- **Sell hard on framing, never on data.** Tone, order, verbs and emphasis are amplified to the maximum; figures, titles, dates, scope and results are never invented or inflated. The site's strongest weapon is "click the one you believe least" — one fake number turns the reader into a prosecutor.
+- **Status reflects reality, framed as momentum.** Unfinished work is shown as the next phase of a roadmap, never as an apology or a deficit.
+- Voice: owner, not participant. No self-deprecation, no pre-emptive defence of objections nobody raised, no seniority-anchoring detail (years, "intern") in the first lines. Claims are backed by artifacts.
 - Rejected in an earlier round and still rejected: a terminal-styled navigation bar.
 
 ## Evidence on Hand
@@ -70,7 +72,7 @@ Real, verifiable — none of this may be fabricated or inflated:
 1. **Price the crossover, don't apologize for the transition.** Every claim frames finance + data as one existing capability, never as a work in progress toward data.
 2. **A project is a problem solved, not a technique demonstrated.** Lead with the question answered and who would care; the stack is supporting evidence.
 3. **Decide in one minute.** Anything that does not help a scanning recruiter classify and act belongs on a secondary page or nowhere.
-4. **Verifiable over impressive.** Every number links to the artifact that proves it.
+4. **Impressive *and* verifiable.** Lead with the most impressive true thing; every number links to the artifact that proves it.
 5. **Legible before beautiful.** Contrast, type size and hierarchy are functional requirements — the audience reads in bright rooms and is often over 40.
 
 ## Accessibility & Inclusion

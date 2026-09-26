@@ -35,6 +35,21 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 15 | [5 sep](docs/bitacora/sesion-15.md) | Power BI a la vista, tesis publicada, tracking en su sitio |
 | 16 | [7 sep](docs/bitacora/sesion-16.md) | Auditoría por agentes: dos 404 que devolvían 200 y el camino de contacto que faltaba |
 | 17 | [7 sep](docs/bitacora/sesion-17.md) | El atlas sale del fondo, y la deriva que explica el nulo |
+| 18 | [23 sep](docs/bitacora/sesion-18.md) | Cinco expertos auditan el sitio, y la sesión 1: un CVE que nadie vio, las tarjetas de Twitter de la portada en catorce rutas, el nombre dos veces en el título del CV |
+| 19 | [23 sep](docs/bitacora/sesion-19.md) | Las cifras del laboratorio dejan de escribirse a mano, el veredicto entra en el HTML, y el PDF de una página lleva por fin un resultado |
+| 20 | [23 sep](docs/bitacora/sesion-20.md) | Conversión: la portada adelgaza, las páginas de proyecto cierran con una salida, y el CV dice lo que un ATS busca |
+| 21 | [23 sep](docs/bitacora/sesion-21.md) | Diseño y accesibilidad: el foco que no existía, el texto de 4 píxeles en el teléfono, y la deriva del contrato visual |
+| 22 | [23 sep](docs/bitacora/sesion-22.md) | Ingeniería: caché para lo que no cambia, el serif a la mitad, el atlas baja con sus datos, y cada página dice al buscador qué es |
+| 23 | [23 sep](docs/bitacora/sesion-23.md) | La red: tipos para los scripts, pruebas sin framework, presupuesto de peso, cabeceras y JSON-LD en el humo de rutas, Lighthouse en CI |
+| 25 | [23 sep](docs/bitacora/sesion-25.md) | Se abre el lab: pronóstico macro en LATAM, para jugarlo y no solo leerlo |
+| 26 | [23 sep](docs/bitacora/sesion-26.md) | El panorama: analítica descriptiva de la región, eventos que la explican, y un empalme roto en la fuente |
+| 27 | [23 sep](docs/bitacora/sesion-27.md) | Las cifras de la tesis se ponen al día con el repositorio y pasan a un solo módulo; el titular deja de ser «publiqué el cero» |
+| 28 | [24 sep](docs/bitacora/sesion-28.md) | El panorama pasa a ser un tablero: grilla de visuales, filtros desplegables, resumen flotante de eventos y tablas ordenables |
+| 29 | [24 sep](docs/bitacora/sesion-29.md) | El tablero pronostica 2026–2027 con bandas y su acierto medido, el filtro mueve todos los gráficos y se lee en el teléfono |
+| 30 | [24 sep](docs/bitacora/sesion-30.md) | El atlas pinta la proyección 2026–2028: años por grupo, trama y opacidad por el ancho del intervalo, una nota que sale del JSON y ninguna tabla de posiciones |
+| 31 | [24 sep](docs/bitacora/sesion-31.md) | Dos versiones de la capa de proyección del atlas: se publica la de la sesión 30 con los seis arreglos de la otra, y pruebas contra los datos reales |
+| 32 | [25 sep](docs/bitacora/sesion-32.md) | El ancla del atlas se renueva con la EME de julio de 2026; el respaldo del WEO deja de estar congelado |
+| 33 | [25 sep](docs/bitacora/sesion-33.md) | Licencias de Banrep y del FMI verificadas: la cita del ancla lleva fecha de consulta y dice qué es |
 
 ## Después de la sesión 17
 

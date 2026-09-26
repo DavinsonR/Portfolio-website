@@ -12,6 +12,8 @@
 //
 //   node scripts/check-routes.mjs [baseUrl]     (por defecto http://127.0.0.1:3000)
 // ============================================================
+import { readFileSync } from "node:fs";
+
 const BASE = (process.argv[2] ?? "http://127.0.0.1:3000").replace(/\/$/, "");
 
 /** `next start` tarda en aceptar conexiones y el paso de CI que lo arranca no
@@ -48,15 +50,60 @@ if (routes.length === 0) failures.push("sitemap.xml no publicó ninguna <loc>");
 for (const r of routes) await expect(r, 200, "anunciada en el sitemap");
 
 // 2. Los redirects sin idioma. Sin ellos esas URL dan 404, y ya pasó una vez.
-for (const r of ["/", "/cv", "/projects/tracking", "/research/fintech-inclusion"]) {
-  await expect(r, [307, 308], "redirect al idioma por defecto");
-}
+//    La lista se lee de `next.config.ts`: antes eran cuatro copiadas a mano de
+//    las ocho declaradas, y una ruta nueva sin redirect pasaba en verde. Y el
+//    código importa: los de ruta concreta son 308 (permanentes, cacheables) y
+//    `/` se queda en 307 a propósito (D-32) — cambiarlo aquí sin cambiarlo allí,
+//    o al revés, es un fallo.
+const config = readFileSync(new URL("../next.config.ts", import.meta.url), "utf8");
+const redirects = [...config.matchAll(/source:\s*"([^"]+)"[^}]*?permanent:\s*(true|false)/g)].map((m) => [m[1], m[2] === "true" ? 308 : 307]);
+if (redirects.length === 0) failures.push("next.config.ts no declara ningún redirect, o cambió el formato y esta lectura ya no lo ve");
+for (const [r, code] of redirects) await expect(r, code, `redirect al idioma por defecto, ${code === 308 ? "permanente" : "temporal a propósito (D-32)"}`);
 
 // 3. Lo que NO debe existir. `dynamicParams = false` es lo que lo garantiza:
 //    sin él, `/pricing` devolvía 200 con la portada dentro de `<html lang="pricing">`
 //    y con `robots: index` — una granja de soft-404 indexable.
 for (const r of ["/pricing", "/es/no-existe", "/en/no-existe", "/es-CO"]) {
   await expect(r, 404, "debe ser 404");
+}
+
+// 3b. Las fuentes precargadas llevan caché de verdad: Next sirve public/ con
+//     max-age=0 y cada visita revalidaba las dos en la ruta crítica del render.
+{
+  const res = await fetch(`${BASE}/fonts/archivo-latin.woff2`);
+  const cc = res.headers.get("cache-control") ?? "";
+  const age = Number((cc.match(/max-age=(\d+)/) ?? [])[1] ?? 0);
+  if (res.status !== 200 || age < 86400) failures.push(`/fonts/archivo-latin.woff2 — Cache-Control «${cc}» (se espera max-age ≥ 86400)`);
+}
+
+// 3c. Las cabeceras que tanto costó razonar. La CSP de next.config.ts es la
+//     pieza más frágil del repositorio —su propio comentario advierte de que un
+//     solo hash mata la hidratación— y nada la comprobaba.
+{
+  const res = await fetch(`${BASE}/en`);
+  const csp = res.headers.get("content-security-policy") ?? "";
+  if (!csp.includes("default-src 'none'")) failures.push(`/en — la CSP no arranca en default-src 'none': «${csp.slice(0, 60)}…»`);
+  if (!csp.includes("'unsafe-inline'")) failures.push("/en — la CSP perdió 'unsafe-inline' y la hidratación muere (ver next.config.ts)");
+  if (/sha256-/.test(csp)) failures.push("/en — la CSP declara un hash: el navegador ignora 'unsafe-inline' y la hidratación muere (CLAUDE.md)");
+  const hsts = res.headers.get("strict-transport-security") ?? "";
+  if (!/max-age=\d{7,}/.test(hsts) || !hsts.includes("preload")) failures.push(`/en — HSTS «${hsts}» (se espera max-age ≥ 1 año y preload)`);
+  if (res.headers.get("x-powered-by")) failures.push("/en — x-powered-by sigue anunciando el framework");
+  const demo = await fetch(`${BASE}/credit-risk-demo/index.html`);
+  const dcsp = demo.headers.get("content-security-policy") ?? "";
+  if (!dcsp.includes("wasm-unsafe-eval")) failures.push("/credit-risk-demo/index.html — su CSP no lleva 'wasm-unsafe-eval': la demo muere con «no available backend»");
+  // El simulador vive dentro de la página del proyecto: esa ruta, y solo esa, abre
+  // la CSP al runtime. Se comprueban los dos lados — que la página lo tenga, y que
+  // la apertura no se haya escapado al resto del sitio — y que abrirla no le haya
+  // costado la base estricta (una sola cabecera, desde `default-src 'none'`).
+  for (const lang of ["en", "es"]) {
+    const page = await fetch(`${BASE}/${lang}/projects/credit-risk`);
+    const pcsp = page.headers.get("content-security-policy") ?? "";
+    const route = `/${lang}/projects/credit-risk`;
+    if (!pcsp.includes("wasm-unsafe-eval")) failures.push(`${route} — su CSP no lleva 'wasm-unsafe-eval': el simulador muere con «no available backend»`);
+    if (!pcsp.startsWith("default-src 'none'") || pcsp.includes(",")) failures.push(`${route} — la CSP no es una sola política desde default-src 'none': «${pcsp.slice(0, 80)}…»`);
+    if (!pcsp.includes("'unsafe-inline'") || /sha256-/.test(pcsp)) failures.push(`${route} — la CSP perdió 'unsafe-inline' o declara un hash: la hidratación muere`);
+  }
+  if (csp.includes("wasm-unsafe-eval")) failures.push("/en — la CSP de la portada lleva 'wasm-unsafe-eval': la apertura del simulador se escapó de su ruta");
 }
 
 // 4. Los artefactos de metadatos que el sitio declara.
@@ -83,10 +130,50 @@ for (const r of routes) {
   const canonical = pick(html, /<link rel="canonical" href="([^"]+)"/);
   const ogUrl = pick(html, /property="og:url" content="([^"]+)"/);
   const ogImage = pick(html, /property="og:image" content="([^"]+)"/);
+  const ogTitle = pick(html, /property="og:title" content="([^"]+)"/);
+  const twTitle = pick(html, /name="twitter:title" content="([^"]+)"/);
+
+  // FALLO-36 — la misma mecánica que FALLO-29, en el bloque `twitter`: el layout
+  // lo declaraba una vez con los textos de la portada y las catorce subpáginas
+  // publicaban la tarjeta de Twitter de la portada con el openGraph ya correcto.
+  if (!twTitle) failures.push(`${r} — sin twitter:title`);
+  if (ogTitle && twTitle && ogTitle !== twTitle) {
+    failures.push(
+      `${r} — twitter:title es «${twTitle}» y og:title es «${ogTitle}»: esta página hereda el bloque \`twitter\` del layout ` +
+        `(FALLO-36). Esparce social(lang, "<ruta>", …) en su generateMetadata.`,
+    );
+  }
+
+  // SE-03/SE-04 — 7 de 8 títulos superaban los 60 caracteres que enseña Google
+  // (el de la tesis llegaba a 109) y el sufijo con el nombre, que va al final,
+  // era justo lo primero que se cortaba. Con 25 caracteres de sufijo, el título
+  // propio cabe en 35.
+  // Las entidades (&#x27;, &amp;) cuentan como un carácter: es lo que ve la persona.
+  const plain = (s) => (s ?? "").replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+  const title = plain(pick(html, /<title>([^<]*)<\/title>/));
+  const description = plain(pick(html, /<meta name="description" content="([^"]*)"/));
+  if (!title) failures.push(`${r} — sin <title>`);
+  else if (title.length > 60) failures.push(`${r} — <title> de ${title.length} caracteres (máximo 60): «${title}»`);
+  if (!description) failures.push(`${r} — sin meta description`);
+  else if (description.length > 155) failures.push(`${r} — description de ${description.length} caracteres (máximo 155)`);
 
   if (!canonical) failures.push(`${r} — sin <link rel="canonical">`);
   if (!ogUrl) failures.push(`${r} — sin og:url`);
   if (!ogImage) failures.push(`${r} — sin og:image (tarjeta sin imagen)`);
+
+  // Datos estructurados: en todas las rutas desde la sesión 22, y un JSON que no
+  // parsea es exactamente lo que el buscador ignora sin avisar.
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  if (blocks.length === 0) failures.push(`${r} — sin JSON-LD`);
+  for (const b of blocks) {
+    try {
+      const j = JSON.parse(b);
+      const types = (j["@graph"] ?? [j]).map((n) => n["@type"]).filter(Boolean);
+      if (types.length === 0) failures.push(`${r} — JSON-LD sin ningún @type`);
+    } catch {
+      failures.push(`${r} — JSON-LD inválido (no parsea)`);
+    }
+  }
 
   // FALLO-34: `height`/`width` como ATRIBUTO de un <svg> exigen una longitud.
   // `auto` no lo es, el navegador lo rechaza y lo grita en consola en cada
@@ -110,7 +197,7 @@ for (const r of routes) {
 }
 
 if (failures.length === 0) {
-  console.log(`✓ rutas: ${routes.length} del sitemap a 200, redirects, 404, metadatos y tarjeta social propia en cada página`);
+  console.log(`✓ rutas: ${routes.length} del sitemap a 200, ${redirects.length} redirects con su código, 404, cabeceras, metadatos, JSON-LD y tarjetas OG y Twitter propias en cada página`);
   process.exit(0);
 }
 

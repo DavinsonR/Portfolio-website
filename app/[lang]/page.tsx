@@ -2,10 +2,12 @@ import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import PipelineStamp from "@/components/PipelineStamp";
 import CountUp from "@/components/CountUp";
+import LabText from "@/components/trading/LabText";
+import { labSnapshot } from "@/lib/data/lab-snapshot";
 import StatusPill from "@/components/StatusPill";
 import CopyEmail from "@/components/CopyEmail";
-import AtlasFigure from "@/components/AtlasFigure";
 import ConstellationField from "@/components/ConstellationField";
+import Preview from "@/components/showcase/Previews";
 import { mailtoHref } from "@/lib/config/contact";
 import { personGraph } from "@/lib/config/structured-data";
 import type { Locale } from "@/lib/dictionaries";
@@ -31,6 +33,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
   return (
     <main id="main" tabIndex={-1}>
+      <link rel="preload" href="/fonts/source-serif-4-latin.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       {/* Quien recibe el enlace en una aplicación teclea el nombre en Google
           antes de abrirlo. Sin esto el buscador ve un documento; con esto ve a
           una persona, sus dos grafías y sus perfiles reales. */}
@@ -89,8 +92,10 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 {sheet.thesis}
               </p>
 
+              {/* En el teléfono este párrafo empujaba la vitrina a ~1.900 px
+                  (auditoría PC-04): la tesis de arriba ya dice lo esencial. */}
               <p
-                className="settle mt-5 max-w-[68ch] text-[15.5px] leading-[1.7]"
+                className="settle mt-5 hidden max-w-[68ch] text-[15.5px] leading-[1.7] sm:block"
                 style={{ animationDelay: "240ms" }}
               >
                 {sheet.sub}
@@ -106,7 +111,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 </a>
                 <a
                   href="#work"
-                  className="lift inline-flex items-center rounded-[3px] border border-rule px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+                  className="lift inline-flex items-center rounded-[3px] border border-control px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
                 >
                   {sheet.ctaSecondary}
                 </a>
@@ -136,6 +141,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 ))}
               </dl>
 
+              {/* El contacto ya está en la barra y al pie: en el teléfono el
+                  bloque se queda con nivel, inicio y vía (PC-04). */}
+              <div className="hidden lg:block">
               <dl className="mt-4 space-y-2 border-t border-warm pt-4 text-[14px]">
                 <div>
                   <dt className="text-warm">Email</dt>
@@ -154,7 +162,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     <a
                       href={dict.profile.linkedin}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer me"
                       className="text-ink underline decoration-warm underline-offset-2">
                       {linkedinHandle}
                     </a>
@@ -166,7 +174,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                     <a
                       href={dict.profile.github}
                       target="_blank"
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer me"
                       className="text-ink underline decoration-warm underline-offset-2">
                       {githubHandle}
                     </a>
@@ -179,6 +187,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 labels={{ copy: contact.copy, copied: contact.copied, fail: contact.copyFail }}
                 className="mt-4 bg-paper"
               />
+              </div>
             </aside>
           </div>
         </div>
@@ -205,7 +214,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 definiciones no definía nada. Una lista simple dice lo mismo, es
                 válida, y deja que el ancla siga envolviendo cifra y etiqueta —
                 que es lo que hace de cada cifra un objetivo de clic. */}
-            <ul className="grid grid-cols-2 pt-3 pb-6 sm:grid-cols-3 lg:grid-cols-5">
+            <ul className="grid grid-cols-2 gap-x-5 pt-3 pb-6 lg:grid-cols-4 lg:gap-x-0">
               {sheet.metrics.map((m, i) => {
                 // Each figure lands where its evidence actually is. The first reviewer to
                 // click one found the CV's masthead and no sign of what he had clicked.
@@ -230,7 +239,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                         {m.label}
                       </span>
                     </a>
-                    <p className="mt-1 text-[14px] text-body">{m.note}</p>
+                    <p className="mt-1 text-[14px] text-body">
+                      <LabText template={m.note} initial={labSnapshot} lang={lang} />
+                    </p>
                   </li>
                 );
               })}
@@ -239,18 +250,15 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
         </div>
       </header>
 
-      {/* ===================== ATLAS FIGURE =====================
-          The second figure on the sheet, and the only picture on a site that
-          asserted visual work twenty times and shipped zero images. It earns the
-          position because it is an argument, not a decoration: two maps on one
-          scale showing every department rising off the 2018 baseline, which is
-          precisely why the coefficient dies once the year is taken out. The
-          interactive atlas it links to sat 2,820px into a page 7,489px long —
-          4,608 of 12,349 on a phone — behind two clicks. */}
-      <AtlasFigure copy={sheet.atlasFigure} lang={lang} />
-
       {/* ===================== WORK ===================== */}
-      <section id="work" className="scroll-mt-16 border-b border-rule pt-16">
+      {/* La vitrina, en una sola columna: cada proyecto con su MEJOR gráfico
+          (la serie de tiempo del laboratorio, el estudio de evento del sistema
+          de crédito, el atlas de la tesis, el tablero de LATAM…), una cifra,
+          una línea y la salida a su página. Pedido del dueño (sept 2026). El
+          gráfico alterna de lado en escritorio para que la lectura zigzaguee;
+          en el teléfono va siempre arriba. La figura del atlas, que antes era
+          una sección propia encima de esta, vive ahora en su tarjeta. */}
+      <section id="work" className="scroll-mt-[72px] border-b border-rule bg-band py-16">
         <div className={WRAP}>
           <h2
             data-reveal
@@ -258,155 +266,54 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           >
             {work.title}
           </h2>
-          <p data-reveal className="reveal mt-2.5 max-w-[62ch] text-[15px] leading-[1.7]" style={{ "--d": "70ms" } as React.CSSProperties}>
+          <p data-reveal className="reveal mt-2 text-[15.5px] leading-[1.6] text-body" style={{ "--d": "70ms" } as React.CSSProperties}>
             {work.intro}
           </p>
 
-          <article data-reveal className="reveal relative mt-10 pt-6">
-            {/* the head rule is drawn, not painted: the pen crosses the sheet */}
-            <span aria-hidden="true" className="rule-in absolute inset-x-0 top-0 h-[2px] bg-ink" />
-            <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-              <h3 className="font-display text-[21px] font-bold tracking-[-0.015em] text-ink">
-                {work.project.name}
-              </h3>
-              <p className="text-[13px] tracking-[0.07em] text-muted uppercase">
-                {work.project.kind}
-              </p>
-            </div>
-
-            <div className="mt-7 grid gap-x-12 gap-y-7 lg:grid-cols-2">
-              <div>
-                <h4 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
-                  {work.project.problemLabel}
-                </h4>
-                <p className="mt-2 max-w-[62ch] text-[15px] leading-[1.7] text-ink">
-                  {work.project.problem}
-                </p>
-              </div>
-              <div>
-                <h4 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
-                  {work.project.builtLabel}
-                </h4>
-                <p className="mt-2 max-w-[62ch] text-[15px] leading-[1.7]">{work.project.built}</p>
-              </div>
-            </div>
-
-            <div className="mt-7 border-y border-cold bg-coldsoft px-5 py-4">
-              <h4 className="text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase">
-                {work.project.matterLabel}
-              </h4>
-              <p className="mt-1.5 max-w-[70ch] text-[15px] leading-[1.7] text-ink">
-                {work.project.matter}
-              </p>
-            </div>
-
-            <div className="mt-6 flex flex-wrap gap-2">
-              {work.project.stack.map((s, i) => (
-                <span
-                  key={s}
-                  data-reveal
-                  className="reveal rounded-[3px] border border-rule px-2.5 py-1 text-[14px] text-body"
-                  style={{ "--d": `${i * 40}ms` } as React.CSSProperties}
-                >
-                  {s}
-                </span>
-              ))}
-            </div>
-
-            {/* The strongest sentence on the page — a published negative result —
-                used to sit *below* three links that leave the page. A scanner who
-                took any of them never met it. It is a measurement, so it wears the
-                cold accent; the comment that used to sit here said amber, which
-                would have been a bug against the reservation rule. */}
-            <div className="mt-7 border-t border-rule pt-5">
-              <h4 className="text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase">
-                {work.project.findingLabel}
-              </h4>
-              <p className="mt-1.5 max-w-[70ch] text-[15px] leading-[1.7] text-ink">
-                {work.project.finding}
-              </p>
-            </div>
-
-            {/* Los tres botones estaban fijos aquí, y uno apuntaba a
-                /projects/trading-sim: cambiar cuál es el proyecto destacado obligaba
-                a editar el layout para mover contenido. Ahora salen del diccionario,
-                que es donde vive el resto del texto de la sección. */}
-            <div className="mt-7 flex flex-wrap gap-3">
-              {work.project.links.map((l) => {
-                const externo = l.href.startsWith("http");
-                const clase =
-                  l.tone === "solid"
-                    ? "lift inline-flex items-center rounded-[3px] bg-ink px-4 py-2.5 text-[14px] font-semibold text-paper transition-opacity hover:opacity-90"
-                    : l.tone === "outline"
-                      ? "lift inline-flex items-center rounded-[3px] border border-rule px-4 py-2.5 text-[14px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
-                      : "inline-flex items-center px-1 py-2.5 text-[14px] font-semibold text-cold hover:underline";
-                const texto = l.tone === "text" ? `${l.label} →` : l.label;
-                return externo ? (
-                  <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className={clase}>
-                    {texto}
-                  </a>
-                ) : (
-                  <Link key={l.href} href={`/${lang}${l.href}`} className={clase}>
-                    {texto}
-                  </Link>
-                );
-              })}
-            </div>
-
-          </article>
-
-        </div>
-
-        {/* WORK ran 1,637px on desktop and 2,812px on a phone — three and a half
-            screens — as one unbroken white field with a single hairline in it.
-            The reader loses the thread here, which is what "you get lost" was.
-            A full-bleed neutral band opened by a 2px ink rule is the sheet's own
-            device for a change of region; it costs nothing and gives the scan a
-            place to land. */}
-        <div className="mt-14 border-t-2 border-ink bg-band py-12">
-          <div className={WRAP}>
-            {/* the rest of the desk: one ruled row each, a status pill, and a link only
-                where there is something public to open. A private row says so. */}
-            <h3 className="font-display text-[19px] font-bold tracking-[-0.015em] text-ink">
-              {work.also.title}
-            </h3>
-            <ol className="mt-4">
-              {work.also.rows.map((r, i) => (
-                <li
-                  key={r.name}
-                  data-reveal
-                  className="reveal grid gap-x-8 gap-y-2 border-t border-rule py-4 first:border-t-2 first:border-ink sm:grid-cols-[minmax(0,1fr)_auto]"
-                  style={{ "--d": `${i * 80}ms` } as React.CSSProperties}
-                >
-                  <div>
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      {r.href ? (
-                        <Link
-                          href={r.href.startsWith("http") ? r.href : `/${lang}${r.href}`}
-                          className="text-[15.5px] font-semibold text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 hover:text-cold"
-                        >
-                          {r.name}
-                        </Link>
-                      ) : (
-                        <span className="text-[15.5px] font-semibold text-ink">{r.name}</span>
-                      )}
-                      <span className="text-[12.5px] tracking-[0.07em] text-muted uppercase">{r.kind}</span>
+          <ul className="mt-10 space-y-8">
+            {work.cards.map((c, i) => {
+              const flip = i % 2 === 1;
+              return (
+                <li key={c.href} data-reveal className="reveal">
+                  <Link
+                    href={`/${lang}${c.href}`}
+                    className={`showcase-card group grid overflow-hidden rounded-[14px] border border-rule bg-paper hover:border-cold ${flip ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,1.45fr)]" : "lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]"}`}
+                  >
+                    <div className={`flex flex-col justify-center gap-3 border-b border-rule bg-coldsoft p-5 sm:p-7 lg:border-b-0 ${flip ? "lg:order-2 lg:border-l" : "lg:border-r"}`}>
+                      <div className="showcase-media">
+                        <Preview card={c} lang={lang} />
+                      </div>
+                      <p className="text-[14px] leading-[1.55] text-muted">{c.caption}</p>
                     </div>
-                    <p className="mt-1 max-w-[68ch] text-[14.5px] leading-[1.65] text-body">{r.note}</p>
-                    {r.access && <p className="mt-1 text-[14px] text-muted">{r.access}</p>}
-                  </div>
-                  <div className="sm:pt-0.5">
-                    <StatusPill status={r.status} text={r.statusText} />
-                  </div>
+
+                    <div className="flex flex-col p-6 sm:p-8">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <span className="text-[12.5px] tracking-[0.07em] text-muted uppercase">{c.kind}</span>
+                        <StatusPill status={c.status} text={c.statusText} />
+                      </div>
+                      <h3 className="mt-4 font-display text-[clamp(21px,2.3vw,26px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
+                        {c.name}
+                      </h3>
+                      <p className="mt-5 font-figure text-[clamp(40px,4.8vw,54px)] leading-none text-cold">
+                        <LabText template={c.stat} initial={labSnapshot} lang={lang} />
+                      </p>
+                      <p className="mt-2 text-[14.5px] leading-[1.4] font-medium text-ink">{c.statLabel}</p>
+                      <p className="mt-4 text-[15px] leading-[1.6] text-body">{c.hook}</p>
+                      <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-[15px] font-semibold text-cold">
+                        {work.cta}
+                        <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1.5">→</span>
+                      </span>
+                    </div>
+                  </Link>
                 </li>
-              ))}
-            </ol>
-          </div>
+              );
+            })}
+          </ul>
         </div>
       </section>
 
       {/* ===================== TRACK RECORD + PROFILE ===================== */}
-      <section id="track" className="scroll-mt-16 border-b border-rule py-16">
+      <section id="track" className="scroll-mt-[72px] border-b border-rule py-16">
         <div className={WRAP}>
           <div>
             <div className="flex flex-wrap items-baseline justify-between gap-4">
@@ -463,33 +370,23 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
             </h2>
             <p className="mt-2 max-w-[62ch] text-[14.5px] leading-[1.6] text-body">{toolkit.note}</p>
 
-            <dl className="mt-6 grid gap-x-12 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Una fila de fichas, no una rejilla de nueve párrafos: la prueba
+                de cada una va en el `title` y en su destino, y la lista completa
+                con su prueba escrita vive en el CV (auditoría PC-10). */}
+            <ul className="mt-6 flex flex-wrap gap-2.5">
               {toolkit.rows.map((r, ri) => (
-                <div
-                  key={r.name}
-                  data-reveal
-                  className="reveal border-t border-rule py-3"
-                  style={{ "--d": `${ri * 60}ms` } as React.CSSProperties}
-                >
-                  <dt className="text-[14.5px] font-semibold text-ink">{r.name}</dt>
-                  <dd className="mt-1 text-[14px] leading-[1.55] text-body">
-                    {r.href ? (
-                      <Link
-                        href={r.href.startsWith("http") ? r.href : `/${lang}${r.href}`}
-                        {...(r.href.startsWith("http")
-                          ? { target: "_blank", rel: "noopener noreferrer" }
-                          : {})}
-                        className="underline decoration-cold decoration-[1.5px] underline-offset-4 hover:text-cold"
-                      >
-                        {r.proof}
-                      </Link>
-                    ) : (
-                      r.proof
-                    )}
-                  </dd>
-                </div>
+                <li key={r.name} data-reveal className="reveal" style={{ "--d": `${ri * 40}ms` } as React.CSSProperties}>
+                  <Link
+                    href={r.href ? (r.href.startsWith("http") ? r.href : `/${lang}${r.href}`) : `/${lang}/cv`}
+                    {...(r.href?.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    title={r.proof}
+                    className="lift inline-flex items-center gap-1.5 rounded-full border border-coldline bg-coldsoft px-3.5 py-1.5 text-[14px] font-medium text-cold hover:border-cold"
+                  >
+                    {r.name} <span aria-hidden="true">→</span>
+                  </Link>
+                </li>
               ))}
-            </dl>
+            </ul>
           </div>
         </div>
       </section>
@@ -499,7 +396,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           24ch headline wrapping to three lines in the left third and a row of
           links underneath. The CTA cluster moves beside the headline, which is
           what a band opened by a 2px rule is supposed to look like. */}
-      <section id="contact" className="scroll-mt-16 border-t-2 border-warm py-16">
+      <section id="contact" className="scroll-mt-[72px] border-t-2 border-warm py-16">
         <div className={`${WRAP} grid items-start gap-x-14 gap-y-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]`}>
           <div>
             <h2
@@ -551,7 +448,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                   key={l.label}
                   href={l.href}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  // rel="me": la señal estándar de que el perfil externo es de la
+                  // misma persona (microformats; es la que verifica Mastodon).
+                  rel="noopener noreferrer me"
                   className="text-[14.5px] font-medium text-cold hover:underline"
                 >
                   {l.label}
@@ -570,7 +469,9 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           (la lista de la mesa se quedó con `band`). */}
       <section className="border-t border-rule bg-band2 py-14">
         <div className={WRAP}>
-          <h2 className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
+          {/* A 12,5px apagado sobre filas de 14px el titular pesaba menos que su
+              contenido: mismo paso que la caja de herramientas de arriba. */}
+          <h2 className="font-display text-[clamp(20px,2.4vw,25px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
             {disclosures.title}
           </h2>
           <dl className="mt-5 grid gap-x-12 gap-y-5 sm:grid-cols-2">
@@ -582,7 +483,17 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 style={{ "--d": `${i * 70}ms` } as React.CSSProperties}
               >
                 <dt className="text-[14px] font-semibold text-ink">{d.term}</dt>
-                <dd className="mt-1 max-w-[58ch] text-[14px] leading-[1.65] text-body">{d.text}</dd>
+                <dd className="mt-1 max-w-[58ch] text-[14px] leading-[1.65] text-body">
+                  {d.text}
+                  {"href" in d && (
+                    <>
+                      {" "}
+                      <a href={d.href} target="_blank" rel="noopener noreferrer" className="font-medium text-cold hover:underline">
+                        {d.hrefLabel} →
+                      </a>
+                    </>
+                  )}
+                </dd>
               </div>
             ))}
           </dl>

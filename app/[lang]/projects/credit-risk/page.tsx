@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
-import BackLink from "@/components/BackLink";
-import StatusPill from "@/components/StatusPill";
+import ContactBand from "@/components/ContactBand";
+import SectionNav from "@/components/SectionNav";
+import ProjectHero from "@/components/project/ProjectHero";
+import Preview from "@/components/showcase/Previews";
 import {
   DecisionBalance,
   EventStudy,
   FairnessGate,
   VocabularyCliff,
 } from "@/components/credit-risk/Charts";
-import { alternates, openGraph } from "@/lib/config/alternates";
+import Scorer from "@/components/credit-risk/Scorer";
+import { alternates, social } from "@/lib/config/alternates";
+import { pageGraph } from "@/lib/config/structured-data";
 import {
   CR,
   cliff,
   compactUSD,
-  demoHref,
   eventPoints,
   gateThreshold,
   money,
@@ -21,6 +24,7 @@ import {
   pp,
   regimes,
   umbralPP,
+  REPO,
 } from "@/lib/data/credit-risk";
 import { getDictionary } from "@/lib/dictionaries";
 
@@ -35,7 +39,7 @@ export async function generateMetadata({
     title: dict.creditRisk.metaTitle,
     description: dict.creditRisk.metaDesc,
     alternates: alternates(lang, "/projects/credit-risk"),
-    openGraph: openGraph(lang, "/projects/credit-risk", {
+    ...social(lang, "/projects/credit-risk", {
       title: dict.creditRisk.metaTitle,
       description: dict.creditRisk.metaDesc,
       siteName: dict.profile.name,
@@ -58,6 +62,18 @@ export default async function CreditRiskPage({
   const cob = CR.vocabulario.cobertura;
   const umbralEquidad = gateThreshold("hmda:disparate_impact", 0.8);
 
+  // La cabecera enseña el mismo gráfico de la tarjeta de la portada.
+  const card = dict.work.cards.find((c) => c.href === "/projects/credit-risk")!;
+  // Cifras de la banda: del bundle del repositorio, nunca escritas a mano.
+  const lgbm = CR.modelos.modelos.find((m) => m.modelo === CR.modelos.produccion)!;
+  const auc = num(lgbm.auc_test, lang);
+  const avoided = new Intl.NumberFormat(lang === "es" ? "es-CO" : "en-US", { maximumFractionDigits: 1 }).format(money.avoided / 1e6) + (lang === "es" ? " M USD" : "M USD");
+  const avoidedFmt = lang === "es" ? avoided : `$${avoided.replace("M USD", "M")}`;
+  // Los diez gates no viajan en el bundle como lista; la cifra es la que el
+  // repositorio y el resto del sitio declaran (README, CV, portada).
+  const gates = "10";
+  const di = num(CR.equidad.disparate_impact_ratio, lang);
+
   const regimenRows = [
     { label: t.event.regimes.pre, v: regimes.prepandemia_pp },
     { label: t.event.regimes.boom, v: regimes.auge_pp },
@@ -66,44 +82,45 @@ export default async function CreditRiskPage({
 
   return (
     <main id="main" tabIndex={-1}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/projects/credit-risk", { title: t.metaTitle, description: t.metaDesc }, { type: "SoftwareSourceCode", codeRepository: REPO, programmingLanguage: "Python" })) }}
+      />
       {/* ================= HERO ================= */}
-      <header className="pt-20 pb-12">
-        <div className={wrap}>
-          <div className="mb-6 flex flex-wrap items-center gap-4">
-            <BackLink href={`/${lang}`} label={dict.nav.backHome} />
-            <StatusPill status="live" />
-          </div>
-          <p className="text-[12.5px] uppercase tracking-[0.1em] text-muted mb-3">{t.kicker}</p>
-          <h1 className="max-w-[820px] font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
-            {t.title}
-          </h1>
-          <p className="mt-5 text-[15.5px] leading-[1.75] max-w-[700px]">{t.intro}</p>
-          <p className="mt-3 text-[14px] text-muted max-w-[700px]">{t.pipelineLine}</p>
-        </div>
-      </header>
+      <ProjectHero
+        lang={lang}
+        backLabel={dict.nav.backHome}
+        status="live"
+        pill={t.pill}
+        kicker={t.kicker}
+        title={t.title}
+        lede={t.intro}
+        meta={[t.pipelineLine]}
+        ctas={[
+          { href: "#demo", label: t.hero.ctaDemo, tone: "solid" },
+          { href: REPO, label: t.hero.ctaCode, tone: "outline" },
+        ]}
+        visual={<Preview card={card} lang={lang} />}
+        visualCaption={card.caption}
+        figures={[auc, avoidedFmt, gates, di].map((value, i) => ({ value, ...t.hero.figures[i] }))}
+      />
+
+      <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
 
       {/* ================= DEMO ================= */}
-      <section className="py-12 bg-band border-t-2 border-cold" aria-labelledby="cr-demo">
+      <section id="demo" className="scroll-mt-[118px] py-12 bg-band border-t-2 border-cold" aria-labelledby="cr-demo">
         <div className={wrap}>
-          <h2 id="cr-demo" className="font-display text-[19px] font-bold text-ink mb-2">
+          <h2 id="cr-demo" className={h2}>
             {t.demo.title}
           </h2>
-          <p className="text-[14.5px] leading-[1.7] max-w-[660px]">{t.demo.body}</p>
-          <div className="mt-5 flex flex-wrap items-center gap-4">
-            {/* Salida del árbol de Next a un estático de `public/`: <a>, no <Link>. */}
-            <a
-              href={demoHref(lang)}
-              className="inline-flex items-center border border-ink bg-ink text-paper px-4 py-2 text-[14px] font-medium hover:opacity-90"
-            >
-              {t.demo.cta}
-            </a>
-            <span className="text-[14px] text-muted">{t.demo.note}</span>
-          </div>
+          <p className="text-[14.5px] leading-[1.7] max-w-[680px]">{t.demo.body}</p>
+          <p className="mt-2 text-[14px] text-muted">{t.demo.note}</p>
+          <Scorer copy={t.demo} lang={lang} />
         </div>
       </section>
 
       {/* ================= EL ACANTILADO ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-cliff">
+      <section id="vocabulario" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-cliff">
         <div className={wrap}>
           <h2 id="cr-cliff" className={h2}>
             {t.cliff.title}
@@ -157,7 +174,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= DINERO ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-money">
+      <section id="dinero" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-money">
         <div className={wrap}>
           <h2 id="cr-money" className={h2}>
             {t.money.title}
@@ -184,7 +201,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= EL GATE ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-gate">
+      <section id="gate" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-gate">
         <div className={wrap}>
           <h2 id="cr-gate" className={h2}>
             {t.gate.title}
@@ -208,7 +225,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= ESTUDIO DE EVENTO ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-event">
+      <section id="evento" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-event">
         <div className={wrap}>
           <h2 id="cr-event" className={h2}>
             {t.event.title}
@@ -282,7 +299,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= CIERRE ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-close">
+      <section id="codigo" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-close">
         <div className={wrap}>
           <h2 id="cr-close" className={h2}>
             {t.close.title}
@@ -305,6 +322,10 @@ export default async function CreditRiskPage({
           </p>
         </div>
       </section>
+
+      {/* Cerraba en «volver al inicio» o en GitHub: justo donde el lector está
+          más convencido. La banda es la misma de /historia. */}
+      <ContactBand dict={dict} lang={lang} wrap={wrap} />
     </main>
   );
 }

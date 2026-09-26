@@ -65,6 +65,18 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
     return { x, y, path, ticks, splitIdx };
   }, [points, splitDate]);
 
+  // Ver components/ScaleAware.tsx: 720 unidades de viewBox en 297px de teléfono
+  // pintaban un font-size de 10 a 4,1px reales (DA-02). --k deshace la escala.
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const set = () => el.style.setProperty("--k", String(Math.max(1, W / Math.max(1, el.clientWidth))));
+    set();
+    const ro = new ResizeObserver(set);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     // the plot is drawn, not revealed: benchmark first, strategy landing last
@@ -108,7 +120,7 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
     <div ref={wrapRef} className="relative">
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full select-none"
+        className="w-full select-none overflow-visible"
         role="img"
         aria-label={`${labels.strategy} vs ${labels.benchmark}`}
         onPointerMove={onMove}
@@ -118,7 +130,7 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
         {geom.ticks.map((v) => (
           <g key={v}>
             <line x1={PAD.left} x2={W - PAD.right} y1={geom.y(v)} y2={geom.y(v)} stroke={CHART.grid} strokeWidth="1" />
-            <text x={PAD.left - 8} y={geom.y(v) + 3.5} textAnchor="end" fontSize="10" fill="var(--color-muted)">
+            <text x={PAD.left - 8} y={geom.y(v) + 3.5} textAnchor="end" style={{ fontSize: "calc(10px * var(--k, 1))" }} fill="var(--color-muted)">
               {compactMoney(lang, v)}
             </text>
           </g>
@@ -132,7 +144,7 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
               y1={PAD.top} y2={H - PAD.bottom}
               stroke="var(--color-rule)" strokeWidth="1"
             />
-            <text x={geom.x(geom.splitIdx) + 5} y={PAD.top + 9} fontSize="9.5" fill="var(--color-muted)">
+            <text x={geom.x(geom.splitIdx) + 5} y={PAD.top + 9} style={{ fontSize: "calc(9.5px * var(--k, 1))" }} fill="var(--color-muted)">
               {labels.split}
             </text>
           </g>
@@ -146,16 +158,16 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
         {/* puntos finales con anillo de superficie + etiquetas directas */}
         <circle cx={geom.x(points.length - 1)} cy={endBenchY} r="4" fill={CHART.benchmark} stroke={CHART.surface} strokeWidth="2" />
         <circle cx={geom.x(points.length - 1)} cy={endStrategyY} r="4" fill={CHART.series} stroke={CHART.surface} strokeWidth="2" />
-        <text x={W - PAD.right + 10} y={labelStrategyY + 3.5} fontSize="10.5" fill="var(--color-ink)">
+        <text x={W - PAD.right + 10} y={labelStrategyY + 3.5} style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill="var(--color-ink)">
           {compactMoney(lang, last[1])}
         </text>
-        <text x={W - PAD.right + 10} y={labelBenchY + 3.5} fontSize="10.5" fill="var(--color-body)">
+        <text x={W - PAD.right + 10} y={labelBenchY + 3.5} style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill="var(--color-body)">
           {compactMoney(lang, last[2])}
         </text>
 
         {/* fechas: inicio / fin */}
-        <text x={PAD.left} y={H - 8} fontSize="10" fill="var(--color-muted)">{points[0][0]}</text>
-        <text x={W - PAD.right} y={H - 8} textAnchor="end" fontSize="10" fill="var(--color-muted)">{last[0]}</text>
+        <text x={PAD.left} y={H - 8} style={{ fontSize: "calc(10px * var(--k, 1))" }} fill="var(--color-muted)">{points[0][0]}</text>
+        <text x={W - PAD.right} y={H - 8} textAnchor="end" style={{ fontSize: "calc(10px * var(--k, 1))" }} fill="var(--color-muted)">{last[0]}</text>
 
         {/* capa hover: crosshair + anillos */}
         {h && (
@@ -193,8 +205,13 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
 
       {/* vista tabla (accesibilidad): muestreo trimestral */}
       <details className="mt-2">
-        <summary className="cursor-pointer text-[14px] text-muted hover:text-body">{labels.tableToggle}</summary>
-        <div className="mt-2 max-h-48 overflow-y-auto rounded border border-rulesoft">
+        {/* py-1.5: un <summary> es un control autónomo y la caja de línea sola
+            se quedaba en ~21px, por debajo del objetivo mínimo de 24px (2.5.8). */}
+        <summary className="inline-block cursor-pointer py-1.5 text-[14px] text-muted hover:text-body">{labels.tableToggle}</summary>
+        {/* tabIndex: sin nada enfocable dentro, una región con scroll no se puede
+            desplazar con el teclado (2.1.1). Y sin radio: una tabla no es un
+            control, y un bloque con borde y esquinas es una tarjeta. */}
+        <div tabIndex={0} role="region" aria-label={labels.tableToggle} className="mt-2 max-h-48 overflow-y-auto border-t border-rulesoft">
           <table className="w-full text-[14px]">
             <thead className="sticky top-0 bg-band2 text-muted">
               <tr>

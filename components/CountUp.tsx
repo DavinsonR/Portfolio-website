@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
    number and never a zero. Prefix and suffix ("15+", "10+ hrs/mo")
    are preserved exactly as written. */
 
-const SHAPE = /^(\D*?)(\d[\d.,]*)([\s\S]*)$/;
+export const SHAPE = /^(\D*?)(\d[\d.,]*)([\s\S]*)$/;
 
 export default function CountUp({
   value,

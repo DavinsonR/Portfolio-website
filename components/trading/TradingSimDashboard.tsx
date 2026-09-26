@@ -12,7 +12,7 @@ import type { Dictionary } from "@/lib/dictionaries";
 import {
   TRADING_SIM_REPO,
   symbolUrl,
-  fetchIndex,
+  fetchIndexShared,
   fetchJson,
   pct,
   num,
@@ -23,12 +23,24 @@ import {
   type IndexSource,
 } from "@/lib/data/trading-sim";
 import { EquityChart, Funnel, HBars, CHART } from "@/components/trading/Charts";
+import { fillLab, labStatsFrom } from "@/lib/data/lab-stats";
 
 type Dict = Dictionary["tradingSim"];
 
 const REGION_ORDER = ["global", "us", "latam", "emerging"] as const;
 
-export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: string }) {
+export default function TradingSimDashboard({
+  dict,
+  lang,
+  initialOverfitting,
+}: {
+  dict: Dict;
+  lang: string;
+  /** El bloque de sobreajuste de la instantánea versionada, que la página de
+   *  servidor pasa para que el veredicto y las dos gráficas por nº de señales
+   *  estén en el HTML antes de que llegue el índice vivo. */
+  initialOverfitting?: IndexData["overfitting"];
+}) {
   const [index, setIndex] = useState<IndexData | null>(null);
   const [indexError, setIndexError] = useState(false);
   // De dónde salió lo que se está enseñando. Solo importa cuando NO es lo vivo:
@@ -47,7 +59,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
     symbolCache.get(symbol) ?? (fetchedSymbol?.symbol === symbol ? fetchedSymbol : null);
 
   const loadIndex = useCallback(() => {
-    fetchIndex<IndexData>()
+    fetchIndexShared<IndexData>()
       .then(({ data, source }) => {
         setIndex(data);
         setIndexSource(source);
@@ -87,14 +99,19 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
 
   // ---- derivados del índice ----
   const funnel = useMemo(() => {
-    const rows = index?.overfitting?.by_n_components ?? [];
+    // Hasta que llega el índice vivo, la instantánea del build.
+    const over = index?.overfitting ?? initialOverfitting;
+    const rows = over?.by_n_components ?? [];
     // The export carries the grand total under its own `overall` key; older
     // shapes kept it as a flagged row inside the array. Accept both, so a
     // schema change upstream degrades to stale-but-correct, never to dashes.
-    const total = index?.overfitting?.overall ?? rows.find((r) => r.is_grand_total);
+    const total = over?.overall ?? rows.find((r) => r.is_grand_total);
     const byN = rows.filter((r) => !r.is_grand_total && r.n_components != null);
-    return { total, byN };
-  }, [index]);
+    // Para las plantillas del diccionario («una de cada {oneIn}»): las mismas
+    // cifras derivadas que usan el titular y la portada.
+    const stats = labStatsFrom({ overfitting: over });
+    return { total, byN, stats };
+  }, [index, initialOverfitting]);
 
   const singlesLeaderboard = useMemo(
     () =>
@@ -141,57 +158,46 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
      ser bloques abiertos: regla de 2px arriba, fondo de banda, esquinas rectas.
      `animate-pulse` también sale: es un esqueleto de aplicación web y aquí el
      registro es la imprenta — una hoja no palpita. */
-  if (indexError)
-    return (
-      <div className="border-t-2 border-ink bg-band px-5 py-8 text-center">
-        <p className="text-[14px] text-body">{dict.error}</p>
-        <button
-          onClick={retryIndex}
-          className="mt-4 rounded-[3px] border border-control px-4 py-2 text-[14px] transition-colors hover:border-cold hover:text-cold"
-        >
-          {dict.retry}
-        </button>
+  //
+  // Y ya no son pantallas enteras: con la instantánea versionada como valor
+  // inicial, el veredicto y las dos gráficas por nº de señales se pintan en el
+  // SERVIDOR —la evidencia está en el HTML para el buscador y para la red que
+  // bloquea scripts; antes el HTML decía literalmente «loading pipeline
+  // data…»—. Solo el explorador, que necesita el índice entero, espera; y el
+  // error, si llega, ocupa su sitio sin borrar lo que ya se ve.
+  const pending = indexError ? (
+    <div className="border-t-2 border-ink bg-band px-5 py-8 text-center">
+      <p className="text-[14px] text-body" role="alert">{dict.error}</p>
+      <button
+        onClick={retryIndex}
+        className="mt-4 rounded-[3px] border border-control px-4 py-2 text-[14px] transition-colors hover:border-cold hover:text-cold"
+      >
+        {dict.retry}
+      </button>
+    </div>
+  ) : (
+    <div className="border-t-2 border-ink bg-band px-5 py-8">
+      <p className="text-[14px] text-muted" role="status">{dict.loading}</p>
+      <div className="mt-4 space-y-2.5">
+        {[80, 60, 72].map((w, i) => (
+          <div key={i} className="h-[14px] bg-rule" style={{ width: `${w}%` }} />
+        ))}
       </div>
-    );
-
-  if (!index)
-    return (
-      <div className="border-t-2 border-ink bg-band px-5 py-8">
-        <p className="text-[14px] text-muted">{dict.loading}</p>
-        <div className="mt-4 space-y-2.5">
-          {[80, 60, 72].map((w, i) => (
-            <div key={i} className="h-[14px] bg-rule" style={{ width: `${w}%` }} />
-          ))}
-        </div>
-      </div>
-    );
+    </div>
+  );
 
   const total = funnel.total;
-  const generated = index.generated_at?.slice(0, 10);
+  const generated = index?.generated_at?.slice(0, 10);
 
   return (
     <div className="space-y-14">
       {/* ============ 1. EL VEREDICTO — stat tiles + embudo ============ */}
       <section aria-labelledby="ts-verdict">
-        <div className="mb-8 grid grid-cols-2 border-t-2 border-cold lg:grid-cols-4">
-          {[
-            { label: dict.stats.variants, value: num(lang, total?.n_variants ?? null, 0) },
-            { label: dict.stats.beatIs, value: num(lang, total?.n_beat_is ?? null, 0) },
-            { label: dict.stats.survivors, value: num(lang, total?.n_beat_is_and_oos ?? null, 0) },
-            { label: dict.stats.survival, value: pct(lang, total?.oos_survival_rate ?? null, 1), hero: true },
-          ].map((s) => (
-            <div key={s.label} className="border-t border-rule pt-5">
-              <p className="text-[12.5px] tracking-[0.1em] uppercase text-muted">{s.label}</p>
-              <p className={`font-display font-medium text-ink mt-2 ${s.hero ? "text-[34px]" : "text-[26px]"}`}>
-                {s.value}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="border-t border-rule pt-7">
+        <div>
           <h3 id="ts-verdict" className="font-display text-[18px] font-medium text-ink mb-1.5">{dict.funnel.title}</h3>
-          <p className="text-[14px] leading-[1.7] max-w-[620px] mb-6">{dict.funnel.desc}</p>
+          <p className="text-[14px] leading-[1.7] max-w-[620px] mb-6">
+            {funnel.stats ? fillLab(dict.funnel.desc, funnel.stats, lang) : dict.funnel.desc}
+          </p>
           <Funnel
             stages={[
               { label: dict.funnel.stageAll, value: total?.n_variants ?? 0, display: num(lang, total?.n_variants ?? 0, 0) },
@@ -231,6 +237,9 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
         </div>
       </section>
 
+      {!index && pending}
+      {index && (
+        <>
       {/* ============ 3. EXPLORADOR — 45 activos, curvas reales ============ */}
       <section className="border-t-2 border-ink bg-band">
         <div className="flex items-center gap-2 border-b border-rule bg-band px-4 py-3">
@@ -284,7 +293,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
             ))}
           </div>
 
-          {symbolLoading && <p className="py-16 text-center text-[14px] text-muted">{dict.loading}</p>}
+          {symbolLoading && <p className="py-16 text-center text-[14px] text-muted" role="status">{dict.loading}</p>}
 
           {!symbolLoading && currentBacktest && (
             <>
@@ -336,7 +345,12 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
                     {dict.combos.title.replace("{n}", String(combos.length))}
                   </h4>
                   <p className="text-[14px] leading-[1.6] mb-4 max-w-[640px]">{dict.combos.desc}</p>
-                  <div className="max-h-[340px] overflow-y-auto border-t border-rule">
+                  <div
+                    tabIndex={0}
+                    role="region"
+                    aria-label={dict.combos.title.replace("{n}", String(combos.length))}
+                    className="max-h-[340px] overflow-y-auto border-t border-rule"
+                  >
                     <table className="w-full text-[14px]">
                       <thead className="sticky top-0 bg-band2 text-muted text-left">
                         <tr>
@@ -350,9 +364,12 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
                       <tbody className="text-body">
                         {combos.map((c) => {
                           const dead = (c.n_trades ?? 0) === 0;
+                          // Sin opacidad: body al 45 % sobre band daba 2,16:1 y el texto sigue
+                          // siendo información (qué combinación no operó nunca). `muted` sigue
+                          // siendo AA y la cursiva lo marca sin color.
                           return (
-                            <tr key={c.strategy} className={`border-t border-rulesoft ${dead ? "opacity-45" : ""}`}>
-                              <td className="px-3 py-1.5 text-ink">{c.strategy}</td>
+                            <tr key={c.strategy} className={`border-t border-rulesoft ${dead ? "italic text-muted" : ""}`}>
+                              <td className={`px-3 py-1.5 ${dead ? "" : "text-ink"}`}>{c.strategy}</td>
                               <td className="px-3 py-1.5 text-right">{pct(lang, c.exposure, 1)}</td>
                               <td className="px-3 py-1.5 text-right">{pct(lang, c.excess_return, 1, true)}</td>
                               <td className="px-3 py-1.5 text-right">{pct(lang, c.oos_excess_return, 1, true)}</td>
@@ -371,7 +388,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
           )}
 
           {!symbolLoading && !currentBacktest && (
-            <p className="text-[14px] text-muted py-12 text-center">{dict.explorer.noData}</p>
+            <p className="text-[14px] text-muted py-12 text-center" role="status">{dict.explorer.noData}</p>
           )}
         </div>
       </section>
@@ -380,7 +397,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
       <section className="border-t border-rule pt-7">
         <h3 className="font-display text-[18px] font-medium text-ink mb-1.5">{dict.leaderboard.title}</h3>
         <p className="text-[14px] leading-[1.7] max-w-[620px] mb-5">{dict.leaderboard.desc}</p>
-        <div className="overflow-x-auto">
+        <div tabIndex={0} role="region" aria-label={dict.leaderboard.title} className="overflow-x-auto">
           <table className="w-full min-w-[560px] text-[14px]">
             <thead className="text-muted text-left">
               <tr className="border-b border-rule">
@@ -416,7 +433,7 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
           <h3 className="font-display text-[18px] font-medium text-ink mb-1.5">{dict.fx.title}</h3>
           <p className="text-[14px] leading-[1.7] max-w-[660px] mb-2">{dict.fx.desc}</p>
           <p className="text-[14px] text-muted mb-5">{dict.fx.formula}</p>
-          <div className="overflow-x-auto">
+          <div tabIndex={0} role="region" aria-label={dict.fx.title} className="overflow-x-auto">
             <table className="w-full min-w-[560px] text-[14px]">
               <thead className="text-muted text-left">
                 <tr className="border-b border-rule">
@@ -494,6 +511,8 @@ export default function TradingSimDashboard({ dict, lang }: { dict: Dict; lang: 
           {dict.repoCta}
         </a>
       </p>
+        </>
+      )}
     </div>
   );
 }

@@ -60,6 +60,10 @@ export default function Navbar({
               «pulsa EN» y no pasaba nada. */}
           <Link
             href={switchHref}
+            // La barra es pegajosa: el enlace está siempre en pantalla y Next
+            // precargaba la ruta entera del otro idioma (75 KB de RSC) en cada
+            // página. Nadie lee las dos versiones.
+            prefetch={false}
             title={nav.switchTitle}
             aria-label={`${nav.switchLabel} — ${nav.switchTitle}`}
             className="lift inline-flex h-9 items-center rounded-[3px] border border-coldline bg-coldsoft px-3 font-display text-[14px] font-semibold tracking-[0.06em] text-cold transition-colors hover:border-cold"

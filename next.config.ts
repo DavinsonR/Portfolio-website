@@ -3,16 +3,26 @@ import type { NextConfig } from "next";
 /** English is the default: most decision-makers for these roles read English,
  *  and the Spanish routes stay one click away from every page. */
 const nextConfig: NextConfig = {
+  // Un sitio que se toma la molestia de `default-src 'none'` no anuncia su
+  // framework en cada respuesta.
+  poweredByHeader: false,
   async redirects() {
     return [
+      // `/` se queda en 307 A PROPÓSITO (D-32): es el único sitio donde una
+      // detección de idioma por Accept-Language tendría sentido algún día, y un
+      // 308 queda cacheado en el navegador del visitante sin fecha de caducidad —
+      // lo congelaría. Los ocho de ruta concreta son decisiones permanentes de
+      // arquitectura y van en 308: consolidan señal y se cachean. `check:routes`
+      // lee esta lista y exige exactamente esos códigos.
       { source: "/", destination: "/en", permanent: false },
-      { source: "/cv", destination: "/en/cv", permanent: false },
-      { source: "/projects/credit-risk", destination: "/en/projects/credit-risk", permanent: false },
-      { source: "/projects/trading-sim", destination: "/en/projects/trading-sim", permanent: false },
-      { source: "/projects/powerbi", destination: "/en/projects/powerbi", permanent: false },
-      { source: "/projects/tracking", destination: "/en/projects/tracking", permanent: false },
-      { source: "/research/fintech-inclusion", destination: "/en/research/fintech-inclusion", permanent: false },
-      { source: "/historia", destination: "/en/historia", permanent: false },
+      { source: "/cv", destination: "/en/cv", permanent: true },
+      { source: "/projects/credit-risk", destination: "/en/projects/credit-risk", permanent: true },
+      { source: "/projects/trading-sim", destination: "/en/projects/trading-sim", permanent: true },
+      { source: "/projects/powerbi", destination: "/en/projects/powerbi", permanent: true },
+      { source: "/projects/tracking", destination: "/en/projects/tracking", permanent: true },
+      { source: "/research/fintech-inclusion", destination: "/en/research/fintech-inclusion", permanent: true },
+      { source: "/labs/macro-forecast", destination: "/en/labs/macro-forecast", permanent: true },
+      { source: "/historia", destination: "/en/historia", permanent: true },
     ];
   },
   /** Cabeceras de seguridad.
@@ -56,33 +66,100 @@ const nextConfig: NextConfig = {
      *  El <script> del runtime va con `integrity`, de modo que el unico permiso de
      *  origen externo que se concede esta atado a un hash concreto. */
     const demo = "credit-risk-demo";
+    // En `next dev` la CSP estricta bloquea los <style> que inyecta HMR y el
+    // script de depuración de Vercel Analytics (va.vercel-scripts.com): la
+    // consola se llenaba de violaciones que tapaban los errores reales. Solo en
+    // desarrollo se abren esas dos puertas; la política publicada no cambia.
+    const dev = process.env.NODE_ENV !== "production";
+    /** Caché para `public/`. Next sirve todo lo que hay ahí con
+     *  `max-age=0, must-revalidate`: las dos fuentes precargadas, el modelo de
+     *  1,9 MB y los 1,8 MB del atlas se revalidaban en cada visita (un RTT por
+     *  activo, en la ruta crítica del render en el caso de las fuentes). Las
+     *  fuentes no cambian nunca —si cambian, se renombra el fichero—; el resto
+     *  cambia con un commit y una hora de caché con revalidación en segundo
+     *  plano no deja a nadie viendo algo viejo más de eso. `check:routes` exige
+     *  que una fuente lleve `max-age` mayor que cero. */
+    const cache = (source: string, value: string) => ({ source, headers: [{ key: "Cache-Control", value }] });
+    const immutable = "public, max-age=31536000, immutable";
+    const hourly = "public, max-age=3600, stale-while-revalidate=604800";
+    const weekly = "public, max-age=604800, stale-while-revalidate=2592000";
+    const scorer = "(?:en|es)/projects/credit-risk";
+    const common = [
+      { key: "X-Frame-Options", value: "DENY" },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      // `browsing-topics` es lo que sustituyó a FLoC (`interest-cohort`); se
+      // dejan los dos porque los navegadores ignoran la directiva que no conocen.
+      { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=(), browsing-topics=()" },
+      // Cierra la referencia `window.opener` entre orígenes. Coste cero: nada
+      // aquí depende de una ventana abierta desde otro sitio.
+      { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+      { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+    ];
+    /** La CSP del sitio. `extra` añade orígenes a `script-src` y `connect-src` y
+     *  nada más: es la única forma de abrirla, y solo la usa la página del simulador. */
+    const siteCsp = (extra: { script?: string[]; connect?: string[] } = {}) =>
+      [
+        "default-src 'none'",
+        [
+          "script-src 'self' 'unsafe-inline'",
+          ...(extra.script ?? []),
+          ...(dev ? ["https://va.vercel-scripts.com"] : []),
+        ].join(" "),
+        dev ? "style-src 'self' 'unsafe-inline'" : "style-src 'self'",
+        "style-src-attr 'unsafe-inline'",
+        "font-src 'self'",
+        "img-src 'self' data:",
+        // El laboratorio de trading lee los JSON del pipeline en cliente.
+        ["connect-src 'self' https://raw.githubusercontent.com", ...(extra.connect ?? [])].join(" "),
+        "manifest-src 'self'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+        "object-src 'none'",
+        "upgrade-insecure-requests",
+      ].join("; ");
     return [
+      cache("/fonts/:path*", immutable),
+      cache(`/${demo}/model.onnx`, immutable),
+      cache("/atlas/:path*", hourly),
+      // Los JSON del laboratorio cambian con cada versión suya y el código que los lee cambia con
+      // ellos: se revalidan siempre (un 304 barato) para que nunca se mezclen datos viejos con
+      // código nuevo, como pasaría con una hora de caché más siete de stale-while-revalidate.
+      cache("/forecast-lab/:path*", "public, max-age=0, must-revalidate"),
+      cache("/trading-sim-snapshot/:path*", hourly),
+      cache("/og-:lang.png", weekly),
+      cache("/icon-:size.png", weekly),
+      cache("/tableau/:path*", weekly),
+      cache("/tracking/:path*", weekly),
+      cache("/:name*.pdf", "public, max-age=86400, stale-while-revalidate=604800"),
       {
-        source: `/:path((?!${demo}).*)`,
+        source: `/:path((?!${demo}|${scorer}$).*)`,
+        headers: [...common, { key: "Content-Security-Policy", value: siteCsp() }],
+      },
+      /** La página de credit-risk-mlops lleva el simulador dentro, y es la única
+       *  ruta del sitio con la política de la demo en `script-src` y `connect-src`.
+       *
+       *  Es la misma política de arriba, directiva por directiva, más lo mínimo para
+       *  que onnxruntime-web compile su WebAssembly: `wasm-unsafe-eval` y los dos CDN
+       *  del runtime (cdnjs sirve `ort.min.js` con `integrity`; jsdelivr sirve el
+       *  módulo `.mjs` y el `.wasm`, sin él — el mismo límite declarado de la demo).
+       *  No se abre nada más: ni `style-src`, ni `worker-src`, ni otro origen.
+       *
+       *  La regla general EXCLUYE esta ruta por la misma razón que excluye la demo:
+       *  con dos CSP en la misma respuesta el navegador aplica la intersección, y la
+       *  estricta seguiría bloqueando el runtime. `check:routes` exige que esta
+       *  ruta lleve `wasm-unsafe-eval` y que la portada NO lo lleve. */
+      {
+        source: `/:lang(en|es)/projects/credit-risk`,
         headers: [
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
-          { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+          ...common,
           {
             key: "Content-Security-Policy",
-            value: [
-              "default-src 'none'",
-              "script-src 'self' 'unsafe-inline'",
-              "style-src 'self'",
-              "style-src-attr 'unsafe-inline'",
-              "font-src 'self'",
-              "img-src 'self' data:",
-              // El laboratorio de trading lee los JSON del pipeline en cliente.
-              "connect-src 'self' https://raw.githubusercontent.com",
-              "manifest-src 'self'",
-              "base-uri 'self'",
-              "form-action 'self'",
-              "frame-ancestors 'none'",
-              "object-src 'none'",
-              "upgrade-insecure-requests",
-            ].join("; "),
+            value: siteCsp({
+              script: ["'wasm-unsafe-eval'", "https://cdnjs.cloudflare.com", "https://cdn.jsdelivr.net"],
+              connect: ["https://cdn.jsdelivr.net"],
+            }),
           },
         ],
       },
@@ -92,7 +169,7 @@ const nextConfig: NextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=()" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(), interest-cohort=(), browsing-topics=()" },
           { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
           {
             key: "Content-Security-Policy",
