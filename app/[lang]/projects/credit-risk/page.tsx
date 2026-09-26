@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import BackLink from "@/components/BackLink";
 import ContactBand from "@/components/ContactBand";
-import StatusPill from "@/components/StatusPill";
+import SectionNav from "@/components/SectionNav";
+import ProjectHero from "@/components/project/ProjectHero";
+import Preview from "@/components/showcase/Previews";
 import {
   DecisionBalance,
   EventStudy,
@@ -61,6 +62,18 @@ export default async function CreditRiskPage({
   const cob = CR.vocabulario.cobertura;
   const umbralEquidad = gateThreshold("hmda:disparate_impact", 0.8);
 
+  // La cabecera enseña el mismo gráfico de la tarjeta de la portada.
+  const card = dict.work.cards.find((c) => c.href === "/projects/credit-risk")!;
+  // Cifras de la banda: del bundle del repositorio, nunca escritas a mano.
+  const lgbm = CR.modelos.modelos.find((m) => m.modelo === CR.modelos.produccion)!;
+  const auc = num(lgbm.auc_test, lang);
+  const avoided = new Intl.NumberFormat(lang === "es" ? "es-CO" : "en-US", { maximumFractionDigits: 1 }).format(money.avoided / 1e6) + (lang === "es" ? " M USD" : "M USD");
+  const avoidedFmt = lang === "es" ? avoided : `$${avoided.replace("M USD", "M")}`;
+  // Los diez gates no viajan en el bundle como lista; la cifra es la que el
+  // repositorio y el resto del sitio declaran (README, CV, portada).
+  const gates = "10";
+  const di = num(CR.equidad.disparate_impact_ratio, lang);
+
   const regimenRows = [
     { label: t.event.regimes.pre, v: regimes.prepandemia_pp },
     { label: t.event.regimes.boom, v: regimes.auge_pp },
@@ -74,20 +87,25 @@ export default async function CreditRiskPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pageGraph(dict, lang, "/projects/credit-risk", { title: t.metaTitle, description: t.metaDesc }, { type: "SoftwareSourceCode", codeRepository: REPO, programmingLanguage: "Python" })) }}
       />
       {/* ================= HERO ================= */}
-      <header className="pt-20 pb-12">
-        <div className={wrap}>
-          <div className="mb-6 flex flex-wrap items-center gap-4">
-            <BackLink href={`/${lang}`} label={dict.nav.backHome} />
-            <StatusPill status="live" />
-          </div>
-          <p className="text-[12.5px] uppercase tracking-[0.1em] text-muted mb-3">{t.kicker}</p>
-          <h1 className="max-w-[820px] font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
-            {t.title}
-          </h1>
-          <p className="mt-5 text-[15.5px] leading-[1.75] max-w-[700px]">{t.intro}</p>
-          <p className="mt-3 text-[14px] text-muted max-w-[700px]">{t.pipelineLine}</p>
-        </div>
-      </header>
+      <ProjectHero
+        lang={lang}
+        backLabel={dict.nav.backHome}
+        status="live"
+        pill={t.pill}
+        kicker={t.kicker}
+        title={t.title}
+        lede={t.intro}
+        meta={[t.pipelineLine]}
+        ctas={[
+          { href: "#demo", label: t.hero.ctaDemo, tone: "solid" },
+          { href: REPO, label: t.hero.ctaCode, tone: "outline" },
+        ]}
+        visual={<Preview card={card} lang={lang} />}
+        visualCaption={card.caption}
+        figures={[auc, avoidedFmt, gates, di].map((value, i) => ({ value, ...t.hero.figures[i] }))}
+      />
+
+      <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
 
       {/* ================= DEMO ================= */}
       <section id="demo" className="scroll-mt-[118px] py-12 bg-band border-t-2 border-cold" aria-labelledby="cr-demo">
@@ -102,7 +120,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= EL ACANTILADO ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-cliff">
+      <section id="vocabulario" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-cliff">
         <div className={wrap}>
           <h2 id="cr-cliff" className={h2}>
             {t.cliff.title}
@@ -156,7 +174,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= DINERO ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-money">
+      <section id="dinero" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-money">
         <div className={wrap}>
           <h2 id="cr-money" className={h2}>
             {t.money.title}
@@ -183,7 +201,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= EL GATE ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-gate">
+      <section id="gate" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-gate">
         <div className={wrap}>
           <h2 id="cr-gate" className={h2}>
             {t.gate.title}
@@ -207,7 +225,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= ESTUDIO DE EVENTO ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-event">
+      <section id="evento" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-event">
         <div className={wrap}>
           <h2 id="cr-event" className={h2}>
             {t.event.title}
@@ -281,7 +299,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= CIERRE ================= */}
-      <section className="py-14 border-t border-rulesoft" aria-labelledby="cr-close">
+      <section id="codigo" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-close">
         <div className={wrap}>
           <h2 id="cr-close" className={h2}>
             {t.close.title}

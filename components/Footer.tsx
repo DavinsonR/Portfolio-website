@@ -33,8 +33,8 @@ export default function Footer({ dict, lang }: { dict: Dictionary; lang: Locale 
           <Link href={`/${lang}/historia`} prefetch={false} className="hover:text-cold hover:underline">
             {dict.nav.links[1].label}
           </Link>
-          <Link href={`/${lang}`} prefetch={false} className="hover:text-cold hover:underline">
-            {dict.nav.backHome}
+          <Link href={`/${lang}/cv`} prefetch={false} className="hover:text-cold hover:underline">
+            {dict.nav.links[2].label}
           </Link>
         </nav>
       </div>

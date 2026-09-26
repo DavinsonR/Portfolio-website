@@ -209,3 +209,23 @@ export function Tile({ title, hint, className, children, tools }: {
     </section>
   );
 }
+
+/** Mientras llegan las series: la silueta del gráfico en el tono de la banda,
+ *  no un texto suelto en 400 px en blanco (auditoría de diseño DP-11). El
+ *  texto sigue ahí para el lector de pantalla. */
+export function Loading({ text }: { text: string }) {
+  return (
+    <div role="status" className="rounded-[10px] border border-rule bg-band p-5">
+      <span className="sr-only">{text}</span>
+      <div aria-hidden="true" className="animate-pulse">
+        <div className="h-3 w-40 rounded bg-rule" />
+        <div className="mt-5 flex h-[220px] items-end gap-2">
+          {[38, 62, 45, 80, 55, 70, 30, 66, 50, 74, 42, 58].map((h, i) => (
+            <div key={i} className="flex-1 rounded-t bg-rule" style={{ height: `${h}%` }} />
+          ))}
+        </div>
+        <p className="mt-4 text-center text-[14px] text-muted">{text}</p>
+      </div>
+    </div>
+  );
+}

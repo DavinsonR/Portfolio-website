@@ -23,6 +23,8 @@ export const forecast = {
         "Pronósticos 2026–2027 del crecimiento de 20 economías de América Latina, con bandas al 95 % y su acierto medido. Un laboratorio abierto.",
       kicker: "Lab · macro-forecast-lab-latam",
       pill: "LABORATORIO ABIERTO",
+      ctaBoard: "Explorar el tablero",
+      ctaPlay: "Jugar contra el ingenuo",
       title: "Pronostico el crecimiento de 20 economías de América Latina, y demuestro cuánto vale cada pronóstico.",
       subtitle:
         "Pronósticos 2026–2027 por economía, con bandas de confianza al 80 y al 95 % y su tasa de acierto medida en el backtest, año por año. Detrás, un laboratorio que puso a competir trece modelos —del AR(1) al LSTM— contra el pronóstico ingenuo, con cada ganancia sometida a su prueba. Fíltralo, compáralo y juega contra él.",
@@ -341,6 +343,8 @@ export const forecast = {
         "2026–2027 growth forecasts for 20 Latin American economies, with 95 % bands and their measured hit rate. An open lab.",
       kicker: "Lab · macro-forecast-lab-latam",
       pill: "OPEN LAB",
+      ctaBoard: "Explore the dashboard",
+      ctaPlay: "Play against the naive forecast",
       title: "I forecast growth for 20 Latin American economies, and prove what every forecast is worth.",
       subtitle:
         "2026–2027 forecasts for every economy, with 80 and 95 % confidence bands and their hit rate measured in the backtest, year by year. Behind them, a lab that pitted thirteen models —from an AR(1) to an LSTM— against the naive forecast, with every gain put to its test. Filter it, compare it and play against it.",

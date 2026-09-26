@@ -34,7 +34,7 @@ import {
   type Panel,
 } from "@/lib/data/forecast-lab";
 import { setSel } from "./store";
-import { MultiSelect, SortTable, Tile, useWidth, type Column } from "./ui";
+import { MultiSelect, SortTable, Tile, useWidth, type Column, Loading } from "./ui";
 import { useLoadAll } from "./useLoad";
 
 type Copy = LabCopy["dash"];
@@ -125,9 +125,7 @@ export default function Dashboard({ copy, lang }: { copy: LabCopy; lang: string 
     );
   if (!data)
     return (
-      <p role="status" className="py-16 text-center text-[14px] text-muted">
-        {copy.loading}
-      </p>
+      <Loading text={copy.loading} />
     );
   return <Board copy={copy.dash} lang={lang} meta={data.meta} panel={data.panel} events={data.events} forecast={data.forecast} />;
 }

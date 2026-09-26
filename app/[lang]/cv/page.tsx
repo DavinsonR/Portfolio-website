@@ -41,6 +41,7 @@ function ProjectArticle({ pr, i, chip }: { pr: CvProject; i: number; chip: strin
         <h3 className="font-display text-[19px] font-bold tracking-[-0.015em] text-ink">{pr.name}</h3>
         <span className="text-[14px] text-muted">{pr.period}</span>
       </div>
+      <p className="mt-2 text-[15.5px] leading-[1.5] font-semibold text-cold">{pr.highlight}</p>
       <p className="mt-1 text-[15px] text-body">{pr.role}</p>
       <a
         href={pr.href}
@@ -102,7 +103,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       <header className="border-b border-rule">
         <div className={wrap}>
           <div className="settle flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-b border-rulesoft py-3 text-[12.5px] tracking-[0.08em] text-muted uppercase">
-            <span className="font-semibold text-cold">{cv.targetsLabel}</span>
+            <span className="font-semibold text-cold">{cv.kicker}</span>
             <span>{dict.sheet.asOf}</span>
           </div>
           <div className="pt-4">
@@ -139,27 +140,18 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
 
             <div className="settle mt-8 flex flex-wrap items-center gap-3" style={d(220)}>
               <a
-                href={cv.downloadHref}
-                download
-                className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
-              >
-                {cv.download}
-              </a>
-              <a
                 href={cv.downloadShortHref}
                 download
-                title={cv.downloadShortNote}
-                className="lift inline-flex items-center rounded-[3px] border border-control px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
+                className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 {cv.downloadShort}
               </a>
               <a
-                href={cv.latexHref}
+                href={cv.downloadHref}
                 download
-                title={cv.latexNote}
                 className="lift inline-flex items-center rounded-[3px] border border-control px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
               >
-                {cv.latex}
+                {cv.downloadFull}
               </a>
               <a
                 href={mailHref}
@@ -168,9 +160,6 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                 {cv.contactBtn}
               </a>
             </div>
-            <p className="settle mt-2.5 text-[14px] text-muted" style={d(260)}>
-              {cv.latexNote}
-            </p>
           </div>
         </div>
 
@@ -180,7 +169,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
             {/* Lista simple, no `<dl>`: el ancla envolvía `<dt>` y `<dd>` y no es
                 padre válido de ninguno, así que el par término/definición no se
                 exponía. Misma banda, mismo objetivo de clic, marcado válido. */}
-            <ul className="grid grid-cols-2 py-6 lg:grid-cols-4">
+            <ul className="grid grid-cols-2 gap-x-5 py-6 lg:grid-cols-4 lg:gap-x-0">
               {cv.facts.map((f, i) => (
                 <li
                   key={f.label}
@@ -335,7 +324,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
           </h2>
 
           <div className="mt-6 grid gap-x-12 gap-y-8 lg:grid-cols-2">
-            <div data-reveal className="reveal">
+            <div data-reveal className="reveal contents">
               <div className="border-t border-rule pt-5">
                 <h3 className="font-display text-[17px] font-semibold text-ink">
                   {cv.skillsFinTitle}
@@ -350,7 +339,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                 </div>
               </div>
 
-              <div className="mt-8 border-t border-rule pt-5">
+              <div className="border-t border-rule pt-5">
                 <h3 className="font-display text-[17px] font-semibold text-ink">
                   {cv.skillsDataTitle}
                 </h3>
@@ -369,8 +358,9 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
               </div>
             </div>
 
-            {/* declared level — one scale, the same one the front page shows */}
-            <div>
+            {/* La lista con prueba va debajo y a todo el ancho: al lado de los
+                chips dejaba ~650 px en blanco a la izquierda (PC-08). */}
+            <div className="lg:col-span-2">
               <div className="border-t border-rule pt-5">
                 <h3 className="font-display text-[17px] font-semibold text-ink">
                   {cv.skillsTechTitle}
@@ -379,7 +369,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
                   {cv.skillsTechDesc}
                 </p>
               </div>
-              <dl>
+              <dl className="grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
                 {cv.skillsTech.map((s, ri) => (
                   <div
                     key={s.name}
@@ -521,7 +511,10 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
           no abre nada en un portátil corporativo con webmail. */}
       <section className="border-t-2 border-warm py-14">
         <div className={wrap}>
-          <p className="mb-6 max-w-[58ch] text-[15.5px] leading-[1.7] text-ink">
+          <h2 className="max-w-[24ch] text-balance font-display text-[clamp(24px,3.2vw,34px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink">
+            {dict.contact.title}
+          </h2>
+          <p className="mt-3.5 mb-6 max-w-[58ch] text-[15.5px] leading-[1.7] text-ink">
             {dict.contact.body}
           </p>
           <div className="flex flex-wrap items-center gap-3">
@@ -532,18 +525,11 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
               {cv.contactBtn}
             </a>
             <a
-              href={cv.downloadHref}
+              href={cv.downloadShortHref}
               download
               className="lift inline-flex items-center rounded-[3px] border border-control px-5 py-3 text-[14.5px] font-semibold text-ink transition-colors hover:border-cold hover:text-cold"
             >
-              {cv.download}
-            </a>
-            <a
-              href={cv.latexHref}
-              download
-              className="px-1 py-3 text-[14.5px] font-medium text-cold hover:underline"
-            >
-              {cv.latex}
+              {cv.downloadShort}
             </a>
             <CopyEmail
               email={dict.profile.email}
@@ -559,6 +545,13 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
             <a href={mailHref} className="text-ink underline decoration-cold decoration-[1.5px] underline-offset-4">
               {dict.profile.email}
             </a>
+          </p>
+          <p className="mt-5 border-t border-rule pt-4 text-[14px] text-muted">
+            <a href={cv.downloadHref} download className="font-medium text-cold hover:underline">{cv.downloadFull}</a>
+            {" · "}
+            <a href={cv.latexHref} download className="font-medium text-cold hover:underline">{cv.latex}</a>
+            {" · "}
+            {cv.latexNote}
           </p>
         </div>
       </section>

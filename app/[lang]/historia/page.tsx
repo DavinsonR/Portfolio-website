@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import { alternates, social } from "@/lib/config/alternates";
 import { pageGraph } from "@/lib/config/structured-data";
@@ -8,6 +7,7 @@ import SectionNav from "@/components/SectionNav";
 import ContactBand from "@/components/ContactBand";
 import LabText from "@/components/trading/LabText";
 import { labSnapshot } from "@/lib/data/lab-snapshot";
+import HistoriaAside from "@/components/historia/Aside";
 
 export async function generateMetadata({
   params,
@@ -38,7 +38,7 @@ export default async function HistoriaPage({
   const { lang } = await params;
   const dict = getDictionary(lang);
   const t = dict.historia;
-  const wrap = "max-w-[980px] mx-auto px-6";
+  const wrap = "max-w-[1080px] mx-auto px-6";
   /** Ancho de lectura. La prosa de esta página es lo único que hay, así que la
    *  medida manda: 66 caracteres es donde el ojo deja de perder el renglón. */
   const prose = "max-w-[64ch]";
@@ -65,6 +65,20 @@ export default async function HistoriaPage({
           <p className="mt-5 text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">
             {t.readTime}
           </p>
+
+          {/* La línea recta que la intro promete (auditoría HI-03): cada hito
+              lleva a su sección. Horizontal en escritorio, vertical en el teléfono. */}
+          <ol className="relative mt-10 grid gap-5 border-l-2 border-coldline pl-5 lg:grid-cols-5 lg:gap-4 lg:border-l-0 lg:border-t-2 lg:pl-0 lg:pt-5">
+            {t.timeline.map((m, i) => (
+              <li key={m.label} data-reveal className="reveal relative" style={{ "--d": `${i * 90}ms` } as React.CSSProperties}>
+                <span aria-hidden="true" className="absolute -left-[27px] top-1 h-3 w-3 rounded-full border-2 border-paper bg-cold lg:-top-[27px] lg:left-0" />
+                <a href={m.href} className="lift group block">
+                  <span className="block font-figure text-[22px] leading-none text-cold">{m.year}</span>
+                  <span className="mt-1.5 block text-[14px] leading-[1.4] font-medium text-ink group-hover:text-cold">{m.label}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
         </div>
       </header>
 
@@ -84,6 +98,7 @@ export default async function HistoriaPage({
               // El resaltado de SectionNav asume este desplazamiento.
               className="scroll-mt-[118px] border-t border-rule pt-8 pb-12 first:border-t-2 first:border-ink"
             >
+              <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_340px]">
               <div data-reveal className="reveal" style={{ "--d": `${i * 40}ms` } as React.CSSProperties}>
                 {/* El número en serif: es una cifra, y el serif de esta hoja
                     está reservado a las cifras y a la línea de veredicto. */}
@@ -153,27 +168,11 @@ export default async function HistoriaPage({
                   </div>
                 )}
 
-                {"proofHref" in s && s.proofHref && (
-                  <p className="mt-6">
-                    {s.proofHref.startsWith("http") ? (
-                      <a
-                        href={s.proofHref}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="lift text-[14px] font-medium text-cold hover:underline"
-                      >
-                        {s.proofLabel} ↗
-                      </a>
-                    ) : (
-                      <Link
-                        href={`/${lang}${s.proofHref}`}
-                        className="lift text-[14px] font-medium text-cold hover:underline"
-                      >
-                        {s.proofLabel} →
-                      </Link>
-                    )}
-                  </p>
-                )}
+              </div>
+              {/* La columna derecha: el gráfico o la cifra de la sección y su prueba. */}
+              <aside data-reveal className="reveal" style={{ "--d": `${i * 40 + 120}ms` } as React.CSSProperties}>
+                <HistoriaAside s={s} dict={dict} lang={lang} />
+              </aside>
               </div>
             </section>
           ))}

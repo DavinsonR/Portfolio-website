@@ -118,7 +118,7 @@ function Atlas({ l }: { l: string[] }) {
             <span key={token} className="h-2.5 w-5" style={{ background: `var(${token})` }} />
           ))}
         </span>
-        <span className="text-[13px] text-muted">{l[0]} · {l[1]} · {l[2]}</span>
+        <span className="text-[14px] text-muted">{l[0]} · {l[1]} · {l[2]}</span>
       </div>
     </div>
   );

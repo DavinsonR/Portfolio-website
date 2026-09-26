@@ -32,3 +32,7 @@ export const labSnapshot: LabStats = stats;
  *  el servidor, antes de que llegue el índice vivo. */
 export const labSnapshotOverfitting = data.overfitting ?? null;
 export const labSnapshotGeneratedAt = data.generated_at;
+/** Activos en el índice (la banda de cifras de la página del laboratorio). */
+export const labSnapshotAssets = data.assets?.length ?? 0;
+/** El índice entero, para las maquetas del informe Power BI (solo servidor). */
+export const labSnapshotData = data;

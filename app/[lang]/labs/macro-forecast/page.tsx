@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
 import { MACRO_REPO } from "@/lib/content/forecast";
-import StatusPill from "@/components/StatusPill";
-import BackLink from "@/components/BackLink";
+import ProjectHero from "@/components/project/ProjectHero";
+import Preview from "@/components/showcase/Previews";
 import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
 import Island from "@/components/forecast/Island";
@@ -54,6 +54,8 @@ export default async function ForecastLabPage({ params }: { params: Promise<{ la
     </>
   );
 
+  const card = dict.work.cards.find((c) => c.href === "/labs/macro-forecast")!;
+
   const pieces = [
     { id: "juega", kind: "play", copy: t.play },
     { id: "backtest", kind: "backtest", copy: t.backtest },
@@ -73,48 +75,23 @@ export default async function ForecastLabPage({ params }: { params: Promise<{ la
         }}
       />
       {/* ================= HERO ================= */}
-      <header className="border-b border-rule">
-        <div className={wrap}>
-          <div className="pt-20 pb-12">
-            <div className="mb-6 flex flex-wrap items-center gap-4">
-              <BackLink href={`/${lang}`} label={dict.nav.backHome} />
-              <StatusPill status="live" text={t.pill} />
-            </div>
-            <p className={label}>{t.kicker}</p>
-            <h1 className="mt-3 max-w-[30ch] text-balance font-display text-[clamp(30px,4.4vw,44px)] leading-[1.08] font-extrabold tracking-[-0.03em] text-ink">
-              {t.title}
-            </h1>
-            <p className="mt-4 max-w-[70ch] text-[15.5px] leading-[1.7] text-ink">{t.subtitle}</p>
-            <p className="mt-3 text-[14px] text-body">{t.meta}</p>
-            <p className="mt-1 text-[14px] text-muted">{t.timeline}</p>
-          </div>
-        </div>
-
-        <div className="border-t-2 border-cold bg-coldsoft">
-          <div className={wrap}>
-            <ul className="grid grid-cols-2 py-6 lg:grid-cols-4">
-              {t.figures.map((f, i) => (
-                <li
-                  key={f.label}
-                  data-reveal
-                  className="reveal border-coldline py-2 lg:border-l lg:pl-5 lg:first:border-l-0 lg:first:pl-0"
-                  style={delay(i + 1)}
-                >
-                  <a href={f.href} className="lift group block">
-                    <span className="block font-figure text-[clamp(28px,3.8vw,40px)] leading-none text-ink group-hover:text-cold">
-                      {f.value}
-                    </span>
-                    <span className="mt-2 block max-w-[26ch] text-[14px] leading-[1.4] font-medium text-ink underline decoration-cold decoration-[1.5px] underline-offset-4 group-hover:decoration-[2.5px]">
-                      {f.label}
-                    </span>
-                  </a>
-                  <p className="mt-1 text-[14px] text-body">{f.note}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </header>
+      <ProjectHero
+        lang={lang}
+        backLabel={dict.nav.backHome}
+        status="live"
+        pill={t.pill}
+        kicker={t.kicker}
+        title={t.title}
+        lede={t.subtitle}
+        meta={[t.meta, t.timeline]}
+        ctas={[
+          { href: "#panorama", label: t.ctaBoard, tone: "solid" },
+          { href: "#juega", label: t.ctaPlay, tone: "outline" },
+        ]}
+        visual={<Preview card={card} lang={lang} />}
+        visualCaption={card.caption}
+        figures={t.figures.map((f) => ({ value: f.value, label: f.label, note: f.note, href: f.href }))}
+      />
 
       <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
 

@@ -1,4 +1,5 @@
 "use client";
+import { Loading } from "./ui";
 
 /* Una isla por pieza interactiva, repartidas entre las secciones de la página. Esta
    parte es la única que baja con el HTML y pesa casi nada: una puerta que se abre
@@ -46,9 +47,7 @@ export default function Island({ kind, copy, lang }: { kind: Kind; copy: LabCopy
   }, [near]);
 
   const placeholder = (
-    <p role="status" className="py-16 text-center text-[14px] text-muted">
-      {copy.loading}
-    </p>
+    <Loading text={copy.loading} />
   );
 
   return (

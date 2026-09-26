@@ -181,7 +181,9 @@ export function EventStudy({
           fill={COLD}
           opacity={0.07}
         />
-        <text x={W - P.r - 2} y={y(threshold) - 5} textAnchor="end" style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill={MUTED}>
+        {/* Abajo a la izquierda, dentro de la banda: arriba a la derecha tapaba
+            el punto de 2024 (auditoría de diseño DP-05). */}
+        <text x={P.l + 8} y={y(-threshold) - 7} style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill={MUTED}>
           {labels.band}
         </text>
 
@@ -361,7 +363,7 @@ export function FairnessGate({
   labels: { scale: string; threshold: string; observed: string; caption: string };
 }) {
   const W = 720;
-  const H = 118;
+  const H = 128;
   const P = { t: 40, r: 26, b: 28, l: 26 };
   const iw = W - P.l - P.r;
   const lo = 0.6;
@@ -429,7 +431,8 @@ export function FairnessGate({
           {labels.observed}
         </text>
 
-        <text x={P.l} y={14} style={{ fontSize: "calc(11px * var(--k, 1))" }} fill={MUTED}>
+        {/* Bajo el eje: arriba chocaba con el rótulo del valor observado (DP-05). */}
+        <text x={P.l} y={H - 4} style={{ fontSize: "calc(11px * var(--k, 1))" }} fill={MUTED}>
           {labels.scale}
         </text>
       </svg>
