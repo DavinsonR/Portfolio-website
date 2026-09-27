@@ -98,15 +98,20 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
                     su runtime (4,8 KB br) por cada ruta con una imagen. Ya son WebP
                     con sus medidas. El <figcaption> nombra y describe la pantalla;
                     un alt que lo repite se oye dos veces: alt vacío. */}
-                <img
-                  src={`/tracking/${s.file}.webp`}
-                  width={393}
-                  height={800}
-                  loading="lazy"
-                  decoding="async"
-                  alt=""
-                  className="w-full rounded-[14px] border border-rule"
-                />
+                {/* Una captura por tema y por idioma (scripts/capture-kairo.mjs);
+                    la del otro tema viaja oculta con .only-light/.only-dark. */}
+                {(["light", "dark"] as const).map((tema) => (
+                  <img
+                    key={tema}
+                    src={`/tracking/${s.file}-${lang === "es" ? "es" : "en"}-${tema}.webp`}
+                    width={393}
+                    height={800}
+                    loading="lazy"
+                    decoding="async"
+                    alt=""
+                    className={`only-${tema} w-full rounded-[14px] border border-rule`}
+                  />
+                ))}
                 <figcaption className="mt-3">
                   <span className="text-[14.5px] font-semibold text-ink">{s.name}</span>
                   <span className="mt-1.5 block text-[14px] leading-[1.6] text-body">{s.note}</span>

@@ -148,20 +148,28 @@ function Shot({ lang }: { lang: string }) {
 }
 
 /* ---------------------------------------------------------------- screen */
-function Screens() {
+function Screens({ lang }: { lang: string }) {
+  const idioma = lang === "es" ? "es" : "en";
+  // Como en Shot: viajan las dos capturas de cada pantalla y una se oculta por
+  // tema. El idioma es el de la página, y las ocho salen de
+  // scripts/capture-kairo.mjs con las cookies que la propia app lee.
   return (
     <div className="flex justify-center gap-4">
       {["hoy", "finanzas"].map((f, i) => (
-        <img
-          key={f}
-          src={`/tracking/${f}.webp`}
-          width={393}
-          height={800}
-          loading="lazy"
-          decoding="async"
-          alt=""
-          className={`block h-[320px] w-auto rounded-[14px] border border-rule object-cover object-top sm:h-[360px] ${i ? "mt-8" : ""}`}
-        />
+        <div key={f} className={i ? "mt-8" : ""}>
+          {(["light", "dark"] as const).map((t) => (
+            <img
+              key={t}
+              src={`/tracking/${f}-${idioma}-${t}.webp`}
+              width={393}
+              height={800}
+              loading="lazy"
+              decoding="async"
+              alt=""
+              className={`only-${t} h-[320px] w-auto rounded-[14px] border border-rule object-cover object-top sm:h-[360px]`}
+            />
+          ))}
+        </div>
       ))}
     </div>
   );
@@ -185,6 +193,6 @@ export default function Preview({ card, lang }: { card: ShowcaseCard; lang: stri
     case "atlas": return <Atlas l={l} />;
     case "shot": return <Shot lang={lang} />;
     case "star": return <Star l={l} />;
-    case "screen": return <Screens />;
+    case "screen": return <Screens lang={lang} />;
   }
 }

@@ -735,7 +735,7 @@ export const projects = {
         shotsTitle: "Lo que se ve",
         shotsNote: "Capturas tomadas del propio demo, con su franja impresa.",
         shots: [
-          { file: "hoy", name: "Hoy", note: "Qué falta por registrar, el cuerpo, el gasto del día y los hábitos. Una sola frase interpreta el día: la dimensión que más se aparta de tu propia línea base." },
+          { file: "hoy", name: "Hoy", note: "Lo que se toca a diario, en una rejilla de dos columnas: los hábitos, el gimnasio, lo que falta por registrar y el gasto del día. La lectura del día vive en el Tablero, no aquí." },
           { file: "registro", name: "Registro", note: "El día entero en un formulario y un botón. Un envío son ocho escrituras independientes: si un gasto queda ilegible, el peso y los hábitos se guardan igual." },
           { file: "historia", name: "Historia", note: "Cintura y peso con sus huecos sin interpolar, gasto por categoría y los hábitos con su calendario de cinco estados." },
           { file: "finanzas", name: "Finanzas", note: "El mes leído por ritmo y no por magnitud: cuánto llevas contra cuánto tocaría a estas alturas, con la forma real de tus meses ya cerrados." },
@@ -1527,7 +1527,7 @@ export const projects = {
         shotsTitle: "What you see",
         shotsNote: "Captured from the demo itself, with its own banner printed on.",
         shots: [
-          { file: "hoy", name: "Today", note: "What is still unlogged, the body, the day's spending and the habits. One sentence reads the day: the dimension furthest from your own baseline." },
+          { file: "hoy", name: "Today", note: "What gets touched every day, in a two-column grid: the habits, the gym, what is still unlogged and the day's spending. The reading of the day lives on the Dashboard, not here." },
           { file: "registro", name: "Log", note: "The whole day in one form and one button. One submission is eight independent writes: if a spending amount is unreadable, weight and habits are still saved." },
           { file: "historia", name: "History", note: "Waist and weight with their gaps left unfilled, spending by category, and habits with a five-state calendar." },
           { file: "finanzas", name: "Finances", note: "The month read by pace, not size: how much you have spent against how much you should have by now, shaped by your own closed months." },
