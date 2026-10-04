@@ -26,3 +26,7 @@ Encargo: aplicar los PR abiertos de Dependabot, auditarlos y subir a `main`.
 - `npm audit --omit=dev`: 0 vulnerabilidades. Lo que se publica está limpio.
 - `npm audit` completo: quedan 5 altas en `braces`, que entra por el lint y no tiene versión corregida. `npm audit fix` resolvió una de las seis; las otras solo se van con `--force`, que instala ESLint 10 y rompe el lint (ver arriba). Son de desarrollo y no llegan al sitio.
 - `check`, `build`, `check:weight` (18 rutas, máximo 162,1 KB br) y `check:routes` (18 rutas a 200, redirects, 404, cabeceras, metadatos y JSON-LD) en verde.
+
+### Un fallo que solo vio CI
+
+`check:scripts` (`tsc -p scripts`) pasó en local y cayó en CI con TypeScript 6.0.3: «Cannot find name 'node:fs'», `process`, `Buffer`. TypeScript 6 dejó de incluir por defecto todos los paquetes `@types` visibles, y `scripts/tsconfig.json` nunca declaró `types`. En la máquina local los resolvía igual y en el runner de Linux no. El arreglo es declarar `"types": ["node"]`, que es lo correcto en los dos entornos. La regla: con TypeScript 6, todo `tsconfig` que use API de Node declara `types` explícitamente; no se confía en el descubrimiento automático.

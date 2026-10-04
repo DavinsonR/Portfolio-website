@@ -3,8 +3,15 @@
   "compilerOptions": {
     "noEmit": true,
     "incremental": false,
-    "plugins": []
+    "plugins": [],
+    "types": [
+      "node"
+    ]
   },
-  "include": ["./**/*.ts", "../lib/**/*.ts", "../next-env.d.ts"],
+  "include": [
+    "./**/*.ts",
+    "../lib/**/*.ts",
+    "../next-env.d.ts"
+  ],
   "exclude": []
 }
