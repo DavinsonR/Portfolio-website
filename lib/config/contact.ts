@@ -26,4 +26,4 @@ export function mailtoHref(dict: Dictionary) {
  *  un enlace a una agenda que todavía no existe sería un enlace roto, y este
  *  sitio dice lo que no está vivo en vez de ofrecerlo. Se rellena con la URL
  *  pública de la página de reservas (Google Calendar, Cal.com…) y nada más. */
-export const SCHEDULING_URL: string = "";
+export const SCHEDULING_URL: string = "https://calendar.app.google/AT5cQnvk35w65fHt5";
