@@ -9,7 +9,7 @@ Esto eran 107 KB y 985 líneas de narrativa cronológica: el mejor activo del pr
 | | Qué es | Cuándo |
 |---|---|---|
 | **[docs/FALLOS.md](docs/FALLOS.md)** | Los 41 fallos en una tabla, con su causa raíz enlazada y si hay una comprobación que los atrape hoy | **Antes de tocar nada.** Más de la mitad son del pipeline, no de este repo: filtra y ahórrate veinte |
-| **[docs/DECISIONES.md](docs/DECISIONES.md)** | Las 37 decisiones, qué se decidió y dónde está el porqué | Antes de cambiar algo que parezca arbitrario. Varias lo parecen y no lo son |
+| **[docs/DECISIONES.md](docs/DECISIONES.md)** | Las 38 decisiones, qué se decidió y dónde está el porqué | Antes de cambiar algo que parezca arbitrario. Varias lo parecen y no lo son |
 | **[docs/ROADMAP.md](docs/ROADMAP.md)** | Estado actual y lo que queda | Al empezar una sesión |
 
 Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos), [`docs/DESIGN.md`](docs/DESIGN.md) (el contrato del sistema visual) y [`docs/PRODUCT.md`](docs/PRODUCT.md) (el posicionamiento y la evidencia real disponible). Los dos últimos **no son documentación descriptiva**: varias de sus reglas son vinculantes y romperlas ya ha sido un hallazgo de revisión.
@@ -50,7 +50,8 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 31 | [24 sep](docs/bitacora/sesion-31.md) | Dos versiones de la capa de proyección del atlas: se publica la de la sesión 30 con los seis arreglos de la otra, y pruebas contra los datos reales |
 | 32 | [25 sep](docs/bitacora/sesion-32.md) | El ancla del atlas se renueva con la EME de julio de 2026; el respaldo del WEO deja de estar congelado |
 | 33 | [25 sep](docs/bitacora/sesion-33.md) | Licencias de Banrep y del FMI verificadas: la cita del ancla lleva fecha de consulta y dice qué es |
-| 34 | [3 oct](docs/bitacora/sesion-34.md) | Auditoría final con cinco agentes y la pasada que la aplica: ámbar fuera de una cifra, hero alineado con sus secciones, ids únicos, caché del CV y presupuesto de peso sin el polyfill |
+| 34 | [3 oct](docs/bitacora/sesion-34.md) | Dependencias al día (React 19.3, TS 6.0, acciones v7); ESLint 10, TS 7 y tipos de Node 26 esperan al ecosistema (D-38) |
+| 35 | [3 oct](docs/bitacora/sesion-35.md) | Corrido final: auditoría con cinco agentes y la pasada que la aplica — Kairo y crédito sin cifras contradictorias en el CV, ámbar fuera de una cifra, hero alineado con sus secciones, ids únicos, caché del CV y presupuesto de peso sin el polyfill |
 
 ## Auditorías
 

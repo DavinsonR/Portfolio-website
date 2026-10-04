@@ -1,34 +1,32 @@
-## Sesión 34 — 3 oct 2026 · Auditoría final con cinco agentes, y la pasada que aplica lo que no es copy
+## Sesión 34 — 3 oct 2026 · Dependencias al día, y tres saltos mayores que esperan al ecosistema
 
-Encargo: antes de dar el sitio por cerrado, cinco agentes en paralelo y solo lectura (copy, diseño, SEO y accesibilidad, reclutador, código) lo auditan sobre una copia limpia de `main`; dos manos aplican después los hallazgos. Esta sesión es la mano que **no toca `lib/content/`**: diseño, SEO técnico, código y docs. Los hallazgos de contenido (la cifra de 526 pruebas en el CV, el nombre JARVIS en `/historia`, los títulos y descripciones) los aplica la otra mano.
+Encargo: aplicar los PR abiertos de Dependabot, auditarlos y subir a `main`.
 
-### La medida antes de opinar
+### Lo que entra
 
-La copia estaba en verde: `npm run check`, `npm run build`, `check:weight` y `check:routes` contra `next start`. Lo que ninguna de las cuatro vio:
+| PR | Cambio | Comprobación |
+|---|---|---|
+| #20 | `react` y `react-dom` 19.3.0, `@types/react` 19.3, `tsx` 4.23.15 | check, build, peso, rutas |
+| #15 | `js-yaml` 4.3.2 (transitiva, vía `@eslint/eslintrc`) | `npm ls js-yaml` |
+| #14 | `sharp` 0.35.4 | ya había entrado con `next` 16.3.6 (#16) |
+| #51, #52 | `actions/setup-node` v7.0.0 y `actions/checkout` v7.0.1 | SHA comprobados contra `git ls-remote` de cada etiqueta |
+| — | `typescript` ~6.0.3 en lugar del 7.0.2 de #23 | `tsc --noEmit` y lint en cero, sin peers inválidos |
+| — | `@types/node` ^22 en lugar del 26 de #21 | sigue al Node 22 de CI |
 
-- **Un id duplicado** (`cr-event-cap`): `EventStudy` se pinta dos veces en `/projects/credit-risk` (la cabecera, ya oculta a las tecnologías de apoyo, y la página). Las dos figuras llevaban `aria-labelledby` al mismo id y resolvía al primero en el DOM, el de la cabecera, con el `figcaption` vacío. El gráfico real tenía **nombre accesible vacío**. Lighthouse daba 100 en accesibilidad. Regresión del refactor de `ProjectHero`.
-- **El presupuesto de peso sumaba un polyfill que nadie descarga.** Cada ruta referencia un `<script noModule>` de 35 KB br; `check:weight` lo contaba. Los 155-162 KB eran en realidad 122-128: el presupuesto de 172 dejaba 45 KB de aire, no 10.
-- **Un número en ámbar** en el laboratorio de pronóstico (la apuesta del visitante, 34 px en serif), contra una regla que DESIGN.md llama vinculante.
-- **La cabecera de cinco páginas de proyecto medía 1080 px y sus secciones 980**: medido en producción, el borde izquierdo saltaba 50 px entre el hero y el contenido. `ProjectHero` aceptaba `wrap` y nadie lo pasaba.
+### Lo que no entra, y por qué (D-38)
 
-### Lo que se hizo
+- **ESLint 10 (#22).** `eslint-plugin-react`, que trae `eslint-config-next` 16.3.6, llama a `context.getFilename()`, y ESLint 10 la eliminó. Con ESLint 10 el lint se cae en el primer archivo (`app/sitemap.ts`).
+- **TypeScript 7 (#23).** `typescript-eslint` 8.71 exige `typescript >=4.8.4 <6.1.0`. El tipado pasa con TS 7, pero el lint no carga. Entra la versión más alta compatible, 6.0.3.
+- **`@types/node` 26 (#21).** Los tipos tienen que seguir al Node que ejecuta el sitio. Con tipos de 26 sobre un runtime de 22, el compilador acepta API que en producción no existe. La API de Vercel no deja leer la versión de producción desde esta sesión; los tipos de 22 son seguros con producción en 22 o en 24.
 
-- **Accesibilidad.** `useId()` en las cuatro figuras de `credit-risk/Charts.tsx` (un id por instancia). El aparte de `/historia` (el gate) lleva su razón observada y su umbral también como texto. El carrusel de capturas de `/projects/tracking` y el diagrama del modelo de Power BI son regiones con `tabIndex`, `role` y `aria-label`. `ReportMock` va entero `aria-hidden` (es un facsímil; su `figcaption` lo dice). El `<nav>` del pie dejó de llamarse «La historia». El 404 fija `lang` (`es` si la URL empieza por `/es`, `en` en cualquier otro caso).
-- **Diseño.** Cifra del visitante en tinta, no en ámbar. `PROJECT_WRAP` (980 px) exportado junto a `HERO_WRAP`, y las cinco páginas lo pasan al hero. Texto SVG de los gráficos de crédito y de trading a 12 px en pantalla (era 9,5-11,5). Prosa de 12,5-13,5 px a 14 px (`Scorer`, tablero de pronóstico, `.fl-link`, `.fl-tip`, el código de huella en la página de crédito); los encabezados de `.fl-table` pasan al paso de etiqueta (12,5 px, 0,06 em). `color-scheme` sigue al conmutador manual. `scroll-padding-top` en `html`.
-- **El `scroll-padding` obligó a quitar los `scroll-mt-*`.** Los dos se suman: dejar los `scroll-mt-[118px]` de las secciones y poner 118 px en `html` desplazaba cada ancla 236 px. Se retiraron todos (`scroll-mt-[118px]` en las páginas con `SectionNav`, `scroll-mt-[72px]` en la portada y el CV) y `html` lleva 72 px, o 118 px donde hay `SectionNav` (`html:has([data-section-nav])`). Medido: `#modelo` en `/projects/powerbi` aterriza a 118 px, igual que antes.
-- **SEO técnico.** `noindex` en `public/credit-risk-demo/index.html` (sigue sirviéndose: la prueba de paridad lo lee). `knowsAbout` pasa de roles a temas visibles en `/cv`; el `BreadcrumbList` dice «Home/Inicio» y, en el CV, «Resume/CV». El `alt` de la imagen OG describe la tarjeta (nombre y rol), no el título de cada página. `lastModified` en el sitemap. PDF del CV con `max-age=0, must-revalidate` (antes ocho días de caché con revalidación en segundo plano). `/showcase/*` con la caché semanal que ya tenían `/tracking` y los demás.
-- **Código.** `workCard(dict, href)` (`lib/config/work-card.ts`) y `productionModel()` (`lib/data/credit-risk.ts`) sustituyen a los `.find(...)!`: un error que nombra la ruta, no «undefined». Borrados el ISE y sus restos (`public/forecast-lab/ise.json`, `loadIse`, `Ise`, `seasonalProfile` y su prueba, `.fl-scroll`) y los dos scripts de migración de una sola vez (`split-dictionaries.mjs`, `split-bitacora.mjs`; git los conserva).
-- **Presupuesto de peso.** `check:weight` ignora `<script noModule>` y el presupuesto baja de 172 a 142 KB br: máximo medido 127,8 (`/projects/trading-sim`), ~11 % de aire.
-- **Docs.** DESIGN.md alcanza al código: los tres escalones de radio (14 / 6 / 3 px) y a quién corresponde cada uno, el ámbar en seis sitios (incluida la apuesta del visitante), tokens `control`, `research`, `idea` y las rampas del atlas, píldora a 12,5 px, barra a 65 px, subrayado de los enlaces, `.lift`, borde `control` del botón de contorno, `ReadingProgress`, `ConstellationField`, `<code>` como única monoespaciada, la maqueta exenta del suelo de 14 px, Kairo y no JARVIS. CLAUDE.md: «Añadir una ruta» toca **seis** sitios (el sexto, la entrada de `work.cards`). Contadores de BITACORA_MAESTRA (41 fallos, 37 decisiones), ROADMAP, README y D-32 puestos al día; las tres auditorías del 25 sep enlazadas desde el índice.
+`.github/dependabot.yml` ignora esos tres saltos, cada uno con su motivo. La señal para revisarlos es que cambie su condición: una `eslint-config-next` que admita ESLint 10, una `typescript-eslint` que admita TS 6.1 o superior, o un cambio del Node de ejecución.
 
-### Lo que se verificó
+### Auditoría
 
-`npm run check` (lint, tipos, 48 pruebas, paridad, artefactos, cifras), `npm run build`, `check:weight` y `check:routes` contra `next start`, todo en verde. En el HTML construido: cero ids duplicados en `/en/projects/credit-risk` y los cuatro `aria-labelledby` reales resuelven a un `figcaption` con texto; `Cache-Control` de los PDF y de `/showcase`; `lastmod` en el sitemap; migas del CV; `lang` del 404 en `/nonexistent` (`en`) y `/es/loquesea` (`es`). Medido a 320 y 393 px: ningún desborde horizontal; el texto de los gráficos a 12 px reales.
+- `npm audit --omit=dev`: 0 vulnerabilidades. Lo que se publica está limpio.
+- `npm audit` completo: quedan 5 altas en `braces`, que entra por el lint y no tiene versión corregida. `npm audit fix` resolvió una de las seis; las otras solo se van con `--force`, que instala ESLint 10 y rompe el lint (ver arriba). Son de desarrollo y no llegan al sitio.
+- `check`, `build`, `check:weight` (18 rutas, máximo 162,1 KB br) y `check:routes` (18 rutas a 200, redirects, 404, cabeceras, metadatos y JSON-LD) en verde.
 
-### Lo que no se hizo, y por qué
+### Un fallo que solo vio CI
 
-- **Colisiones de etiquetas SVG a 320-393 px.** Medidas con y sin el cambio a 12 px: son las mismas que ya había a 10,5 px (el estudio de evento, el balance de decisión, el acantilado, y las etiquetas finales del backtest), salvo una que el cambio creó y se arregló (el balance de decisión: más separación entre filas). El origen es estructural: `ScaleAware` escala el texto con `--k` pero las posiciones del dibujo van en unidades fijas, así que a 320 px cualquier fila de etiquetas separada 14 unidades choca. Arreglarlo es rediseñar esos gráficos para móvil, no subir un tamaño.
-- **`<html lang>` en el HTML del 404.** El 404 es `app/not-found.tsx` y Next le pone su propio `<html>` sin `lang`; solo se puede fijar con el script que ya leía la URL (corre antes del primer pintado, pero no está en el HTML servido). Fijarlo en el servidor exigiría `global-not-found.js`, que es experimental.
-- **`lastModified` del sitemap es la fecha del build, igual en las 18 URL.** El comentario anterior explicaba por qué se había quitado (una fecha que siempre dice «hoy» es la señal que el buscador aprende a ignorar). Se aplicó porque se pidió; lo honesto sería la fecha de git de cada bloque de contenido, que no se puede leer en el build de Vercel con un clon superficial.
-- **Claves de diccionario sin lector** (están en `lib/content/`, que no se toca): `forecastLab.lab.dash.season.{title, series, years, viewYears, viewProfile, level, profile, profileNote, why}` (solo se lee `season.months`), `sheet.hireLabel`, `sheet.portraitPending`, `cv.downloadShortNote`, `cv.expTitle`.
-- Del informe de diseño quedan abiertos, por ser decisiones y no correcciones: los dos dialectos de sección entre páginas de proyecto (#7), la extracción de un `Button` (#10), los tamaños de h3 (#11), el serif en frases (#12), los objetivos táctiles de 44 px (#15), el `theme-color` azul (#24). Del de código: el hero perezoso en dos rutas (#5), la validación de forma del JSON externo (#16), las fuentes precargadas dos veces (#17).
+`check:scripts` (`tsc -p scripts`) pasó en local y cayó en CI con TypeScript 6.0.3: «Cannot find name 'node:fs'», `process`, `Buffer`. TypeScript 6 dejó de incluir por defecto todos los paquetes `@types` visibles, y `scripts/tsconfig.json` nunca declaró `types`. En la máquina local los resolvía igual y en el runner de Linux no. El arreglo es declarar `"types": ["node"]`, que es lo correcto en los dos entornos. La regla: con TypeScript 6, todo `tsconfig` que use API de Node declara `types` explícitamente; no se confía en el descubrimiento automático.
