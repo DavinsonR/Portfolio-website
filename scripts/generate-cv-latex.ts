@@ -129,7 +129,8 @@ function build(lang: Locale): string {
   w("\\definecolor{cold}{HTML}{0F4C81}   % azul institucional del sitio");
   w("\\definecolor{ink}{HTML}{14181D}");
   w("\\definecolor{body}{HTML}{454E57}");
-  w("\\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold}");
+  // Sin Title/Author, el visor y algunos ATS muestran el nombre del archivo o nada.
+  w(`\\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold, pdfauthor={${cv.title}}, pdftitle={${cv.title} --- ${cv.targets[0]}}, pdfkeywords={${cv.targets.join(", ")}, FP\\&A, SQL, dbt, Power BI}}`);
   w("");
   w("\\pagestyle{empty}");
   w("\\setlength{\\parindent}{0pt}");
@@ -268,7 +269,8 @@ function build(lang: Locale): string {
   w("");
 
   // ---------- remoto ----------
-  w(`\\needspace{12\\baselineskip}\\section*{${tex(t.remote)}}`);
+  // Sección corta: con 12 líneas exigidas se iba sola a una cuarta página.
+  w(`\\needspace{6\\baselineskip}\\section*{${tex(t.remote)}}`);
   w(cv.remote.points.map(tex).join(" \\,\\textperiodcentered\\, "));
   w("");
   w("\\end{document}");
@@ -337,7 +339,8 @@ function buildOnePage(lang: Locale): string {
   w("\\definecolor{cold}{HTML}{0F4C81}");
   w("\\definecolor{ink}{HTML}{14181D}");
   w("\\definecolor{body}{HTML}{454E57}");
-  w("\\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold}");
+  // Sin Title/Author, el visor y algunos ATS muestran el nombre del archivo o nada.
+  w(`\\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold, pdfauthor={${cv.title}}, pdftitle={${cv.title} --- ${cv.targets[0]}}, pdfkeywords={${cv.targets.join(", ")}, FP\\&A, SQL, dbt, Power BI}}`);
   w("\\pagestyle{empty}");
   w("\\setlength{\\parindent}{0pt}");
   w("\\linespread{0.88}");
@@ -440,7 +443,9 @@ function buildOnePage(lang: Locale): string {
   // ---------- educación ----------
   w(`\\section*{${tex(t.education)}}`);
   for (const e of cv.education) {
-    w(`\\row{${tex(e.title)} \\textnormal{---} ${tex(e.inst)}}{${tex(e.period)}}`);
+    // Sin el estado, «2025 — 2026» se lee como un título ya otorgado.
+    const estado = e.status === "live" ? "" : ` \\textnormal{(${tex(e.statusText.toLowerCase())})}`;
+    w(`\\row{${tex(e.title)} \\textnormal{---} ${tex(e.inst)}${estado}}{${tex(e.period)}}`);
   }
   // Las certificaciones no salían en la hoja corta, y el Stanford ML es la
   // línea que un screener de datos busca primero.

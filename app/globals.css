@@ -208,7 +208,20 @@
 html {
   scroll-behavior: smooth;
   color-scheme: light dark;
+  /* La barra de navegación (65 px) tapa lo que llegue a la vista con Tab o con un
+     ancla. Donde hay SectionNav se suman sus ~43 px. Esto sustituye a los
+     `scroll-mt-*` de cada sección: scroll-margin y scroll-padding se suman, y
+     tenerlos los dos desplazaba cada ancla el doble. */
+  scroll-padding-top: 72px;
 }
+html:has([data-section-nav]) {
+  scroll-padding-top: 118px;
+}
+/* El conmutador manual manda sobre el esquema del sistema: sin esto los controles
+   nativos (select, rango, casillas, barras) siguen el SO aunque el lector haya
+   forzado el otro tema. */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 
 body {
   background: var(--color-paper);
@@ -988,7 +1001,7 @@ a {
 .fl-ms-opt { display: flex; align-items: center; gap: 9px; padding: 5px 10px; font-size: 14px; color: var(--color-ink); cursor: pointer; }
 .fl-ms-opt:hover { background: var(--color-band); }
 .fl-ms-opt input { accent-color: var(--color-cold); width: 15px; height: 15px; }
-.fl-link { font: inherit; font-size: 13.5px; padding: 0; border: 0; background: none; color: var(--color-cold); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.fl-link { font: inherit; font-size: 14px; padding: 0; border: 0; background: none; color: var(--color-cold); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 
 /* indicadores: una fila de cinco */
 .fl-kpis { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
@@ -1009,10 +1022,10 @@ a {
   .fl-tile-body { padding: 10px 8px 12px; }
 }
 .fl-unit { font-weight: 400; letter-spacing: 0; text-transform: none; color: var(--color-muted); }
-.fl-tile .atlas-views button { font-size: 13.5px; padding: 4px 10px; }
+.fl-tile .atlas-views button { font-size: 14px; padding: 4px 10px; }
 
 /* tablas ordenables */
-.fl-table th { padding: 6px 8px 6px 0; border-bottom: 2px solid var(--color-ink); font-size: 12px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; color: var(--color-muted); white-space: nowrap; }
+.fl-table th { padding: 6px 8px 6px 0; border-bottom: 2px solid var(--color-ink); font-size: 12.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-muted); white-space: nowrap; }
 .fl-table td { padding: 6px 8px 6px 0; border-bottom: 1px solid var(--color-rulesoft); font-variant-numeric: tabular-nums; }
 .fl-table tbody tr:hover { background: var(--color-band); }
 .fl-table .fl-row-on { background: var(--color-coldsoft); }
@@ -1024,8 +1037,6 @@ a {
 .fl-databar-track { position: relative; flex: 1; height: 12px; min-width: 40px; }
 .fl-databar-bar { position: absolute; top: 0; bottom: 0; opacity: 0.7; }
 .fl-databar-num { min-width: 34px; text-align: right; }
-.fl-scroll { max-height: 440px; overflow-y: auto; }
-.fl-scroll .fl-table thead th { position: sticky; top: 0; background: var(--color-paper); z-index: 1; }
 
 /* leyenda continua del mapa de calor */
 .fl-legend { display: inline-flex; height: 10px; }
@@ -1059,7 +1070,7 @@ a {
   border: 1px solid var(--color-control);
   border-radius: 4px;
   background: var(--color-paper);
-  font-size: 13.5px;
+  font-size: 14px;
   line-height: 1.5;
 }
 

@@ -19,6 +19,8 @@ export type HeroFigure = { value: ReactNode; label: string; note?: ReactNode; hr
 export type HeroCta = { href: string; label: string; tone: "solid" | "outline" };
 
 export const HERO_WRAP = "mx-auto max-w-[1080px] px-6";
+/** El ancho de las cinco páginas de proyecto de 980 px; la cabecera lo recibe para alinearse con sus secciones. */
+export const PROJECT_WRAP = "mx-auto max-w-[980px] px-6";
 
 export default function ProjectHero({
   wrap = HERO_WRAP,

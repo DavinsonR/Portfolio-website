@@ -43,7 +43,7 @@ export default function SectionNav({
   }, [items]);
 
   return (
-    <nav aria-label={label} className="no-print sticky top-[65px] z-40 border-b border-rule bg-paper/95 backdrop-blur-sm">
+    <nav aria-label={label} data-section-nav className="no-print sticky top-[65px] z-40 border-b border-rule bg-paper/95 backdrop-blur-sm">
       <div className={wrap}>
         <ul className="-mb-px flex gap-1 overflow-x-auto py-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map((i) => (

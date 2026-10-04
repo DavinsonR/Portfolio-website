@@ -96,10 +96,9 @@ test("las cifras escritas en la página salen de los datos que la página muestr
 
 // ---------------------------------------------------------------- el panel
 
-import { seasonalProfile, type Events, type Ise, type Panel } from "../lib/data/forecast-lab";
+import type { Events, Panel } from "../lib/data/forecast-lab";
 
 const panel = read<Panel>("panel.json");
-const ise = read<Ise>("ise.json");
 const events = read<Events>("eventos.json");
 
 test("el panel: cada serie mide lo mismo que el eje de años, y cada economía tiene sus diez métricas", () => {
@@ -128,17 +127,6 @@ test("los eventos caen dentro del panel, en economías que existen, y no llevan 
     assert.ok(cats.has(e.cat), `${e.titulo_es}: categoría ${e.cat}`);
     for (const t of [e.texto_es, e.texto_en]) assert.ok(!t.includes("%"), `la magnitud la pone la serie: ${t}`);
   }
-});
-
-test("el ISE trae sus 16 series del mismo largo, y el perfil estacional suma cero", () => {
-  assert.equal(ise.series.length, 16);
-  const n = ise.series[0].v.length;
-  for (const s of ise.series) assert.equal(s.v.length, n, s.id);
-  const month = Number(ise.inicio.split("-")[1]);
-  const prof = seasonalProfile(ise.series[0].v, month);
-  assert.equal(prof.length, 12);
-  assert.ok(prof.every(Number.isFinite));
-  assert.ok(Math.abs(prof.reduce((a, b) => a + b, 0)) < 1e-6, "los desvíos frente al promedio del año suman cero");
 });
 
 // ---------------------------------------------------------------- el pronóstico (D-008 del laboratorio)

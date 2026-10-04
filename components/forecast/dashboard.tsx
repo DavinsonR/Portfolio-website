@@ -845,7 +845,7 @@ function FanChart({ copy, lang, fc, hist, years, color, name }: {
           })}
         </svg>
       </ScaleAware>
-      <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-[13.5px] text-body">
+      <ul className="mt-1 flex flex-wrap gap-x-5 gap-y-1 text-[14px] text-body">
         <li className="flex items-center gap-2"><span className="inline-block h-[2px] w-5" style={{ background: color }} aria-hidden="true" />{copy.forecast.history}</li>
         <li className="flex items-center gap-2"><span className="inline-block h-0 w-5 border-t-2 border-dashed" style={{ borderColor: color }} aria-hidden="true" />{copy.forecast.mean}</li>
         <li className="flex items-center gap-2"><span className="inline-block h-3 w-5 rounded-[2px]" style={{ background: color, opacity: 0.45 }} aria-hidden="true" />{copy.forecast.band80}</li>
@@ -1089,7 +1089,7 @@ function Heatmap(p: {
           <span className="text-body">{(() => { const v = p.series(hover.iso3)[hover.k]; return v == null ? p.copy.heat.noData : fmt(lang, v, indicator.id, true); })()}</span>
         </div>
       )}
-      <div className="mt-2 flex flex-wrap items-center gap-2 text-[12.5px] text-muted">
+      <div className="mt-2 flex flex-wrap items-center gap-2 text-[14px] text-muted">
         <span>{fmt(lang, indicator.log ? symexp(lo) : lo, indicator.id, true)}</span>
         <span className="fl-legend" aria-hidden="true">
           {scale.map((t) => <span key={t} style={{ background: `var(${t})` }} />)}

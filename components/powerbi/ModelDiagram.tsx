@@ -59,7 +59,7 @@ export default function ModelDiagram({ labels }: { labels: Labels }) {
   const dimRight = { x: DIM.x + W, y: DIM.y + H / 2 };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto" tabIndex={0} role="region" aria-label={labels.diagramTitle}>
       <svg
         viewBox="0 0 760 470"
         role="img"

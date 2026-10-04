@@ -11,6 +11,7 @@
 // punteada, etiqueta directa. Un gráfico que sólo funciona en color no funciona.
 // ============================================================
 
+import { useId } from "react";
 import type { CliffPoint, EventPoint } from "@/lib/data/credit-risk";
 import ScaleAware from "@/components/ScaleAware";
 
@@ -39,6 +40,9 @@ export function VocabularyCliff({
   lang: string;
   labels: { y: string; caption: string; unsupported: string };
 }) {
+  // Un id por instancia: la misma figura se pinta también en la portada y en la
+  // cabecera, y dos ids iguales dejaban el gráfico real sin nombre accesible.
+  const capId = useId();
   const W = 720;
   const H = 260;
   const P = { t: 18, r: 20, b: 34, l: 46 };
@@ -57,7 +61,7 @@ export function VocabularyCliff({
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto overflow-visible"
         role="img"
-        aria-labelledby="cr-cliff-cap"
+        aria-labelledby={capId}
       >
         {[0, 0.25, 0.5, 0.75, 1].map((t) => (
           <g key={t}>
@@ -66,7 +70,7 @@ export function VocabularyCliff({
               x={P.l - 8}
               y={y(t) + 4}
               textAnchor="end"
-              style={{ fontSize: "calc(11px * var(--k, 1))" }}
+              style={{ fontSize: "calc(12px * var(--k, 1))" }}
               fill={MUTED}
               fontFamily={serif}
             >
@@ -94,7 +98,7 @@ export function VocabularyCliff({
                 x={x(i)}
                 y={H - P.b + 15}
                 textAnchor="middle"
-                style={{ fontSize: "calc(10.5px * var(--k, 1))" }}
+                style={{ fontSize: "calc(12px * var(--k, 1))" }}
                 fill={MUTED}
                 fontFamily={serif}
               >
@@ -121,12 +125,12 @@ export function VocabularyCliff({
           </text>
         ))}
 
-        <text x={P.l} y={12} style={{ fontSize: "calc(11px * var(--k, 1))" }} fill={MUTED}>
+        <text x={P.l} y={12} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill={MUTED}>
           {labels.y}
         </text>
       </svg>
       </ScaleAware>
-      <figcaption id="cr-cliff-cap" className="text-[14px] leading-[1.65] text-muted mt-2">
+      <figcaption id={capId} className="text-[14px] leading-[1.65] text-muted mt-2">
         {labels.caption}
       </figcaption>
     </figure>
@@ -146,6 +150,9 @@ export function EventStudy({
   lang: string;
   labels: { y: string; band: string; pre: string; post: string; caption: string };
 }) {
+  // Un id por instancia: la misma figura se pinta también en la portada y en la
+  // cabecera, y dos ids iguales dejaban el gráfico real sin nombre accesible.
+  const capId = useId();
   const W = 720;
   const H = 300;
   const P = { t: 22, r: 24, b: 40, l: 56 };
@@ -170,7 +177,7 @@ export function EventStudy({
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto overflow-visible"
         role="img"
-        aria-labelledby="cr-event-cap"
+        aria-labelledby={capId}
       >
         {/* Banda del umbral económico, declarado antes de estimar. */}
         <rect
@@ -183,7 +190,7 @@ export function EventStudy({
         />
         {/* Abajo a la izquierda, dentro de la banda: arriba a la derecha tapaba
             el punto de 2024 (auditoría de diseño DP-05). */}
-        <text x={P.l + 8} y={y(-threshold) - 7} style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill={MUTED}>
+        <text x={P.l + 8} y={y(-threshold) - 7} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill={MUTED}>
           {labels.band}
         </text>
 
@@ -201,7 +208,7 @@ export function EventStudy({
               x={P.l - 8}
               y={y(t) + 4}
               textAnchor="end"
-              style={{ fontSize: "calc(11px * var(--k, 1))" }}
+              style={{ fontSize: "calc(12px * var(--k, 1))" }}
               fill={MUTED}
               fontFamily={serif}
             >
@@ -220,10 +227,10 @@ export function EventStudy({
           strokeWidth={1}
           strokeDasharray="3 3"
         />
-        <text x={shockX - 6} y={P.t - 10} textAnchor="end" style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill={MUTED}>
+        <text x={shockX - 6} y={P.t - 10} textAnchor="end" style={{ fontSize: "calc(12px * var(--k, 1))" }} fill={MUTED}>
           {labels.pre}
         </text>
-        <text x={shockX + 6} y={P.t - 10} style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill={MUTED}>
+        <text x={shockX + 6} y={P.t - 10} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill={MUTED}>
           {labels.post}
         </text>
 
@@ -253,7 +260,7 @@ export function EventStudy({
                 x={x(i)}
                 y={H - P.b + 16}
                 textAnchor="middle"
-                style={{ fontSize: "calc(10.5px * var(--k, 1))" }}
+                style={{ fontSize: "calc(12px * var(--k, 1))" }}
                 fill={p.fase === "base" ? INK : MUTED}
                 fontFamily={serif}
                 fontWeight={p.fase === "base" ? 600 : 400}
@@ -264,12 +271,12 @@ export function EventStudy({
           );
         })}
 
-        <text x={P.l} y={12} style={{ fontSize: "calc(11px * var(--k, 1))" }} fill={MUTED}>
+        <text x={P.l} y={12} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill={MUTED}>
           {labels.y}
         </text>
       </svg>
       </ScaleAware>
-      <figcaption id="cr-event-cap" className="text-[14px] leading-[1.65] text-muted mt-2">
+      <figcaption id={capId} className="text-[14px] leading-[1.65] text-muted mt-2">
         {labels.caption}
       </figcaption>
     </figure>
@@ -293,8 +300,11 @@ export function DecisionBalance({
     caption: string;
   };
 }) {
+  // Un id por instancia: la misma figura se pinta también en la portada y en la
+  // cabecera, y dos ids iguales dejaban el gráfico real sin nombre accesible.
+  const capId = useId();
   const W = 720;
-  const H = 150;
+  const H = 160;
   const P = { t: 26, r: 20, b: 20, l: 20 };
   const iw = W - P.l - P.r;
   const max = Math.max(avoided, forgone);
@@ -302,7 +312,7 @@ export function DecisionBalance({
 
   const rows = [
     { v: avoided, label: labels.avoided, value: labels.avoidedValue, fill: POS, y: P.t },
-    { v: forgone, label: labels.forgone, value: labels.forgoneValue, fill: COLD, y: P.t + bh + 26 },
+    { v: forgone, label: labels.forgone, value: labels.forgoneValue, fill: COLD, y: P.t + bh + 40 },
   ];
 
   return (
@@ -312,7 +322,7 @@ export function DecisionBalance({
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto overflow-visible"
         role="img"
-        aria-labelledby="cr-balance-cap"
+        aria-labelledby={capId}
       >
         {rows.map((r) => (
           <g key={r.label}>
@@ -342,7 +352,7 @@ export function DecisionBalance({
         ))}
       </svg>
       </ScaleAware>
-      <figcaption id="cr-balance-cap" className="text-[14px] leading-[1.65] text-muted mt-2">
+      <figcaption id={capId} className="text-[14px] leading-[1.65] text-muted mt-2">
         {labels.caption}
       </figcaption>
     </figure>
@@ -362,6 +372,9 @@ export function FairnessGate({
   lang: string;
   labels: { scale: string; threshold: string; observed: string; caption: string };
 }) {
+  // Un id por instancia: la misma figura se pinta también en la portada y en la
+  // cabecera, y dos ids iguales dejaban el gráfico real sin nombre accesible.
+  const capId = useId();
   const W = 720;
   const H = 128;
   const P = { t: 40, r: 26, b: 28, l: 26 };
@@ -378,7 +391,7 @@ export function FairnessGate({
         viewBox={`0 0 ${W} ${H}`}
         className="w-full h-auto overflow-visible"
         role="img"
-        aria-labelledby="cr-fairness-cap"
+        aria-labelledby={capId}
       >
         {/* Zona que no cumple: a la izquierda del umbral de cuatro quintos. */}
         <rect x={P.l} y={P.t} width={x(threshold) - P.l} height={16} fill={NEG} opacity={0.14} />
@@ -398,7 +411,7 @@ export function FairnessGate({
             x={x(t)}
             y={P.t + 34}
             textAnchor="middle"
-            style={{ fontSize: "calc(10.5px * var(--k, 1))" }}
+            style={{ fontSize: "calc(12px * var(--k, 1))" }}
             fill={MUTED}
             fontFamily={serif}
           >
@@ -415,7 +428,7 @@ export function FairnessGate({
           strokeWidth={1.5}
           strokeDasharray="4 3"
         />
-        <text x={x(threshold) + 7} y={P.t - 18} style={{ fontSize: "calc(11.5px * var(--k, 1))" }} fill={INK} fontWeight={600}>
+        <text x={x(threshold) + 7} y={P.t - 18} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill={INK} fontWeight={600}>
           {labels.threshold}
         </text>
 
@@ -424,7 +437,7 @@ export function FairnessGate({
           x={x(ratio)}
           y={P.t - 18}
           textAnchor="end"
-          style={{ fontSize: "calc(11.5px * var(--k, 1))" }}
+          style={{ fontSize: "calc(12px * var(--k, 1))" }}
           fill={NEG}
           fontWeight={600}
         >
@@ -432,12 +445,12 @@ export function FairnessGate({
         </text>
 
         {/* Bajo el eje: arriba chocaba con el rótulo del valor observado (DP-05). */}
-        <text x={P.l} y={H - 4} style={{ fontSize: "calc(11px * var(--k, 1))" }} fill={MUTED}>
+        <text x={P.l} y={H - 4} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill={MUTED}>
           {labels.scale}
         </text>
       </svg>
       </ScaleAware>
-      <figcaption id="cr-fairness-cap" className="text-[14px] leading-[1.65] text-muted mt-2">
+      <figcaption id={capId} className="text-[14px] leading-[1.65] text-muted mt-2">
         {labels.caption}
       </figcaption>
     </figure>

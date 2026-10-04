@@ -132,7 +132,10 @@ const nextConfig: NextConfig = {
       cache("/icon-:size.png", weekly),
       cache("/tableau/:path*", weekly),
       cache("/tracking/:path*", weekly),
-      cache("/:name*.pdf", "public, max-age=86400, stale-while-revalidate=604800"),
+      cache("/showcase/:path*", weekly),
+      // Los CV se corrigen y reenvían: un PDF viejo en caché durante ocho días es
+      // justo el artefacto que más se reenvía. Pesan 200-270 KB; un 304 es barato.
+      cache("/:name*.pdf", "public, max-age=0, must-revalidate"),
       {
         source: `/:path((?!${demo}|${scorer}$).*)`,
         headers: [...common, { key: "Content-Security-Policy", value: siteCsp() }],

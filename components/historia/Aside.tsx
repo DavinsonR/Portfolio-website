@@ -8,7 +8,8 @@
 import Link from "next/link";
 import type { Dictionary } from "@/lib/dictionaries";
 import Preview from "@/components/showcase/Previews";
-import { CR, num } from "@/lib/data/credit-risk";
+import { workCard } from "@/lib/config/work-card";
+import { CR, num, productionModel } from "@/lib/data/credit-risk";
 
 type Section = Dictionary["historia"]["sections"][number];
 
@@ -26,7 +27,7 @@ const panel = "rounded-[14px] border border-rule bg-coldsoft p-5";
 
 /* §05: la escalera del AUC. La fuga tachada, la ablación y el modelo. */
 function AucLadder({ a, lang }: { a: Dictionary["historia"]["aside"]["cifra"]; lang: string }) {
-  const lgbm = CR.modelos.modelos.find((m) => m.modelo === CR.modelos.produccion)!;
+  const lgbm = productionModel();
   const f = (v: number) => (lang === "es" ? v.toFixed(4).replace(".", ",") : v.toFixed(4));
   // 0,9461 y 0,6621 vienen del ADR 0002 del repositorio; el 0,7005, del bundle.
   const rows = [
@@ -68,6 +69,11 @@ function Gate({ a, lang }: { a: Dictionary["historia"]["aside"]["hilo"]; lang: s
           <text key={t} x={x(t)} y="80" textAnchor="middle" className="fill-muted text-[12px]">{lang === "es" ? t.toFixed(2).replace(".", ",") : t.toFixed(2)}</text>
         ))}
       </svg>
+      {/* El SVG va oculto a las tecnologías de apoyo: las dos cifras que dibuja
+          viven también aquí, como texto. */}
+      <p className="sr-only">
+        {a.observed} {num(ratio, lang)}. {a.threshold} {lang === "es" ? "0,80" : "0.80"}.
+      </p>
     </div>
   );
 }
@@ -83,7 +89,7 @@ function Figure({ value, label }: { value: string; label: string }) {
 
 export default function HistoriaAside({ s, dict, lang }: { s: Section; dict: Dictionary; lang: string }) {
   const a = dict.historia.aside;
-  const card = (href: string) => dict.work.cards.find((c) => c.href === href)!;
+  const card = (href: string) => workCard(dict, href);
   const chart = (href: string) => {
     const c = card(href);
     return (

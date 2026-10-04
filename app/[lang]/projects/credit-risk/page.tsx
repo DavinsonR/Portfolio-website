@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
-import ProjectHero from "@/components/project/ProjectHero";
+import ProjectHero, { PROJECT_WRAP } from "@/components/project/ProjectHero";
 import Preview from "@/components/showcase/Previews";
 import {
   DecisionBalance,
@@ -11,9 +11,11 @@ import {
 } from "@/components/credit-risk/Charts";
 import Scorer from "@/components/credit-risk/Scorer";
 import { alternates, social } from "@/lib/config/alternates";
+import { workCard } from "@/lib/config/work-card";
 import { pageGraph } from "@/lib/config/structured-data";
 import {
   CR,
+  productionModel,
   cliff,
   compactUSD,
   eventPoints,
@@ -55,7 +57,7 @@ export default async function CreditRiskPage({
   const { lang } = await params;
   const dict = getDictionary(lang);
   const t = dict.creditRisk;
-  const wrap = "max-w-[980px] mx-auto px-6";
+  const wrap = PROJECT_WRAP;
   const h2 = "font-display text-[clamp(23px,2.9vw,31px)] font-bold text-ink mb-3";
 
   const ultima = cliff[cliff.length - 1];
@@ -63,9 +65,9 @@ export default async function CreditRiskPage({
   const umbralEquidad = gateThreshold("hmda:disparate_impact", 0.8);
 
   // La cabecera enseña el mismo gráfico de la tarjeta de la portada.
-  const card = dict.work.cards.find((c) => c.href === "/projects/credit-risk")!;
+  const card = workCard(dict, "/projects/credit-risk");
   // Cifras de la banda: del bundle del repositorio, nunca escritas a mano.
-  const lgbm = CR.modelos.modelos.find((m) => m.modelo === CR.modelos.produccion)!;
+  const lgbm = productionModel();
   const auc = num(lgbm.auc_test, lang);
   const avoided = new Intl.NumberFormat(lang === "es" ? "es-CO" : "en-US", { maximumFractionDigits: 1 }).format(money.avoided / 1e6) + (lang === "es" ? " M USD" : "M USD");
   const avoidedFmt = lang === "es" ? avoided : `$${avoided.replace("M USD", "M")}`;
@@ -88,6 +90,7 @@ export default async function CreditRiskPage({
       />
       {/* ================= HERO ================= */}
       <ProjectHero
+        wrap={wrap}
         lang={lang}
         backLabel={dict.nav.backHome}
         status="live"
@@ -108,7 +111,7 @@ export default async function CreditRiskPage({
       <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
 
       {/* ================= DEMO ================= */}
-      <section id="demo" className="scroll-mt-[118px] py-12 bg-band border-t-2 border-cold" aria-labelledby="cr-demo">
+      <section id="demo" className="py-12 bg-band border-t-2 border-cold" aria-labelledby="cr-demo">
         <div className={wrap}>
           <h2 id="cr-demo" className={h2}>
             {t.demo.title}
@@ -120,7 +123,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= EL ACANTILADO ================= */}
-      <section id="vocabulario" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-cliff">
+      <section id="vocabulario" className="py-14 border-t border-rulesoft" aria-labelledby="cr-cliff">
         <div className={wrap}>
           <h2 id="cr-cliff" className={h2}>
             {t.cliff.title}
@@ -174,7 +177,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= DINERO ================= */}
-      <section id="dinero" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-money">
+      <section id="dinero" className="py-14 border-t border-rulesoft" aria-labelledby="cr-money">
         <div className={wrap}>
           <h2 id="cr-money" className={h2}>
             {t.money.title}
@@ -201,7 +204,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= EL GATE ================= */}
-      <section id="gate" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-gate">
+      <section id="gate" className="py-14 border-t border-rulesoft" aria-labelledby="cr-gate">
         <div className={wrap}>
           <h2 id="cr-gate" className={h2}>
             {t.gate.title}
@@ -225,7 +228,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= ESTUDIO DE EVENTO ================= */}
-      <section id="evento" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-event">
+      <section id="evento" className="py-14 border-t border-rulesoft" aria-labelledby="cr-event">
         <div className={wrap}>
           <h2 id="cr-event" className={h2}>
             {t.event.title}
@@ -299,7 +302,7 @@ export default async function CreditRiskPage({
       </section>
 
       {/* ================= CIERRE ================= */}
-      <section id="codigo" className="scroll-mt-[118px] py-14 border-t border-rulesoft" aria-labelledby="cr-close">
+      <section id="codigo" className="py-14 border-t border-rulesoft" aria-labelledby="cr-close">
         <div className={wrap}>
           <h2 id="cr-close" className={h2}>
             {t.close.title}
@@ -318,7 +321,7 @@ export default async function CreditRiskPage({
             ))}
           </ul>
           <p className="mt-9 text-[14px] leading-[1.65] text-muted max-w-[680px] border-t border-rulesoft pt-4">
-            {t.sourceNote} <code className="text-[12.5px]">{CR.manifest.code_fingerprint}</code>
+            {t.sourceNote} <code className="text-[14px]">{CR.manifest.code_fingerprint}</code>
           </p>
         </div>
       </section>

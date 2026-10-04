@@ -5,13 +5,14 @@ import {
 } from "@/lib/data/powerbi-model";
 import { reportShot } from "@/lib/data/powerbi-shots";
 import SectionNav from "@/components/SectionNav";
-import ProjectHero from "@/components/project/ProjectHero";
+import ProjectHero, { PROJECT_WRAP } from "@/components/project/ProjectHero";
 import Preview from "@/components/showcase/Previews";
 import ReportMock from "@/components/powerbi/ReportMock";
 import ContactBand from "@/components/ContactBand";
 import ModelDiagram from "@/components/powerbi/ModelDiagram";
 import MeasureCatalogue from "@/components/powerbi/MeasureCatalogue";
 import { alternates, social } from "@/lib/config/alternates";
+import { workCard } from "@/lib/config/work-card";
 import { pageGraph } from "@/lib/config/structured-data";
 import { TRADING_SIM_REPO } from "@/lib/data/trading-sim";
 
@@ -30,7 +31,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   };
 }
 
-const wrap = "mx-auto max-w-[980px] px-6";
+const wrap = PROJECT_WRAP;
 const label = "text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase";
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 
@@ -38,7 +39,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
   const { lang } = await params;
   const dict = getDictionary(lang);
   const t = dict.powerbi;
-  const card = dict.work.cards.find((c) => c.href === "/projects/powerbi")!;
+  const card = workCard(dict, "/projects/powerbi");
 
   // Every figure in the band is derived from the catalogue, never typed.
   const facts = [
@@ -56,6 +57,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       />
       {/* ================= HERO ================= */}
       <ProjectHero
+        wrap={wrap}
         lang={lang}
         backLabel={dict.nav.backHome}
         status="live"
@@ -82,7 +84,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       <SectionNav items={t.nav} label={t.metaTitle} wrap={wrap} />
 
       {/* ================= PAGES ================= */}
-      <section id="paginas" className="scroll-mt-[118px] border-b border-rule py-16">
+      <section id="paginas" className="border-b border-rule py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.pages.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -143,7 +145,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       </section>
 
       {/* ================= MODEL ================= */}
-      <section id="modelo" className="scroll-mt-[118px] border-b border-rule py-16">
+      <section id="modelo" className="border-b border-rule py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.model.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -206,7 +208,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       </section>
 
       {/* ================= MEASURES ================= */}
-      <section id="medidas" className="scroll-mt-[118px] border-b border-rule py-16">
+      <section id="medidas" className="border-b border-rule py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.measures.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>
@@ -222,7 +224,7 @@ export default async function PowerBiPage({ params }: { params: Promise<{ lang: 
       </section>
 
       {/* ================= LICENSING ================= */}
-      <section id="licencia" className="scroll-mt-[118px] py-16">
+      <section id="licencia" className="py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.licensing.label}</p>
           <h2 data-reveal className="reveal mt-3 max-w-[26ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink" style={{ "--d": "60ms" } as React.CSSProperties}>

@@ -55,8 +55,8 @@ A neighboring candidate cannot truthfully copy this claim: finance people rarely
 
 Real, verifiable — none of this may be fabricated or inflated:
 
-- **market-data-medallion** (github.com/DavinsonR/market-data-medallion): 48 assets, ~55k daily candles, 1,347 strategy variants with out-of-sample validation, 161 unit tests, 100 dbt data-quality checks, daily automated refresh, Power BI semantic model. Public repo.
-- Findings from that project: only 11.5% of in-sample winning strategies survived out-of-sample; requiring five confirming signals produced zero trades; Ecopetrol's +96.9% USD return decomposed into +53.6% company and +43.4pp currency.
+- **market-data-medallion** (github.com/DavinsonR/market-data-medallion): 48 assets, 58,000+ daily candles, 1,392 strategy variants with out-of-sample validation, 171 unit tests, 89 dbt data-quality tests, daily automated refresh, Power BI semantic model. Public repo.
+- Findings from that project: only a minority of in-sample winning strategies survive out-of-sample (the rate moves nightly; 51 of 338, about 15%, in the 25 Sep 2026 snapshot — the site derives it, never hard-codes it); requiring five confirming signals produced zero trades; Ecopetrol's +96.9% USD return decomposed into +53.6% company and +43.4pp currency.
 - FP&A consultant at Neoris/EPAM with operations across 15+ countries.
 - Winner, BodyTech Trends data analytics hackathon (2024).
 - Ecopetrol scholar — Mario Galán Gómez merit program (2018).

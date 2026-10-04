@@ -20,7 +20,7 @@
 \definecolor{cold}{HTML}{0F4C81}   % azul institucional del sitio
 \definecolor{ink}{HTML}{14181D}
 \definecolor{body}{HTML}{454E57}
-\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold}
+\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold, pdfauthor={Davirson Novoa Ramírez}, pdftitle={Davirson Novoa Ramírez --- Finance Data Analyst}, pdfkeywords={Finance Data Analyst, Financial BI Analyst, Analytics Engineer, FP\&A, SQL, dbt, Power BI}}
 
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
@@ -48,10 +48,10 @@
 \vspace{2pt}
 
 \needspace{12\baselineskip}\section*{Profile}
-Finance Data Analyst who owns the SG\&A close and forecast process for 15+ countries across the Americas, Europe and Asia, from HQ. An economist trained in treasury, SOX billing and FP\&A, who builds the data the business runs on instead of waiting for it: Python, SQL and Power BI on real operations. Alongside that I run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model that refreshes itself daily, and I deployed a credit decisioning system over 95 million records with ten model-governance gates. All of it verifiable: every figure on my site links to the repository that produces it. I bring financial judgment and data engineering in a single hire: no translator, no handoff meeting.
+Finance Data Analyst who owns the SG\&A close and forecast process for 15+ countries across the Americas, Europe and Asia, from HQ. An economist trained in treasury, SOX billing and FP\&A, who builds the data the business runs on instead of waiting for it: Python, SQL and Power BI on real operations. Alongside that I run a production PostgreSQL warehouse in medallion architecture, with dbt transformations, 89 automated quality tests and a Power BI semantic model versioned as code on top of that warehouse, and I deployed a credit decisioning system over 64 million+ US public records, with ten model-governance gates. All of it verifiable: every technical figure on my site links to the repository that produces it. I bring financial judgment and data engineering in a single hire: no translator, no handoff meeting.
 
 \needspace{12\baselineskip}\section*{The crossover role}
-I charge for what I have done in every finance role: in all of them I ended up building the same thing --- code and data --- because the report the business needed did not exist and nobody else was going to build it. An FX mismatch analysis in Python nobody had asked for, as an intern. Automation that gave every treasury analyst about 10 hours a month back --- close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; plenty of people know Python. It is knowing which question is worth answering before writing the first line. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code --- it is the one who needs no translator between them. Hiring that person is two hires in one, without the handoff meeting between them.
+Hire me for what I already do in every finance role: in all of them I ended up building the same thing --- code and data --- because the report the business needed did not exist and nobody else was going to build it. An FX mismatch analysis in Python nobody had asked for, as an intern. Automation that gave every treasury analyst about 10 hours a month back --- close to 60 a month across the team. Power BI models that turned a monthly close into a decision. The edge is not knowing Python; plenty of people know Python. It is knowing which question is worth answering before writing the first line. A Finance Data Analyst is neither a data analyst who picked up finance nor a finance person who picked up code --- it is the one who needs no translator between them. Hiring that person is two hires in one, without the handoff meeting between them.
 
 \needspace{12\baselineskip}\section*{Experience}
 \headline{Neoris EPAM}{Bogotá, Colombia \,\textperiodcentered\, remote}
@@ -96,13 +96,13 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \vspace{4pt}
 
 \needspace{12\baselineskip}\section*{Projects in operation}
-{\small\itshape Open source and checkable. None of this is a course exercise.}\par\vspace{3pt}
+{\small\itshape Open source and checkable; for Kairo, the proof is the public demo. None of this is a course exercise.}\par\vspace{3pt}
 \headline{credit-risk-mlops}{2026 --- deployed, scoring live}
 \subline{Credit decisioning system with model governance --- design and build}{\href{https://github.com/DavinsonR/credit-risk-mlops}{github.com/DavinsonR/credit-risk-mlops}}
 {\small\bfseries\color{cold} \$276.3M in avoidable charge-offs \,\textperiodcentered\, AUC 0.7005 \,\textperiodcentered\, 10 gates, and one blocks my own model}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Declining the riskiest 10\% of the test portfolio would have avoided \$276.3M in charge-offs --- 2.15x what random declines achieve --- and the report ships the counterweight too: \$1.99B in good lending forgone.
-  \item Deployed model at AUC 0.7005 over 1.96M SBA 7(a) loans and 62.4M HMDA applications: +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107. The event study runs separately, over 93.4M applications.
+  \item Deployed loss model on 1.96M SBA 7(a) loans: AUC 0.7005 out of time, +0.0311 over an interpretable WoE scorecard, with calibration error 0.0107. The second model, for credit access over 62.4M HMDA applications, is the one the fairness gate refuses to promote; the event study runs separately, over 93.4M applications.
   \item The first reading was 0.9461, and it was not a model but a leak: TermInMonths is overwritten when a loan is liquidated, so the field carried the outcome. Removing it drops the ablation to 0.6621 --- and that is the number published.
   \item Ten promotion gates judged by exit code, one of them designed to block my own model when it misses the threshold.
   \item Monitoring caught the source changing its vocabulary without notice: a field stopped meaning the same thing between vintages, and nobody would have known without the control.
@@ -116,7 +116,7 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Watermark-based incremental ingestion from 4 sources (Tiingo, Coinbase, Kraken, FX) into a three-layer PostgreSQL warehouse: 48 assets and more than 58,000 candles, idempotent and resumable.
   \item 89 automated dbt data-quality tests plus 171 Python unit tests; the pipeline fails before publishing bad data, not after.
-  \item No-look-ahead backtesting engine with 70/30 out-of-sample validation over 1,392 strategy variants: fewer than one in six in-sample winners survived the blind window.
+  \item No-look-ahead backtesting engine with 70/30 out-of-sample validation over 1,392 strategy variants: the vast majority of in-sample winners did not survive the blind window.
   \item FX decomposition for Latin American ADRs, separating company performance from the currency move through the identity (1+r\_USD) $\times$ (1+r\_FX) = (1+r\_local).
   \item Daily orchestration on GitHub Actions with a rate-limit circuit breaker, running on zero-cost infrastructure.
 \end{itemize}
@@ -124,10 +124,10 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \vspace{4pt}
 \headline{Kairo --- multi-user product with sensitive data}{2026 --- in production \,\textperiodcentered\, open demo}
 \subline{Own product --- designed, built and operated}{\href{https://kairo.davirson.com/demo}{public demo, no account}}
-{\small\bfseries\color{cold} 526 tests across 8 CI gates \,\textperiodcentered\, 34 tables under row-level security \,\textperiodcentered\, a public demo that never touches the database}\par
+{\small\bfseries\color{cold} 2,741 tests across 8 CI gates \,\textperiodcentered\, 65 tables and 46 views under row-level security \,\textperiodcentered\, a public demo that never touches the database}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
-  \item Multi-user model on Postgres with a row policy on 34 tables: the conversion required rebuilding 22 primary keys that identified rows without the user, and pushing the user inside the foreign keys so isolation did not rest on the policy alone.
-  \item Eight CI gates judged by exit code: types, format, lint, 2,741 tests, build, dependency audit, a guard that hunts personal data inside the built artifact, and a smoke test requiring the anonymous role to be denied across all 55 tables and views.
+  \item Multi-user model on Postgres with row-level security on all 65 tables: the conversion required rebuilding 22 primary keys that identified rows without the user, and pushing the user inside the foreign keys so isolation did not rest on the policy alone.
+  \item Eight CI gates judged by exit code: types, format, lint, 2,741 tests, build, dependency audit, a guard that hunts personal data inside the built artifact, and a smoke test requiring the anonymous role to be denied across all 111 tables and views.
   \item A public demo running the five real screens over 120 seed-generated days that never queries the database; a test walks the runtime import graph and fails if any reachable module gets to the data client.
   \item Day logging in one form and one button, with eight independent writes, an on-device draft and send queue to survive losing signal, and a purpose-built number reader because a browser number field was storing expenses divided by a thousand.
 \end{itemize}
@@ -150,13 +150,13 @@ I charge for what I have done in every finance role: in all of them I ended up b
 
 \needspace{12\baselineskip}\section*{Skills}
 \textbf{\color{ink}Finance domain:} FP\&A \,\textperiodcentered\, Close \& forecast \,\textperiodcentered\, SG\&A \,\textperiodcentered\, Revenue recognition (SOX) \,\textperiodcentered\, Treasury \,\textperiodcentered\, FX analysis \,\textperiodcentered\, Budgeting \,\textperiodcentered\, Constant currency \,\textperiodcentered\, SAP \,\textperiodcentered\, JD Edwards \,\textperiodcentered\, MicroStrategy \,\textperiodcentered\, Variance analysis \,\textperiodcentered\, Month-end close \,\textperiodcentered\, Cash-flow forecasting \,\textperiodcentered\, Management reporting \,\textperiodcentered\, Account reconciliation\par\vspace{3pt}
-\textbf{\color{ink}Data \& engineering:} Analytical SQL \,\textperiodcentered\, PostgreSQL \,\textperiodcentered\, DuckDB \,\textperiodcentered\, dbt \,\textperiodcentered\, Medallion architecture \,\textperiodcentered\, Python (pandas) \,\textperiodcentered\, Incremental ETL \,\textperiodcentered\, Prefect \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Supabase \,\textperiodcentered\, Power BI \,\textperiodcentered\, DAX \,\textperiodcentered\, Power Query \,\textperiodcentered\, Tableau \,\textperiodcentered\, Git \,\textperiodcentered\, Next.js \,\textperiodcentered\, Vercel \,\textperiodcentered\, Panel econometrics \,\textperiodcentered\, Fixed effects \,\textperiodcentered\, Causal inference \,\textperiodcentered\, Time series \,\textperiodcentered\, Credit scorecards (WoE) \,\textperiodcentered\, LightGBM \,\textperiodcentered\, MLflow \,\textperiodcentered\, ONNX \,\textperiodcentered\, MLOps \,\textperiodcentered\, Data testing \,\textperiodcentered\, Data warehousing \,\textperiodcentered\, Dimensional modelling (star schema) \,\textperiodcentered\, ELT \,\textperiodcentered\, CI/CD \,\textperiodcentered\, Dashboarding\par\vspace{3pt}
+\textbf{\color{ink}Data \& engineering:} Analytical SQL \,\textperiodcentered\, PostgreSQL \,\textperiodcentered\, DuckDB \,\textperiodcentered\, dbt \,\textperiodcentered\, Medallion architecture \,\textperiodcentered\, Python (pandas) \,\textperiodcentered\, Incremental ETL \,\textperiodcentered\, Prefect \,\textperiodcentered\, GitHub Actions \,\textperiodcentered\, Supabase \,\textperiodcentered\, Power BI \,\textperiodcentered\, DAX \,\textperiodcentered\, Power Query \,\textperiodcentered\, Tableau \,\textperiodcentered\, Git \,\textperiodcentered\, Next.js \,\textperiodcentered\, Vercel \,\textperiodcentered\, Panel econometrics \,\textperiodcentered\, Fixed effects \,\textperiodcentered\, Causal inference \,\textperiodcentered\, Time series \,\textperiodcentered\, Credit scorecards (WoE) \,\textperiodcentered\, LightGBM \,\textperiodcentered\, MLflow \,\textperiodcentered\, ONNX \,\textperiodcentered\, MLOps \,\textperiodcentered\, Data testing \,\textperiodcentered\, Data warehousing \,\textperiodcentered\, Dimensional modeling (star schema) \,\textperiodcentered\, ELT \,\textperiodcentered\, CI/CD \,\textperiodcentered\, Dashboarding\par\vspace{3pt}
 \textbf{\color{ink}Technical stack}\par\vspace{2pt}
 \begin{multicols}{2}
 \begin{itemize}[leftmargin=1.1em, itemsep=1pt, topsep=0pt, parsep=0pt]
   \item \textbf{\color{ink}Financial analysis and FP\&A} --- SG\&A close and forecast across 15+ countries: variance against plan and in constant currency
   \item \textbf{\color{ink}SAP} --- Revenue recognition under SOX and automated bank reconciliation, at SLB
-  \item \textbf{\color{ink}Excel and financial modelling} --- The close and forecast for those 15+ countries, at Neoris EPAM
+  \item \textbf{\color{ink}Excel and financial modeling} --- The close and forecast for those 15+ countries, at Neoris EPAM
   \item \textbf{\color{ink}Power BI} --- \href{https://davirson.com/en/projects/powerbi}{Seven-table semantic model in TMDL with 17 DAX measures, versioned as text}
   \item \textbf{\color{ink}Tableau} --- \href{https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis}{Dashboard that won the BodyTech Trends Hackathon, public}
   \item \textbf{\color{ink}Python} --- Incremental ingestion, backtesting engine, FX decomposition
@@ -166,7 +166,7 @@ I charge for what I have done in every finance role: in all of them I ended up b
   \item \textbf{\color{ink}Git \,\textperiodcentered\, GitHub Actions} --- Daily cron in operation, with a rate-limit circuit breaker
   \item \textbf{\color{ink}Panel econometrics} --- Two-way fixed effects over 228 observations, wild cluster bootstrap and permutation placebo
   \item \textbf{\color{ink}Diagnostics and robustness} --- Measured cross-sectional dependence, CCE, SLX, pre-trends, cluster-robust wild bootstrap and a Holm correction
-  \item \textbf{\color{ink}Machine learning} --- LightGBM over 1.96M SBA loans and 62.4M HMDA applications: AUC 0.7005, +0.0311 over the interpretable scorecard
+  \item \textbf{\color{ink}Machine learning} --- LightGBM over 1.96M SBA loans: AUC 0.7005 out of time, +0.0311 over the interpretable scorecard
   \item \textbf{\color{ink}Credit risk and scorecards} --- WoE binning with optbinning, out-of-time validation across the COVID shock, calibration error 0.0107
   \item \textbf{\color{ink}Model governance (MLOps)} --- Ten promotion gates judged by exit code; one blocks my own model
 \end{itemize}
@@ -184,7 +184,7 @@ I charge for what I have done in every finance role: in all of them I ended up b
 \textbf{\color{ink}Certifications:} Machine Learning Specialization (Stanford \,\textperiodcentered\, Coursera, 2024) \,\textperiodcentered\, Cybersecurity Certificate (Google \,\textperiodcentered\, Coursera, 2024)\par\vspace{3pt}
 \textbf{\color{ink}Recognition:} \href{https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis}{Winner --- BodyTech Trends Hackathon (2024)} \,\textperiodcentered\, Ecopetrol Scholar --- Mario Galán Gómez Program (2018)\par
 
-\needspace{12\baselineskip}\section*{Remote-ready}
-My entire track record is remote or hybrid, with teams distributed across 15+ countries. \,\textperiodcentered\, GMT-5 (Bogotá): your US and Canadian hours, in full. \,\textperiodcentered\, Daily working English with teams in the US and Europe (Hungary, Czech Republic, Spain), plus Argentina and Brazil. \,\textperiodcentered\, Native Spanish \,\textperiodcentered\, Portuguese A2.
+\needspace{6\baselineskip}\section*{Remote-ready}
+My entire track record is remote or hybrid, with operations across 15+ countries. \,\textperiodcentered\, GMT-5 (Bogotá): your US and Canadian hours, in full. \,\textperiodcentered\, Daily working English with teams in the US and Europe (Hungary, Czech Republic, Spain). \,\textperiodcentered\, Native Spanish \,\textperiodcentered\, English B2 \,\textperiodcentered\, Portuguese A2.
 
 \end{document}

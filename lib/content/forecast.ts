@@ -25,7 +25,7 @@ export const forecast = {
       pill: "LABORATORIO ABIERTO",
       ctaBoard: "Explorar el tablero",
       ctaPlay: "Jugar contra el ingenuo",
-      title: "Pronostico el crecimiento de 20 economías de América Latina, y demuestro cuánto vale cada pronóstico.",
+      title: "Pronostico el crecimiento de 20 economías de América Latina, y mido cuánto vale cada pronóstico.",
       subtitle:
         "Pronósticos 2026–2027 por economía, con bandas de confianza al 80 y al 95 % y su tasa de acierto medida en el backtest, año por año. Detrás, un laboratorio que puso a competir trece modelos —del AR(1) al LSTM— contra el pronóstico ingenuo, con cada ganancia sometida a su prueba. Fíltralo, compáralo y juega contra él.",
       meta: "Python · statsmodels · scikit-learn · PyTorch · origen móvil · Diebold-Mariano, Holm y Wilcoxon",
@@ -73,7 +73,7 @@ export const forecast = {
       },
       holm: {
         label: "Comparaciones múltiples",
-        title: "Prueba 18 modelos al 5 % y alguno ganará por azar",
+        title: "Prueba 18 configuraciones al 5 % y alguna puede ganar por azar",
         body: "La calma del ISE mensual de Colombia es donde más modelos parecen ganarle al ingenuo. Activa la corrección de Holm, que exige más a quien se prueba junto a muchos otros, y cuenta cuántas estrellas sobreviven.",
       },
       verdict: {
@@ -117,7 +117,7 @@ export const forecast = {
         title: "Todo corre sin red, desde el repositorio",
         steps: [
           { cmd: "uv sync", body: "El entorno exacto desde uv.lock, torch incluido." },
-          { cmd: "uv run python -m macro_lab.lab_latam", body: "Las pistas C y D: 8 economías trimestrales y 20 anuales." },
+          { cmd: "uv run python -m macro_lab.lab_latam", body: "Las pistas C y D: 8 economías trimestrales y 19 anuales." },
           { cmd: "uv run python -m macro_lab.lab_frecuencia", body: "El experimento de frecuencia, ajuste y fuente, con su regla pre-registrada." },
           { cmd: "uv run python -m macro_lab.exportar_web", body: "Los JSON que lee esta página. Nada se recalcula aquí: se lee." },
         ],
@@ -221,7 +221,7 @@ export const forecast = {
             to: "a",
             coverage: "Acierto banda 95 %",
             coverageNote: "{name}: en el backtest, su banda del 95 % contuvo el dato real en el {pct} de {n} años.",
-            lowCoverage: "Menos de lo prometido: léala como más estrecha de lo que es.",
+            lowCoverage: "Menos de lo prometido: léela como más estrecha de lo que es.",
             disclaimer: "Pronóstico estadístico: extrapola la historia de cada economía con un AR(1) ajustado hasta el último dato del Banco Mundial. No incorpora información posterior ni juicio experto, y las bandas son anchas porque la región vivió crisis que el modelo sabe que pueden repetirse.",
             axisY: "Crecimiento del PIB real (% anual)",
             fanLabel: "Historia y pronóstico",
@@ -250,15 +250,6 @@ export const forecast = {
             note: "Cronología editorial con fechas públicas. Las magnitudes las pone la serie, no el texto.",
           },
           season: {
-            title: "Estacionalidad: Colombia mes a mes",
-            series: "Serie del ISE",
-            years: "Años a comparar",
-            viewYears: "Por año",
-            viewProfile: "Perfil promedio",
-            level: "Índice del ISE (nivel)",
-            profile: "Perfil estacional promedio",
-            profileNote: "Desvío de cada mes frente al promedio de su año, en todos los años completos.",
-            why: "Solo Colombia: el ISE del DANE es la única serie mensual sin ajustar del laboratorio. Las trimestrales del FMI vienen desestacionalizadas y ya no tienen estacionalidad que mostrar.",
             months: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
           },
           missing: "Cobertura incompleta en el Banco Mundial para esta métrica: {names}.",
@@ -354,7 +345,7 @@ export const forecast = {
         { value: "20", label: "economies under one protocol", note: "19 with annual series since 1961, and eight quarterly", href: "#region" },
         { value: "0.86", label: "AR(1) error relative to naive, in calm", note: "median of 19 annual economies · Wilcoxon p < 0.001", href: "#region" },
         { value: "0 of 27", label: "per-economy best models that survive Holm", note: "across the 27 LATAM series, quarterly and annual", href: "#holm" },
-        { value: "17 of 20", label: "economies without a single year holding all 33 variables", note: "the frontier is measured before modelling", href: "#veredicto" },
+        { value: "17 of 20", label: "economies without a single year holding all 33 variables", note: "the frontier is measured before modeling", href: "#veredicto" },
       ] as Metric[],
       nav: [
         { id: "panorama", label: "Overview" },
@@ -393,7 +384,7 @@ export const forecast = {
       },
       holm: {
         label: "Multiple comparisons",
-        title: "Test 18 models at 5 % and one will win by chance",
+        title: "Test 18 configurations at 5% and one may win by chance",
         body: "Calm periods in Colombia's monthly ISE are where the most models seem to beat naive. Turn on Holm's correction, which asks more of anyone tested alongside many others, and count how many stars survive.",
       },
       verdict: {
@@ -437,7 +428,7 @@ export const forecast = {
         title: "Everything runs offline, from the repository",
         steps: [
           { cmd: "uv sync", body: "The exact environment from uv.lock, torch included." },
-          { cmd: "uv run python -m macro_lab.lab_latam", body: "Tracks C and D: 8 quarterly and 20 annual economies." },
+          { cmd: "uv run python -m macro_lab.lab_latam", body: "Tracks C and D: 8 quarterly and 19 annual economies." },
           { cmd: "uv run python -m macro_lab.lab_frecuencia", body: "The frequency, adjustment and source experiment, with its pre-registered rule." },
           { cmd: "uv run python -m macro_lab.exportar_web", body: "The JSON this page reads. Nothing is recomputed here: it is read." },
         ],
@@ -570,15 +561,6 @@ export const forecast = {
             note: "An editorial timeline with public dates. The series carries the magnitudes, not the text.",
           },
           season: {
-            title: "Seasonality: Colombia month by month",
-            series: "ISE series",
-            years: "Years to compare",
-            viewYears: "By year",
-            viewProfile: "Average profile",
-            level: "ISE index (level)",
-            profile: "Average seasonal profile",
-            profileNote: "Each month's deviation from its year's average, across all complete years.",
-            why: "Colombia only: DANE's ISE is the lab's only unadjusted monthly series. The IMF quarterly series come seasonally adjusted and have no seasonality left to show.",
             months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
           },
           missing: "Incomplete World Bank coverage for this metric: {names}.",

@@ -93,6 +93,14 @@ export const money = {
   loans: economia.n_prestamos,
 };
 
+/** El modelo en producción del bundle. Con `!` un bundle que cambiara el nombre
+ *  fallaba con «undefined»; así dice cuál no encuentra. */
+export function productionModel() {
+  const m = CR.modelos.modelos.find((x) => x.modelo === CR.modelos.produccion);
+  if (!m) throw new Error(`productionModel: el bundle declara produccion="${CR.modelos.produccion}" y no hay ese modelo en modelos[]`);
+  return m;
+}
+
 export function compactUSD(v: number, lang: string): string {
   const n = Math.abs(v);
   const [div, suf] = n >= 1e9 ? [1e9, "B"] : n >= 1e6 ? [1e6, "M"] : [1e3, "K"];

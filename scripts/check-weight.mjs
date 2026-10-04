@@ -11,18 +11,22 @@
 // convierte «se coló un import» en un fallo del CI.
 //
 // Mide lo que el HTML de cada ruta referencia: los chunks de
-// `/_next/static/chunks/*.js`, comprimidos con brotli, que es como viajan.
+// `/_next/static/chunks/*.js`, comprimidos con brotli, que es como viajan, y sin
+// el polyfill `noModule`, que un navegador actual no baja.
 // Lee `.next/server/app/<ruta>.html`, así que corre tras el build.
 // ============================================================
 import fs from "node:fs";
 import path from "node:path";
 import zlib from "node:zlib";
 
-/** Kilobytes brotli por ruta. Medido el 23 sep 2026 tras la sesión 22: la
- *  portada y las siete subpáginas referencian entre 155 y 162 KB br; el
- *  presupuesto deja ~6 % de aire. Subirlo es una decisión con motivo escrito
- *  en el commit, no un ajuste. */
-const BUDGET_KB = 172;
+/** Kilobytes brotli por ruta, SIN el polyfill `noModule`. Medido el 3 oct 2026:
+ *  la portada y las ocho subpáginas referencian entre 122,1 y 127,8 KB br (el
+ *  máximo es trading-sim); el presupuesto deja ~11 % de aire. Hasta el 23 sep se
+ *  medían 155-162 KB con un presupuesto de 172 porque se sumaban 35 KB de
+ *  polyfill que ningún navegador actual descarga: una regresión real de esa
+ *  talla no lo habría rozado. Subirlo es una decisión con motivo escrito en el
+ *  commit, no un ajuste. */
+const BUDGET_KB = 142;
 
 const APP = path.join(process.cwd(), ".next", "server", "app");
 const CHUNKS = path.join(process.cwd(), ".next", "static", "chunks");
@@ -56,7 +60,19 @@ const failures = [];
 for (const html of htmls) {
   const route = "/" + path.relative(APP, html).replace(/\\/g, "/").replace(/\.html$/, "");
   const src = fs.readFileSync(html, "utf8");
-  const chunks = [...new Set([...src.matchAll(/src="\/_next\/static\/chunks\/([^"]+\.js)"/g)].map((m) => m[1]))];
+  // Los `<script noModule>` son el polyfill de navegadores sin módulos ES: los
+  // navegadores actuales no lo descargan nunca, así que no cuentan. Sumarlo
+  // (35 KB br en cada ruta) escondía holgura y dejaba pasar una regresión real de
+  // esa talla sin tocar el presupuesto.
+  const chunks = [
+    ...new Set(
+      [...src.matchAll(/<script\b[^>]*>/g)]
+        .map((m) => m[0])
+        .filter((tag) => !/\bnoModule\b/i.test(tag))
+        .map((tag) => tag.match(/\bsrc="\/_next\/static\/chunks\/([^"]+\.js)"/)?.[1])
+        .filter(Boolean),
+    ),
+  ];
   if (chunks.length === 0) {
     failures.push(`${route} — el HTML no referencia ningún chunk: o el formato cambió o la página no hidrata`);
     continue;

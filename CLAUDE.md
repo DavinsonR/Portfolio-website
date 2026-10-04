@@ -37,7 +37,7 @@ Qué cubre cada una, y por qué existe:
   - **`og:url` tiene que coincidir con el canonical de esa página** (FALLO-29). Cuando una subpágina olvida su `openGraph`, hereda el del layout y su `og:url` se queda en la portada: su tarjeta en LinkedIn enlaza a la portada, con el título de la portada. El síntoma es exacto, y esa es la diferencia que se mide.
   - ningún `<svg>` lleva `width`/`height="auto"` **como atributo** (FALLO-34): ahí exigen una longitud, y el navegador lo grita en consola en cada carga. En CSS sí valen.
   - `twitter:title` coincide con `og:title` (FALLO-36: el bloque `twitter` también se reemplaza entero); `<title>` ≤ 60 caracteres y `description` ≤ 155; los nueve redirects leídos de `next.config.ts` con su código exacto; JSON-LD que parsea en cada ruta; y las cabeceras: la CSP arranca en `default-src 'none'`, conserva `'unsafe-inline'` y no declara ningún hash, HSTS con `preload`, sin `x-powered-by`, la demo y la página de crédito con `wasm-unsafe-eval` —y la portada sin él—, y una fuente con `max-age` real.
-- **`check:weight`** — tras el build, suma en brotli los chunks que cada HTML referencia y falla por encima de un presupuesto versionado en `scripts/check-weight.mjs`. Existe por IR-05: el renderizador del atlas bajaba con la página aunque sus datos esperaran, y el build estaba en verde.
+- **`check:weight`** — tras el build, suma en brotli los chunks que cada HTML referencia (sin el polyfill `<script noModule>`, que un navegador actual no baja) y falla por encima de un presupuesto versionado en `scripts/check-weight.mjs`. Existe por IR-05: el renderizador del atlas bajaba con la página aunque sus datos esperaran, y el build estaba en verde.
 
 Las cuatro saben fallar, y se verificó una a una haciéndolas fallar a propósito. `check:figures` se probó de las tres maneras en que puede quedarse ciega: contradiciendo una cifra dentro de un idioma, haciéndola divergir entre `es` y `en`, y borrándola del sitio para que su patrón no encuentre nada. Las tres salieron con código 1.
 
@@ -68,7 +68,7 @@ De ahí sale el invariante más importante del repositorio: **los objetos `es` y
 
 Los PDF y las fuentes LaTeX del CV se generan de ese mismo archivo (`scripts/generate-cv-latex.ts`), así que tocar el bloque `cv` obliga a `npm run cv` para que el PDF descargable no contradiga la página.
 
-### Añadir una ruta toca cinco sitios
+### Añadir una ruta toca seis sitios
 
 Olvidar cualquiera deja un fallo silencioso, y varios ya ocurrieron:
 
@@ -77,6 +77,7 @@ Olvidar cualquiera deja un fallo silencioso, y varios ya ocurrieron:
 3. `generateMetadata` de esa página — `alternates(lang, "/ruta")` **y** `...social(lang, "/ruta", …)` de `lib/config/alternates.ts`, que esparce `openGraph` **y** `twitter`. Next **reemplaza** esos dos objetos, no los fusiona: una subpágina que no los declara hereda los del layout y su tarjeta en LinkedIn o en X enlaza a la portada con el título de la portada (FALLO-29 y FALLO-36; `check:routes` exige los dos).
 4. `app/sitemap.ts` — la constante `ROUTES`.
 5. `next.config.ts` — el redirect de la ruta sin idioma (`/x` → `/en/x`); sin él esa URL devuelve 404.
+6. **`work.cards` en `lib/content/home.ts`** — una entrada con el `href` de la ruta y un `viz` que `components/showcase/Previews.tsx` sepa dibujar (un `viz` nuevo es un `case` nuevo ahí). `ProjectHero` y el aparte de `/historia` leen de ella su visual con `workCard(dict, href)` (`lib/config/work-card.ts`); sin la entrada el build falla con `workCard: no hay entrada en work.cards… "/ruta"`.
 
 Las páginas son componentes de servidor `async` que reciben `params: Promise<{ lang: string }>` y leen su contenido con `getDictionary(lang)`.
 

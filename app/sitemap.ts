@@ -4,15 +4,20 @@ import { SITE } from "@/lib/config/site";
 
 const ROUTES = ["", "/cv", "/projects/credit-risk", "/projects/trading-sim", "/projects/powerbi", "/projects/tracking", "/research/fintech-inclusion", "/labs/macro-forecast", "/historia"];
 
+/** Fecha del build, una sola vez por despliegue. Lo que cambia el sitio llega con un
+ *  despliegue, así que es la fecha más cercana a «última modificación» que se puede
+ *  afirmar sin leer git en el build. */
+const BUILD_DATE = new Date();
+
 /** Un sitio de nueve rutas por idioma no necesita un sitemap para existir, pero
  *  sí para que el buscador sepa que /es y /en son la misma página en dos idiomas. */
 export default function sitemap(): MetadataRoute.Sitemap {
   return locales.flatMap((lang) =>
     ROUTES.map((route) => ({
       url: `${SITE}/${lang}${route}`,
-      // Sin `lastModified`: era `new Date()` en cada build, idéntico en las 16
-      // URL, y una fecha que siempre dice «hoy» es exactamente la señal que el
-      // buscador aprende a ignorar. Omitirla es más honesto que inventarla.
+      // Fecha del build, no de cada ruta: idéntica en las 18 URL. Google la ignora
+      // cuando siempre dice «hoy»; sirve a las herramientas que enseñan «actualizado».
+      lastModified: BUILD_DATE,
       changeFrequency: "weekly" as const,
       priority: route === "" ? 1 : 0.8,
       alternates: {

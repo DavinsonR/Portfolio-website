@@ -435,7 +435,7 @@ function Round({ copy, lang, series: s, meta, onScore }: {
 
       <div className="border-t-2 border-ink pt-4 lg:border-t-0 lg:border-l lg:border-rule lg:pt-0 lg:pl-6">
         <p className="text-[12.5px] font-semibold tracking-[0.09em] text-muted uppercase">{fill(copy.play.yourCall, { period: target })}</p>
-        <p className="mt-1 font-figure text-[34px] leading-none" style={{ color: YOU }}>
+        <p className="mt-1 font-figure text-[34px] leading-none text-ink">
           {signed(lang, guess)}
           <span className="text-[18px]"> %</span>
         </p>

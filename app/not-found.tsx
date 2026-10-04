@@ -16,13 +16,18 @@ import "./globals.css";
  *  El script de abajo lee el primer segmento de la URL y, solo si es `es` o
  *  `en`, fija `data-only` para que el CSS tache la otra mitad. En `/pricing` no
  *  fija nada y se quedan las dos, que es lo correcto: ahí el idioma del
- *  visitante es justo el dato que no existe. Sin JavaScript, se ven las dos. */
+ *  visitante es justo el dato que no existe. Sin JavaScript, se ven las dos.
+ *
+ *  `<html>` no lo escribe esta página (Next le pone el suyo, sin `lang`), así que el
+ *  mismo script le fija uno: `es` si la URL empieza por `/es`, `en` en cualquier
+ *  otro caso, que es el idioma por defecto del sitio. Cada mitad lleva además su
+ *  propio `lang`. */
 export const metadata = {
   title: "404 — Davirson Novoa",
   robots: { index: false, follow: false },
 };
 
-const PICK_LANG = `(function(){var s=location.pathname.split('/')[1],r=document.documentElement;if(s==='es'||s==='en'){r.lang=s;r.setAttribute('data-only',s);}})();`;
+const PICK_LANG = `(function(){var s=location.pathname.split('/')[1],r=document.documentElement;r.lang=s==='es'?'es':'en';if(s==='es'||s==='en'){r.setAttribute('data-only',s);}})();`;
 
 export default function NotFound() {
   return (

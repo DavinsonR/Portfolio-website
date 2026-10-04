@@ -23,7 +23,7 @@ export const errorPage = {
   en: {
     errorPage: {
       title: "Something broke while rendering this page.",
-      body: "It is not your connection: it is an error on the site's side. You can retry or go back to the home page; the PDF résumé is still available from there.",
+      body: "It is not your connection: it is an error on the site's side. You can retry or go back to the home page; the PDF resume is still available from there.",
       retry: "Try again",
       home: "Back to home",
     },

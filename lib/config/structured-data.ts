@@ -18,6 +18,19 @@ import type { Dictionary, Locale } from "../dictionaries";
 export const PERSON_ID = `${SITE}/#person`;
 export const SITE_ID = `${SITE}/#website`;
 
+const KNOWS_ABOUT = [
+  "FP&A",
+  "SG&A close and forecast",
+  "Constant-currency FX analysis",
+  "Power BI",
+  "SQL",
+  "dbt",
+  "Python",
+  "PostgreSQL",
+  "Credit risk modeling",
+  "Econometrics",
+];
+
 export function personGraph(dict: Dictionary, lang: Locale) {
   const home = `${SITE}/${lang}`;
   const personId = PERSON_ID;
@@ -50,7 +63,10 @@ export function personGraph(dict: Dictionary, lang: Locale) {
           { "@type": "Language", name: "English", alternateName: "en" },
           { "@type": "Language", name: "Portuguese", alternateName: "pt" },
         ],
-        knowsAbout: dict.cv.targets,
+        // Temas, no cargos: los tres nombres de rol van en `seeks`. Todo esto está
+        // visible en /cv (herramientas y trayectoria); en inglés en los dos idiomas,
+        // que es como lo escribe una vacante.
+        knowsAbout: KNOWS_ABOUT,
         address: {
           "@type": "PostalAddress",
           addressLocality: "Bogotá",
@@ -148,8 +164,10 @@ export function pageGraph(
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: dict.profile.name, item: home },
-          { "@type": "ListItem", position: 2, name: meta.title, item: url },
+          { "@type": "ListItem", position: 1, name: lang === "es" ? "Inicio" : "Home", item: home },
+          // En /cv el título de la página es el de la portada con otro apellido; el
+          // eslabón se llama como lo busca quien lo busca.
+          { "@type": "ListItem", position: 2, name: route === "/cv" ? (lang === "es" ? "CV" : "Resume") : meta.title, item: url },
         ],
       },
       ...(workNode ? [{ "@id": `${url}#work`, ...workNode }] : []),

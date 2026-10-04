@@ -26,7 +26,7 @@ export default function Footer({ dict, lang }: { dict: Dictionary; lang: Locale 
             volver a la portada y desplazarse. PRODUCT.md dice que el PDF es el
             artefacto que sobrevive a la visita. El pie está en las ocho rutas y en
             los dos anchos, y ya era contenido del diccionario. */}
-        <nav aria-label={dict.nav.links[1].label} className="flex w-full flex-wrap gap-x-6 gap-y-2 border-t border-rulesoft pt-4">
+        <nav aria-label={dict.footer.navLabel} className="flex w-full flex-wrap gap-x-6 gap-y-2 border-t border-rulesoft pt-4">
           <a href={dict.cv.downloadHref} download className="font-medium text-cold hover:underline">
             {dict.cv.download}
           </a>

@@ -153,6 +153,18 @@ const CLAIMS: Claim[] = [
   // 18: el «35» se escribía a mano y caducaba solo cada vez que se arreglaba
   // algo — el día que llegó el 36 el sitio mentía sin que nadie lo tocara. El
   // texto ahora enlaza a docs/FALLOS.md y no cuenta.
+  // Las dos de Kairo se escaparon el 3 oct 2026: el CV decía «526 pruebas» y
+  // «34 tablas» mientras la página del proyecto decía 2.741 y «treinta y tres
+  // tablas y veintidós vistas». El repositorio es privado, así que nadie de
+  // fuera lo nota contra la fuente, pero sí entre dos páginas de este sitio.
+  {
+    name: "pruebas de Kairo",
+    pattern: new RegExp(`${NUM}\\s*(?:pruebas|tests)(?=[^.]{0,30}(?:puertas|gates|172))`, "gi"),
+  },
+  {
+    name: "tablas de Kairo",
+    pattern: new RegExp(`${NUM}\\s*(?:tablas|tables)(?=\\s*(?:y|and)\\s+\\S+\\s+(?:vistas|views)|[^.]{0,25}(?:seguridad por fila|row-level security|row policy|política de fila))`, "gi"),
+  },
   {
     name: "países en alcance",
     pattern: /(?:más de\s*|15\+|)([\d.,]+)\+?\s*(?:países|countries)/gi,
