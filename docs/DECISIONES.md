@@ -1,4 +1,4 @@
-# Decisiones — D-01 … D-37
+# Decisiones — D-01 … D-38
 
 *Índice. Cada fila enlaza a la sesión donde la decisión se tomó, con su justificación completa; aquí va solo lo suficiente para saber si hace falta ir a leerla.*
 
