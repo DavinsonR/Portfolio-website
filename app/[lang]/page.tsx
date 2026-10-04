@@ -9,6 +9,7 @@ import CopyEmail from "@/components/CopyEmail";
 import ConstellationField from "@/components/ConstellationField";
 import Preview from "@/components/showcase/Previews";
 import { mailtoHref } from "@/lib/config/contact";
+import ScheduleButton, { ScheduleNote, emailButtonClass } from "@/components/ScheduleButton";
 import { personGraph } from "@/lib/config/structured-data";
 import type { Locale } from "@/lib/dictionaries";
 
@@ -410,10 +411,8 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
 
           <div className="lg:pt-2">
             <div className="flex flex-wrap items-center gap-3">
-              <a
-                href={mailHref}
-                className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
-              >
+              <ScheduleButton dict={dict} />
+              <a href={mailHref} className={emailButtonClass}>
                 {contact.email}
               </a>
               <CopyEmail
@@ -422,6 +421,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
                 className="px-4 py-3 text-[14.5px]"
               />
             </div>
+            <ScheduleNote dict={dict} className="mt-3" />
 
             {/* The address in plain sight, once more at the foot: when the mail
                 client never opens, this is what the reader falls back to. */}
