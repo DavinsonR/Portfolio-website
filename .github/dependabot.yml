@@ -17,6 +17,20 @@ updates:
       menores-y-parches:
         patterns: ["*"]
         update-types: ["minor", "patch"]
+    # D-38: tres saltos mayores que el ecosistema todavia no admite. Se revisan a
+    # mano cuando cambie la condicion de cada uno; quitar la linea es la senal.
+    ignore:
+      # eslint-plugin-react (dentro de eslint-config-next 16.3.6) llama a
+      # context.getFilename(), que ESLint 10 elimino: el lint se cae.
+      - dependency-name: eslint
+        update-types: ["version-update:semver-major"]
+      # typescript-eslint 8.71 exige typescript >=4.8.4 <6.1.0; TS 7 rompe el lint.
+      - dependency-name: typescript
+        versions: [">=6.1.0"]
+      # Los tipos siguen al Node de ejecucion (22 en CI): tipos mas nuevos que el
+      # runtime prometen API que en produccion no existe.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:

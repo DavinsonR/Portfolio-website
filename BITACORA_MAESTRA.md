@@ -50,6 +50,7 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 31 | [24 sep](docs/bitacora/sesion-31.md) | Dos versiones de la capa de proyección del atlas: se publica la de la sesión 30 con los seis arreglos de la otra, y pruebas contra los datos reales |
 | 32 | [25 sep](docs/bitacora/sesion-32.md) | El ancla del atlas se renueva con la EME de julio de 2026; el respaldo del WEO deja de estar congelado |
 | 33 | [25 sep](docs/bitacora/sesion-33.md) | Licencias de Banrep y del FMI verificadas: la cita del ancla lleva fecha de consulta y dice qué es |
+| 34 | [3 oct](docs/bitacora/sesion-34.md) | Dependencias al día (React 19.3, TS 6.0, acciones v7); ESLint 10, TS 7 y tipos de Node 26 esperan al ecosistema (D-38) |
 
 ## Después de la sesión 17
 
