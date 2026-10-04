@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Dictionary, Locale } from "@/lib/dictionaries";
 import { mailtoHref } from "@/lib/config/contact";
+import ScheduleButton, { ScheduleNote, emailButtonClass } from "@/components/ScheduleButton";
 
 /** La banda ámbar de cierre: correo y CV.
  *
@@ -33,16 +34,15 @@ export default function ContactBand({ dict, lang, wrap }: { dict: Dictionary; la
           className="reveal mt-7 flex flex-wrap items-center gap-x-6 gap-y-3"
           style={{ "--d": "120ms" } as React.CSSProperties}
         >
-          <a
-            href={mailtoHref(dict)}
-            className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
-          >
+          <ScheduleButton dict={dict} />
+          <a href={mailtoHref(dict)} className={emailButtonClass}>
             {t.ctaEmail}
           </a>
           <Link href={`/${lang}/cv`} className="text-[14.5px] font-medium text-cold hover:underline">
             {t.ctaCv}
           </Link>
         </div>
+        <ScheduleNote dict={dict} className="mt-3" />
       </div>
     </section>
   );

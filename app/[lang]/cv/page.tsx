@@ -7,6 +7,7 @@ import CountUp from "@/components/CountUp";
 import BackLink from "@/components/BackLink";
 import CopyEmail from "@/components/CopyEmail";
 import { mailtoHref } from "@/lib/config/contact";
+import ScheduleButton, { ScheduleNote, emailButtonClass } from "@/components/ScheduleButton";
 import { alternates, social } from "@/lib/config/alternates";
 import { pageGraph } from "@/lib/config/structured-data";
 
@@ -520,10 +521,8 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
             {dict.contact.body}
           </p>
           <div className="flex flex-wrap items-center gap-3">
-            <a
-              href={mailHref}
-              className="lift inline-flex items-center rounded-[3px] bg-cold px-5 py-3 text-[14.5px] font-semibold text-paper transition-opacity hover:opacity-90"
-            >
+            <ScheduleButton dict={dict} />
+            <a href={mailHref} className={emailButtonClass}>
               {cv.contactBtn}
             </a>
             <a
@@ -543,6 +542,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
               className="px-4 py-3 text-[14.5px]"
             />
           </div>
+          <ScheduleNote dict={dict} className="mt-3" />
           <p className="mt-3 text-[14px] break-all text-body">
             <a href={mailHref} className="text-ink underline decoration-cold decoration-[1.5px] underline-offset-4">
               {dict.profile.email}

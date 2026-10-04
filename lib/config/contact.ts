@@ -18,3 +18,12 @@ export function mailtoHref(dict: Dictionary) {
   // muestra literalmente dentro del asunto.
   return `mailto:${dict.profile.email}?${q.toString().replace(/\+/g, "%20")}`;
 }
+
+/** La página de citas: el compromiso más pequeño que se le puede pedir a un
+ *  reclutador que decide en un minuto (auditoría final, reclutador #11).
+ *
+ *  Vacía, el botón no se pinta en ningún sitio y el correo sigue de primario:
+ *  un enlace a una agenda que todavía no existe sería un enlace roto, y este
+ *  sitio dice lo que no está vivo en vez de ofrecerlo. Se rellena con la URL
+ *  pública de la página de reservas (Google Calendar, Cal.com…) y nada más. */
+export const SCHEDULING_URL: string = "";
