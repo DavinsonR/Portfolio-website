@@ -105,6 +105,7 @@ export const about = {
     footer: {
       left: "Davirson Novoa · Finance Data Analyst · construido en público",
       right: "Datos actualizados a diario por un pipeline automático",
+      navLabel: "Pie de página",
     },
     /* El 404 es una página del sitio, no una pantalla de error del framework:
        llega gente desde enlaces viejos y desde el PDF del CV, y la única
@@ -173,7 +174,7 @@ export const about = {
         },
         {
           term: "Power BI report",
-          text: "The report exists as a PBIP project in the public repository and opens for free in Power BI Desktop. There is no public embed because “Publish to web” needs a Pro licence on a work tenant and makes the dataset public.",
+          text: "The report exists as a PBIP project in the public repository and opens for free in Power BI Desktop. There is no public embed because “Publish to web” needs a Pro license on a work tenant and makes the dataset public.",
         },
         {
           term: "Analytics",
@@ -186,7 +187,7 @@ export const about = {
       ],
     },
     contact: {
-      title: "Stop choosing between the one who reads the business and the one who builds the data.",
+      title: "Stop choosing between the person who understands the business and the person who builds the data.",
       body: "One hire covers the financial analysis, the pipeline and the dashboard. Finance Data Analyst, Analytics Engineer or FP&A automation. Bogotá, GMT-5, your US hours in full. I reply within one business day, in English or Spanish.",
       email: "Send an email",
       linkedin: "LinkedIn",
@@ -197,7 +198,7 @@ export const about = {
       // they fill blanks.
       mailSubject: "Role — Davirson Novoa",
       mailBody:
-        "Hi Davirson,\n\nRole:\nCompany:\nWork mode and time zone:\nRange:\n\n",
+        "Hi Davirson,\n\nRole:\nCompany:\nWork mode and time zone:\nSalary range:\n\n",
       copy: "Copy email",
       copied: "Email copied",
       copyFail: "Select and copy:",
@@ -205,6 +206,7 @@ export const about = {
     footer: {
       left: "Davirson Novoa · Finance Data Analyst · built in public",
       right: "Data refreshed daily by an automated pipeline",
+      navLabel: "Footer",
     },
     notFound: {
       code: "404",

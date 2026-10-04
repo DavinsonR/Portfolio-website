@@ -5,10 +5,11 @@ import LabText from "@/components/trading/LabText";
 import { labSnapshot, labSnapshotOverfitting, labSnapshotAssets } from "@/lib/data/lab-snapshot";
 import { TRADING_SIM_REPO } from "@/lib/data/trading-sim";
 import SectionNav from "@/components/SectionNav";
-import ProjectHero from "@/components/project/ProjectHero";
+import ProjectHero, { PROJECT_WRAP } from "@/components/project/ProjectHero";
 import Preview from "@/components/showcase/Previews";
 import ContactBand from "@/components/ContactBand";
 import { alternates, social } from "@/lib/config/alternates";
+import { workCard } from "@/lib/config/work-card";
 import { pageGraph } from "@/lib/config/structured-data";
 
 export async function generateMetadata({
@@ -38,8 +39,8 @@ export default async function TradingSimPage({
   const { lang } = await params;
   const dict = getDictionary(lang);
   const t = dict.tradingSim;
-  const wrap = "max-w-[980px] mx-auto px-6";
-  const card = dict.work.cards.find((c) => c.href === "/projects/trading-sim")!;
+  const wrap = PROJECT_WRAP;
+  const card = workCard(dict, "/projects/trading-sim");
 
   return (
     <main id="main" tabIndex={-1}>
@@ -51,6 +52,7 @@ export default async function TradingSimPage({
       {/* El titular lleva la cifra que cambia cada noche: sale de la instantánea
           en el build y del índice vivo en el navegador (lib/data/lab-stats.ts). */}
       <ProjectHero
+        wrap={wrap}
         lang={lang}
         backLabel={dict.nav.backHome}
         status="live"
@@ -78,7 +80,7 @@ export default async function TradingSimPage({
       {/* ================= DASHBOARD ================= */}
       {/* El panel inyecta sus `h3` al hidratar, entre el `h1` y el primer `h2`
           de la página: el orden final era h1 → h3. La sección declara el suyo. */}
-      <section id="laboratorio" className="scroll-mt-[118px] py-16" aria-labelledby="ts-lab">
+      <section id="laboratorio" className="py-16" aria-labelledby="ts-lab">
         <div className={wrap}>
           <h2 id="ts-lab" className="sr-only">
             {t.explorer.windowTitle}
@@ -88,7 +90,7 @@ export default async function TradingSimPage({
       </section>
 
       {/* ================= METODOLOGÍA ================= */}
-      <section id="metodologia" className="scroll-mt-[118px] py-16 border-t border-rulesoft">
+      <section id="metodologia" className="py-16 border-t border-rulesoft">
         <div className={wrap}>
           <h2 className="font-display text-[clamp(23px,2.9vw,31px)] font-bold text-ink mb-2.5">{t.method.title}</h2>
           <p className="text-[14px] leading-[1.7] max-w-[620px] mb-8">{t.method.desc}</p>
@@ -114,7 +116,7 @@ export default async function TradingSimPage({
       </section>
 
       {/* ===== THE 89 TESTS, ITEMISED ===== */}
-      <section id="calidad" className="scroll-mt-[118px] border-t border-rule py-16">
+      <section id="calidad" className="border-t border-rule py-16">
         <div className={wrap}>
           <p
             data-reveal

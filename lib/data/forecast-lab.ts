@@ -162,9 +162,6 @@ export type Panel = {
   defectos?: { iso3: string; indicador: string; desde: number; hasta: number }[];
 };
 
-/** ISE mensual sin ajuste estacional (DANE, Cuadro 1): 16 series desde `inicio` (AAAA-MM). */
-export type Ise = { inicio: string; series: { id: string; es: string; en: string; v: (number | null)[] }[]; fuente: string };
-
 export type EventCat = "deuda" | "bancaria" | "hiperinflacion" | "cambiaria" | "reforma" | "externo" | "politica" | "desastre";
 export type EconEvent = {
   iso3: string; anio: number; mes: number | null; cat: EventCat;
@@ -173,7 +170,6 @@ export type EconEvent = {
 export type Events = { categorias: { id: EventCat; es: string; en: string }[]; eventos: EconEvent[] };
 
 export const loadPanel = () => load<Panel>("panel.json");
-export const loadIse = () => load<Ise>("ise.json");
 export const loadEvents = () => load<Events>("eventos.json");
 
 /** Escala simétrica logarítmica: conserva el signo y el cero, y deja ver en el mismo eje
@@ -189,20 +185,6 @@ export function stats(xs: (number | null | undefined)[]): { n: number; mean: num
   const m = v.reduce((a, b) => a + b, 0) / n;
   const sd = n > 1 ? Math.sqrt(v.reduce((a, b) => a + (b - m) ** 2, 0) / (n - 1)) : NaN;
   return { n, mean: m, sd };
-}
-
-/** Perfil estacional: desvío medio de cada mes respecto del promedio de su año, en %,
- *  usando solo años completos. Es la estacionalidad que el ajuste del DANE quitaría. */
-export function seasonalProfile(values: (number | null)[], startMonth: number): number[] {
-  const byMonth: number[][] = Array.from({ length: 12 }, () => []);
-  const firstFull = (13 - startMonth) % 12; // índice del primer enero (startMonth 1 = enero)
-  for (let i = firstFull; i + 12 <= values.length; i += 12) {
-    const year = values.slice(i, i + 12);
-    if (year.some((x) => x == null)) continue;
-    const m = (year as number[]).reduce((a, b) => a + b, 0) / 12;
-    year.forEach((x, k) => byMonth[k].push(((x as number) / m - 1) * 100));
-  }
-  return byMonth.map((xs) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : NaN));
 }
 
 // ---------------------------------------------------------------- el pronóstico publicado (D-008)

@@ -8,6 +8,7 @@ import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
 import Island from "@/components/forecast/Island";
 import { alternates, social } from "@/lib/config/alternates";
+import { workCard } from "@/lib/config/work-card";
 import { pageGraph } from "@/lib/config/structured-data";
 
 const ROUTE = "/labs/macro-forecast";
@@ -35,7 +36,7 @@ const prose = "max-w-[74ch]";
 const label = "text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase";
 const heading =
   "mt-3 max-w-[30ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink";
-const section = "scroll-mt-[118px] border-b border-rule py-16";
+const section = "border-b border-rule py-16";
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 const delay = (i: number) => ({ "--d": `${i * 60}ms` }) as React.CSSProperties;
 
@@ -54,7 +55,7 @@ export default async function ForecastLabPage({ params }: { params: Promise<{ la
     </>
   );
 
-  const card = dict.work.cards.find((c) => c.href === "/labs/macro-forecast")!;
+  const card = workCard(dict, "/labs/macro-forecast");
 
   const pieces = [
     { id: "juega", kind: "play", copy: t.play },

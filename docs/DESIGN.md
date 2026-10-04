@@ -7,6 +7,7 @@ colors:
   band2: "#e9edf1"
   rule: "#d8dde3"
   rulesoft: "#e8ecf0"
+  control: "#7e8792"
   ink: "#14181d"
   body: "#454e57"
   muted: "#626c76"
@@ -18,6 +19,8 @@ colors:
   pos: "#1a6b48"
   neg: "#9c2b2b"
   building: "#805f0f"
+  research: "#0f4c81"
+  idea: "#626c76"
 typography:
   display:
     fontFamily: "Archivo, ui-sans-serif, system-ui, sans-serif"
@@ -164,7 +167,7 @@ The build refuses, explicitly and by name, the dark developer-portfolio arrangem
 - Institutional blue for data and technical claims; amber for human/purpose content only
 - Two faces: Archivo everywhere, Source Serif 4 for large figures and the verdict
 - Tabular figures at the body level; every number aligns
-- Zero shadows, zero cards, 3px radius on controls and nothing else
+- Zero shadows; no cards outside the documented exceptions (see Cards / Containers); 3px radius on controls
 - Motion in the register of print — rules drawn, rows settled, figures counted — disabled entirely under reduced-motion
 
 ## Colors
@@ -176,12 +179,15 @@ A paper-and-ink base with exactly two accent voices, each with a jurisdiction it
 - **Blue Wash** (`coldsoft`) / **Blue Hairline** (`coldline`): The band tint and its internal column dividers. These are the blue's structural form, used when a whole region is technical rather than a single phrase.
 
 ### Secondary
-- **Reserved Amber** (`warm`, 6.0:1 on paper): The human voice, and nothing else. Three places in the shipped build carry it: the availability block in the first viewport (2px top rule plus `warmsoft` ground), the hiring/contact section's 2px top rule, and the CV's career-transition passage label. Data and technical claims never wear amber.
+- **Reserved Amber** (`warm`, 6.0:1 on paper): The human voice, and nothing else. The places in the shipped build that carry it: the availability block in the first viewport (2px top rule plus `warmsoft` ground), the hiring/contact section's 2px top rule (home and CV), the CV's career-transition passage label, the closing `ContactBand` on the project routes and `/historia`, the `/historia` "where" panel (the hire box: level, start, route in), and the visitor's own guess in the forecast lab's game (the dashed line, the handle dot and the legend swatch, never the number: the figure beside them is ink). Data and technical claims never wear amber.
 - **Amber Wash** (`warmsoft`): The availability block's ground; the only tinted surface that isn't blue.
 
 ### Tertiary
 - **Verdict Green** (`pos`, also `live`): Positive standing — remote-mode tags, the live pipeline dot, the pipeline status pill.
 - **Verdict Red** (`neg`): Negative standing in figures. Present in the token set and reserved for it.
+- **Control Border** (`control`, 3.6:1 on paper): The outline of anything operable (select, outline button, tooltip). `rule` measures 1.37:1 on paper, which separates but does not delimit; WCAG 1.4.11 asks 3:1 for a control's boundary.
+- **Module States** (`research`, `idea`): the two remaining status-pill hues. `research` is the institutional blue, `idea` is `muted`; they exist so `StatusPill` has one token per state and no component names a colour.
+- **Atlas ramps** (`--atlas-neg-*`, `--atlas-mid`, `--atlas-pos-*`, `--atlas-void`): the map's own sequential and diverging steps, derived from the two technical hues already on the sheet. Amber never appears in them.
 - **Caution Ochre** (`building`, 5.9:1 on paper): The one status that is neither settled nor technical — work in progress. Its value is set by the *tinted* pill, not by the plain text: at the previous `#8a6a10` the 10%-ground pill measured 4.44:1 and failed AA in the only place the colour is ever used.
 
 ### Neutral
@@ -194,7 +200,7 @@ A paper-and-ink base with exactly two accent voices, each with a jurisdiction it
 
 ### Named Rules
 
-**The Amber Reservation Rule.** Amber marks human and purpose content only: availability, hiring, the career-transition passage. Every data point, metric, and technical claim wears institutional blue or ink. This rule is binding, it predates the redesign, and getting it backwards was a live review finding — an amber number is a bug.
+**The Amber Reservation Rule.** Amber marks human and purpose content only: availability, hiring, the career-transition passage, the visitor's own call in the forecast game. Every data point, metric, and technical claim wears institutional blue or ink. This rule is binding, it predates the redesign, and getting it backwards was a live review finding — an amber number is a bug.
 
 **The Two-Voice Rule.** A surface has exactly two accents. If a new state needs a color, it takes one of the four verdict/status hues (`pos`, `neg`, `live`, `building`) — it does not invent a third accent.
 
@@ -227,13 +233,15 @@ A paper-and-ink base with exactly two accent voices, each with a jurisdiction it
 
 **The Serif-Is-A-Figure Rule.** Source Serif 4 appears only on numbers set large and on the single verdict line. A serif paragraph, a serif heading, or a serif button does not exist in this system.
 
+**The Code Exception.** There is no mono type in the system, with one exception: `<code>` (a shell command in a "reproduce" step, a code fingerprint, an identifier) renders in the browser's monospace stack, at the 14px floor. It is code, not typography; nothing else uses `font-mono`.
+
 **The Tabular Everywhere Rule.** `font-variant-numeric: tabular-nums` with `"tnum" 1, "cv05" 1` is wired at the body. Numbers align in columns across the whole document by default; nothing opts out.
 
 **The Label-Is-A-Field Rule.** Tracked caps label a field, a band, or the document itself (the classification line, which is native to the form). They do not sit above a headline as a decorative kicker.
 
 ## Layout
 
-One centered column, `max-w-[1080px]` with `px-6` gutters on the home surface; the CV re-derives the same rhythm at `max-w-[980px]` and the project surface at the same measure. Sections are separated by `border-b border-rule` and breathe on `py-14` to `py-16` (56–64px); the CV uses `py-14` with `border-t border-rulesoft` for lower-contrast internal separation.
+One centered column, `max-w-[1080px]` with `px-6` gutters on the home surface, `/historia` and the forecast lab (whose grid needs the width); the CV and five of the six project pages re-derive the same rhythm at `max-w-[980px]` (`PROJECT_WRAP`, exported next to `HERO_WRAP` in `ProjectHero.tsx`). A page's hero takes the page's measure, so its left edge lines up with its sections. Sections are separated by `border-b border-rule` and breathe on `py-14` to `py-16` (56–64px); the CV uses `py-14` with `border-t border-rulesoft` for lower-contrast internal separation.
 
 The document header is a two-column grid at `lg` (`minmax(0,1fr)_300px`): the verdict column and the availability block, which sits `self-start` so it aligns to the top of the ink rather than stretching. Below it, the figures band runs full-bleed at the viewport while its contents stay in the 1080px measure — the band is the only element allowed to break the column.
 
@@ -241,7 +249,7 @@ Figures are a 2-up grid on mobile, 4-up at `lg`, divided by `border-l border-col
 
 Measures are capped in `ch`, not px: 40ch for the lede, 62–70ch for prose, 58ch for dense disclosure text, 46ch for sidebar notes, 24ch for the closing headline. Vertical rhythm runs on a 4px base with the working steps at 8/12/20/28/44/64px.
 
-The navigation is `sticky top-0 z-50` at 61px with a 95%-opacity paper ground and a light backdrop blur, capped by a hairline. A `no-print` class removes the nav and theme control from print, and print forces pure white ground with black text — the sheet is expected to be printed.
+The navigation is `sticky top-0 z-50` at 65px with a 95%-opacity paper ground and a light backdrop blur, capped by a hairline. Anchor jumps and keyboard focus clear the sticky bars through `scroll-padding-top` on `html` (72px, and 118px on pages that mount the section nav): it replaces per-section `scroll-mt-*`, because scroll-margin and scroll-padding add. A `no-print` class removes the nav and theme control from print, and print forces pure white ground with black text — the sheet is expected to be printed.
 
 ## Elevation & Depth
 
@@ -257,7 +265,7 @@ The only surface effect anywhere is the navbar's translucent ground with `backdr
 
 ## Shapes
 
-The form language is rectangular. Bands, rows, blocks, and the availability aside all have square corners (0 radius) — a tear sheet does not round its columns. Radius exists only on interactive controls at **3px**, just enough to read as pressable, plus 2px on the focus ring and full-round on two elements whose meaning is roundness: the status pill and the live-pipeline dot. The skill-scale segments carry a 1px radius so ten adjacent bars don't read as one solid rail.
+The form language is rectangular. Bands, rows, blocks, and the availability aside all have square corners (0 radius) — a tear sheet does not round its columns. Radius exists on interactive controls at **3px**, just enough to read as pressable, plus 2px on the focus ring and full-round on two elements whose meaning is roundness: the status pill and the live-pipeline dot. Two more tiers exist, each documented under Cards / Containers: the **14px media panel** (any framed screenshot or figure) and the **6px dense tile** (the forecast dashboard and the Power BI facsimile). The skill-scale segments carry a 1px radius so ten adjacent bars don't read as one solid rail.
 
 Borders are 1px by default and 2px when opening a band. Underlines are structural too: figure labels carry a 1.5px blue underline at 4px offset that thickens to 2.5px on hover, and links in the availability block underline in amber at full strength (`decoration-warm`): at 50% opacity over `warmsoft` the underline measured 2.07:1, so the build never did that.
 
@@ -266,24 +274,28 @@ Icons are inline SVG drawn at a single 1.3px stroke weight on a 16px box. No ico
 ## Components
 
 ### Buttons
-- **Shape:** Barely-rounded rectangle (3px), no shadow, no transform on hover.
+- **Shape:** Barely-rounded rectangle (3px), no shadow. The one transform is `.lift`: 1px up on hover, back on press, on nearly every button; off under reduced motion.
 - **Primary:** Institutional blue ground, paper text, 600 weight, `px-5 py-3` at 14.5px (`px-4 py-2.5` at 14px in dense contexts). Hover fades to 90% opacity.
 - **Ink:** Same geometry filled with `ink` — used for the secondary strong action on a surface that already spent its blue (the live-demo link).
-- **Outline:** Paper ground, `rule` hairline border, ink text. Hover moves both border and text to blue. This is the download/secondary pair to every primary.
+- **Outline:** Paper ground, `control` border (the 3:1 token, not the `rule` hairline), ink text. Hover moves both border and text to blue. This is the download/secondary pair to every primary.
 - **Text link:** Blue, 500–600 weight, underline on hover; the closing section's social links are this.
 - **Focus:** Global — 2px blue outline at 2px offset with a 2px radius. Never removed, never restyled per component.
 
 ### Chips
 - **Style:** `rule` hairline border, transparent or `band` ground, body text at 12.5–13px, 3px radius, `px-2.5 py-1`. Used for stack tags. No fill, no accent — a stack tag is not a claim.
-- **Status Pill:** Fully rounded, 11px tracked caps, tinted from its own status hue (10% ground, 35% border, full-strength text) so it stays legible on paper and on the dark ground alike.
+- **Status Pill:** Fully rounded, 12.5px tracked caps (`StatusPill.tsx`), tinted from its own status hue (10% ground, 35% border, full-strength text) so it stays legible on paper and on the dark ground alike.
 
 ### Cards / Containers
-**One exception: the project showcase on the home page** (`#work`, `components/showcase/Previews.tsx`). The owner asked for a visual preview per project instead of prose (Sept 2026), because the site is a sales asset and a scanner decides from pictures. It is one column of whole-clickable cards (revised Sept 2026): a 1px `rule` border on `paper`, a subtle 14px radius, no shadow. Each card carries the project's best real chart on `coldsoft` (the lab's SPY time series, the credit event study, the atlas maps, a capture of the LATAM dashboard in both themes, the Power BI star, two JARVIS screens), one figure in the serif, one line and the link; the chart alternates sides on desktop. Motion, also by request: the card settles in on scroll, chart lines draw themselves (`.draw-in`), and on hover the card lifts 4px while the chart zooms 2% (`.showcase-card`). All of it is off under `prefers-reduced-motion`. The same rounded, bordered panel carries the chart in every project page's header (`components/project/ProjectHero.tsx`, one template for the six pages: back link and pill, kicker, a two-line headline, the lede and CTAs beside the card's chart, the four-figure band, then the sticky section nav), the Power BI report mock-ups (`components/powerbi/ReportMock.tsx`) and the forecast lab's loading skeleton. Nowhere else does a card, a radius above 3px or a hover scale appear.
+**One exception: the project showcase on the home page** (`#work`, `components/showcase/Previews.tsx`). The owner asked for a visual preview per project instead of prose (Sept 2026), because the site is a sales asset and a scanner decides from pictures. It is one column of whole-clickable cards (revised Sept 2026): a 1px `rule` border on `paper`, a subtle 14px radius, no shadow. Each card carries the project's best real chart on `coldsoft` (the lab's SPY time series, the credit event study, the atlas maps, a capture of the LATAM dashboard in both themes, the Power BI star, two Kairo screens), one figure in the serif, one line and the link; the chart alternates sides on desktop. Motion, also by request: the card settles in on scroll, chart lines draw themselves (`.draw-in`), and on hover the card lifts 4px while the chart zooms 2% (`.showcase-card`). All of it is off under `prefers-reduced-motion`. The same rounded, bordered panel carries the chart in every project page's header (`components/project/ProjectHero.tsx`, one template for the six pages: back link and pill, kicker, a two-line headline, the lede and CTAs beside the card's chart, the four-figure band, then the sticky section nav), the Power BI report mock-ups (`components/powerbi/ReportMock.tsx`) and the forecast lab's loading skeleton.
+
+Two more families exist and are exceptions on purpose. **The `/historia` aside** (`components/historia/Aside.tsx`): the figure, the AUC ladder, the fairness gate and the chart wrappers are bordered, `coldsoft`-tinted panels at the same 14px, and the "where" block is the one warm panel; they sit beside a long first-person text and play the role the home cards play, a picture next to the prose. **The forecast dashboard** (`.fl-*` in `globals.css`): filter bar, KPIs, tiles and popovers are 6px tiles, because a dashboard of a dozen linked widgets needs enclosed cells to read as one instrument (the tooltip is 4px). The hierarchy is three tiers and no more: 14px media panel, 6px dense tile, 3px control. Nowhere else does a card or a hover scale appear.
+
+**The Power BI facsimile is exempt from the type floor.** `ReportMock` redraws the report as live DOM at 11-12px with the PBIR's own English visual titles. It is a picture of an interface, not prose: the whole panel is `aria-hidden` and its `figcaption` (14px) says what it is. Facsimile text is exempt from the 14px floor; nothing outside it is.
 
 **Everywhere else there are no cards.** A grouping is expressed as: a top rule of the appropriate weight and color, optional tinted ground, and internal padding of `px-5 py-4`/`py-5`. The availability block and the "why it matters" callout are the canonical examples — both are open blocks, not enclosed boxes.
 
 ### Navigation
-Sticky hairline-capped bar on a 95% paper ground. Wordmark in Archivo 600 at 15px in ink; links at 14px 500 in body, hovering to blue; no underline, no active-state pill. The right cluster is three controls at 36px height: a **labelled** language switch (blue-on-blue-wash with a `coldline` border — labelled because a dim glyph in the previous build went unfound by reviewers), an outlined icon-only theme toggle, and a blue contact button **present at every width**. Mobile drops the center links entirely rather than collapsing them into a menu, but never the contact button: it is the site's only conversion control, and hiding it below `sm` removed it from the one device where the link arrives from LinkedIn. The wordmark truncates before the button is dropped.
+Sticky hairline-capped bar on a 95% paper ground. Wordmark in Archivo 600 at 15px in ink; links at 14px 500 in body, hovering to blue with a 1.5px blue rule drawn under them from the left (a reader underlining a printed line); no active-state pill. The right cluster is three controls at 36px height: a **labelled** language switch (blue-on-blue-wash with a `coldline` border — labelled because a dim glyph in the previous build went unfound by reviewers), an outlined icon-only theme toggle, and a blue contact button **present at every width**. Mobile drops the center links entirely rather than collapsing them into a menu, but never the contact button: it is the site's only conversion control, and hiding it below `sm` removed it from the one device where the link arrives from LinkedIn. The wordmark truncates before the button is dropped.
 
 ### Figures Band
 The signature component. A full-bleed `coldsoft` region opened by a 2px blue rule, carrying a tracked-caps blue label, a live pipeline stamp on the same baseline, a note line, and a 2-up/4-up row of figures divided by `coldline` verticals. Each figure is a serif value over an ink label with a blue underline, and each is a link to its own proof; hovering moves the value to blue and thickens the underline. The band is where the reader verifies the verdict.
@@ -295,19 +307,19 @@ A 2px green dot (two stacked round spans, the lower at 60% opacity) followed by 
 **Removed from this document.** It specified ten 6px segments filled to a declared level; no such component ever shipped, `ProofRow` has no `level` field, and `bar-in` appears only in the charts. A spec for a component that is not in the build is how the shadows, the cards and the 13px prose below went unnoticed for three sessions. What ships in its place is the toolkit list: a tool name over the artifact that backs it, linked where the artifact is public.
 
 ### Atlas Figure
-The sheet's second figure and the only picture in the build. Two departmental choropleths — 2018 and 2025 — on **one shared scale**, opened by a 2px `cold` rule on the paper ground, with the argument set beside them and a 7-step legend beneath. It is not ornament: the index is standardised against 2018, so the pair shows every department rising off that baseline, which is exactly why the coefficient dies once time effects enter. Scaling each panel against itself would hide the finding, so the domain is pooled.
+The sheet's second figure. Two departmental choropleths — 2018 and 2025 — on **one shared scale**, opened by a 2px `cold` rule on the paper ground, with the argument set beside them and a 7-step legend beneath. It is not ornament: the index is standardised against 2018, so the pair shows every department rising off that baseline, which is exactly why the coefficient dies once time effects enter. Scaling each panel against itself would hide the finding, so the domain is pooled.
 
 It is **static SVG generated at build time** (`npm run atlas` → `lib/generated/atlas-figure.ts`), not the interactive atlas: the live one costs 258 KB of JSON plus d3 and topojson. Fills are `var(--atlas-*)` — the same tokens the interactive map reads — so a static figure still follows the theme, still prints under the exact-colour rule, and cannot drift from the map it links to. The geometry is declared once in `<defs>` and each panel references it with `<use>`, because Next serialises the server tree twice; without that the figure cost 26.7 KB gzip instead of 14.1. Department outlines are stroked in `coldline`, never paper: the neutral ramp step and a light ground differ by about 1.05:1, and a mostly-neutral panel disappears without the line.
 
 **The band does not wear `coldsoft`.** The figures band directly above it already does, and two identical tints in sequence read as one 500px blue mass.
 
 ### Charts
-Line only, on paper ground: series in blue at 2px solid, benchmark in muted at 2px dashed (`5 6`), gridlines in `rule` at 1px. Series are distinguished by dash pattern and end-point label as well as hue, so the chart survives grayscale printing and color-vision deficiency. All chart text wears text tokens (`ink`, `body`, `muted`), never the series color.
+Line only, on paper ground: series in blue at 2px solid, benchmark in muted at 2px dashed (`5 6`), gridlines in `rule` at 1px. Series are distinguished by dash pattern and end-point label as well as hue, so the chart survives grayscale printing and color-vision deficiency. All chart text wears text tokens (`ink`, `body`, `muted`), never the series color. SVG text is 12px on screen: the charts scale their drawing with the container, and `ScaleAware` sets `--k` so `calc(12px * var(--k, 1))` renders at 12px at any width. Nothing below 12.
 
 ### Motion
 **Register: print, not web-app.** Every animated thing is something a sheet does — a pen crosses the page, a row settles into place, a figure is counted to its reading. Nothing bounces, parallaxes, or scales on hover.
 
-Four primitives, all keyed off one document-level `IntersectionObserver` in `components/Motion.tsx`:
+Four primitives, all keyed off one document-level `IntersectionObserver` in `components/Motion.tsx`, plus the two below the table:
 
 | Class | Motion | Timing |
 |---|---|---|
@@ -316,12 +328,14 @@ Four primitives, all keyed off one document-level `IntersectionObserver` in `com
 | `.bar-in` | `scaleX(0) → 1` — an indicator segment fills to its reading | 820ms, staggered 55ms per segment |
 | `CountUp` | integer counts to the printed value on `easeOutExpo`; prefix and suffix (`15+`, `10+ hrs/mo`) are preserved verbatim | 1100ms |
 
+Outside the observer: **`ReadingProgress`** (`Motion.tsx`) is a 2px blue bar under the nav whose `scaleX` follows the scroll, the page's own position the way a running head is; **`.live-ping`** is the pipeline dot's slow 2.6s ring. And **`ConstellationField`** (`components/ConstellationField.tsx`) is a canvas mesh behind the home header, the one ornament-adjacent element in a system that bans ornament, admitted on the conditions written at the top of the file: it reads only existing tokens (so it follows the theme, manual toggle included), carries no text and no invented figures, never captures a click, stops when the tab or the header is not visible, and paints one still frame under reduced motion.
+
 Stagger is always reading order, carried by a `--d` custom property so a server component can set it without becoming a client component. Chart series are drawn left to right with the Web Animations API inside `components/trading/Charts.tsx` (benchmark first at 0ms, strategy at 180ms) because a path's length is only known at run time.
 
 **Three guarantees the system must keep.** The hidden states are scoped to `.js`, set pre-paint by the boot script, so a reader without JS never meets an invisible page. A 3-second boot timer reveals everything if the bundle never runs. And `@media print` forces every reveal state visible, because paper has no scroll and nothing would ever intersect — a printed sheet must not come out blank. Under `prefers-reduced-motion: reduce` the observer marks everything visible immediately and every animation and transition is cut to 0.01ms.
 
 ### Theming
-Theme follows system preference by default, with a manual toggle persisted in `localStorage` and applied pre-paint by an inline script so a reload never flashes the wrong ground. Browser surfaces wear the palette too: selection is blue-on-paper, scrollbars are thin `rule`-on-transparent with a paper-bordered thumb, and `color-scheme: light dark` is declared.
+Theme follows system preference by default, with a manual toggle persisted in `localStorage` and applied pre-paint by an inline script so a reload never flashes the wrong ground. Browser surfaces wear the palette too: selection is blue-on-paper, scrollbars are thin `rule`-on-transparent with a paper-bordered thumb, and `color-scheme` follows the choice: `light dark` by default, `light` or `dark` once `data-theme` is set, so native controls (select, range, checkbox, scrollbar) follow the toggle and not just the OS.
 
 ## Do's and Don'ts
 
@@ -337,14 +351,14 @@ Theme follows system preference by default, with a manual toggle persisted in `l
 
 ### Don't:
 - **Don't** add a shadow, glow, or gradient. The system is flat; a `box-shadow` here is a defect.
-- **Don't** wrap content in a card outside the home-page project showcase; use a top rule plus optional tint instead.
+- **Don't** wrap content in a card outside the documented exceptions (the home showcase and the project hero, the `/historia` aside, the forecast dashboard, the Power BI facsimile); use a top rule plus optional tint instead.
 - **Don't** put amber on a number, a metric, a stack tag, or any technical claim.
 - **Don't** introduce a third accent hue; extend with the existing verdict/status tokens.
-- **Don't** ship mono type, neon accents, terminal chrome, or a terminal-styled navigation bar — this world was chosen specifically against them.
+- **Don't** ship mono type (`<code>` excepted), neon accents, terminal chrome, or a terminal-styled navigation bar — this world was chosen specifically against them.
 - **Don't** set a paragraph, heading, or button in the serif; the serif means "this is a figure."
 - **Don't** derive the dark theme by inverting or filtering light values.
 - **Don't** hide a control behind a bare dim glyph where a short label would work — the language switch is labelled for exactly this reason.
 - **Don't** let a reveal state be the only thing standing between a reader and the content: if it can't be seen without JS, without motion, or on paper, it is a defect, not an effect.
 - **Don't** publish a self-assessment on one surface and a lower one on another. The skill scale is declared once and both the front page and the CV read it from the same rows.
-- **Don't** round a band, row, or block; radius belongs to controls (3px) and to the two elements whose meaning is round.
+- **Don't** round a band, row, or block; radius belongs to controls (3px), to the two tiers documented above (14px media panel, 6px dense tile) and to the two elements whose meaning is round.
 - **Don't** use an icon font, emoji, or a third-party icon package; icons are inline SVG at a 1.3px stroke on a 16px box.

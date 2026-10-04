@@ -48,7 +48,7 @@ export const historia = {
     historia: {
       metaTitle: "La historia: finanzas y datos",
       metaDesc:
-        "De un análisis de practicante a una plataforma que corre sola: tres años de finanzas, una tesis, un warehouse y un modelo de crédito que se audita solo.",
+        "De un análisis de practicante a una plataforma que corre sola: finanzas corporativas, una tesis, un warehouse y un modelo de crédito que se audita solo.",
       kicker: "Trayectoria · en primera persona",
       // Sin «tres años» en el titular: era el anclaje de junior que la auditoría de
       // copy señaló (P1), y aquí iba en el H1 y otra vez en la primera línea (HI-05).
@@ -86,7 +86,7 @@ export const historia = {
             "Entré a la tesorería de SLB en enero de 2024, de practicante. El trabajo era conciliar, reportar, cerrar. Y me pasó lo que le pasa a todo el que entra a un equipo de finanzas: el reporte que de verdad hacía falta nunca era el que el sistema sabía dar.",
             "El primero fue el descalce cambiario de los mercados latinoamericanos. No existía una vista que lo mostrara. Así que la hice en Python.",
             "La pregunta me pareció buena y la herramienta que tenía a mano no la respondía.",
-            "Después vino la conciliación bancaria automatizada en SAP. Esa le devolvió unas diez horas al mes a cada analista del equipo — como sesenta al mes entre todos. Es la cifra que mejor explica por qué seguí: nadie me pidió que automatizara nada. Lo hice porque veo el proceso completo, no solo mi tarea.",
+            "Después vino la automatización del reporting de tesorería. Esa le devolvió unas diez horas al mes a cada analista del equipo — como sesenta al mes entre todos. Es la cifra que mejor explica por qué seguí: nadie me pidió que automatizara nada. Lo hice porque veo el proceso completo, no solo mi tarea.",
             "De practicante a especialista de facturación para Argentina y Brasil en veintiséis meses. En el camino, reconocimiento de ingresos en SAP bajo Sarbanes-Oxley y auditorías internas sobre proyectos de tecnología. Ahí aprendí algo que ningún curso me había dicho: un número que nadie puede auditar no sirve, por bonito que se vea. Guarda esa frase. Vuelve al final, y no por casualidad.",
           ],
           proofLabel: "Ver en el CV",
@@ -142,7 +142,7 @@ export const historia = {
             "market-data-medallion es un warehouse en PostgreSQL con arquitectura medallion, transformaciones en dbt, ochenta y nueve pruebas automáticas de calidad y un cron diario que trae cuarenta y ocho activos —cripto, ETFs, acciones gringas, ADR latinoamericanos, divisas— sin que yo toque absolutamente nada. Encima lleva un modelo semántico de Power BI.",
             "Y un backtester honesto, que es donde se pone interesante. Cinco estrategias técnicas clásicas y todas sus combinaciones posibles: 1.392 variantes, con comisiones, con slippage y sin look-ahead. Entraron {variants}. Sobrevivieron {survivors}.",
             "Ese número es el producto. No las {survivors} que quedaron: las {eliminated} que no. Casi todas las estrategias ganadoras eran ilusiones del backtest, y la única forma de demostrarlo fue partir cada serie en 70% de entrenamiento y 30% que el modelo nunca vio. Sin esa ventana ciega, escoger la mejor de 1.392 no es análisis — es dragado de datos con buena presentación.",
-            "Sobre esa misma disciplina vinieron dos más: un laboratorio que pronostica veinte economías de América Latina y mide cuánto vale cada pronóstico, y JARVIS, un producto con datos de salud y de dinero abierto al público sin exponer una sola fila.",
+            "Sobre esa misma disciplina vinieron dos más: un laboratorio que pronostica veinte economías de América Latina y mide cuánto vale cada pronóstico, y Kairo, un producto con datos de salud y de dinero abierto al público sin exponer una sola fila.",
           ],
           proofLabel: "Abrir el laboratorio",
           proofHref: "/projects/trading-sim",
@@ -153,7 +153,7 @@ export const historia = {
           num: "05",
           title: "La cifra que borré",
           body: [
-            "El proyecto más reciente es un sistema de decisión crediticia sobre 1,96 millones de préstamos SBA y 62,4 millones de solicitudes HMDA, datos públicos de Estados Unidos.",
+            "El proyecto que más pesa en este recorrido es un sistema de decisión crediticia sobre 1,96 millones de préstamos SBA y 62,4 millones de solicitudes HMDA, datos públicos de Estados Unidos.",
             "La primera medición me dio AUC 0,9461.",
             "Y te voy a ser honesto: por un rato me sentí muy bien.",
             "Pero eso no es un modelo de crédito. Es una fuga. «TermInMonths» se sobrescribe cuando el préstamo se liquida, así que ese campo llevaba adentro exactamente el resultado que yo decía estar prediciendo. Quitarlo derrumba la ablación a 0,6621.",
@@ -173,7 +173,7 @@ export const historia = {
           title: "Lo que sostiene todo",
           body: [
             "Hay un hilo que atraviesa las tres cosas y me importa más que cualquiera de ellas: publico lo que falla.",
-            "El nulo de la tesis está publicado, con su potencia. La fuga del 0,9461 está en el README con el número exacto, sin maquillar. De 1.392 estrategias, el titular es cuántas se murieron. Y este mismo sitio carga una bitácora de fallos numerados, cada uno con su causa raíz y su corrección — incluidos los más recientes.",
+            "El nulo de la tesis está publicado, con su potencia. La fuga del 0,9461 está en el README con el número exacto, sin maquillar. De 1.392 estrategias, el titular es cuántas se murieron. Y este mismo sitio carga una bitácora de fallos numerados, cada uno con su causa raíz y su corrección.",
             "Es un criterio de ingeniería, no de humildad: un portafolio donde todo salió bien no se puede verificar. Uno donde los errores están fechados, sí. Cada cifra de este sitio enlaza al artefacto que la produce — el repositorio, el commit, el pipeline. Si algo no se puede comprobar, no lo publico.",
           ],
           verdict: "Publico lo que falla.",
@@ -184,7 +184,7 @@ export const historia = {
           id: "donde",
           nav: "Contratar",
           num: "07",
-          title: "Hacia dónde voy",
+          title: "Dónde encajo",
           body: [
             "El rol que encaja paga el criterio financiero y la ingeniería de datos como una sola capacidad, no como dos mitades. Finance Data Analyst, Financial BI Analyst, Analytics Engineer — tres nombres distintos para el mismo puesto, según a quién le preguntes.",
             "Estoy en Bogotá, GMT-5, con solapamiento completo con el horario de Estados Unidos.",
@@ -202,7 +202,7 @@ export const historia = {
     historia: {
       metaTitle: "The story: finance and data",
       metaDesc:
-        "From an intern's analysis to a platform that runs itself: three years of finance, a thesis, a warehouse and a credit model that audits itself.",
+        "From an intern's analysis to a platform that runs itself: corporate finance, a thesis, a warehouse and a credit model that audits itself.",
       kicker: "Track record · first person",
       title: "Finance plus data wasn't a pivot. It was the job from day one.",
       intro:
@@ -234,7 +234,7 @@ export const historia = {
             "I joined SLB's treasury in January 2024, as an intern. The job was to reconcile, report, close. And what happens to everyone who joins a finance team happened to me: the report someone actually needed was never the one the system knew how to give.",
             "The first was the FX mismatch across Latin American markets. No view showed it. So I built one in Python.",
             "The question struck me as a good one and the tool at hand didn't answer it.",
-            "Then came automated bank reconciliation in SAP. That one gave every analyst on the team about ten hours a month back — around sixty a month between all of us. It's the figure that best explains why I kept going: nobody asked me to automate anything. I did it because I see the whole process, not just my task.",
+            "Then came automating the treasury reporting. That one gave every analyst on the team about ten hours a month back — around sixty a month between all of us. It's the figure that best explains why I kept going: nobody asked me to automate anything. I did it because I see the whole process, not just my task.",
             "Intern to billing specialist for Argentina and Brazil in twenty-six months. Along the way, revenue recognition in SAP under Sarbanes-Oxley and internal audits on technology projects. That's where I learned something no course had told me: a number nobody can audit is worth nothing, however good it looks. Hold on to that one. It comes back at the end, and not by accident.",
           ],
           proofLabel: "See it in the CV",
@@ -244,7 +244,7 @@ export const historia = {
           id: "patron",
           nav: "Pattern",
           num: "02",
-          title: "When I realised it was a pattern",
+          title: "When I realized it was a pattern",
           body: [
             "At Neoris/EPAM it grew: I came to own the SG&A close and forecast process for more than fifteen countries — the Americas, Europe and Asia: India, Hungary, Spain, the Czech Republic — from HQ. Monthly close, company-wide forecast confirmation, variances against plan and against prior forecast, FX variance in constant currency.",
             "And again, the same thing. Advanced Excel, Power Query, Power BI, MicroStrategy, JD Edwards, SAP — and underneath all of it, code, because the missing piece was always the data, never the presentation.",
@@ -261,13 +261,13 @@ export const historia = {
           num: "03",
           title: "Giving it a name",
           body: [
-            "The MSc in Economics at Javeriana is where that habit turned into a method. The thesis asks whether financial inclusion explains regional growth in Colombia.",
-            "Answering it needed, once again, data that didn't exist. I pulled nineteen public sources into a dimensional warehouse with dbt and DuckDB, built an inclusion index by dimension, and raised an atlas of all 1,123 municipalities in the country.",
-            "And the result didn't come.",
+            "The M.Sc. in Economics at Javeriana is where that habit turned into a method. The thesis asks whether financial inclusion explains regional growth in Colombia.",
+            "Answering it needed, once again, data that didn't exist. I pulled nineteen public sources into a dimensional warehouse with dbt and DuckDB, built an inclusion index by dimension, and built an atlas of all 1,123 municipalities in the country.",
+            "And the result wasn't there.",
             `Let me tell you what happened, because this is the part that matters. Add time effects and the coefficient collapses to something you can't tell apart from zero. The naive specification — entity effects only — publishes a ${fen.s(T.entityOnly.coefShort)} at p ${fen.lt(T.entityOnly.pBelow)} that sounds excellent and means nothing. What it's picking up is something else: the whole country rose at once.`,
           ],
           drift: {
-            caption: "Composite financial-inclusion index, standardised against 2018",
+            caption: "Composite financial-inclusion index, standardized against 2018",
             colYear: "year",
             colMedian: "median",
             colBelow: "departments below zero",
@@ -290,7 +290,7 @@ export const historia = {
             "market-data-medallion is a PostgreSQL warehouse in medallion architecture, transformations in dbt, eighty-nine automated quality tests and a daily cron that brings in forty-eight assets — crypto, ETFs, US equities, Latin American ADRs, currencies — without me touching a thing. It carries a Power BI semantic model on top.",
             "And an honest backtester, which is where it gets interesting. Five classic technical strategies and every combination of them: 1,392 variants, with fees, with slippage and no look-ahead. {variants} went in. {survivors} survived.",
             "That number is the product. Not the {survivors} that made it: the {eliminated} that didn't. Almost all the winning strategies were backtest illusions, and the only way to show it was to split every series into 70% training and 30% the model never saw. Without that blind window, picking the best of 1,392 isn't analysis — it's data dredging with good presentation.",
-            "The same discipline produced two more: a lab that forecasts twenty Latin American economies and measures what each forecast is worth, and JARVIS, a product with health and money data open to the public without exposing a single row.",
+            "The same discipline produced two more: a lab that forecasts twenty Latin American economies and measures what each forecast is worth, and Kairo, a product with health and money data open to the public without exposing a single row.",
           ],
           proofLabel: "Open the lab",
           proofHref: "/projects/trading-sim",
@@ -301,7 +301,7 @@ export const historia = {
           num: "05",
           title: "The number I deleted",
           body: [
-            "The most recent project is a credit decisioning system over 1.96 million SBA loans and 62.4 million HMDA applications, US public data.",
+            "The project that carries the most weight here is a credit decisioning system over 1.96 million SBA loans and 62.4 million HMDA applications, US public data.",
             "The first reading gave me AUC 0.9461.",
             "And I'll be honest with you: for a while there, I felt pretty good.",
             "But that isn't a credit model. It's a leak. TermInMonths is overwritten when a loan is liquidated, so that field carried inside it exactly the outcome I claimed to be predicting. Removing it drops the ablation to 0.6621.",
@@ -321,7 +321,7 @@ export const historia = {
           title: "What holds it together",
           body: [
             "There's a thread running through all three and it matters to me more than any of them: I publish what fails.",
-            "The thesis null is published, with its power. The 0.9461 leak is in the README with the exact number, unretouched. Of 1,392 strategies, the headline is how many died. And this very site carries a log of numbered defects, each with its root cause and its fix — including the most recent ones.",
+            "The thesis null is published, with its power. The 0.9461 leak is in the README with the exact number, unretouched. Of 1,392 strategies, the headline is how many died. And this very site carries a log of numbered defects, each with its root cause and its fix.",
             "It's an engineering standard, not humility: a portfolio where everything went well can't be verified. One where the mistakes are dated can. Every figure on this site links to the artifact that produces it — the repository, the commit, the pipeline. If it can't be checked, I don't publish it.",
           ],
           verdict: "I publish what fails.",
@@ -332,7 +332,7 @@ export const historia = {
           id: "donde",
           nav: "Hire",
           num: "07",
-          title: "Where I'm going",
+          title: "Where I fit",
           body: [
             "The right role pays for financial judgment and data engineering as one capability, not as two halves. Finance Data Analyst, Financial BI Analyst, Analytics Engineer — three different names for the same job, depending on who you ask.",
             "I'm in Bogotá, GMT-5, with full overlap with US hours.",
@@ -340,7 +340,7 @@ export const historia = {
           ],
         },
       ],
-      ctaTitle: "Stop choosing between the one who reads the business and the one who builds the data.",
+      ctaTitle: "Stop choosing between the person who understands the business and the person who builds the data.",
       ctaBody: "If your team needs someone who reads the P&L and builds the pipeline that feeds it, let's talk this week. I reply within one business day.",
       ctaEmail: "Write an email",
       ctaCv: "Download the CV",

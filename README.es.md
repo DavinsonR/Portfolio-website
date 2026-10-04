@@ -2,7 +2,7 @@
 
 *[Read in English](README.md)*
 
-Sitio personal bilingüe (ES/EN) y punto de entrada a cinco proyectos con código abierto y datos en vivo: un sistema de decisión crediticia con gobierno de modelos, una investigación econométrica, un laboratorio interactivo de pronóstico macro para América Latina, una plataforma de datos de mercado y una app de registro diario.
+Sitio personal bilingüe (ES/EN) y punto de entrada a seis proyectos con código abierto y datos en vivo: un sistema de decisión crediticia con gobierno de modelos, una investigación econométrica, un laboratorio interactivo de pronóstico macro para América Latina, una plataforma de datos de mercado, un informe de Power BI y una app de registro diario.
 
 ### ▶ [davirson.com](https://davirson.com)
 
@@ -49,7 +49,7 @@ npm run dev      # http://localhost:3000 → redirige a /en
 
 ### Dónde editar
 
-- **Todo el texto (ES/EN):** `lib/content/` — seis bloques (`home`, `projects`, `about`, `cv`, `historia`, `error`), cada uno con `es` y `en` uno al lado del otro. `lib/dictionaries.ts` solo los ensambla.
+- **Todo el texto (ES/EN):** `lib/content/` — siete bloques (`home`, `projects`, `about`, `cv`, `historia`, `forecast`, `error`), cada uno con `es` y `en` uno al lado del otro. `lib/dictionaries.ts` solo los ensambla.
 - **Colores y tipografías:** `app/globals.css`, bloques `@theme`.
 - **Estado y progreso de los módulos:** `lib/content/home.ts` → `sistema.modules`.
 - **Catálogo de Power BI:** `lib/data/powerbi-model.ts`, copiado de `market-data-medallion/powerbi/` con el commit de origen en la cabecera.

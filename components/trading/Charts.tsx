@@ -130,7 +130,7 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
         {geom.ticks.map((v) => (
           <g key={v}>
             <line x1={PAD.left} x2={W - PAD.right} y1={geom.y(v)} y2={geom.y(v)} stroke={CHART.grid} strokeWidth="1" />
-            <text x={PAD.left - 8} y={geom.y(v) + 3.5} textAnchor="end" style={{ fontSize: "calc(10px * var(--k, 1))" }} fill="var(--color-muted)">
+            <text x={PAD.left - 8} y={geom.y(v) + 3.5} textAnchor="end" style={{ fontSize: "calc(12px * var(--k, 1))" }} fill="var(--color-muted)">
               {compactMoney(lang, v)}
             </text>
           </g>
@@ -144,7 +144,7 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
               y1={PAD.top} y2={H - PAD.bottom}
               stroke="var(--color-rule)" strokeWidth="1"
             />
-            <text x={geom.x(geom.splitIdx) + 5} y={PAD.top + 9} style={{ fontSize: "calc(9.5px * var(--k, 1))" }} fill="var(--color-muted)">
+            <text x={geom.x(geom.splitIdx) + 5} y={PAD.top + 9} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill="var(--color-muted)">
               {labels.split}
             </text>
           </g>
@@ -158,16 +158,16 @@ export function EquityChart({ points, lang, splitDate, labels }: EquityChartProp
         {/* puntos finales con anillo de superficie + etiquetas directas */}
         <circle cx={geom.x(points.length - 1)} cy={endBenchY} r="4" fill={CHART.benchmark} stroke={CHART.surface} strokeWidth="2" />
         <circle cx={geom.x(points.length - 1)} cy={endStrategyY} r="4" fill={CHART.series} stroke={CHART.surface} strokeWidth="2" />
-        <text x={W - PAD.right + 10} y={labelStrategyY + 3.5} style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill="var(--color-ink)">
+        <text x={W - PAD.right + 10} y={labelStrategyY + 3.5} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill="var(--color-ink)">
           {compactMoney(lang, last[1])}
         </text>
-        <text x={W - PAD.right + 10} y={labelBenchY + 3.5} style={{ fontSize: "calc(10.5px * var(--k, 1))" }} fill="var(--color-body)">
+        <text x={W - PAD.right + 10} y={labelBenchY + 3.5} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill="var(--color-body)">
           {compactMoney(lang, last[2])}
         </text>
 
         {/* fechas: inicio / fin */}
-        <text x={PAD.left} y={H - 8} style={{ fontSize: "calc(10px * var(--k, 1))" }} fill="var(--color-muted)">{points[0][0]}</text>
-        <text x={W - PAD.right} y={H - 8} textAnchor="end" style={{ fontSize: "calc(10px * var(--k, 1))" }} fill="var(--color-muted)">{last[0]}</text>
+        <text x={PAD.left} y={H - 8} style={{ fontSize: "calc(12px * var(--k, 1))" }} fill="var(--color-muted)">{points[0][0]}</text>
+        <text x={W - PAD.right} y={H - 8} textAnchor="end" style={{ fontSize: "calc(12px * var(--k, 1))" }} fill="var(--color-muted)">{last[0]}</text>
 
         {/* capa hover: crosshair + anillos */}
         {h && (

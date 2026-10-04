@@ -96,7 +96,7 @@ export default async function HistoriaPage({
               key={s.id}
               id={s.id}
               // El resaltado de SectionNav asume este desplazamiento.
-              className="scroll-mt-[118px] border-t border-rule pt-8 pb-12 first:border-t-2 first:border-ink"
+              className="border-t border-rule pt-8 pb-12 first:border-t-2 first:border-ink"
             >
               <div className="grid gap-x-12 gap-y-8 lg:grid-cols-[minmax(0,1fr)_340px]">
               <div data-reveal className="reveal" style={{ "--d": `${i * 40}ms` } as React.CSSProperties}>

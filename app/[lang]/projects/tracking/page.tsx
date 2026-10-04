@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getDictionary } from "@/lib/dictionaries";
-import ProjectHero from "@/components/project/ProjectHero";
+import ProjectHero, { PROJECT_WRAP } from "@/components/project/ProjectHero";
 import Preview from "@/components/showcase/Previews";
 import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
 import { alternates, social } from "@/lib/config/alternates";
+import { workCard } from "@/lib/config/work-card";
 import { pageGraph } from "@/lib/config/structured-data";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -29,12 +30,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
    section and a link in two places. Cold accent throughout — amber stays reserved for
    human content. The screenshots are the app's own, carrying the demo banner they were
    captured with, so nobody can mistake generated figures for someone's real finances. */
-const wrap = "mx-auto max-w-[980px] px-6";
+const wrap = PROJECT_WRAP;
 const prose = "max-w-[74ch]";
 const label = "text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase";
 const heading =
   "mt-3 max-w-[28ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink";
-const section = "scroll-mt-[118px] border-b border-rule py-16";
+const section = "border-b border-rule py-16";
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 const delay = (i: number) => ({ "--d": `${i * 60}ms` }) as React.CSSProperties;
 
@@ -42,7 +43,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
   const { lang } = await params;
   const dict = getDictionary(lang);
   const t = dict.tracking;
-  const card = dict.work.cards.find((c) => c.href === "/projects/tracking")!;
+  const card = workCard(dict, "/projects/tracking");
 
   return (
     <main id="main" tabIndex={-1}>
@@ -52,6 +53,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
       />
       {/* ================= HERO ================= */}
       <ProjectHero
+        wrap={wrap}
         lang={lang}
         backLabel={dict.nav.backHome}
         status="live"
@@ -90,7 +92,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
             {t.demo.shotsTitle}
           </h3>
           <p className="mt-1 text-[14px] text-muted">{t.demo.shotsNote}</p>
-          <div className="-mx-6 mt-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4">
+          <div className="-mx-6 mt-6 flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-4" tabIndex={0} role="region" aria-label={t.demo.shotsTitle}>
             {t.demo.shots.map((s, i) => (
               <figure key={s.file} data-reveal className="reveal w-[280px] shrink-0 snap-start sm:w-[320px]" style={delay(i)}>
                 {/* <img> y no next/image: con `unoptimized` el componente no
@@ -262,7 +264,7 @@ export default async function TrackingPage({ params }: { params: Promise<{ lang:
       </section>
 
       {/* ================= STATUS ================= */}
-      <section id="estado" className="scroll-mt-[118px] py-16">
+      <section id="estado" className="py-16">
         <div className={wrap}>
           <p data-reveal className={`reveal ${label}`}>{t.status.label}</p>
           <h2 data-reveal className={`reveal ${heading}`} style={delay(1)}>{t.status.title}</h2>

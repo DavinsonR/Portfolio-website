@@ -1,7 +1,7 @@
 # Estado y pendientes
 
 *Solo lo que está vivo. La historia está en [`bitacora/`](bitacora/).*
-*Última actualización: 23 septiembre 2026.*
+*Última actualización: 3 octubre 2026.*
 
 ## Dónde está el proyecto
 
@@ -13,7 +13,7 @@
 | CI | `.github/workflows/ci.yml` — lint, tipos, paridad del diccionario, artefactos del CV, cifras, `npm audit`, `.tex` y figura del atlas al día, build y humo de rutas (con tarjetas OG y Twitter y los nueve redirects con su código) |
 | Repositorio | `main` protegida: exige el check `verify` en verde y no admite force-push (el trabajo va en rama y se fusiona, o se empuja con `git push origin rama:main` cuando CI ya pasó). Dependabot activo (alertas y parches). `davirson.com` enviado a la lista de precarga HSTS el 23 sep 2026: estado `pending` hasta que Chromium lo incorpore |
 | Idiomas | ES y EN completos, 9 rutas por idioma |
-| Proyectos en la mesa | laboratorio de pronóstico macro en LATAM (`/labs/macro-forecast`) · tesis de inclusión financiera · plataforma de datos de mercado · informe Power BI · demo de riesgo de crédito en el navegador · JARVIS (privado) |
+| Proyectos en la mesa | laboratorio de pronóstico macro en LATAM (`/labs/macro-forecast`) · tesis de inclusión financiera · plataforma de datos de mercado · informe Power BI · demo de riesgo de crédito en el navegador · Kairo (privado) |
 
 ## Pendientes
 
@@ -39,7 +39,7 @@
 - [x] ~~Las capturas de `public/tracking/`~~ — a WebP: 201 KB → 104 KB, y como esas `<Image>` van `unoptimized`, el ahorro lo nota el visitante, no solo el repo.
 
 - [ ] **`public/credit-risk-demo/model.onnx` sigue con sus 1,88 MB versionados, y se queda.** La idea era sacarlo con Git LFS, pero **Vercel no resuelve punteros de LFS en el build**: el fichero llegaría como puntero de texto y la demo moriría con un error de ONNX en el navegador, sin avisar en el build. Servirlo desde otro origen tampoco sale gratis: habría que abrir `connect-src` en la CSP de esa ruta y añadir una dependencia de red a una demo que hoy corre contra su propio origen. **Se revisa el día que el modelo se regenere**, que es cuando el coste empieza a acumularse de verdad; hoy `.git` pesa 4 MB y no duele.
-- [ ] `components/` son 12 archivos sueltos junto a 4 carpetas. Se dejó así: a este tamaño, agruparlos es mover ficheros sin que nadie encuentre nada mejor.
+- [ ] `components/` son 14 archivos sueltos junto a 8 carpetas (`atlas`, `credit-risk`, `forecast`, `historia`, `powerbi`, `project`, `showcase`, `trading`). Se dejó así: a este tamaño, agruparlos es mover ficheros sin que nadie encuentre nada mejor.
 
 ### De contenido
 

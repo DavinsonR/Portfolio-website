@@ -415,7 +415,7 @@ export default function Scorer({ copy, lang }: { copy: Copy; lang: string }) {
                   set("sba_guaranteed", num(e.target.value));
                 }}
               />
-              <small id={id("guar-note")} className="text-[12.5px] text-muted">
+              <small id={id("guar-note")} className="text-[14px] text-muted">
                 {guarLinked ? copy.fields.guaranteeAuto : f.pct(p.gross_approval > 0 ? p.sba_guaranteed / p.gross_approval : 0, 1)}
               </small>
             </label>
@@ -535,7 +535,7 @@ export default function Scorer({ copy, lang }: { copy: Copy; lang: string }) {
                   aria-hidden="true"
                 />
               </div>
-              <div className="mt-1 grid grid-cols-5 text-[12.5px] text-muted">
+              <div className="mt-1 grid grid-cols-5 text-[14px] text-muted">
                 {BANDS.map(([, l]) => (
                   <span key={l} className={l === letter ? "font-semibold text-ink" : undefined}>
                     {l}
@@ -581,8 +581,8 @@ export default function Scorer({ copy, lang }: { copy: Copy; lang: string }) {
                 <dt className="text-muted">{copy.result.lgd}</dt>
                 <dd className="text-right tabular-nums">{f.pct(LGD, 1)}</dd>
               </dl>
-              <p className="mt-1 text-[12.5px] text-muted">{copy.result.lgdNote}</p>
-              <p className="mt-1 text-[12.5px] text-muted">
+              <p className="mt-1 text-[14px] text-muted">{copy.result.lgdNote}</p>
+              <p className="mt-1 text-[14px] text-muted">
                 {BANDS.slice(0, -1).map(([t, l]) => `${l} < ${f.pct(t, 0)}`).join(" · ")} · E ≥ {f.pct(BANDS[BANDS.length - 2][0], 0)}
               </p>
 
@@ -591,7 +591,7 @@ export default function Scorer({ copy, lang }: { copy: Copy; lang: string }) {
                   <h4 className="mt-5 text-[12.5px] font-semibold uppercase tracking-[0.09em] text-muted">{copy.result.vector}</h4>
                   <p className="mt-1 text-[14px] leading-[1.55] text-muted">{copy.result.vectorNote}</p>
                   <div className="mt-2 overflow-x-auto" tabIndex={0} role="region" aria-label={copy.result.vector}>
-                    <table className="w-full table-fixed border-collapse text-[12.5px] tabular-nums">
+                    <table className="w-full table-fixed border-collapse text-[14px] tabular-nums">
                       <thead>
                         <tr className="border-b border-rule text-left text-muted">
                           <th scope="col" className="w-[46%] py-1 pr-2 font-medium">{copy.result.feature}</th>
@@ -606,7 +606,7 @@ export default function Scorer({ copy, lang }: { copy: Copy; lang: string }) {
                           const bad = contract.categorical.includes(name) && v === contract.unknown_code;
                           return (
                             <tr key={name} className="border-b border-rulesoft">
-                              <td className="truncate py-1 pr-2 font-mono text-[12px]" title={name}>{name}</td>
+                              <td className="truncate py-1 pr-2" title={name}>{name}</td>
                               <td className="truncate py-1 pr-2" title={raw}>{raw}</td>
                               <td className={`py-1 text-right ${bad ? "font-semibold text-neg" : ""}`}>{f.n(v)}</td>
                             </tr>

@@ -2,14 +2,14 @@
 
 *Índice. El contenido vive en [`docs/`](docs/) desde el 16 sep 2026.*
 
-Esto eran 107 KB y 985 líneas de narrativa cronológica: el mejor activo del proyecto y su peor problema de acceso. Para encontrar una decisión había que leer diecisiete anexos, y ningún agente podía cargarlo sin quemar medio contexto. Se partió **sin reescribir una línea** (`scripts/split-bitacora.mjs`, corte mecánico por encabezados, verificado carácter a carácter contra el original); lo único nuevo son los tres índices.
+Esto eran 107 KB y 985 líneas de narrativa cronológica: el mejor activo del proyecto y su peor problema de acceso. Para encontrar una decisión había que leer diecisiete anexos, y ningún agente podía cargarlo sin quemar medio contexto. Se partió **sin reescribir una línea** (`scripts/split-bitacora.mjs`, ya retirado: git lo conserva; corte mecánico por encabezados, verificado carácter a carácter contra el original); lo único nuevo son los tres índices.
 
 ## Empieza por aquí
 
 | | Qué es | Cuándo |
 |---|---|---|
-| **[docs/FALLOS.md](docs/FALLOS.md)** | Los 33 fallos en una tabla, con su causa raíz enlazada y si hay una comprobación que los atrape hoy | **Antes de tocar nada.** Más de la mitad son del pipeline, no de este repo: filtra y ahórrate veinte |
-| **[docs/DECISIONES.md](docs/DECISIONES.md)** | Las 31 decisiones, qué se decidió y dónde está el porqué | Antes de cambiar algo que parezca arbitrario. Varias lo parecen y no lo son |
+| **[docs/FALLOS.md](docs/FALLOS.md)** | Los 41 fallos en una tabla, con su causa raíz enlazada y si hay una comprobación que los atrape hoy | **Antes de tocar nada.** Más de la mitad son del pipeline, no de este repo: filtra y ahórrate veinte |
+| **[docs/DECISIONES.md](docs/DECISIONES.md)** | Las 37 decisiones, qué se decidió y dónde está el porqué | Antes de cambiar algo que parezca arbitrario. Varias lo parecen y no lo son |
 | **[docs/ROADMAP.md](docs/ROADMAP.md)** | Estado actual y lo que queda | Al empezar una sesión |
 
 Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos), [`docs/DESIGN.md`](docs/DESIGN.md) (el contrato del sistema visual) y [`docs/PRODUCT.md`](docs/PRODUCT.md) (el posicionamiento y la evidencia real disponible). Los dos últimos **no son documentación descriptiva**: varias de sus reglas son vinculantes y romperlas ya ha sido un hallazgo de revisión.
@@ -50,6 +50,19 @@ Y para trabajar en el código: [`CLAUDE.md`](CLAUDE.md) (invariantes y comandos)
 | 31 | [24 sep](docs/bitacora/sesion-31.md) | Dos versiones de la capa de proyección del atlas: se publica la de la sesión 30 con los seis arreglos de la otra, y pruebas contra los datos reales |
 | 32 | [25 sep](docs/bitacora/sesion-32.md) | El ancla del atlas se renueva con la EME de julio de 2026; el respaldo del WEO deja de estar congelado |
 | 33 | [25 sep](docs/bitacora/sesion-33.md) | Licencias de Banrep y del FMI verificadas: la cita del ancla lleva fecha de consulta y dice qué es |
+| 34 | [3 oct](docs/bitacora/sesion-34.md) | Auditoría final con cinco agentes y la pasada que la aplica: ámbar fuera de una cifra, hero alineado con sus secciones, ids únicos, caché del CV y presupuesto de peso sin el polyfill |
+
+## Auditorías
+
+Cada una es solo lectura: un informe con el método, lo que estaba limpio y los hallazgos por valor. Su estado (hecho o abierto) está al pie de cada documento.
+
+| Documento | Alcance |
+|---|---|
+| [auditoria-2026-09-23](docs/AUDITORIA-2026-09-23.md) | Cinco expertos, 46 hallazgos, seis sesiones (18 a 23) |
+| [auditoria-copy-persuasion-2026-09-23](docs/auditoria-copy-persuasion-2026-09-23.md) | El tono de venta y qué cifras lo sostienen (ver *Brand Commitments* en `docs/PRODUCT.md`) |
+| [auditoria-diseno-proyectos-2026-09-25](docs/auditoria-diseno-proyectos-2026-09-25.md) | Diseño de las seis páginas de proyecto: de aquí salió `ProjectHero` |
+| [auditoria-historia-2026-09-25](docs/auditoria-historia-2026-09-25.md) | `/historia`: el aparte (`Aside.tsx`) y la lectura de la página |
+| [auditoria-portada-cv-2026-09-25](docs/auditoria-portada-cv-2026-09-25.md) | Portada y CV, web y PDF |
 
 ## Después de la sesión 17
 

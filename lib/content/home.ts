@@ -16,7 +16,7 @@ export const home = {
     meta: {
       title: "Davirson Novoa — Finance Data Analyst",
       description:
-        "Finance Data Analyst: dueño del cierre de 15+ países, una plataforma de datos en producción y un sistema de crédito que se audita solo. Remoto, GMT-5.",
+        "Analista financiero y de datos en Bogotá: dueño del cierre FP&A de 15+ países y de plataformas en SQL, dbt y Power BI. Remoto, GMT-5.",
     },
     nav: {
       links: [
@@ -35,25 +35,24 @@ export const home = {
     },
     sheet: {
       classification: "Perfil · Finanzas y Datos",
-      asOf: "Corte a septiembre 2026",
+      asOf: "Corte a octubre 2026",
       name: "Davirson Novoa Ramírez",
       verdict: "Finance Data Analyst",
       thesis: "Encuentro la variación, llego a su causa raíz, dejo el control corriendo solo y lo explico donde se decide. Las cuatro cosas, la misma persona.",
-      sub: "Casi nadie hace las cuatro. El analista encuentra la variación y la pasa; el ingeniero automatiza lo que le pidan; y a la dirección le llega un número que nadie sabe defender. Yo hago las cuatro. Soy dueño del cierre y el forecast de más de 15 países desde HQ, y en paralelo opero una plataforma de datos en producción —ingesta diaria, 89 pruebas de calidad, modelo semántico en Power BI— que diseñé y construí de punta a punta. Sin equipo y sin proveedor: la responsabilidad entera es mía.",
+      sub: "Casi nadie hace las cuatro. El analista encuentra la variación y la pasa; el ingeniero automatiza lo que le pidan; y a la dirección le llega un número que nadie sabe defender. Yo hago las cuatro. Soy dueño del cierre y el forecast de más de 15 países desde HQ, y en paralelo opero una plataforma de datos que ingiere 48 activos cada día y falla antes de publicar un dato malo —89 pruebas de calidad, modelo semántico en Power BI—, diseñada y construida de punta a punta. Sin equipo y sin contratistas: la responsabilidad entera es mía.",
       availability: "Bogotá · GMT-5 · Tu horario de EE. UU., completo · Disponible en 15 días",
       // Las tres preguntas que un reclutador resuelve antes de abrir el CV, y que
       // la página no respondía en ninguna parte: a qué nivel, desde cuándo y por
       // qué vía. Sin la primera, el lector clasifica por defecto en el nivel más
       // bajo compatible con "tres años". Ámbar es su jurisdicción: contratación
       // y disponibilidad son contenido humano, no una cifra.
-      hireLabel: "Contratarme es simple",
       hire: [
         { term: "Nivel", detail: "Senior Analyst" },
         { term: "Inicio", detail: "Preaviso de 15 días" },
         { term: "Vía", detail: "Contrato directo (B2B) o mediante EOR. Sin patrocinio de visa." },
       ],
       metricsLabel: "Cuatro cifras que puedes auditar ahora mismo",
-      metricsNote: "Ninguna está redondeada y ninguna es de adorno. Haz clic en la que menos te creas.",
+      metricsNote: "Cada una enlaza a su prueba. Haz clic en la que menos te creas.",
       pipelineLive: "Pipeline en vivo · datos hasta",
       pipelineStalled: "Pipeline detenido · datos hasta",
       pipelineLiveFallback: "Pipeline en vivo · se actualiza a diario",
@@ -64,12 +63,11 @@ export const home = {
       metrics: [
         { value: "15+", label: "países cuyo cierre controlo", note: "desde HQ · América, Europa y Asia", href: "/cv#experiencia" },
         { value: "60 h/mes", label: "de trabajo manual eliminadas", note: "en la tesorería de SLB · 10 por analista", href: "/cv#experiencia" },
-        { value: "2 ascensos", label: "en 26 meses en SLB", note: "de tesorería a especialista, con un practicante a cargo", href: "/cv#experiencia" },
+        { value: "2 ascensos", label: "en 26 meses en SLB", note: "de tesorería a especialista de facturación, Argentina y Brasil", href: "/cv#experiencia" },
         { value: "6", label: "proyectos con evidencia pública", note: "código, demo o datos abiertos, a un clic", href: "#work" },
       ] as Metric[],
       ctaPrimary: "Descargar CV (PDF)",
       ctaSecondary: "Ver la evidencia completa",
-      portraitPending: "DNR",
     },
     work: {
       // La vitrina. Antes: un caso de 600 palabras más cinco filas de prosa, y
@@ -87,8 +85,8 @@ export const home = {
           status: "live",
           statusText: "DESPLEGADO",
           stat: "276,3 M USD",
-          statLabel: "en castigos evitables sobre la cartera de prueba",
-          hook: "Diez gates que bloquean cualquier modelo que no cumpla, incluido el mío: impacto dispar de 0,7639 contra un umbral de 0,80.",
+          statLabel: "en castigos evitables sobre la cartera de prueba, con su costo publicado al lado",
+          hook: "Diez gates que bloquean cualquier modelo que no cumpla, incluido el mío: el de acceso al crédito da un impacto dispar de 0,7639 contra un umbral de 0,80 y no se promueve.",
           href: "/projects/credit-risk",
           vizLabels: ["brecha (pp)", "umbral declarado", "antes", "después"],
           caption: "Estudio de evento sobre 93,4 M de solicitudes HMDA: la brecha racial de denegación, año por año, con su intervalo al 95 %.",
@@ -165,7 +163,7 @@ export const home = {
     meta: {
       title: "Davirson Novoa — Finance Data Analyst",
       description:
-        "Finance Data Analyst: owns the close for 15+ countries, runs a production data platform and a credit system that audits itself. Remote, GMT-5.",
+        "Finance Data Analyst in Bogotá: owns the FP&A close for 15+ countries and builds data platforms in SQL, dbt and Power BI. Remote, GMT-5.",
     },
     nav: {
       links: [
@@ -184,37 +182,35 @@ export const home = {
     },
     sheet: {
       classification: "Profile · Finance & Data",
-      asOf: "As of September 2026",
+      asOf: "As of October 2026",
       name: "Davirson Novoa Ramírez",
       verdict: "Finance Data Analyst",
       thesis: "I find the variance, I trace it to root cause, I leave the control running itself, and I explain it where the decision gets made. All four, one person.",
-      sub: "Almost nobody does all four. The analyst finds the variance and passes it on; the engineer automates whatever they are handed; and the board gets a number nobody can defend. I do all four. I own the close and forecast for 15+ countries from HQ, and alongside it I run a production data platform — daily ingestion, 89 quality tests, a Power BI semantic model — that I designed and built end to end. No team, no vendor: the accountability is all mine.",
+      sub: "Almost nobody does all four. The analyst finds the variance and passes it on; the engineer automates whatever they are handed; and the board gets a number nobody can defend. I do all four. I own the close and forecast for 15+ countries from HQ, and alongside it I run a data platform that ingests 48 assets every day and fails before it publishes bad data — 89 quality tests, a Power BI semantic model — designed and built end to end. No team, no contractors: the accountability is all mine.",
       availability: "Bogotá · GMT-5 · Your US hours, in full · Available in 15 days",
       // The three questions a recruiter settles before opening the CV, and that
       // the page answered nowhere: at what level, from when, and through what
       // arrangement. Without the first, the reader defaults to the lowest level
       // consistent with "three years". Amber is their jurisdiction: hiring and
       // availability are human content, not a figure.
-      hireLabel: "Hiring me is simple",
       hire: [
         { term: "Level", detail: "Senior Analyst" },
         { term: "Start", detail: "15 days' notice" },
-        { term: "Route", detail: "Direct contract (B2B) or through an EOR. No visa sponsorship needed." },
+        { term: "Engagement", detail: "Direct contract (B2B) or through an EOR. No visa sponsorship needed." },
       ],
       metricsLabel: "Four figures you can audit right now",
-      metricsNote: "Not one is rounded and not one is decoration. Click the one you believe least.",
+      metricsNote: "Each one links to its proof. Click the one you believe least.",
       pipelineLive: "Live pipeline · data through",
       pipelineStalled: "Pipeline stalled · data through",
       pipelineLiveFallback: "Live pipeline · refreshes daily",
       metrics: [
         { value: "15+", label: "countries whose close I own", note: "from HQ · the Americas, Europe and Asia", href: "/cv#experiencia" },
         { value: "60 hrs/mo", label: "of manual work eliminated", note: "in SLB's treasury · 10 per analyst", href: "/cv#experiencia" },
-        { value: "2 promotions", label: "in 26 months at SLB", note: "from treasury to specialist, leading an intern", href: "/cv#experiencia" },
+        { value: "2 promotions", label: "in 26 months at SLB", note: "from treasury to billing specialist, Argentina and Brazil", href: "/cv#experiencia" },
         { value: "6", label: "projects with public evidence", note: "code, demo or open data, one click away", href: "#work" },
       ] as Metric[],
-      ctaPrimary: "Download CV (PDF)",
+      ctaPrimary: "Download resume (PDF)",
       ctaSecondary: "See the full evidence",
-      portraitPending: "DNR",
     },
     work: {
       // The showcase: one visual, one figure, one line and one click per project.
@@ -230,8 +226,8 @@ export const home = {
           status: "live",
           statusText: "DEPLOYED",
           stat: "$276.3M",
-          statLabel: "in avoidable charge-offs on the test portfolio",
-          hook: "Ten gates that block any model that fails, mine included: disparate impact of 0.7639 against a 0.80 threshold.",
+          statLabel: "in avoidable charge-offs on the test portfolio, published next to its cost",
+          hook: "Ten gates that block any model that fails, mine included: the credit-access model shows disparate impact of 0.7639 against a 0.80 threshold, so it is not promoted.",
           href: "/projects/credit-risk",
           vizLabels: ["gap (pp)", "declared threshold", "before", "after"],
           caption: "Event study over 93.4M HMDA applications: the racial denial gap, year by year, with its 95% interval.",
@@ -260,7 +256,7 @@ export const home = {
           hook: "A star schema you review line by line in a pull request.",
           href: "/projects/powerbi",
           vizLabels: ["dim_assets", "facts", "aggregates"],
-          caption: "The semantic model: one dimension, four fact tables and two aggregates that arrive summarised from dbt.",
+          caption: "The semantic model: one dimension, four fact tables and two aggregates that arrive summarized from dbt.",
         },
         {
           viz: "shot",

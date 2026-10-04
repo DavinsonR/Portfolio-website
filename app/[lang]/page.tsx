@@ -258,7 +258,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           gráfico alterna de lado en escritorio para que la lectura zigzaguee;
           en el teléfono va siempre arriba. La figura del atlas, que antes era
           una sección propia encima de esta, vive ahora en su tarjeta. */}
-      <section id="work" className="scroll-mt-[72px] border-b border-rule bg-band py-16">
+      <section id="work" className="border-b border-rule bg-band py-16">
         <div className={WRAP}>
           <h2
             data-reveal
@@ -313,7 +313,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
       </section>
 
       {/* ===================== TRACK RECORD + PROFILE ===================== */}
-      <section id="track" className="scroll-mt-[72px] border-b border-rule py-16">
+      <section id="track" className="border-b border-rule py-16">
         <div className={WRAP}>
           <div>
             <div className="flex flex-wrap items-baseline justify-between gap-4">
@@ -396,7 +396,7 @@ export default async function Home({ params }: { params: Promise<{ lang: string 
           24ch headline wrapping to three lines in the left third and a row of
           links underneath. The CTA cluster moves beside the headline, which is
           what a band opened by a 2px rule is supposed to look like. */}
-      <section id="contact" className="scroll-mt-[72px] border-t-2 border-warm py-16">
+      <section id="contact" className="border-t-2 border-warm py-16">
         <div className={`${WRAP} grid items-start gap-x-14 gap-y-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]`}>
           <div>
             <h2

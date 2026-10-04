@@ -20,7 +20,7 @@
 \definecolor{cold}{HTML}{0F4C81}   % azul institucional del sitio
 \definecolor{ink}{HTML}{14181D}
 \definecolor{body}{HTML}{454E57}
-\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold}
+\hypersetup{colorlinks=true, urlcolor=cold, linkcolor=cold, pdfauthor={Davirson Novoa Ramírez}, pdftitle={Davirson Novoa Ramírez --- Finance Data Analyst}, pdfkeywords={Finance Data Analyst, Financial BI Analyst, Analytics Engineer, FP\&A, SQL, dbt, Power BI}}
 
 \pagestyle{empty}
 \setlength{\parindent}{0pt}
@@ -48,10 +48,10 @@
 \vspace{2pt}
 
 \needspace{12\baselineskip}\section*{Perfil}
-Finance Data Analyst y dueño del proceso de cierre y forecast de SG\&A de más de 15 países de América, Europa y Asia, desde HQ. Economista formado en tesorería, facturación bajo SOX y FP\&A, que construye los datos que el negocio necesita en vez de esperarlos: Python, SQL y Power BI sobre operaciones reales. En paralelo opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI que se actualiza solo a diario, y desplegué un sistema de decisión crediticia sobre 95 millones de registros con diez gates de gobierno de modelos. Todo verificable: cada cifra de mi sitio enlaza al repositorio que la produce. Traigo el criterio financiero y la ingeniería de datos en una sola contratación: sin traductor y sin la reunión de traspaso.
+Finance Data Analyst y dueño del proceso de cierre y forecast de SG\&A de más de 15 países de América, Europa y Asia, desde HQ. Economista formado en tesorería, facturación bajo SOX y FP\&A, que construye los datos que el negocio necesita en vez de esperarlos: Python, SQL y Power BI sobre operaciones reales. En paralelo opero en producción un warehouse PostgreSQL con arquitectura medallion, transformaciones en dbt, 89 pruebas automáticas de calidad y un modelo semántico de Power BI versionado como código sobre ese warehouse, y desplegué un sistema de decisión crediticia sobre más de 64 millones de registros públicos de EE. UU., con diez gates de gobierno de modelos. Todo verificable: cada cifra técnica de mi sitio enlaza al repositorio que la produce. Traigo el criterio financiero y la ingeniería de datos en una sola contratación: sin traductor y sin la reunión de traspaso.
 
 \needspace{12\baselineskip}\section*{El rol cruzado}
-Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé construyendo lo mismo --- código y datos --- porque el reporte que el negocio necesitaba no existía y nadie más lo iba a construir. Un análisis de descalces cambiarios en Python que nadie había pedido, siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería --- cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python; eso lo sabe muchísima gente. Es saber qué pregunta vale la pena responder antes de escribir la primera línea. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar --- es quien no necesita traductor entre los dos. Contratar a esa persona son dos contrataciones en una, sin la reunión de traspaso entre ellas.
+Contrátame por lo que ya hago en cada rol financiero: en todos terminé construyendo lo mismo --- código y datos --- porque el reporte que el negocio necesitaba no existía y nadie más lo iba a construir. Un análisis de descalces cambiarios en Python que nadie había pedido, siendo practicante. Automatizaciones que devolvieron unas 10 horas al mes a cada analista de tesorería --- cerca de 60 al mes en el equipo. Modelos de Power BI que convirtieron un cierre contable en una decisión. La ventaja no es saber Python; eso lo sabe muchísima gente. Es saber qué pregunta vale la pena responder antes de escribir la primera línea. Un Finance Data Analyst no es un analista de datos que aprendió finanzas, ni un financiero que aprendió a programar --- es quien no necesita traductor entre los dos. Contratar a esa persona son dos contrataciones en una, sin la reunión de traspaso entre ellas.
 
 \needspace{12\baselineskip}\section*{Experiencia}
 \headline{Neoris EPAM}{Bogotá, Colombia \,\textperiodcentered\, remoto}
@@ -96,13 +96,13 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 \vspace{4pt}
 
 \needspace{12\baselineskip}\section*{Proyectos en operación}
-{\small\itshape Código abierto y verificable. Nada de esto es un ejercicio de curso.}\par\vspace{3pt}
+{\small\itshape Código abierto y verificable; en Kairo, la prueba es el demo público. Nada de esto es un ejercicio de curso.}\par\vspace{3pt}
 \headline{credit-risk-mlops}{2026 --- desplegado, puntúa en vivo}
 \subline{Sistema de decisión crediticia con gobierno de modelos --- diseño y construcción}{\href{https://github.com/DavinsonR/credit-risk-mlops}{github.com/DavinsonR/credit-risk-mlops}}
 {\small\bfseries\color{cold} 276,3 M USD en castigos evitables \,\textperiodcentered\, AUC 0,7005 \,\textperiodcentered\, 10 gates, y uno bloquea mi propio modelo}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
-  \item Rechazar el 10\% más riesgoso de la cartera de prueba habría evitado 276,3 M USD en castigos --- 2,15 veces lo que logra un rechazo al azar --- y el reporte publica también el contrapeso: 1.990 M USD de crédito sano que se renuncia.
-  \item Modelo desplegado con AUC 0,7005 sobre 1,96 M de préstamos SBA 7(a) y 62,4 M de solicitudes HMDA: +0,0311 frente a una scorecard WoE interpretable, con error de calibración 0,0107. El estudio de evento corre aparte, sobre 93,4 M de solicitudes.
+  \item Rechazar el 10\% más riesgoso de la cartera de prueba habría evitado 276,3 M USD en castigos --- 2,15 veces lo que logra un rechazo al azar --- y el reporte publica también el contrapeso: 1.992 M USD de crédito sano que se renuncia.
+  \item Modelo de pérdida desplegado sobre 1,96 M de préstamos SBA 7(a): AUC 0,7005 fuera de tiempo, +0,0311 frente a una scorecard WoE interpretable, con error de calibración 0,0107. El segundo modelo, de acceso al crédito sobre 62,4 M de solicitudes HMDA, es el que el gate de equidad no deja promover; el estudio de evento corre aparte, sobre 93,4 M de solicitudes.
   \item La primera medición dio 0,9461 y no era un modelo, era una fuga: «TermInMonths» se sobrescribe cuando el préstamo se liquida, así que el campo llevaba dentro el resultado. Quitarlo derrumba la ablación a 0,6621, y esa es la cifra que se publica.
   \item Diez gates de promoción juzgados por código de salida, y uno está diseñado para bloquear mi propio modelo cuando no cumple el umbral.
   \item El monitoreo detectó que la fuente cambió de vocabulario sin avisar: una variable dejó de significar lo mismo entre cortes y nadie se habría enterado sin el control.
@@ -116,7 +116,7 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
   \item Ingesta incremental por watermark desde 4 fuentes (Tiingo, Coinbase, Kraken, FX) hacia un warehouse PostgreSQL de tres capas: 48 activos y más de 58.000 velas, idempotente y reanudable.
   \item 89 pruebas automáticas de calidad en dbt más 171 pruebas unitarias en Python; el pipeline falla antes de publicar un dato malo, no después.
-  \item Motor de backtesting sin look-ahead con validación out-of-sample 70/30 sobre 1.392 variantes de estrategia: menos de una de cada seis ganadoras in-sample sobrevivió a la ventana ciega.
+  \item Motor de backtesting sin look-ahead con validación out-of-sample 70/30 sobre 1.392 variantes de estrategia: la gran mayoría de las ganadoras in-sample no sobrevivió a la ventana ciega.
   \item Descomposición cambiaria de ADRs latinoamericanos, separando el retorno de la empresa del movimiento de la divisa mediante la identidad (1+r\_USD) $\times$ (1+r\_FX) = (1+r\_local).
   \item Orquestación diaria en GitHub Actions con circuit breaker de rate limit, sobre infraestructura de costo cero.
 \end{itemize}
@@ -124,10 +124,10 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 \vspace{4pt}
 \headline{Kairo --- producto multiusuario con datos sensibles}{2026 --- en producción \,\textperiodcentered\, demo abierto}
 \subline{Producto propio --- diseño, construcción y operación}{\href{https://kairo.davirson.com/demo}{demo público, sin cuenta}}
-{\small\bfseries\color{cold} 526 pruebas en 8 puertas de CI \,\textperiodcentered\, 34 tablas con seguridad por fila \,\textperiodcentered\, demo público que nunca toca la base}\par
+{\small\bfseries\color{cold} 2.741 pruebas en 8 puertas de CI \,\textperiodcentered\, 65 tablas y 46 vistas con seguridad por fila \,\textperiodcentered\, demo público que nunca toca la base}\par
 \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=1pt, parsep=0pt]
-  \item Modelo multiusuario en Postgres con política de fila en 34 tablas: la conversión exigió reconstruir 22 claves primarias que identificaban filas sin el usuario, y meter el usuario dentro de las claves foráneas para que el aislamiento no dependiera solo de la política.
-  \item Ocho puertas en CI juzgadas por código de salida: tipos, formato, lint, 2.741 pruebas, build, auditoría de dependencias, un guardia que busca datos personales en el artefacto ya construido, y una prueba de humo que exige que el rol anónimo sea denegado en las 55 tablas y vistas.
+  \item Modelo multiusuario en Postgres con seguridad por fila en sus 65 tablas: la conversión exigió reconstruir 22 claves primarias que identificaban filas sin el usuario, y meter el usuario dentro de las claves foráneas para que el aislamiento no dependiera solo de la política.
+  \item Ocho puertas en CI juzgadas por código de salida: tipos, formato, lint, 2.741 pruebas, build, auditoría de dependencias, un guardia que busca datos personales en el artefacto ya construido, y una prueba de humo que exige que el rol anónimo sea denegado en las 111 tablas y vistas.
   \item Demo público que corre las cinco pantallas reales sobre 120 días generados con semilla y no consulta la base ni una vez; una prueba recorre el grafo de importaciones en ejecución y falla si algún módulo alcanzable llega al cliente de datos.
   \item Registro del día en un formulario y un botón, con ocho escrituras independientes, borrador y cola de envío en el teléfono para sobrevivir a la pérdida de señal, y un lector de números propio porque un campo numérico del navegador guardaba los gastos divididos por mil.
 \end{itemize}
@@ -166,7 +166,7 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
   \item \textbf{\color{ink}Git \,\textperiodcentered\, GitHub Actions} --- Cron diario en operación, con circuit breaker de rate limit
   \item \textbf{\color{ink}Econometría de panel} --- Efectos fijos de dos vías sobre 228 observaciones, bootstrap salvaje por clúster y placebo por permutación
   \item \textbf{\color{ink}Diagnóstico y robustez} --- Dependencia transversal medida, CCE, SLX, tendencias previas, bootstrap salvaje con error agrupado y corrección de Holm
-  \item \textbf{\color{ink}Machine learning} --- LightGBM sobre 1,96 M de préstamos SBA y 62,4 M de solicitudes HMDA: AUC 0,7005, +0,0311 sobre la scorecard interpretable
+  \item \textbf{\color{ink}Machine learning} --- LightGBM sobre 1,96 M de préstamos SBA: AUC 0,7005 fuera de tiempo, +0,0311 sobre la scorecard interpretable
   \item \textbf{\color{ink}Riesgo de crédito y scorecards} --- Binning WoE con optbinning, validación out-of-time sobre el shock COVID, error de calibración 0,0107
   \item \textbf{\color{ink}Gobierno de modelos (MLOps)} --- Diez gates de promoción juzgados por código de salida; uno bloquea mi propio modelo
 \end{itemize}
@@ -184,7 +184,7 @@ Cobro por lo que llevo haciendo en cada rol financiero: en todos terminé constr
 \textbf{\color{ink}Certificaciones:} Especialización en Machine Learning (Stanford \,\textperiodcentered\, Coursera, 2024) \,\textperiodcentered\, Certificado de Ciberseguridad (Google \,\textperiodcentered\, Coursera, 2024)\par\vspace{3pt}
 \textbf{\color{ink}Reconocimientos:} \href{https://public.tableau.com/app/profile/davirson.novoa/viz/BodyTrendsADataAnalysisProject/TrendsAnalysis}{Ganador --- BodyTech Trends Hackathon (2024)} \,\textperiodcentered\, Becario Ecopetrol --- Programa Mario Galán Gómez (2018)\par
 
-\needspace{12\baselineskip}\section*{Preparado para remoto}
-Toda mi experiencia es remota o híbrida, con equipos distribuidos en 15+ países. \,\textperiodcentered\, GMT-5 (Bogotá): tu horario de EE. UU. y Canadá, completo. \,\textperiodcentered\, Inglés de trabajo a diario con equipos de EE. UU. y Europa (Hungría, República Checa, España), y con Argentina y Brasil. \,\textperiodcentered\, Español nativo \,\textperiodcentered\, Portugués A2.
+\needspace{6\baselineskip}\section*{Preparado para remoto}
+Toda mi experiencia es remota o híbrida, con operaciones en 15+ países. \,\textperiodcentered\, GMT-5 (Bogotá): tu horario de EE. UU. y Canadá, completo. \,\textperiodcentered\, Inglés de trabajo a diario con equipos de EE. UU. y Europa (Hungría, República Checa, España). \,\textperiodcentered\, Español nativo \,\textperiodcentered\, Inglés B2 \,\textperiodcentered\, Portugués A2.
 
 \end{document}

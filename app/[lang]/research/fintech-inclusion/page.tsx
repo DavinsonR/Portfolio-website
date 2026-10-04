@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { getDictionary, THESIS_REPO } from "@/lib/dictionaries";
 import { mailtoHref } from "@/lib/config/contact";
-import ProjectHero from "@/components/project/ProjectHero";
+import ProjectHero, { PROJECT_WRAP } from "@/components/project/ProjectHero";
 import Preview from "@/components/showcase/Previews";
 import ContactBand from "@/components/ContactBand";
 import SectionNav from "@/components/SectionNav";
 import Atlas from "@/components/atlas/Atlas";
 import { alternates, social } from "@/lib/config/alternates";
+import { workCard } from "@/lib/config/work-card";
 import { pageGraph } from "@/lib/config/structured-data";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -28,12 +29,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
    Technical content end to end, so the only accent here is the cold one — amber stays
    reserved for human content. Figures are set as written (no CountUp): "2018–2025" is a
    range, not a count, and a p-value is a reading, not a score. */
-const wrap = "mx-auto max-w-[980px] px-6";
+const wrap = PROJECT_WRAP;
 const prose = "max-w-[74ch]";
 const label = "text-[12.5px] font-semibold tracking-[0.09em] text-cold uppercase";
 const heading =
   "mt-3 max-w-[28ch] font-display text-[clamp(23px,2.9vw,31px)] leading-[1.15] font-bold tracking-[-0.02em] text-ink";
-const section = "scroll-mt-[118px] border-b border-rule py-16";
+const section = "border-b border-rule py-16";
 const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
 const delay = (i: number) => ({ "--d": `${i * 60}ms` }) as React.CSSProperties;
 
@@ -41,7 +42,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
   const { lang } = await params;
   const dict = getDictionary(lang);
   const t = dict.thesis;
-  const card = dict.work.cards.find((c) => c.href === "/research/fintech-inclusion")!;
+  const card = workCard(dict, "/research/fintech-inclusion");
 
   return (
     <main id="main" tabIndex={-1}>
@@ -51,6 +52,7 @@ export default async function ThesisPage({ params }: { params: Promise<{ lang: s
       />
       {/* ================= HERO ================= */}
       <ProjectHero
+        wrap={wrap}
         lang={lang}
         backLabel={dict.nav.backHome}
         status="research"

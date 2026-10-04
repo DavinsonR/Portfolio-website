@@ -55,7 +55,7 @@ export const projects = {
         "Ningún número de esta página está escrito a mano. Todos salen del bundle que el repositorio publica y verifica contra sus propios exports.",
       demo: {
         title: "Puntúa un préstamo, aquí mismo",
-        body: "No es un vídeo ni una captura: es el artefacto ONNX de producción puntuando en tu navegador, sin servidor y sin que ningún dato salga de la página. Cuatro campos bastan y el resultado se recalcula en cada cambio; las otras nueve variables arrancan con valores típicos y se pueden mover todas. Prueba a poner la antigüedad en «Change of Ownership»: el modelo responde con el mismo aplomo, y la sección siguiente explica por qué eso es el problema.",
+        body: "No es un video ni una captura: es el artefacto ONNX de producción puntuando en tu navegador, sin servidor y sin que ningún dato salga de la página. Cuatro campos bastan y el resultado se recalcula en cada cambio; las otras nueve variables arrancan con valores típicos y se pueden mover todas. Prueba a poner la antigüedad en «Change of Ownership»: el modelo responde con el mismo aplomo, y la sección siguiente explica por qué eso es el problema.",
         note: "1,9 MB · paridad numérica verificada contra el modelo original",
         status: {
           idle: "El modelo se carga al llegar a esta sección.",
@@ -216,7 +216,7 @@ export const projects = {
       },
       close: {
         title: "Lo que hay detrás de esta página",
-        body: "El repositorio publica el registro completo de lo que se rompió, incluidos los defectos que encontré en mi propio tooling mientras construía esto. Es la parte que no se puede falsificar.",
+        body: "El repositorio publica el registro completo de lo que se rompió, incluidos los defectos que encontré en mis propias herramientas mientras construía esto. Es la parte que no se puede falsificar.",
         links: [
           { label: "Ver el código", href: "https://github.com/DavinsonR/credit-risk-mlops" },
           {
@@ -268,7 +268,7 @@ export const projects = {
       retry: "reintentar",
       funnel: {
         title: "El embudo de la honestidad",
-        desc: "De todas las variantes que le ganaron a comprar-y-mantener en el periodo de entrenamiento, solo una de cada {oneIn} siguió ganando en el periodo de validación que nunca influyó en su selección. El resto era ruido con buena suerte.",
+        desc: "De todas las variantes que le ganaron a comprar-y-mantener en el periodo de entrenamiento, solo una de cada {oneIn} siguió ganando en el periodo de validación que nunca influyó en su selección. El resto era ruido con suerte.",
         stageAll: "variantes evaluadas (5 estrategias + todas sus combinaciones AND)",
         stageIs: "le ganaron a buy & hold dentro de muestra",
         stageBoth: "siguieron ganándole fuera de muestra",
@@ -303,7 +303,7 @@ export const projects = {
         exposure: "expos.",
         excess: "exceso (total)",
         oosExcess: "exceso (valid.)",
-        survived: "¿ganó fuera?",
+        survived: "¿aguantó fuera de muestra?",
         yes: "sí",
         no: "no",
         zeroTrades: "0 ops",
@@ -347,7 +347,7 @@ export const projects = {
           },
           {
             title: "costos reales",
-            body: "10 pb de comisión por lado + 5 pb de slippage adverso en cada ejecución. El coste se cobra en cada ejecución: una estrategia con cien operaciones lo paga cien veces, y ahí es donde la mayoría de las que parecen perfectas en papel pierden dinero real.",
+            body: "10 pb de comisión por lado + 5 pb de slippage adverso en cada ejecución. El costo se cobra en cada ejecución: una estrategia con cien operaciones lo paga cien veces, y ahí es donde la mayoría de las que parecen perfectas en papel pierden dinero real.",
           },
           {
             title: "validación 70/30",
@@ -447,7 +447,7 @@ export const projects = {
       pages: {
         label: "Páginas del informe",
         title: "Las páginas, visual por visual",
-        desc: "Lo que muestra cada página sale de los archivos PBIR. Las capturas se exportan desde Power BI Desktop y aparecen aquí cuando existen.",
+        desc: "Lo que muestra cada página sale de los archivos PBIR. El .pbip abre en Power BI Desktop con estas mismas cuatro páginas.",
         summary: {
           verdict: "El embudo de honestidad: variantes evaluadas, ganadoras dentro de muestra y supervivientes fuera de muestra, con la supervivencia y el tiempo en mercado por número de señales combinadas.",
           explorer: "Filtros por región, clase de activo y tipo de estrategia sobre todas las variantes: dispersión de exposición contra exceso fuera de muestra, tabla de líderes y la tabla completa.",
@@ -457,7 +457,7 @@ export const projects = {
         visualsWord: "visuales",
         shotCaption: "exportada desde Power BI Desktop",
         shotAlt: "Captura de la página",
-        noShot: "Maqueta dibujada con la disposición del PBIR y los datos del warehouse. La captura exportada desde Power BI Desktop la sustituirá.",
+        noShot: "Dibujada con la disposición del PBIR y los datos del warehouse; el .pbip abre en Power BI Desktop con la misma página.",
         inventory: "Inventario de visuales, leído del PBIR",
         types: { card: "tarjeta", slicer: "segmentador", tableEx: "tabla", clusteredColumnChart: "columnas", clusteredBarChart: "barras", scatterChart: "dispersión", lineChart: "líneas" },
       },
@@ -595,7 +595,7 @@ export const projects = {
       decisions: {
         label: "Decisiones",
         title: "Cada decisión de valor está escrita antes del código",
-        body: "Las decisiones que cambian un resultado —la frecuencia, el modelo de datos, el método del índice, el diseño econométrico— van a un registro de decisión con sus alternativas, su coste y cómo revertirla. Las constantes viven en un solo sitio y ninguna cifra publicada existe sin la prueba que la sostiene.",
+        body: "Las decisiones que cambian un resultado —la frecuencia, el modelo de datos, el método del índice, el diseño econométrico— van a un registro de decisión con sus alternativas, su costo y cómo revertirla. Las constantes viven en un solo sitio y ninguna cifra publicada existe sin la prueba que la sostiene.",
         items: [
           { title: "Frecuencia anual, dos paneles", body: "El producto subnacional es anual y ningún valor anual se reparte en cuatro trimestres. La desagregación temporal queda como anexo, con sus advertencias." },
           { title: "Esquema estrella con procedencia", body: "Claves naturales, la huella sha256 de cada descarga en el manifiesto y un empalme de esquema medido en el trimestre que existe en las dos fuentes." },
@@ -606,7 +606,7 @@ export const projects = {
       },
       reproduce: {
         label: "Reproducir",
-        title: "Un comando levanta todo el proyecto",
+        title: "Cinco comandos reproducen el proyecto",
         steps: [
           { cmd: "uv sync", body: "Dependencias exactas desde el archivo de bloqueo. Nada se instala fuera de él." },
           { cmd: "uv run iif acquire all", body: "Descarga las diecinueve fuentes, verifica el conteo contra cada API y escribe el manifiesto con sha256." },
@@ -614,7 +614,7 @@ export const projects = {
           { cmd: "uv run iif econ", body: "Corre la batería econométrica completa en menos de medio minuto y escribe el archivo del que sale cada cifra de esta página." },
           { cmd: "uv run iif atlas", body: "Genera la geometría y las series que consume este mapa, dentro del presupuesto de 3 MB que fija el contrato." },
         ],
-        note: "El motor local y de integración continua es DuckDB. BigQuery queda como objetivo alternativo con tope de coste por consulta, y Snowflake como demostración posterior; nada del proyecto depende de que ninguno de los dos siga vivo.",
+        note: "El motor local y de integración continua es DuckDB. BigQuery queda como objetivo alternativo con tope de costo por consulta, y Snowflake como demostración posterior; nada del proyecto depende de que ninguno de los dos siga vivo.",
       },
       status: {
         label: "Qué hay y qué llega",
@@ -720,7 +720,7 @@ export const projects = {
         { value: "5", label: "pantallas reales en el demo, no maquetas", note: "las mismas de la app, corriendo sobre datos de alguien inventado", href: "#demo" },
         { value: "0", label: "consultas a la base desde el demo", note: "medido en el navegador: cero peticiones y cero envíos en las seis rutas", href: "#seguridad" },
         { value: "2.741", label: "pruebas automáticas en ocho puertas de CI", note: "tipos, formato, lint, pruebas, build, fuga en el bundle, dependencias y RLS", href: "#procesos" },
-        { value: "34", label: "tablas con política de fila por usuario", note: "y las claves primarias reconstruidas, que era lo que de verdad bloqueaba", href: "#datos" },
+        { value: "65", label: "tablas con seguridad por fila, y 46 vistas en modo invocador", note: "y las claves primarias reconstruidas, que era lo que de verdad bloqueaba", href: "#datos" },
       ] as Metric[],
       demo: {
         label: "El demo",
@@ -767,7 +767,7 @@ export const projects = {
         label: "Datos",
         title: "Postgres con seguridad por fila, y las claves que el multiusuario destapó",
         items: [
-          { title: "Una política por fila, no por pantalla", body: "Treinta y tres tablas y veintidós vistas en Postgres, cada una con su política y las vistas en modo invocador. El rol anónimo no lee nada: una prueba de humo recorre las cincuenta y cinco por la misma API que usa la app y exige que las cincuenta y cinco denieguen." },
+          { title: "Una política por fila, no por pantalla", body: "Sesenta y cinco tablas y cuarenta y seis vistas en Postgres, cada tabla con su política y las vistas en modo invocador. El rol anónimo no lee nada: una prueba de humo recorre las 111 por la misma API que usa la app y exige que las 111 denieguen." },
           { title: "Lo que bloqueaba el multiusuario no era la seguridad", body: "Eran las claves primarias. Veintidós tablas se identificaban sin el usuario: las medidas por fecha, los hábitos por fecha y nombre, las cuentas por nombre. La segunda persona que se pesara un martes recibía un error de clave duplicada, y una sola persona en todo el sistema podía tener una cuenta con el nombre de su banco." },
           { title: "Las claves foráneas llevan el usuario dentro", body: "Sin él, un movimiento podía apuntar a la cuenta de otra persona y la seguridad por fila no lo impediría, porque una clave foránea se valida dentro del motor y no pasa por la política." },
           { title: "Un cero no es un dato", body: "Vacío se guarda como nulo, nunca como cero, y un campo en blanco no borra lo que ya se midió ese día: las claves nulas se quitan del envío antes de escribir." },
@@ -784,9 +784,9 @@ export const projects = {
           { name: "Tipos", detail: "TypeScript estricto, sin un solo error" },
           { name: "Formato", detail: "Prettier en modo verificación" },
           { name: "Lint", detail: "ESLint con la configuración de Next" },
-          { name: "Pruebas", detail: "2.741 pruebas en 172 ficheros" },
+          { name: "Pruebas", detail: "2.741 pruebas en 172 archivos" },
           { name: "Build", detail: "compilación de producción completa" },
-          { name: "Fuga en el bundle", detail: "12 términos personales, ninguno en los 28 ficheros servidos" },
+          { name: "Fuga en el bundle", detail: "12 términos personales, ninguno en los 28 archivos servidos" },
           { name: "Dependencias", detail: "auditoría sin vulnerabilidades altas" },
           { name: "Seguridad por fila", detail: "55 de 55 comprobaciones deniegan al anónimo" },
         ],
@@ -802,7 +802,7 @@ export const projects = {
         label: "Seguridad",
         title: "Dos hallazgos que solo aparecen cuando se abre una puerta",
         items: [
-          { title: "El bundle también es una superficie", body: "Abrir el demo no expone solo lo que el demo pinta: expone los ficheros de JavaScript de las pantallas, porque son los mismos. La lista real de hábitos vivía en un módulo de constantes compartido y el empaquetador metía el módulo entero en el envío al navegador; dos de esos nombres son datos de categoría especial. Se movieron a un módulo de solo servidor, con dos guardias detrás. No llegó a estar expuesto: se corrigió antes de fusionar." },
+          { title: "El bundle también es una superficie", body: "Abrir el demo no expone solo lo que el demo pinta: expone los archivos de JavaScript de las pantallas, porque son los mismos. La lista real de hábitos vivía en un módulo de constantes compartido y el empaquetador metía el módulo entero en el envío al navegador; dos de esos nombres son datos de categoría especial. Se movieron a un módulo de solo servidor, con dos guardias detrás. No llegó a estar expuesto: se corrigió antes de fusionar." },
           { title: "Una escritura del demo podía llegar a datos reales, y no por la red", body: "El borrador del formulario vive en el almacenamiento del propio teléfono con la fecha como clave, y el demo usa la fecha de hoy. Quien abriera el demo desde el mismo navegador con el que registra pisaba su borrador real del día, y sin ningún error visible. En modo demo el borrador ya no lee, ni guarda, ni limpia, ni encola." },
           { title: "Sin terceros, y con política de contenido por petición", body: "Ni fuentes externas, ni analítica, ni scripts de nadie. La política de seguridad de contenido se emite con un número de un solo uso en cada petición, y la caché para trabajar sin conexión no guarda datos: solo estáticos y la pantalla de sin conexión. Cerrar sesión borra el almacenamiento local, que no está cifrado." },
         ],
@@ -959,7 +959,7 @@ export const projects = {
           "The model does not degrade: it loses the variable entirely and keeps returning HTTP 200. No performance metric would have shown it, because performance cannot be measured on young cohorts — a charge-off takes a median of 51 months to appear.",
         fixTitle: "And what it cost to fix",
         fixBody:
-          "Harmonising the vocabulary loses resolution: four age bands collapse into one. Arguing that is easy; measuring it means training the model twice on the same split with the same seed.",
+          "Harmonizing the vocabulary loses resolution: four age bands collapse into one. Arguing that is easy; measuring it means training the model twice on the same split with the same seed.",
         fixCost: "cost in AUC",
         fixCoverage: "coverage recovered",
         fixResidual: "irreducible",
@@ -1034,7 +1034,7 @@ export const projects = {
             href: "https://github.com/DavinsonR/credit-risk-mlops/tree/main/docs/adr",
           },
           {
-            label: "What is missing, prioritised",
+            label: "What is missing, prioritized",
             href: "https://github.com/DavinsonR/credit-risk-mlops/blob/main/docs/ROADMAP.md",
           },
         ],
@@ -1072,7 +1072,7 @@ export const projects = {
       retry: "retry",
       funnel: {
         title: "The honesty funnel",
-        desc: "Of all the variants that beat buy-and-hold during the training period, only one in {oneIn} kept winning in the validation window that never influenced their selection. The rest was noise with good luck.",
+        desc: "Of all the variants that beat buy-and-hold during the training period, only one in {oneIn} kept winning in the validation window that never influenced their selection. The rest was noise that got lucky.",
         stageAll: "variants evaluated (5 strategies + every AND-combination)",
         stageIs: "beat buy & hold in sample",
         stageBoth: "kept beating it out of sample",
@@ -1107,7 +1107,7 @@ export const projects = {
         exposure: "expos.",
         excess: "excess (full)",
         oosExcess: "excess (valid.)",
-        survived: "won out?",
+        survived: "held up out of sample?",
         yes: "yes",
         no: "no",
         zeroTrades: "0 trades",
@@ -1179,10 +1179,10 @@ export const projects = {
       desc: "This is the complete list, counted against dbt's compiled manifest. When one fails the pipeline stops, and the page keeps yesterday's data instead of publishing something broken.",
       rows: [
         { n: 47, name: "not_null", what: "No column that feeds a calculation may arrive empty. This is the test that caught the Kraken defect, when 100% of one source was landing as NULL." },
-        { n: 21, name: "accepted_values", what: "A category field only accepts values from the catalogue. A misspelled asset class stops being new data and becomes an error." },
+        { n: 21, name: "accepted_values", what: "A category field only accepts values from the catalog. A misspelled asset class stops being new data and becomes an error." },
         { n: 7, name: "unique_combination", what: "The same candle cannot exist twice for one asset on one date. That is what makes re-ingestion harmless." },
         { n: 6, name: "custom SQL", what: "Rules no generic test covers: that excess return reconciles with its components, or that a combination which never traded cannot count as a winner." },
-        { n: 4, name: "relationships", what: "Every symbol in a result must exist in the asset catalogue. An orphaned asset fails instead of vanishing." },
+        { n: 4, name: "relationships", what: "Every symbol in a result must exist in the asset catalog. An orphaned asset fails instead of vanishing." },
         { n: 3, name: "unique", what: "Primary keys are unique in fact, not by convention." },
         { n: 1, name: "ohlc_consistency", what: "A day's high cannot sit below its low, nor the open outside the range. It catches a corrupt feed before any metric does." },
       ],
@@ -1201,8 +1201,8 @@ export const projects = {
         { id: "licencia", label: "Open it" },
       ],
       title: "“Power BI” on a CV means nothing. Here are all 17 measures, one by one.",
-      intro: "The pipeline's warehouse feeds an interactive Power BI report, Medallion Insights. It is versioned as a Power BI Project (PBIP): the semantic model in TMDL, the pages in PBIR, all plain text reviewed in a pull request. This page is the catalogue of that model, copied from the source files, so nobody has to take the words “Power BI” on trust without seeing what is behind them.",
-      sourceLine: "Catalogue copied from commit",
+      intro: "The pipeline's warehouse feeds an interactive Power BI report, Medallion Insights. It is versioned as a Power BI Project (PBIP): the semantic model in TMDL, the pages in PBIR, all plain text reviewed in a pull request. This page is the catalog of that model, copied from the source files, so nobody has to take the words “Power BI” on trust without seeing what is behind them.",
+      sourceLine: "Catalog copied from commit",
       sourceTail: "· the model loads against the Supabase warehouse from Power BI Desktop",
       facts: { tables: "tables", relationships: "relationships, all to dim_assets.symbol", measures: "DAX measures", visuals: "visuals across four pages" },
       model: {
@@ -1226,7 +1226,7 @@ export const projects = {
       measures: {
         label: "DAX measures",
         title: "Seventeen measures, expression included",
-        desc: "Each row links to the exact line of the TMDL file that defines it, pinned to the catalogue's commit.",
+        desc: "Each row links to the exact line of the TMDL file that defines it, pinned to the catalog's commit.",
         headers: { measure: "Measure", dax: "Expression", format: "Format", meaning: "What it answers" },
         meaning: {
           "Variants Evaluated": "How many strategy variants sit in the current filter.",
@@ -1251,7 +1251,7 @@ export const projects = {
       pages: {
         label: "Report pages",
         title: "The pages, visual by visual",
-        desc: "What each page shows comes from the PBIR files. Screenshots are exported from Power BI Desktop and appear here once they exist.",
+        desc: "What each page shows comes from the PBIR files. The .pbip opens in Power BI Desktop to these same four pages.",
         summary: {
           verdict: "The honesty funnel: variants evaluated, in-sample winners and out-of-sample survivors, with survival and time in market by number of combined signals.",
           explorer: "Region, asset-class and strategy-kind slicers over every variant: exposure against out-of-sample excess, the leaderboard and the full table.",
@@ -1261,14 +1261,14 @@ export const projects = {
         visualsWord: "visuals",
         shotCaption: "exported from Power BI Desktop",
         shotAlt: "Screenshot of the page",
-        noShot: "A mock-up drawn with the PBIR layout and the warehouse data. The capture exported from Power BI Desktop will replace it.",
+        noShot: "Drawn from the PBIR layout and the warehouse data; the .pbip opens in Power BI Desktop to the same page.",
         inventory: "Visual inventory, read from the PBIR",
         types: { card: "card", slicer: "slicer", tableEx: "table", clusteredColumnChart: "columns", clusteredBarChart: "bars", scatterChart: "scatter", lineChart: "lines" },
       },
       licensing: {
         label: "Licensing",
         title: "Shipped as code, not as a link",
-        body: "“Publish to web” needs a Power BI Pro licence on a work tenant whose administrator allows public embedding, and it makes the dataset itself public. This project runs on a zero budget, so the report ships as source: the PBIP project opens for free in Power BI Desktop and refreshes against the warehouse. Saying so openly is evidence too: knowing what it costs to publish a report is part of the job.",
+        body: "“Publish to web” needs a Power BI Pro license on a work tenant whose administrator allows public embedding, and it makes the dataset itself public. This project runs on a zero budget, so the report ships as source: the PBIP project opens for free in Power BI Desktop and refreshes against the warehouse. Saying so openly is evidence too: knowing what it costs to publish a report is part of the job.",
         steps: [
           "Install Power BI Desktop, free and with no account needed to author.",
           "Open MedallionInsights.pbip from the repository's powerbi folder.",
@@ -1335,19 +1335,19 @@ export const projects = {
           { title: "Dimensional warehouse with dbt", body: "A star schema with vintage-aware facts on DuckDB: department, municipality and period dimensions, plus the supervisor's 98 variables each with its annualisation rule; inclusion in long form by product block." },
           { title: "The schema splice, measured", body: "The current table replaces the previous one in 2021Q1, and that quarter exists in both: a natural test of the splice. The median difference per department is 0.02% and the worst case reaches 1.8%; a dbt test fails if those thresholds break." },
           { title: "Annual frequency, two panels", body: "Subnational GDP is annual, so no annual value is ever repeated across four quarters. The department panel covers 2018 to 2025 with 231 growth observations and none repeated; the municipal one covers 2018 to 2024 on the statistics office's municipal value added." },
-          { title: "A zero is not a reading", body: "Zeros from the supervisor and the education ministry are absences, not values: outside each row's product block they disappear by construction. On the map, a territory without colour is one nobody reported, and that is not the same as zero." },
+          { title: "A zero is not a reading", body: "Zeros from the supervisor and the education ministry are absences, not values: outside each row's product block they disappear by construction. On the map, a territory without color is one nobody reported, and that is not the same as zero." },
         ],
       },
       method: {
         label: "The index",
         title: "The assumption gets measured before the method is chosen",
         items: [
-          { title: "Eight variables, three dimensions", body: "Access, use and depth, each with its variables normalised per adult or per product and standardised over the calibration window. Eighteen candidates were left out, each with its reason written down." },
+          { title: "Eight variables, three dimensions", body: "Access, use and depth, each with its variables normalized per adult or per product and standardized over the calibration window. Eighteen candidates were left out, each with its reason written down." },
           { title: "PCA was ruled out by measuring it", body: `Sampling adequacy comes to ${fen.n(T.kmo.use)} for use and ${fen.n(T.kmo.depth)} for depth, below the 0.5 a factor model needs; access has a single variable. Forcing it produces implicit weights with the wrong sign: a variable that should add enters subtracting.` },
-          { title: "The denominator, lagged", body: `Amounts are normalised by the previous year's output, not the same year's: that GDP also sits in the dependent variable, and dividing by it manufactures correlation. A placebo index with its numerators frozen, which moves only through its denominator, "predicts" growth with β = ${fen.n(T.denominator.contemporaneous)} when the output is the same year's; with the lagged one the bias falls to ${fen.n(T.denominator.lagged)} (p = ${fen.n(T.denominator.laggedP)}) but does not vanish, and with a fixed 2018 denominator it is gone (${fen.s(T.denominator.fixed)}, p = ${fen.n(T.denominator.fixedP)}). That is why the fixed-denominator index is published alongside, as co-principal.` },
+          { title: "The denominator, lagged", body: `Amounts are normalized by the previous year's output, not the same year's: that GDP also sits in the dependent variable, and dividing by it manufactures correlation. A placebo index with its numerators frozen, which moves only through its denominator, "predicts" growth with β = ${fen.n(T.denominator.contemporaneous)} when the output is the same year's; with the lagged one the bias falls to ${fen.n(T.denominator.lagged)} (p = ${fen.n(T.denominator.laggedP)}) but does not vanish, and with a fixed 2018 denominator it is gone (${fen.s(T.denominator.fixed)}, p = ${fen.n(T.denominator.fixedP)}). That is why the fixed-denominator index is published alongside, as co-principal.` },
           { title: "Equal weights, frozen and published", body: "Within each dimension the weights are equal, fixed over the 2018–2019 window and never touched again. Implicit weights per variable are always published, and none may be negative." },
           { title: "Sensitivity in plain sight", body: "PCA and Sarma's distance index are computed the same way and published as alternatives, with the rank correlation between the three versions. None is hidden." },
-          { title: "Zero is an average, not an absence", body: "The index is standardised against the average department over the calibration window. A value of 2 is two standard deviations above that average, not \"twice the inclusion\"." },
+          { title: "Zero is an average, not an absence", body: "The index is standardized against the average department over the calibration window. A value of 2 is two standard deviations above that average, not \"twice the inclusion\"." },
         ],
       },
       atlas: {
@@ -1355,7 +1355,7 @@ export const projects = {
         title: "The index on the map, by department and by municipality",
         body: "Three views of the same data. Flat, with the metrics around it; raised, to lift one department out and look at it; and municipalities, to go down to all 1,123 units. Pinning a department lets you descend to its municipalities from the map itself, and choosing a region closes the frame in on that selection while the neighbours bleed off the edge.",
         notes: [
-          "A territory without colour is not a zero: it is a territory no supervised institution reported that year.",
+          "A territory without color is not a zero: it is a territory no supervised institution reported that year.",
           "Block height is constant and encodes nothing. A height that depended on the value would let the units in front hide the ones behind, and a unit's reading must not depend on where it falls on the map.",
           "The San Andrés archipelago is a chip drawn off scale: it lies 700 km offshore and covers 26 km², so inside the frame it shrank the map by a fifth to paint a dot.",
           "Two of the panel's 1,123 municipalities have no polygon in the 2024 national map: they appear in the ranking and the figures, but not on the map.",
@@ -1400,12 +1400,12 @@ export const projects = {
           { title: "Star schema with provenance", body: "Natural keys, each download's sha256 fingerprint in the manifest, and a schema splice measured in the quarter that exists in both sources." },
           { title: "Index by dimension with its assumption measured", body: "Sampling adequacy before factoring; equal weights, frozen and published; alternatives in plain sight." },
           { title: "Econometric design", body: "Two-way fixed effects, diagnostics measured rather than assumed, designs against endogeneity with their pre-trends, a wild bootstrap studentised with the cluster-robust error because 33 clusters are not enough for the asymptotics, a Holm correction, and the power published beside the null." },
-          { title: "Derived data under the source's licence", body: "What comes out of the supervisor, the ICT ministry and the education ministry is published CC BY-SA 4.0, with attribution." },
+          { title: "Derived data under the source's license", body: "What comes out of the supervisor, the ICT ministry and the education ministry is published CC BY-SA 4.0, with attribution." },
         ],
       },
       reproduce: {
         label: "Reproduce",
-        title: "One command brings the whole project up",
+        title: "Five commands reproduce the project",
         steps: [
           { cmd: "uv sync", body: "Exact dependencies from the lock file. Nothing is installed outside it." },
           { cmd: "uv run iif acquire all", body: "Downloads the nineteen sources, verifies the count against each API and writes the manifest with sha256." },
@@ -1432,7 +1432,7 @@ export const projects = {
         researchLead: "Researching?",
         research: "Cite the project",
         researchHref: THESIS_CITATION,
-        orgLead: "Need this for your organisation?",
+        orgLead: "Need this for your organization?",
         org: "Write to me",
       },
       atlasCopy: {
@@ -1512,7 +1512,7 @@ export const projects = {
         { value: "5", label: "real screens in the demo, not mockups", note: "the app's own, running on data from someone invented", href: "#demo" },
         { value: "0", label: "database queries from the demo", note: "measured in the browser: zero requests and zero submissions across six routes", href: "#seguridad" },
         { value: "2,741", label: "automated tests across eight CI gates", note: "types, format, lint, tests, build, bundle leak, dependencies and row security", href: "#procesos" },
-        { value: "34", label: "tables with a per-user row policy", note: "and the primary keys rebuilt, which is what was really in the way", href: "#datos" },
+        { value: "65", label: "tables under row-level security, plus 46 views in invoker mode", note: "and the primary keys rebuilt, which is what was really in the way", href: "#datos" },
       ] as Metric[],
       demo: {
         label: "The demo",
@@ -1537,8 +1537,8 @@ export const projects = {
           "Three days paused for a trip, to show that a declared gap is not a failure.",
           "A graduated habit with its note: the explicit exit for a metric that has done its job.",
           "Weight and waist measured three times a week, so the series carry gaps nobody interpolates.",
-          "A purchase in twelve instalments and a receivable in five, which is what separates current from deferred spending.",
-          "Someone else's pocket, labelled as third-party custody and kept out of every net-worth total.",
+          "A purchase in twelve installments and a receivable in five, which is what separates current from deferred spending.",
+          "Someone else's pocket, labeled as third-party custody and kept out of every net-worth total.",
         ],
       },
       decisions: {
@@ -1549,17 +1549,17 @@ export const projects = {
         items: [
           { title: "A gap and a failure are not the same thing", body: "An unmarked day leaves the denominator; one marked “no” counts as zero; and a day declared paused —travel, illness— counts neither for nor against. Without that distinction, two weeks of ordinary life read as fourteen failures." },
           { title: "Graduating is a happy ending", body: "A habit can be graduated with a note: it stops being asked daily, stays in the history, and no longer drags down everyone else's adherence. It leaves the denominator only from the graduation date onward, because the earlier days already counted and rewriting them would change a history that was true." },
-          { title: "The reference is yours, not the average", body: "Each spending category is compared against its budget when it has one and against your own mean when it does not, and the screen always says which. The expected-pace curve is not a straight line: it comes from the shape your own closed months had, because rent is not paid in daily instalments." },
+          { title: "The reference is yours, not the average", body: "Each spending category is compared against its budget when it has one and against your own mean when it does not, and the screen always says which. The expected-pace curve is not a straight line: it comes from the shape your own closed months had, because rent is not paid in daily installments." },
           { title: "Weight is not a goal", body: "There is no progress bar toward a target weight anywhere in the app. Waist has one, because it measures what was actually meant to change. That is the difference between an app that keeps you company and one that watches you." },
           { title: "Never invent a value", body: "An empty field shows empty and series are not interpolated: a straight line between two weigh-ins two weeks apart is not a trend. When there are not enough days to claim something, the app says so instead of claiming it anyway." },
-          { title: "The colors were measured, not picked", body: "Every color went through contrast validation in both themes, and the six habit colors carry stepped luminance so they stay apart in greyscale or with color blindness. Calendar states are separated by shape —fill, hatch, outline— which is the only thing that survives a screen in sunlight." },
+          { title: "The colors were measured, not picked", body: "Every color went through contrast validation in both themes, and the six habit colors carry stepped luminance so they stay apart in grayscale or with color blindness. Calendar states are separated by shape —fill, hatch, outline— which is the only thing that survives a screen in sunlight." },
         ],
       },
       data: {
         label: "Data",
         title: "Postgres with row-level security, and the keys multi-user exposed",
         items: [
-          { title: "A policy per row, not per screen", body: "Thirty-three tables and twenty-two views in Postgres, each with its policy and the views in invoker mode. The anonymous role reads nothing: a smoke test walks all fifty-five through the same API the app uses and requires all fifty-five to deny." },
+          { title: "A policy per row, not per screen", body: "Sixty-five tables and forty-six views in Postgres, every table with its policy and the views in invoker mode. The anonymous role reads nothing: a smoke test walks all 111 through the same API the app uses and requires all 111 to deny." },
           { title: "What blocked multi-user was not the security layer", body: "It was the primary keys. Twenty-two tables identified rows without the user: measurements by date, habits by date and name, accounts by name. The second person to weigh themselves on a Tuesday got a duplicate-key error, and only one person in the whole system could have an account named after their bank." },
           { title: "Foreign keys carry the user inside", body: "Without it, a transaction could point at someone else's account and row security would not stop it, because a foreign key is validated inside the engine and never passes through the policy." },
           { title: "A zero is not a value", body: "Empty is stored as null, never as zero, and a blank field does not erase what was already measured that day: null keys are stripped from the payload before writing." },

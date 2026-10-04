@@ -19,6 +19,14 @@ export function alternates(lang: string, route = "") {
   };
 }
 
+/** Lo que enseña la imagen de la tarjeta, no el título de la página: es el mismo
+ *  `og-{lang}.png` (el perfil) en las dieciocho rutas, y un alt que repetía el
+ *  título de cada página describía otra cosa. */
+const OG_ALT = {
+  es: "Davirson Novoa Ramírez, Finance Data Analyst: tarjeta de perfil.",
+  en: "Davirson Novoa Ramírez, Finance Data Analyst: profile card.",
+} as const;
+
 /** OpenGraph por página.
  *
  *  Next **reemplaza** el objeto `openGraph`, no lo fusiona: una subpágina que no
@@ -45,7 +53,7 @@ export function openGraph(
     // Facebook y LinkedIn usan esto para saber que existe la otra versión sin
     // descubrirla por su cuenta; sin él cada idioma era una entidad aislada.
     alternateLocale: lang === "es" ? "en_US" : "es_CO",
-    images: [{ url: `/og-${lang}.png`, width: 1200, height: 630, alt: meta.title }],
+    images: [{ url: `/og-${lang}.png`, width: 1200, height: 630, alt: OG_ALT[lang === "es" ? "es" : "en"] }],
   };
 }
 

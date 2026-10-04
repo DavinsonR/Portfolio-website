@@ -17,7 +17,9 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   // volvía a añadir: «Davirson Novoa Ramírez — Finance Data Analyst — Davirson
   // Novoa Ramírez», en producción y en los dos idiomas (FALLO-37). `absolute`
   // se salta la plantilla solo aquí; la tarjeta social recibe el mismo texto.
-  const title = `${dict.cv.title} — ${dict.cv.targets[0]}`;
+  // «CV» / «Resume» delante (el kicker ya lo dice): sin eso el título era el
+  // gemelo del de la portada y nadie que busque «Resume» lo encontraba.
+  const title = `${dict.cv.kicker.split(" · ")[0]} — ${dict.cv.title}, ${dict.cv.targets[0]}`;
   // Antes era `profileText.slice(0, 155)` y el corte caía a mitad de palabra
   // («…waiting for someone t»). Una descripción es una frase, no un recorte.
   const description = dict.cv.metaDesc;
@@ -222,7 +224,7 @@ export default async function CvPage({ params }: { params: Promise<{ lang: strin
       </section>
 
       {/* ===== EXPERIENCE ===== */}
-      <section id="experiencia" className="scroll-mt-[72px] border-b border-rule py-14">
+      <section id="experiencia" className="border-b border-rule py-14">
         <div className={wrap}>
           <h2 data-reveal className={`reveal ${heading}`}>
             {cv.expLabel}
